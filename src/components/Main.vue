@@ -1,7 +1,7 @@
 <template>
   <div>
  <head>
-    <title>USGS Earthquake Feed</title>
+    <title>USGS NWIS Tableau Data Connector</title>
     <meta http-equiv="Cache-Control" content="no-store" />
     
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -12,7 +12,7 @@
     <div class="container container-table">
         <div class="row vertical-center-row">
             <div class="text-center col-md-4 col-md-offset-4">
-                <button type = "button" v-on:click = "requestData" id = "submitButton" class = "btn btn-success" style = "margin: 10px;">Get Earthquake Data!</button>
+                <button type = "button" v-on:click = "requestData" id = "submitButton" class = "btn btn-success" style = "margin: 10px;">Request Data</button>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'Main',
   props: {
     msg: String
   },
