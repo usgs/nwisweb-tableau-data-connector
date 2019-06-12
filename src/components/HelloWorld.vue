@@ -65,37 +65,68 @@ export default {
         schemaCallback([tableSchema]);
     };
 
+
+
+
     // Download the data
     myConnector.getData = function(table, doneCallback) {
-        $.getJSON("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson", function(resp) {
-            let feat = resp.features,
-                tableData = [];
+       
+    // adapted from https://github.com/usgs/waterdataui/blob/master/assets/src/scripts/ajax.js
+    let get = function (url) {
+    // Return a new promise.
+    return new Promise(function(resolve, reject) {
+        // Do the usual XHR stuff
+        let req = new XMLHttpRequest();
+        req.responseType = 'json';
 
-            // Iterate over the JSON object
-            for (let i = 0, len = feat.length; i < len; i++) {
-                tableData.push({
-                    "id": feat[i].id,
-                    "mag": feat[i].properties.mag,
-                    "title": feat[i].properties.title,
-                    "location": feat[i].geometry
-                });
-            }
+        req.open('GET', url);
+
+        req.onload = function() {
+            // This is called even on 404 etc
+            // so check the status
+            if (req.status == 200) {
+                 let feat = req.response.features;
+                 let tableData = [];
+
+                // Iterate over the JSON object
+                for (let i = 0, len = feat.length; i < len; i++) {
+                    tableData.push({
+                        "id": feat[i].id,
+                        "mag": feat[i].properties.mag,
+                        "title": feat[i].properties.title,
+                        "location": feat[i].geometry
+                    });
+                }
 
             table.appendRows(tableData);
             doneCallback();
-        });
-    };
+
+                // Resolve the promise with the response text
+                resolve(req.response);
+            } else {
+                // Otherwise reject with the status text
+                // which will hopefully be a meaningful error
+                if (window.ga) {
+                    window.ga('send', 'event', 'serviceFailure', req.status, url);
+                }
+                reject(Error(`Failed with status ${req.status}: ${req.statusText}`));
+            }
+        };
+
+        // Handle network errors
+        req.onerror = function() {
+            reject(Error('Network Error'));
+        };
+
+        // Make the request
+        req.send();
+    });
+};
+    let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
+    get(url);};
 
     tableau.registerConnector(myConnector);
-    /*
-    // Create event listeners for when the user submits the form
-    $(document).ready(function() {
-        $("#submitButton").click(function() {
-            tableau.connectionName = "USGS Earthquake Feed"; // This will be the data source name in Tableau
-            tableau.submit(); // This sends the connector object to Tableau
-        });
-    });
-    */
+    
        } 
     }
 }
