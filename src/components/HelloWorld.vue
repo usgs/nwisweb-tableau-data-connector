@@ -1,34 +1,24 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-jest" target="_blank" rel="noopener">unit-jest</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <div>
+ <head>
+    <title>USGS Earthquake Feed</title>
+    <meta http-equiv="Cache-Control" content="no-store" />
+    
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+   
+</head>
+
+<body>
+    <div class="container container-table">
+        <div class="row vertical-center-row">
+            <div class="text-center col-md-4 col-md-offset-4">
+                <button type = "button" v-on:click = "requestData" id = "submitButton" class = "btn btn-success" style = "margin: 10px;">Get Earthquake Data!</button>
+            </div>
+        </div>
+    </div>
+</body>
+ 
+</div>
 </template>
 
 <script>
@@ -36,8 +26,80 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
-  }
+  },
+  created: function () {
+     this.initializeWebDataConnector();
+  },
+  methods: {   
+        requestData: function(){
+          tableau.connectionName = "USGS Earthquake Feed"; // This will be the data source name in Tableau
+          tableau.submit(); // This sends the connector object to Tableau
+        },
+       initializeWebDataConnector: function(){
+         let myConnector = tableau.makeConnector();
+
+    // Define the schema
+    myConnector.getSchema = function(schemaCallback) {
+        let cols = [{
+            id: "id",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "mag",
+            alias: "magnitude",
+            dataType: tableau.dataTypeEnum.float
+        }, {
+            id: "title",
+            alias: "title",
+            dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "location",
+            dataType: tableau.dataTypeEnum.geometry
+        }];
+
+        let tableSchema = {
+            id: "earthquakeFeed",
+            alias: "Earthquakes with magnitude greater than 4.5 in the last seven days",
+            columns: cols
+        };
+
+        schemaCallback([tableSchema]);
+    };
+
+    // Download the data
+    myConnector.getData = function(table, doneCallback) {
+        $.getJSON("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson", function(resp) {
+            let feat = resp.features,
+                tableData = [];
+
+            // Iterate over the JSON object
+            for (let i = 0, len = feat.length; i < len; i++) {
+                tableData.push({
+                    "id": feat[i].id,
+                    "mag": feat[i].properties.mag,
+                    "title": feat[i].properties.title,
+                    "location": feat[i].geometry
+                });
+            }
+
+            table.appendRows(tableData);
+            doneCallback();
+        });
+    };
+
+    tableau.registerConnector(myConnector);
+    /*
+    // Create event listeners for when the user submits the form
+    $(document).ready(function() {
+        $("#submitButton").click(function() {
+            tableau.connectionName = "USGS Earthquake Feed"; // This will be the data source name in Tableau
+            tableau.submit(); // This sends the connector object to Tableau
+        });
+    });
+    */
+       } 
+    }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
