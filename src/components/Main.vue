@@ -12,6 +12,13 @@
     <div class="container container-table">
         <div class="row vertical-center-row">
             <div class="text-center col-md-4 col-md-offset-4">
+                <br>
+                <label> Site or Sites </label>
+                <input v-model="sites" placeholder="edit me">
+                <br>
+                <label> Parameter Codes</label>
+                <input v-model="parameters" placeholder="edit me">
+                <br>
                 <button type = "button" v-on:click = "requestData" id = "submitButton" class = "btn btn-success" style = "margin: 10px;">Request Data</button>
             </div>
         </div>
@@ -29,7 +36,9 @@ export default {
   },
   data: function() {
       return {
-          columnList: []
+          columnList: [],
+          sites: "1",
+          parameters: "1"
       }
   },
   created: function () {
@@ -37,7 +46,14 @@ export default {
   },
   methods: {   
         requestData: function(){
-          tableau.connectionData = this.columnList; // here we send columnList, to be used in defining our schema
+            //construct columnList
+        let paramList = this.parameters.replace(/\s/g, '').split(',');
+        let self = this;
+        self.columnList = [];
+        paramList.forEach(function (param){ // right now we are assuming there is only one site in the query
+            self.columnList.push(self.sites + '_' + param);
+        });
+          tableau.connectionData = {columnList:self.columnList, siteNums:self.sites, paramNums:self.parameters}; // here we send columnList, to be used in defining our schema
           tableau.connectionName = "USGS Instantaneous Values Query"; // This will be the data source name in Tableau
           tableau.submit(); // This sends the connector object to Tableau
         },
@@ -46,16 +62,18 @@ export default {
 
     // mock ups of user inputs
 
-    let sites = '01646500'
-    let parameters = '00060,00065'
+    // let sites = '01646500'
+    // let parameters = '00060,00065'
+    // let sites = this.sites;
+    // let parameters = this.parameters;
 
-     //construct columnList
-        let paramList = parameters.replace(/\s/g, '').split(',');
-        let self = this;
-        self.columnList = [];
-        paramList.forEach(function (param){ // right now we are assuming there is only one site in the query
-            self.columnList.push(sites + '_' + param);
-        });
+    //  //construct columnList
+    //     let paramList = parameters.replace(/\s/g, '').split(',');
+    //     let self = this;
+    //     self.columnList = [];
+    //     paramList.forEach(function (param){ // right now we are assuming there is only one site in the query
+    //         self.columnList.push(sites + '_' + param);
+    //     });
 
 
 
@@ -95,7 +113,7 @@ export default {
                 dataType: tableau.dataTypeEnum.string
         });
         */
-        tableau.connectionData.forEach(function (column){ // we add all the columns to the schema
+        tableau.connectionData.columnList.forEach(function (column){ // we add all the columns to the schema
             cols.push({
                 id: column,
                 alias: column,
@@ -144,10 +162,10 @@ export default {
                     {
                         let newEntry = {};
                         //newEntry['id'] = String(i);
-                        for(let c = 0; c < tableau.connectionData.length; c++)
+                        for(let c = 0; c < tableau.connectionData.columnList.length; c++)
                         {
                             
-                           newEntry[tableau.connectionData[c]] = data.value.timeSeries[c].values[0].value[i].value;
+                           newEntry[tableau.connectionData.columnList[c]] = data.value.timeSeries[c].values[0].value[i].value;
                               
                         }
                         tableData.push(newEntry);
@@ -195,8 +213,10 @@ export default {
     });
 };
 
+        let paramList = tableau.connectionData.paramNums.replace(/\s/g, '').split(',');
 
-    let url =  `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${sites}&period=P1D&parameterCd=${parameters}&siteStatus=all`
+    let url =  `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${tableau.connectionData.siteNums}&period=P1D&parameterCd=${paramList.join()}&siteStatus=all`
+    console.log(url);
 
    //let url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
 
