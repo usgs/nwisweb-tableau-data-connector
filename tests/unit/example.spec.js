@@ -1,12 +1,13 @@
 import { shallowMount } from '@vue/test-utils'
-import HelloWorld from '@/components/HelloWorld.vue'
 
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message'
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg }
-    })
-    expect(wrapper.text()).toMatch(msg)
+import Main from '@/components/Main.vue'
+
+
+describe('Main.vue', () => {
+
+  it('has a button', () => {
+    const wrapper = shallowMount(Main)
+   // expect(tableau).toBe(undefined)
+    expect(wrapper.exists()).toBe(true)
   })
 })

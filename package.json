@@ -52,6 +52,7 @@
     "last 2 versions"
   ],
   "jest": {
+    "setupFiles": ["./tests/config/jestSetup.js"],
     "moduleFileExtensions": [
       "js",
       "jsx",
