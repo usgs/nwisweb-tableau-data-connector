@@ -100,23 +100,7 @@ export default {
                             // This is called even on 404 etc
                             // so check the status
                             if (req.status == 200) {
-                                let data = req.response;
-                                let tableData = [];
-                                let dataLength = data.value.timeSeries[0].values[0].value.length;
-
-                                for (let i = 0; i < dataLength; i++) {
-                                    let newEntry = {};
-                                    for (let c = 0; c < tableau.connectionData.columnList.length; c++) {
-
-                                        newEntry[tableau.connectionData.columnList[c]] = data.value.timeSeries[c].values[0].value[i].value;
-
-                                    }
-                                    tableData.push(newEntry);
-                                }
-
-                                table.appendRows(tableData);
                                 doneCallback();
-
                                 // Resolve the promise with the response text
                                 resolve(req.response);
                             } else {
@@ -138,13 +122,29 @@ export default {
                         req.send();
                     });
                 };
-
+              
 
 
                 //todo standardize this template's format when we add more query info fields
                 let paramList = tableau.connectionData.paramNums.replace(/\s/g, '').split(',');
                 let url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${tableau.connectionData.siteNums}&period=P1D&parameterCd=${paramList.join()}&siteStatus=all`
-                get(url);
+                get(url).then(function(value){
+                                let data = value;
+                                let tableData = [];
+                                let dataLength = data.value.timeSeries[0].values[0].value.length;
+
+                                for (let i = 0; i < dataLength; i++) { // todo update format
+                                    let newEntry = {};
+                                    for (let c = 0; c < tableau.connectionData.columnList.length; c++) {
+
+                                        newEntry[tableau.connectionData.columnList[c]] = data.value.timeSeries[c].values[0].value[i].value;
+
+                                    }
+                                    tableData.push(newEntry);
+                                }
+
+                                table.appendRows(tableData);
+                });
             };
             tableau.registerConnector(myConnector);
 
