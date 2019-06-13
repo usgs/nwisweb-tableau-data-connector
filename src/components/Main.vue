@@ -128,20 +128,21 @@ export default {
                 //todo standardize this template's format when we add more query info fields
                 let paramList = tableau.connectionData.paramNums.replace(/\s/g, '').split(',');
                 let url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${tableau.connectionData.siteNums}&period=P1D&parameterCd=${paramList.join()}&siteStatus=all`
-                get(url).then(function(value){
+               
+               get(url).then(function(value){ 
                                 let data = value;
                                 let tableData = [];
-                                let dataLength = data.value.timeSeries[0].values[0].value.length;
+                                let columnIndices = Array.from(tableau.connectionData.columnList.keys());
+                                let dataIndices = Array.from(data.value.timeSeries[0].values[0].value.keys());
 
-                                for (let i = 0; i < dataLength; i++) { // todo update format
+                                dataIndices.forEach(i => {
                                     let newEntry = {};
-                                    for (let c = 0; c < tableau.connectionData.columnList.length; c++) {
-
+                                    columnIndices.forEach(c => {
                                         newEntry[tableau.connectionData.columnList[c]] = data.value.timeSeries[c].values[0].value[i].value;
 
-                                    }
-                                    tableData.push(newEntry);
-                                }
+                                    });
+                                    tableData.push(newEntry); 
+                                });
 
                                 table.appendRows(tableData);
                 });
