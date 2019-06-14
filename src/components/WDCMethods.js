@@ -95,6 +95,6 @@ const generateColList = (sites, params) => {
 }
 
 
-export{getData, getSchema, formatJSONAsTable, generateURL, generateColList};
+export{getData, getSchema, formatJSONAsTable, generateURL, generateColList, getLongestTimesSeriesindices};
 
 
