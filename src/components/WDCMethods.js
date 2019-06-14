@@ -101,6 +101,6 @@ function getSchema(schemaCallback) {
     schemaCallback([tableSchema]);
 }
 
-export{getData, getSchema};
+export{getData, getSchema, formatJSONAsTable, generateURL};
 
 
