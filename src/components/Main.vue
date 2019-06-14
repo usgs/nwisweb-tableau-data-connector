@@ -38,7 +38,7 @@ export default {
     data: function () {
         return {
             columnList: [],
-            sites: "01646500",
+            sites: "01646500,05437641",
             parameters: "00060,00065"
         }
     },
@@ -49,11 +49,15 @@ export default {
         requestData: function () {
             //construct columnList
             let paramList = this.parameters.replace(/\s/g, '').split(',');
+            let siteList = this.sites.replace(/\s/g, '').split(',');
             let self = this;
             self.columnList = [];
-            paramList.forEach(function (param) { // right now we are assuming there is only one site in the query
-                self.columnList.push(self.sites + '_' + param);
+            siteList.forEach(function (site){
+                paramList.forEach(function (param) { // we are creating a column for each property of each site
+                    self.columnList.push(site + '_' + param);
+                 });
             });
+           
             tableau.connectionData = { columnList: self.columnList, siteNums: self.sites, paramNums: self.parameters }; // here we send columnList, to be used in defining our schema
             tableau.connectionName = "USGS Instantaneous Values Query"; // This will be the data source name in Tableau
             tableau.submit(); // This sends the connector object to Tableau

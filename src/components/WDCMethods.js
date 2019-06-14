@@ -39,20 +39,26 @@ function getData (table, doneCallback) {
 
 
         //todo standardize this template's format when we add more query info fields
-        let paramList = tableau.connectionData.paramNums.replace(/\s/g, '').split(',');
-        let url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${tableau.connectionData.siteNums}&period=P1D&parameterCd=${paramList.join()}&siteStatus=all`
+        let paramList = tableau.connectionData.paramNums.replace(/\s/g, '').split(','); // split by comma, ignoring whitespace
+        let siteList = tableau.connectionData.siteNums.replace(/\s/g,'').split(',');
+        let url = `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${siteList.join()}&period=P1D&parameterCd=${paramList.join()}&siteStatus=all`
        
        get(url).then(function(value){ 
                         let data = value;
                         let tableData = [];
-                        let columnIndices = Array.from(tableau.connectionData.columnList.keys());
-                        let dataIndices = Array.from(data.value.timeSeries[0].values[0].value.keys());
+                        //let columnIndices = Array.from(tableau.connectionData.columnList.keys());
+                        let timeSeries = data.value.timeSeries;
+                        let dataIndices = Array.from(timeSeries[0].values[0].value.keys());
+                        let paramIndices = Array.from(timeSeries.keys());
 
                         dataIndices.forEach(i => {
                             let newEntry = {};
-                            columnIndices.forEach(c => {
-                                newEntry[tableau.connectionData.columnList[c]] = data.value.timeSeries[c].values[0].value[i].value;
-
+                            paramIndices.forEach(c => {
+                                let name = timeSeries[c].name;
+                                let nameTokens = name.split(':');
+                                let site = nameTokens[1];
+                                let paramType = nameTokens[2];
+                                newEntry[site + '_' + paramType] = data.value.timeSeries[c].values[0].value[i].value;
                             });
                             tableData.push(newEntry); 
                         });
