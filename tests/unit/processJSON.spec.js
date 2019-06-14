@@ -144,4 +144,12 @@ test('converting a non fully-populated data JSON to table', () => {
   
   
   });
-  
+
+test('getLongestTimeSeriesIndices correctly throws error when given an empty list', () =>{
+
+  expect(() =>{
+    getLongestTimesSeriesindices([]);
+  }).toThrow();
+
+
+}); 
