@@ -3,6 +3,8 @@
 let tableau = {};
 let getSchema = {};
 
+let recentRequest = "no requests";
+
 tableau.makeConnector = function(){
     return {getSchema}
 }
@@ -12,8 +14,29 @@ tableau.connectionData = {};
 tableau.connectionData.paramNums = "";
 tableau.connectionData.siteNums = "";
 
-//tableau['getSchema'] = function (){}; //wrong
 
+let xmlFunctionHolder = {
+    onload: function(){},
+    open:function(){},
+    send: function(){}
+}
+
+
+let fakeXML = function() {
+    console.log("in mock XMLHttpRequest");
+    let req = {};
+    req.status = 200;
+    req.open = xmlFunctionHolder.open;
+    req.responseType = "none";
+    req.onload = xmlFunctionHolder.onload;
+    req.send = xmlFunctionHolder.send;
+    return req;
+}
+
+//tableau['getSchema'] = function (){}; //wrong
+global.xmlFunctionHolder = xmlFunctionHolder;
+global.XMLHttpRequest = fakeXML;
+global.recentRequest = recentRequest;
 global.tableau = tableau;
 global.getSchema = getSchema;
 
