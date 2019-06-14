@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { getData, getSchema } from './WDCMethods.js';
+import { getData, getSchema, generateColList } from './WDCMethods.js';
 export default {
     name: 'Main',
     props: {
@@ -47,28 +47,14 @@ export default {
     },
     methods: {
         requestData: function () {
-            //construct columnList
-            let paramList = this.parameters.replace(/\s/g, '').split(',');
-            let siteList = this.sites.replace(/\s/g, '').split(',');
-            let self = this;
-            self.columnList = [];
-            siteList.forEach(function (site){
-                paramList.forEach(function (param) { // we are creating a column for each property of each site
-                    self.columnList.push(site + '_' + param);
-                 });
-            });
-           
-            tableau.connectionData = { columnList: self.columnList, siteNums: self.sites, paramNums: self.parameters }; // here we send columnList, to be used in defining our schema
-            tableau.connectionName = "USGS Instantaneous Values Query"; // This will be the data source name in Tableau
-            tableau.submit(); // This sends the connector object to Tableau
+            this.columnList = generateColList(this.sites, this.parameters); 
+            tableau.connectionData = { 'columnList': this.columnList, 'siteNums': this.sites, 'paramNums': this.parameters }; // here we send columnList, to be used in defining our schema
+            tableau.connectionName = "USGS Instantaneous Values Query"; 
+            tableau.submit(); 
         },
         initializeWebDataConnector: function () {
             let myConnector = tableau.makeConnector();
-
-            // Define the schema
             myConnector.getSchema = getSchema;
-
-            // Download the data
             myConnector.getData = getData;
             tableau.registerConnector(myConnector);
 
@@ -76,7 +62,6 @@ export default {
     }
 }
 </script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 h3 {
   margin: 40px 0 0;

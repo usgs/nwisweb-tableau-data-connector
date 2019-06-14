@@ -1,6 +1,6 @@
 
 
-import {formatJSONAsTable, generateURL} from '../../src/components/WDCMethods.js'
+import {formatJSONAsTable, generateURL, generateColList} from '../../src/components/WDCMethods.js'
 
 
 test('converting a fully-populated data JSON to table', () => {
@@ -50,4 +50,14 @@ expect(formatJSONAsTable(input)).toEqual(targetResult);
 test('correctly generate a URL given a list of sites and parameters with various whitespace', ()=>{
 const connectionData = {siteNums: "01646500 ,   05437641", paramNums: "00060   ,00065"};
 expect(generateURL(connectionData)).toEqual("https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500,05437641&period=P1D&parameterCd=00060,00065&siteStatus=all");
+});
+
+
+test('correctly generates the column schema from sites and parameters' ,()=>{
+const sites = "01646500,05437641";
+const params =  "00060,00065";
+const targetResult = ["01646500_00060","01646500_00065","05437641_00060","05437641_00065"];
+expect(generateColList(sites,params)).toEqual(targetResult);
+
+
 });

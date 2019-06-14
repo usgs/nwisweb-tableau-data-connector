@@ -1,10 +1,28 @@
 import {get} from '../utils.js'
 
+
+const getLongestTimesSeriesindices = (timeSeries) => {
+    if (timeSeries.length == 0)
+    {
+        throw new Error("no time series data");
+    }
+    let result = [];
+    let length = -1;
+    timeSeries.forEach(dataSeries => {
+        if(dataSeries.values[0].value.length > length)
+        {
+            length = dataSeries.values[0].value.length;
+            result = Array.from(dataSeries.values[0].value.keys());
+        }
+    }); 
+    return result;
+}
+
 const formatJSONAsTable =  (data) => {
     let tableData = [];
     let timeSeries = data.value.timeSeries;
-    let dataIndices = Array.from(timeSeries[0].values[0].value.keys());
-    let paramIndices = Array.from(timeSeries.keys());
+    let dataIndices = getLongestTimesSeriesindices(timeSeries)
+    let paramIndices = Array.from(timeSeries.keys());                 
 
     dataIndices.forEach(i => {
         let newEntry = {};
@@ -55,7 +73,6 @@ const  getSchema = (schemaCallback) => {
         });
     });
 
-
     let tableSchema = {
         id: "WaterData",
         alias: "useful information will be put here", //todo, add useful information
@@ -64,6 +81,20 @@ const  getSchema = (schemaCallback) => {
     schemaCallback([tableSchema]);
 }
 
-export{getData, getSchema, formatJSONAsTable, generateURL};
+
+const generateColList = (sites, params) => {
+    let paramList = params.replace(/\s/g, '').split(',');
+    let siteList = sites.replace(/\s/g, '').split(',');
+    let columnList = [];
+    siteList.forEach(function (site){
+        paramList.forEach(function (param) { // we are creating a column for each property of each site
+            columnList.push(site + '_' + param);
+         });
+    });
+    return columnList;
+}
+
+
+export{getData, getSchema, formatJSONAsTable, generateURL, generateColList};
 
 
