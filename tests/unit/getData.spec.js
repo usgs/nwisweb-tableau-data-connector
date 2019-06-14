@@ -22,16 +22,16 @@ it('The url passed to the get command is used to make a request', () => {
   // expect(thisRequest.method).toBe('GET');
 });
 
-it('Empty url is returned if no sites are specified', () => {
-  let connectionData = {paramNums:"", siteNums:""};
-  let url = generateURL(connectionData);
-  expect(url).toContain("https://waterservices.usgs.gov/nwis/iv/?format=json&sites=&period=P1D&parameterCd=&siteStatus=all");
-});
+// it('Empty url is returned if no sites are specified', () => {
+//   let connectionData = {paramNums:"", siteNums:""};
+//   let url = generateURL(connectionData);
+//   expect(url).toContain("https://waterservices.usgs.gov/nwis/iv/?format=json&sites=&period=P1D&parameterCd=&siteStatus=all");
+// });
 
-it('Correct url is returned if 1 site and 1 parameter are specified', () => {
-  let connectionData = {siteNums:"01646500", paramNums:"00060"};
-  let url = generateURL(connectionData);
-  expect(url).toContain("https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500&period=P1D&parameterCd=00060&siteStatus=all");
-});
+// it('Correct url is returned if 1 site and 1 parameter are specified', () => {
+//   let connectionData = {siteNums:"01646500", paramNums:"00060"};
+//   let url = generateURL(connectionData);
+//   expect(url).toContain("https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500&period=P1D&parameterCd=00060&siteStatus=all");
+// });
 
 })
