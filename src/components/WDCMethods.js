@@ -1,6 +1,6 @@
 import {get} from '../utils.js'
 
-function formatJSONAsTable (data){
+const formatJSONAsTable =  (data) => {
     let tableData = [];
     let timeSeries = data.value.timeSeries;
     let dataIndices = Array.from(timeSeries[0].values[0].value.keys());
@@ -26,7 +26,7 @@ function formatJSONAsTable (data){
 }
 
 
-function generateURL(connectionData){
+const generateURL = (connectionData) => {
  //todo standardize this template's format when we add more query info fields
  let paramList = connectionData.paramNums.replace(/\s/g, '').split(','); // split by comma, ignoring whitespace
  let siteList = connectionData.siteNums.replace(/\s/g,'').split(',');
@@ -34,7 +34,7 @@ function generateURL(connectionData){
 }
 
 
-function getData (table, doneCallback) {
+const  getData =  (table, doneCallback) => {
 
        let url = generateURL(tableau.connectionData);
        
@@ -44,7 +44,7 @@ function getData (table, doneCallback) {
         });
     }
 
-function getSchema(schemaCallback) {
+const  getSchema = (schemaCallback) => {
 
     let cols = [];
     tableau.connectionData.columnList.forEach(function (column) { // we add all the columns to the schema
