@@ -2,7 +2,6 @@ import { shallowMount } from '@vue/test-utils'
 
 import Main from '@/components/Main.vue'
 
-
 describe('Main.vue', () => {
 
   it('has a button', () => {
