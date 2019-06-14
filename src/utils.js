@@ -5,7 +5,9 @@ function get (url) {
   // Return a new promise.
   return new Promise(function (resolve, reject) {
       // Do the usual XHR stuff
+      console.log("!!!!!!!!!!!");
       let req = new XMLHttpRequest();
+      console.log("@@@@@@@@2@2")
       req.responseType = 'json';
 
       req.open('GET', url);
@@ -13,6 +15,7 @@ function get (url) {
       req.onload = function () {
           // This is called even on 404 etc
           // so check the status
+          console.log(req.status);
           if (req.status == 200) {
               // Resolve the promise with the response text
               resolve(req.response);
@@ -28,7 +31,7 @@ function get (url) {
 
       // Handle network errors
       req.onerror = function () {
-          reject(Error('Network Error'));
+          reject('Network Error');
       };
 
       // Make the request
