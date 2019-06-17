@@ -13,6 +13,9 @@ let real_url = 'https://waterservices.usgs.gov/nwis/iv/?format=json&sites=016465
 
 describe('Test for get() in utils.js', () => {
 
+  /*
+    This test will check that the URL used by get() matches fake_url
+  */
   it('The url passed to get() is the same url used to make a request', () => {
     get(fake_url);
     // global.recentRequest is in jestSetup.js.  It is set to the most recently requested URL.
@@ -20,7 +23,8 @@ describe('Test for get() in utils.js', () => {
   });
 
   /*
-    This test will confirm that get() is calling open() in order to make a HTTPrequest
+    This test will confirm that get() is calling open() in order 
+    to make an HTTPrequest
   */
   it('Get is calling open to make a request', () => {
     const spy = jest.spyOn(xmlFunctionHolder, 'open');
