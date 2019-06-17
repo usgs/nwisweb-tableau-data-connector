@@ -12,10 +12,11 @@ let fake_JSON = {"params":"00060"};
 tableau.makeConnector = function(){
     return {getSchema}
 }
-tableau.registerConnector = function(){}
-tableau.connectionData = {};
-//let connectionData = {columnList: columnList, siteNums: sites, paramNums: parameters };
-tableau.connectionData.paramNums = "";
+tableau.registerConnector = function(){};
+tableau.connectionData ={columnList: [], siteNums: '', paramNums: '' };
+tableau.dataTypeEnum = {};
+tableau.dataTypeEnum.string = '__STRING' // this is a mockup of the enum, so that when testing getSchema, our mock tableau can still provide some value 
+tableau.connectionData.paramNums = ""; // in the place of the real tableau enum
 tableau.connectionData.siteNums = "";
 
 
@@ -38,7 +39,6 @@ let fakeXML = function() {
     return req;
 }
 
-//tableau['getSchema'] = function (){}; //wrong
 global.xmlFunctionHolder = xmlFunctionHolder;
 global.XMLHttpRequest = fakeXML;
 global.recentRequest = recentRequest;

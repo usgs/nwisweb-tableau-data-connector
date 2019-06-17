@@ -1,6 +1,7 @@
 
-
-import {formatJSONAsTable, generateURL, generateColList, getLongestTimesSeriesindices} from '../../src/components/WDCMethods.js'
+import * as WDCMethods from '../../src/components/WDCMethods.js'
+import {formatJSONAsTable, generateURL, generateColList, getLongestTimesSeriesindices, getSchema, getData} from '../../src/components/WDCMethods.js'
+import { watchFile } from 'fs';
 
 
 test('converting a fully-populated data JSON to table', () => {
@@ -152,4 +153,38 @@ test('getLongestTimeSeriesIndices correctly throws error when given an empty lis
   }).toThrow();
 
 
-}); 
+});
+
+
+test('getSchema should send a correct schema to the provided callback', () => { // todo this will need to be updated as we develop the schema more
+
+let result = []
+let targetResult =  [
+{id: '1',alias: '1',dataType: tableau.dataTypeEnum.string},
+{id: '2',alias: '2',dataType: tableau.dataTypeEnum.string},
+{id: '3',alias: '3',dataType: tableau.dataTypeEnum.string}]
+let functionWrapper = {'mockSchemaCallback': (input)=>{result = input}};
+tableau.connectionData.columnList = ['1','2','3'];
+getSchema(functionWrapper.mockSchemaCallback);
+expect(result[0].columns).toEqual(targetResult);
+});
+
+
+
+/* this test is posing issues
+
+test('getData should call the functions to call get on a url, append a formatted json to table, and finally evoke the done callback', async () => {
+let table = {'appendRows': ()=>{}};
+let functionWrapper = {'doneCallback': ()=>{},'generateURL': generateURL};
+//WDCMethods.generateURL = functionWrapper.generateURL;
+//let urlSPY = jest.spyOn(WDCMethods,'generateURL');
+let callBackSpy = jest.spyOn(functionWrapper, 'doneCallback');
+let appendRowsSpy = jest.spyOn(table, 'appendRows');
+getData(table, functionWrapper.doneCallback);
+//expect(urlSPY).toHaveBeenCalled();
+await expect(appendRowsSpy).toHaveBeenCalled();
+await expect(callBackSpy).toHaveBeenCalled();
+});
+
+*/
+
