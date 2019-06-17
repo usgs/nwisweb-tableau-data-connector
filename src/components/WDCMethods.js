@@ -1,6 +1,12 @@
 import {get} from '../utils.js'
 
 
+
+/*
+Given an array of timeseries objects, this function returns an array containing 
+the ordered indices of the longest timeseries object in the list. In the event 
+that the list is empty, this function throws an error.
+*/
 const getLongestTimesSeriesindices = (timeSeries) => {
     if (timeSeries.length == 0)
     {
@@ -18,6 +24,9 @@ const getLongestTimesSeriesindices = (timeSeries) => {
     return result;
 }
 
+/*
+Takes a JSON and returns a table formatted in accordance with the schema provided to tableau.
+*/
 const formatJSONAsTable =  (data) => {
     let tableData = [];
     let timeSeries = data.value.timeSeries;
@@ -44,6 +53,9 @@ const formatJSONAsTable =  (data) => {
 }
 
 
+/*
+generates a URL for query paramaters contained in the connectionData object accepted as an argument
+*/
 const generateURL = (connectionData) => {
  //todo standardize this template's format when we add more query info fields
  let paramList = connectionData.paramNums.replace(/\s/g, '').split(','); // split by comma, ignoring whitespace
@@ -52,20 +64,24 @@ const generateURL = (connectionData) => {
 }
 
 
+/*
+generates a URL, then fetches a json from that url and formats it in accordance with 
+the schema we have given tableau. 
+*/
 const  getData =  (table, doneCallback) => {
 
-        console.log('ran');
        let url = generateURL(tableau.connectionData);
-       console.log('ran2');
 
        get(url).then(function(value){ 
-           console.log('ran3')
             table.appendRows(formatJSONAsTable(value));
-            console.log('ran4');
             doneCallback();
         });
     }
 
+
+/*
+generates a tableau schema based on the information in tableau.connectionData
+*/
 const  getSchema = (schemaCallback) => {
 
     let cols = [];
@@ -86,6 +102,9 @@ const  getSchema = (schemaCallback) => {
 }
 
 
+/*
+    Generates the list of possible columns (set product of all sites, and all parameters)
+*/
 const generateColList = (sites, params) => {
     let paramList = params.replace(/\s/g, '').split(',');
     let siteList = sites.replace(/\s/g, '').split(',');

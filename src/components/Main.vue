@@ -46,15 +46,23 @@ export default {
         this.initializeWebDataConnector();
     },
     methods: {
+        /*
+            This function is triggered when the user presses the button to confirm their query. 
+            This closes the Web Data Connector interface.
+        */
         requestData: function () {
             this.columnList = generateColList(this.sites, this.parameters); 
             tableau.connectionData = { 'columnList': this.columnList, 'siteNums': this.sites, 'paramNums': this.parameters }; // here we send columnList, to be used in defining our schema
             tableau.connectionName = "USGS Instantaneous Values Query"; 
             tableau.submit(); 
         },
+        /*
+            this function is called when the Main.vue instance is created. It creates the web connector 
+            object and assigns to it the functions responsible for contructing the schema and data from query parameters. 
+        */
         initializeWebDataConnector: function () {
             let myConnector = tableau.makeConnector();
-            myConnector.getSchema = getSchema;
+            myConnector.getSchema = getSchema; 
             myConnector.getData = getData;
             tableau.registerConnector(myConnector);
 
