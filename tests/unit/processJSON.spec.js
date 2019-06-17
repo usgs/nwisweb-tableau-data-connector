@@ -1,6 +1,6 @@
 
 
-import {formatJSONAsTable, generateURL, generateColList, getLongestTimesSeriesindices} from '../../src/components/WDCMethods.js'
+import {formatJSONAsTable, generateURL, generateColList, getLongestTimesSeriesindices, getSchema} from '../../src/components/WDCMethods.js'
 
 
 test('converting a fully-populated data JSON to table', () => {
@@ -152,4 +152,21 @@ test('getLongestTimeSeriesIndices correctly throws error when given an empty lis
   }).toThrow();
 
 
-}); 
+});
+
+
+test('getSchema should send a correct schema to the provided callback', () => { // todo this will need to be updated as we develop the schema more
+
+let result = []
+let targetResult =  [
+{id: '1',alias: '1',dataType: tableau.dataTypeEnum.string},
+{id: '2',alias: '2',dataType: tableau.dataTypeEnum.string},
+{id: '3',alias: '3',dataType: tableau.dataTypeEnum.string}]
+let functionWrapper = {'mockSchemaCallback': (input)=>{result = input}};
+tableau.connectionData.columnList = ['1','2','3'];
+getSchema(functionWrapper.mockSchemaCallback);
+expect(result[0].columns).toEqual(targetResult);
+
+
+});
+

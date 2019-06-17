@@ -8,9 +8,10 @@ let recentRequest = "no requests";
 tableau.makeConnector = function(){
     return {getSchema}
 }
-tableau.registerConnector = function(){}
-tableau.connectionData = {};
-//let connectionData = {columnList: columnList, siteNums: sites, paramNums: parameters };
+tableau.registerConnector = function(){};
+tableau.connectionData ={columnList: [], siteNums: '', paramNums: '' };
+tableau.dataTypeEnum = {};
+tableau.dataTypeEnum.string = '__STRING' // this is a mockup of the enum, so that when testnig getSchema, our mock tableau can still provide spme value 
 tableau.connectionData.paramNums = "";
 tableau.connectionData.siteNums = "";
 
