@@ -54,10 +54,14 @@ const generateURL = (connectionData) => {
 
 const  getData =  (table, doneCallback) => {
 
+        console.log('ran');
        let url = generateURL(tableau.connectionData);
-       
+       console.log('ran2');
+
        get(url).then(function(value){ 
+           console.log('ran3')
             table.appendRows(formatJSONAsTable(value));
+            console.log('ran4');
             doneCallback();
         });
     }
@@ -69,7 +73,7 @@ const  getSchema = (schemaCallback) => {
         cols.push({
             id: column,
             alias: column,
-            dataType: tableau.dataTypeEnum.string
+            dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
         });
     });
 
