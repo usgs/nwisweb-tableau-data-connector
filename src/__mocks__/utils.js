@@ -1,6 +1,6 @@
 /*
-Add the folowing line to the top of a test file to use this mock.
-jest.mock('../../src/utils.js');
+    Add the folowing line to the top of a test file to use this mock.
+    jest.mock('../../src/utils.js');
 */
 import dummyHTTP from './dummyHTTP'
 
