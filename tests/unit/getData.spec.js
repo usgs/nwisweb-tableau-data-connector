@@ -15,7 +15,7 @@ describe('getData of WDCMethods', () => {
 
 it('The url passed to the get command is used to make a request', () => {
   get(fake_url);
-   expect(recentRequest).toEqual(fake_url);
+   expect(global.recentRequest).toEqual(fake_url);
   // const requests = jasmine.Ajax.requests;
   // const thisRequest = requests.mostRecent();
 
@@ -24,15 +24,10 @@ it('The url passed to the get command is used to make a request', () => {
   // expect(thisRequest.method).toBe('GET');
 });
 
-it('The url passed to the get command is used to make a request', () => {
-  return get(fake_url)
-  .then(value => expect(value).toBeDefined());
-});
-
-fit('', () => {
+it('get is calling open', () => {
   const spy = jest.spyOn(xmlFunctionHolder,'open');
-  get(fake_url)
-  expect(spy).toHaveBeenCalled();
+  get(fake_url);
+  expect(spy.value).toEqual();
 });
 
 
@@ -42,6 +37,14 @@ fit('', () => {
 //   expect(url).toContain("https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500&period=P1D&parameterCd=00060&siteStatus=all");
 // });
 
+it('The response of the promise is defined', () => {
+  //expect.assertions(1);
+  return get(fake_url).then(data => expect(data.params).toBeDefined());
+});
 
+it('The response of the promise is correct', () => {
+  //expect.assertions(1);
+  return get(fake_url).then(data => expect(data.params).toEqual("00060"));
+});
 
-})
+});

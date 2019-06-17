@@ -1,9 +1,13 @@
+import { resolve } from "dns";
+
 // import {getData, getSchema} from '../../src/components/WDCMethods.js'
 
 let tableau = {};
 let getSchema = {};
 
 let recentRequest = "no requests";
+
+let fake_JSON = {"params":"00060"};
 
 tableau.makeConnector = function(){
     return {getSchema}
@@ -16,9 +20,9 @@ tableau.connectionData.siteNums = "";
 
 
 let xmlFunctionHolder = {
-    onload: function(){},
-    open:function(){},
-    send: function(){}
+    onload: function(){resolve({})},
+    open:function(command, url){global.recentRequest = url},
+    send: function(){this.onload()}
 }
 
 
@@ -30,6 +34,7 @@ let fakeXML = function() {
     req.responseType = "none";
     req.onload = xmlFunctionHolder.onload;
     req.send = xmlFunctionHolder.send;
+    req.response = {"params":"00060"};
     return req;
 }
 
