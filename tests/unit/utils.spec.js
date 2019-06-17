@@ -26,7 +26,7 @@ describe('Test for get() in utils.js', () => {
       //xmlFunctionHolder is initialized globally in jestSetup.js
     const spy = jest.spyOn(xmlFunctionHolder, 'open');
     get(fake_url);
-    expect(spy.value).toEqual();
+    expect(spy).toHaveBeenCalled();
   });
 
   /*
