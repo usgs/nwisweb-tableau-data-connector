@@ -1,6 +1,8 @@
 /*
     Add the folowing line to the top of a test file to use this mock.
     jest.mock('../../src/utils.js');
+
+    This file will mock utils.js and return a hardcoded JSON file.
 */
 
 const get = (url) => {
