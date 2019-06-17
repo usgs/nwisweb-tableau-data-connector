@@ -1,7 +1,5 @@
 
-import * as WDCMethods from '../../src/components/WDCMethods.js'
 import {formatJSONAsTable, generateURL, generateColList, getLongestTimesSeriesindices, getSchema, getData} from '../../src/components/WDCMethods.js'
-import { watchFile } from 'fs';
 
 
 test('converting a fully-populated data JSON to table', () => {

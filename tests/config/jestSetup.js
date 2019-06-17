@@ -1,14 +1,14 @@
 import { resolve } from "dns";
 
-// import {getData, getSchema} from '../../src/components/WDCMethods.js'
 
-let tableau = {};
-let getSchema = {};
 
+// global field for mock XMLHttpRequests
 let recentRequest = "no requests";
+global.recentRequest = recentRequest;
 
-let fake_JSON = {"params":"00060"};
 
+//mock of tableau module
+let tableau = {};
 tableau.makeConnector = function(){
     return {getSchema}
 }
@@ -18,16 +18,20 @@ tableau.dataTypeEnum = {};
 tableau.dataTypeEnum.string = '__STRING' // this is a mockup of the enum, so that when testing getSchema, our mock tableau can still provide some value 
 tableau.connectionData.paramNums = ""; // in the place of the real tableau enum
 tableau.connectionData.siteNums = "";
+global.tableau = tableau;
 
 
+//holder object for mockXMLHttpRequest member functions
 let xmlFunctionHolder = {
     onload: function(){resolve({})},
     open:function(command, url){global.recentRequest = url},
     send: function(){this.onload()}
 }
+global.xmlFunctionHolder = xmlFunctionHolder;
 
 
-let fakeXML = function() {
+//mock of XMLHttpRequest Object
+let mockXMLHttpRequest = function() {
     console.log("in mock XMLHttpRequest");
     let req = {};
     req.status = 200;
@@ -38,10 +42,9 @@ let fakeXML = function() {
     req.response = {"params":"00060"};
     return req;
 }
+global.XMLHttpRequest = mockXMLHttpRequest;
 
-global.xmlFunctionHolder = xmlFunctionHolder;
-global.XMLHttpRequest = fakeXML;
-global.recentRequest = recentRequest;
-global.tableau = tableau;
-global.getSchema = getSchema;
+
+
+
 
