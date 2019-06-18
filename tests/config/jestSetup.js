@@ -32,7 +32,6 @@ global.xmlFunctionHolder = xmlFunctionHolder;
 
 //mock of XMLHttpRequest Object
 let mockXMLHttpRequest = function() {
-    console.log("in mock XMLHttpRequest");
     let req = {};
     req.status = 200;
     req.open = xmlFunctionHolder.open;
