@@ -30,7 +30,8 @@
 
 <script>
 import { getData, getSchema, generateColList } from './WDCMethods.js';
-import {getRelatedParams} from './formMethods.js'
+
+
 export default {
     name: 'Main',
     props: {
@@ -40,7 +41,7 @@ export default {
         return {
             columnList: [],
             sites: "01646500,05437641",
-            parameters: "00060,00065"
+            parameters: "00060,00065",
         }
     },
     created: function () {
