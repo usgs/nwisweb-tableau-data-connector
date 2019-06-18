@@ -25,6 +25,7 @@ const get = (url) => {
               if (window.ga) {
                   window.ga('send', 'event', 'serviceFailure', req.status, url);
               }
+              alert(`Failed with status ${req.status}: ${req.statusText}`);
               reject(Error(`Failed with status ${req.status}: ${req.statusText}`));
           }
       };
