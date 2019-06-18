@@ -1,7 +1,6 @@
 import {get} from '../utils.js'
 
 
-
 /*
 Given an array of timeseries objects, this function returns an array containing 
 the ordered indices of the longest timeseries object in the list. In the event 
@@ -72,7 +71,7 @@ const  getData =  (table, doneCallback) => {
 
        let url = generateURL(tableau.connectionData);
 
-       get(url).then(function(value){ 
+       get(url,'json').then(function(value){ 
             table.appendRows(formatJSONAsTable(value));
             doneCallback();
         });
@@ -116,6 +115,9 @@ const generateColList = (sites, params) => {
     });
     return columnList;
 }
+
+
+
 
 
 export{getData, getSchema, formatJSONAsTable, generateURL, generateColList, getLongestTimesSeriesindices};

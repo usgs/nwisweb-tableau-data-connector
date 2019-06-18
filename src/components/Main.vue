@@ -30,6 +30,7 @@
 
 <script>
 import { getData, getSchema, generateColList } from './WDCMethods.js';
+import {getRelatedParams} from './formMethods.js'
 export default {
     name: 'Main',
     props: {

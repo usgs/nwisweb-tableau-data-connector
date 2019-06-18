@@ -4,12 +4,12 @@ gets a JSON from specified URL via HTTP request
 
 */
 
-const get = (url) => {
+const get = (url, responseType) => {
   // Return a new promise.
   return new Promise(function (resolve, reject) {
       // Do the usual XHR stuff
       let req = new XMLHttpRequest();
-      req.responseType = 'json';
+      req.responseType = responseType;
 
       req.open('GET', url);
 
