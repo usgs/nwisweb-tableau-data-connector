@@ -3,7 +3,6 @@ import {formatJSONAsTable, generateURL, generateColList, getLongestTimesSeriesin
 
 
 test('converting a fully-populated data JSON to table', () => {
-
 const input = {value:{ //barebones mockup of a data json with data series of uniform length
     timeSeries:[
       {
