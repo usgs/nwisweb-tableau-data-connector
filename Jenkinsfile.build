@@ -1,9 +1,6 @@
 
 pipeline {
-    environment{
-        pathtemplate = ":usr/local/bin/nwisweb-tableau-data-connector/dist"
-
-    }
+    
     agent {
         node {
             label 'project:any'
@@ -26,15 +23,15 @@ pipeline {
         }
         stage('build') {
                 steps {
-                sh 'echo hello'
-                sh 'ls -al $WORKSPACE'
-                sh 'docker build . --tag="test"'
-                sh 'docker run test'
-                sh '#pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"'
-                sh 'dockerinstanceid=$( docker ps -l -q )'
-                sh 'docker cp  ${dockerinstanceid}${pathtemplate} $WORKSPACE/build'
-                sh 'docker rm $dockerinstanceid'
-                sh 'ls -al $WORKSPACE'
+                sh 'bash echo hello'
+                sh 'bash ls -al $WORKSPACE'
+                sh 'bash docker build . --tag="test"'
+                sh 'bash docker run test'
+                sh 'bash pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"'
+                sh 'bash dockerinstanceid=$( docker ps -l -q )'
+                sh 'bash docker cp  $dockerinstanceid$pathtemplate $WORKSPACE/build'
+                sh 'bash docker rm $dockerinstanceid'
+                sh 'bash ls -al $WORKSPACE'
             }
 
         }
