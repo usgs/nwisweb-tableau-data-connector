@@ -29,7 +29,9 @@ pipeline {
                  docker build . --tag="test"
                  docker run test
                  pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
-                 
+                 echo "L32"
+                 dockerinstanceid=\$( docker ps -l -q )
+                
                 """
             }
 
