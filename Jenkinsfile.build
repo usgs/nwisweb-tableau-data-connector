@@ -24,7 +24,6 @@ pipeline {
                 steps {
                 sh 'echo hello'
                 sh 'ls -al $WORKSPACE'
-                sh 'cd $WORKSPACE/nwisweb-tableau-data-connector'
                 sh 'docker build . --tag="test"'
                 sh 'docker run test'
                 sh 'pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"'
