@@ -23,15 +23,17 @@ pipeline {
         stage('build') {
                
                 steps {
-                sh 'echo hello'
-                sh 'ls -al $WORKSPACE'
-                sh 'docker build . --tag="test"'
-                sh 'docker run test'
-                sh 'set pathtemplate = ":usr/local/bin/nwisweb-tableau-data-connector/dist"'
-                sh 'set dockerinstanceid = $( docker ps -l -q )'
-                sh 'docker cp  $dockerinstanceid$pathtemplate $WORKSPACE/build'
-                sh 'docker rm $dockerinstanceid'
-                sh 'ls -al $WORKSPACE'
+                sh """
+                 echo hello
+                 ls -al $WORKSPACE
+                 docker build . --tag="test"
+                 docker run test
+                 set pathtemplate = ":usr/local/bin/nwisweb-tableau-data-connector/dist"
+                 set dockerinstanceid = $( docker ps -l -q )
+                 docker cp  $dockerinstanceid$pathtemplate $WORKSPACE/build
+                 docker rm $dockerinstanceid
+                 ls -al $WORKSPACE
+                """
             }
 
         }
