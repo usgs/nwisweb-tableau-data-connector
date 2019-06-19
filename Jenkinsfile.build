@@ -28,8 +28,8 @@ pipeline {
                  ls -al $WORKSPACE
                  docker build . --tag="test"
                  docker run test
-                 set pathtemplate = ":usr/local/bin/nwisweb-tableau-data-connector/dist"
-                 set dockerinstanceid = $( docker ps -l -q )
+                 export pathtemplate = ":usr/local/bin/nwisweb-tableau-data-connector/dist"
+                 export dockerinstanceid = \$( docker ps -l -q )
                  docker cp  $dockerinstanceid$pathtemplate $WORKSPACE/build
                  docker rm $dockerinstanceid
                  ls -al $WORKSPACE
