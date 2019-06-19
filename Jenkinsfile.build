@@ -21,10 +21,11 @@ pipeline {
                 }
         }
         stage('build') {
-                script{
+               
+                steps {
+                     script{
                   def pathtemplate = ":usr/local/bin/nwisweb-tableau-data-connector/dist"
                 }
-                steps {
                 sh 'echo hello'
                 sh 'ls -al $WORKSPACE'
                 sh 'docker build . --tag="test"'
