@@ -1,5 +1,9 @@
 
 pipeline {
+    environment{
+        pathtemplate = ":usr/local/bin/nwisweb-tableau-data-connector/dist"
+
+    }
     agent {
         node {
             label 'project:any'
@@ -26,9 +30,9 @@ pipeline {
                 sh 'ls -al $WORKSPACE'
                 sh 'docker build . --tag="test"'
                 sh 'docker run test'
-                sh 'pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"'
+                sh '#pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"'
                 sh 'dockerinstanceid=$( docker ps -l -q )'
-                sh 'docker cp  $dockerinstanceid$pathtemplate $WORKSPACE/build'
+                sh 'docker cp  ${dockerinstanceid}${pathtemplate} $WORKSPACE/build'
                 sh 'docker rm $dockerinstanceid'
                 sh 'ls -al $WORKSPACE'
             }
