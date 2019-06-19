@@ -24,7 +24,6 @@ pipeline {
                
                 steps {
                 sh """
-                 echo hello
                  ls -al $WORKSPACE
                  docker build . --tag="test"
                  docker run test
@@ -33,7 +32,6 @@ pipeline {
                  docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE/build
                  docker rm "\${dockerinstanceid}"
                  ls -al $WORKSPACE/build
-                 
                 """
             }
 
