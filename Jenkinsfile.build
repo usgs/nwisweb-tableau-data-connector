@@ -1,45 +1,28 @@
-def p
 
 pipeline {
-    agent {
-        node {
-            checkout scm 
-        }
-    }
+    agent any 
+    checkout scm
+
+
     parameters {
-        choice(choices: ['snapshots', 'releases'], description: 'type of build', name: 'BUILD_TYPE')
+        choice(choices: ['QA', 'releases'], description: 'type of build', name: 'BUILD_TYPE')
     }
     triggers {
         pollSCM('H/5 * * * *')
     }
+
     stages {
-        stage('clean workspace') {
-            steps {
-                script {
-                    pipelineUtils.cleanWorkspace()
-                }
-            }
-        }
-        stage('checkout source') {
-            steps {
-                script {
-                    // clone the repo
-                    pipelineUtils.cloneGitRepo()
-                }
-                script {
-                    p = pipelineCfg('pipeline.yml')
-                }
-            }
-        }
         
         stage('build') {
-            steps {
-                sh 'docker build . --tag="test"'
-                sh 'docker run test'
-                sh 'pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"'
-                sh 'dockerinstanceid=$( docker ps -l -q )'
-                sh 'docker cp  $dockerinstanceid$pathtemplate ~/Desktop/build'
-                sh 'docker rm $dockerinstanceid'
+                steps {
+                sh 'echo hello'
+                sh 'ls'
+                sh '#docker build . --tag="test"'
+                sh '#docker run test'
+                sh '#pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"'
+                sh '#dockerinstanceid=$( docker ps -l -q )'
+                sh '#docker cp  $dockerinstanceid$pathtemplate ~/Desktop/build'
+                sh '#docker rm $dockerinstanceid'
             }
 
         }
