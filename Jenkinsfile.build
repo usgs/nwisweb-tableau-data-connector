@@ -31,7 +31,10 @@ pipeline {
                  pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
                  echo "L32"
                  dockerinstanceid=\$( docker ps -l -q )
-                
+                 echo "L34"
+                 echo "\${dockerinstanceid}"
+                 echo "L36"
+                 
                 """
             }
 
