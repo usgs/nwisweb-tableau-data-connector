@@ -34,6 +34,8 @@ pipeline {
                  echo "L34"
                  echo "\${dockerinstanceid}"
                  echo "L36"
+                 docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE/build
+                
                  
                 """
             }
