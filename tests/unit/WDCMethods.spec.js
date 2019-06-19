@@ -42,8 +42,6 @@ const input = {value:{ //barebones mockup of a data json with data series of uni
 const  targetResult = [{"01646500_00060":"10800","01647500_00062":"343"},{"01646500_00060":"10800","01647500_00062":"5465"}];
 
 expect(formatJSONAsTable(input)).toEqual(targetResult);
-
-
 });
 
 test('correctly generate a URL given a list of sites and parameters with various whitespace', ()=>{
