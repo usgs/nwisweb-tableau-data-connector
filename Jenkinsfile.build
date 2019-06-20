@@ -32,11 +32,13 @@ pipeline {
               
             
                steps {
+                   script{
                    def dockerinstance = docker.build()
                     dockerinstance.inside{
                         sh 'echo test'
                     }
-
+                   }
+                }
 
                //sh """
            //      docker build . --tag="dockerinstance"
@@ -50,4 +52,5 @@ pipeline {
 
         }
     }
+}
 }
