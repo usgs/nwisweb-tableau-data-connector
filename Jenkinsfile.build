@@ -25,6 +25,8 @@ pipeline {
                 ls -al
                 npm install
                 npm run production-build
+                aws s3 cp $WORKSPACE/dist s3://nwisweb-tableau-wdc-beta-website --recursive
+                aws s3 ls s3://nwisweb-tableau-wdc-beta-website
                 ls -al
                 """
             }
