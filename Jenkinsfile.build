@@ -21,18 +21,25 @@ pipeline {
                 }
         }
         stage('build') {
-               
-                steps {
-                sh """
-                 ls -al $WORKSPACE
-                 docker build . --tag="test"
-                 docker run test
-                 pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
-                 dockerinstanceid=\$( docker ps -l -q )
-                 docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE/build
-                 docker rm "\${dockerinstanceid}"
-                 ls -al $WORKSPACE/build
-                """
+              
+               def test = docker.build()
+               test.inside{
+                  sh 'echo test'
+               }
+
+
+
+             //   steps {
+              //  sh """
+               //  ls -al $WORKSPACE
+                // docker build . --tag="test"
+                 //docker run test
+                // pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
+                // dockerinstanceid=\$( docker ps -l -q )
+                // docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE/build
+                // docker rm "\${dockerinstanceid}"
+                // ls -al $WORKSPACE/build
+               // """
             }
 
         }
