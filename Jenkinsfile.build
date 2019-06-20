@@ -6,6 +6,9 @@ pipeline {
      triggers {
         pollSCM('H/5 * * * *')
     }
+    environment {
+        HOME = '.'
+    }
     parameters {
         choice(choices: ['QA', 'prod'], description: 'type of build', name: 'BUILD_TYPE')
     }
