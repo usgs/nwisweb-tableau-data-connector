@@ -1,42 +1,6 @@
 
 pipeline {
     agent {
-        docker { image 'node:12.4.0-stretch' }
-    }
-     triggers {
-        pollSCM('H/5 * * * *')
-    }
-    environment {
-        HOME = '.'
-    }
-    parameters {
-        choice(choices: ['QA', 'prod'], description: 'type of build', name: 'BUILD_TYPE')
-    }
-    stages {
-
-        stage('Checkout'){
-            steps{
-                checkout scm
-            }
-        }
-        stage('Test') {
-            steps {
-                sh """
-                ls -al
-                npm install
-                npm run production-build
-                aws s3 cp $WORKSPACE/dist s3://nwisweb-tableau-wdc-beta-website --recursive
-                aws s3 ls s3://nwisweb-tableau-wdc-beta-website
-                ls -al
-                """
-            }
-        }
-    }
-}
-
-
-/*pipeline {
-    agent {
         node {
             label 'project:any'
         }
@@ -65,17 +29,18 @@ pipeline {
               
             
                steps {
-                   script{
-                   def dockerinstance = docker.build()
-                    dockerinstance.inside{
-                        sh 'echo test'
-                    }
-                   }
-                }
-
-             
+               sh """
+                 docker build . --tag="dockerinstance"
+                 docker run dockerinstance
+                 pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
+                 dockerinstanceid=\$( docker ps -l -q )
+                 docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
+                 aws s3 cp $WORKSPACE/dist s3://nwisweb-tableau-wdc-beta-website --recursive
+                 aws s3 ls s3://nwisweb-tableau-wdc-beta-website
+                 docker rm "\${dockerinstanceid}"
+                """
             }
 
         }
     }
-}*/
+}
