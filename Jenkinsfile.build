@@ -22,13 +22,14 @@ pipeline {
         }
         stage('build') {
               
+              steps{
               script{
                def test = docker.build()
                test.inside{
                   sh 'echo test'
                }
               }
-
+              }
 
              //   steps {
               //  sh """
