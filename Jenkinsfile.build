@@ -28,9 +28,6 @@ pipeline {
         stage('build') {
               
             
-                stage('build') {
-              
-            
                steps {
                    script{
                    def dockerinstance = docker.build()
@@ -52,4 +49,4 @@ pipeline {
 
         }
     }
-}
+    
