@@ -32,7 +32,7 @@ pipeline {
                  docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
                  docker rm "\${dockerinstanceid}"
                  ls -al $WORKSPACE
-                 ls-al $WORKSPACE/build
+                 ls -al $WORKSPACE/build
                  ls -al $WORKSPACE/dist
                 """
             }
