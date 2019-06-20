@@ -25,7 +25,6 @@ pipeline {
             
                steps {
                sh """
-                ls -al $WORKSPACE
                  docker build . --tag="dockerinstance"
                  docker run dockerinstance
                  pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
