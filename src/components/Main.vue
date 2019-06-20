@@ -1,3 +1,4 @@
+
 <template>
     <div>
 
@@ -30,7 +31,7 @@
 
 <script>
 import { getData, getSchema, generateColList } from './WDCMethods.js';
-
+/*global  tableau:true*/
 
 export default {
     name: 'Main',
