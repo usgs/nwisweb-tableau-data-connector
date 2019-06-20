@@ -1,23 +1,23 @@
 <template>
   <div id="app">
-    <Main msg="NWIS Tableau Data Connector"/>
+    <Main msg="NWIS Tableau Data Connector" />
   </div>
 </template>
 
 <script>
-import Main from './components/Main.vue'
+import Main from "./components/Main.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     Main
   }
-}
+};
 </script>
 
 <style lang="scss">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

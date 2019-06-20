@@ -1,0 +1,44 @@
+
+pipeline {
+    agent {
+        node {
+            label 'project:any'
+        }
+    }
+
+
+    parameters {
+        choice(choices: ['QA', 'prod'], description: 'type of build', name: 'BUILD_TYPE')
+    }
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
+    stages {
+        stage('clean workspace'){
+         steps{
+            cleanWs()
+         }
+        }
+        stage('checkout'){
+            steps{
+                checkout scm
+                }
+        }
+        stage('build') {
+              
+            
+               steps {
+               sh """
+                 docker build . --tag="dockerinstance"
+                 docker run dockerinstance
+                 pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
+                 dockerinstanceid=\$( docker ps -l -q )
+                 docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
+                 docker rm "\${dockerinstanceid}"
+                """
+            }
+
+        }
+    }
+}
