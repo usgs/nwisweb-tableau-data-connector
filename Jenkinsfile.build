@@ -25,8 +25,8 @@ pipeline {
                 steps {
                 sh """
                  ls -al $WORKSPACE
-                 docker build . --tag="test"
-                 docker run test
+                 docker build . --tag="dockerinstance"
+                 docker run dockerinstance
                  pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
                  dockerinstanceid=\$( docker ps -l -q )
                  docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE/build
