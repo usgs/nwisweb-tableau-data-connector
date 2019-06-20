@@ -18,8 +18,11 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'node --version'
-                sh 'ls -al'
+                sh """
+                npm install
+                npm run production-build
+                ls -al
+                """
             }
         }
     }
@@ -64,14 +67,7 @@ pipeline {
                    }
                 }
 
-               //sh """
-           //      docker build . --tag="dockerinstance"
-            //     docker run dockerinstance
-            //     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
-            //     dockerinstanceid=\$( docker ps -l -q )
-            //     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
-            //    docker rm "\${dockerinstanceid}"
-             //   """
+             
             }
 
         }
