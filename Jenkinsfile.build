@@ -1,6 +1,33 @@
 
 pipeline {
     agent {
+        docker { image 'node:12.4.0-stretch' }
+    }
+     triggers {
+        pollSCM('H/5 * * * *')
+    }
+    parameters {
+        choice(choices: ['QA', 'prod'], description: 'type of build', name: 'BUILD_TYPE')
+    }
+    stages {
+
+        stage('Checkout'){
+            steps{
+                checkout scm
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'node --version'
+                sh 'ls -al'
+            }
+        }
+    }
+}
+
+
+/*pipeline {
+    agent {
         node {
             label 'project:any'
         }
@@ -41,4 +68,4 @@ pipeline {
 
         }
     }
-}
+}*/
