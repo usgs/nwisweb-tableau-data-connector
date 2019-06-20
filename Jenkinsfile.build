@@ -40,7 +40,7 @@ pipeline {
                 // docker rm "\${dockerinstanceid}"
                 // ls -al $WORKSPACE/build
                // """
-            }
+         //   }
 
         }
     }
