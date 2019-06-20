@@ -19,6 +19,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh """
+                ls -al
                 npm install
                 npm run production-build
                 ls -al
