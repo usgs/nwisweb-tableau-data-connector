@@ -170,21 +170,24 @@ test("generateSchemaColsFromData generate the correct schema columns given a dat
 
   let result = [];
   let targetResult = [
+    {
+      id: "dateTime",
+      alias: "dateTime",
+      dataType: tableau.dataTypeEnum.string
+    },
     { id: "1_2", alias: "1_2", dataType: tableau.dataTypeEnum.string },
-    { id: "2_3" , alias: "2_3" , dataType: tableau.dataTypeEnum.string },
+    { id: "2_3", alias: "2_3", dataType: tableau.dataTypeEnum.string },
     { id: "3_4", alias: "3_4", dataType: tableau.dataTypeEnum.string }
   ];
-  let input =
-  {value:
-    {
-      timeSeries:[
-        {"name": "USGS:1:2"},
-        {"name": "USGS:2:3"},
-        {"name": "USGS:3:4"},
+  let input = {
+    value: {
+      timeSeries: [
+        { name: "USGS:1:2" },
+        { name: "USGS:2:3" },
+        { name: "USGS:3:4" }
       ]
     }
   };
   result = generateSchemaColsFromData(input);
   expect(result).toEqual(targetResult);
 });
-

@@ -31,7 +31,7 @@ const formatJSONAsTable = data => {
   let paramIndices = Array.from(timeSeries.keys());
 
   dataIndices.forEach(i => {
-    let newEntry = {};
+    let newEntry = { dateTime: "unknown" };
     paramIndices.forEach(c => {
       try {
         let name = timeSeries[c].name;
@@ -39,7 +39,11 @@ const formatJSONAsTable = data => {
         let site = nameTokens[1];
         let paramType = nameTokens[2];
         newEntry[site + "_" + paramType] =
-          data.value.timeSeries[c].values[0].value[i].value;
+          timeSeries[c].values[0].value[i].value;
+        if (newEntry["dateTime"] == "unknown") {
+          // here we naively assume that all time series will start at the same time, and not have any gaps TODO deal with this in a sensible way
+          newEntry["dateTime"] = timeSeries[c].values[0].value[i].dateTime;
+        }
       } catch (err) {
         //ignore index(out of range for this parameter for this site)
       }
@@ -65,6 +69,11 @@ generates an appropriate tableau schema.
 */
 const generateSchemaColsFromData = data => {
   let cols = [];
+  cols.push({
+    id: "dateTime",
+    alias: "dateTime",
+    dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
+  });
   let timeSeries = data.value.timeSeries;
   timeSeries.forEach(series => {
     let name = series.name;
