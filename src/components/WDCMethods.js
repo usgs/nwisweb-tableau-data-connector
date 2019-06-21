@@ -62,7 +62,7 @@ const generateURL = connectionData => {
   let paramQuery = `&parameterCd=${paramList.join()}`;
   // let siteList = connectionData.siteNums.replace(/\s/g, "").split(",");
   //let siteQuery = `&sites=${siteList.join()}`;
-  let stateQuery = `&stateCd${connectionData.state}`;
+  let stateQuery = `&stateCd=${connectionData.state}`;
 
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${stateQuery}${paramQuery}&period=P1D&siteStatus=all`;
 };

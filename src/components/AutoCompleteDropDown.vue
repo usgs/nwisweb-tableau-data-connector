@@ -3,7 +3,7 @@
     <br />
     <label class="autocomplete-dropdown">State or Territory</label>
     <input
-      v-model="state"
+      v-model="value"
       class="usa-input"
       type="text"
       list="states"
@@ -73,11 +73,6 @@
 
 <script>
 export default {
-  name: "AutocompleteDropdown",
-data: function(){
-  return {
-    state: ''
-  }
-}
+  name: "AutocompleteDropdown"
 };
 </script>

@@ -81,7 +81,7 @@ export default {
       columnList: [],
       sites: "01646500,05437641",
       parameters: "00060,00065",
-      state: "wi"
+      state: "Michigan"
     };
   },
   created: function() {
@@ -103,6 +103,7 @@ export default {
       alert(states[this.state]);
       alert(this.state);
       alert(JSON.stringify(states));
+      alert(JSON.stringify(store));
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
     },
