@@ -28,7 +28,7 @@ pipeline {
         stage('build') {
             steps {
                 if(${params.BUILD_TYPE} == 'QA') {
-                    targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
+                    targetDomain = "s3://ThisIsQA"
                 }
                 else {
                     targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
