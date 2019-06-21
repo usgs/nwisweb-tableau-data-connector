@@ -26,16 +26,15 @@ pipeline {
                 }
         }
         stage('build') {
-            script {
-                if(${params.BUILD_TYPE} == 'QA') {
-                    targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
-                }
-                else {
-                    targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
-                }
-            }
-
             steps {
+                script {
+                    if(${params.BUILD_TYPE} == 'QA') {
+                        targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
+                    }
+                    else {
+                        targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
+                    }
+                }
                 sh """
                     docker build . --tag="dockerinstance"
                     docker run dockerinstance
