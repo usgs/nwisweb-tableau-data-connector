@@ -1,4 +1,4 @@
-def targetDomain = "undeclared"
+var targetDomain = "undeclared"
 
 pipeline {
     agent {
