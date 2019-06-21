@@ -6,6 +6,12 @@
     </head>
 
     <body>
+      <HeaderUSWDSBanner></HeaderUSWDSBanner>
+      <HeaderUSGS></HeaderUSGS>
+      <HeaderUSWDSSelections
+        titleForSelectionHeader="NWISWeb Tableau Web Data Connector"
+      ></HeaderUSWDSSelections>
+
       <div class="container container-table">
         <div class="row vertical-center-row">
           <div class="text-center col-md-4 col-md-offset-4">
@@ -27,6 +33,7 @@
             </button>
           </div>
         </div>
+        <FooterUSGS></FooterUSGS>
       </div>
     </body>
   </div>
@@ -34,12 +41,22 @@
 
 <script>
 import { getData, getSchema, generateColList } from "./WDCMethods.js";
+import HeaderUSWDSBanner from "../components/HeaderUSWDSBanner";
+import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
+import HeaderUSGS from "../components/HeaderUSGS";
+import FooterUSGS from "../components/FooterUSGS";
 /*global  tableau:true*/
 
 export default {
   name: "Main",
   props: {
     msg: String
+  },
+  components: {
+    HeaderUSWDSBanner,
+    HeaderUSGS,
+    HeaderUSWDSSelections,
+    FooterUSGS
   },
   data: function() {
     return {
