@@ -35,6 +35,8 @@
               style="width: 300px; margin: auto;"
             />
             <br />
+            <AutoCompleteDropDown></AutoCompleteDropDown>
+            <br />
             <button
               type="button"
               v-on:click="requestData"
@@ -58,6 +60,7 @@ import HeaderUSWDSBanner from "../components/HeaderUSWDSBanner";
 import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
 import HeaderUSGS from "../components/HeaderUSGS";
 import FooterUSGS from "../components/FooterUSGS";
+import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
 /*global  tableau:true*/
 
 export default {
@@ -69,13 +72,15 @@ export default {
     HeaderUSWDSBanner,
     HeaderUSGS,
     HeaderUSWDSSelections,
-    FooterUSGS
+    FooterUSGS,
+    AutoCompleteDropDown
   },
   data: function() {
     return {
       columnList: [],
       sites: "01646500,05437641",
-      parameters: "00060,00065"
+      parameters: "00060,00065",
+      state: "wi"
     };
   },
   created: function() {
