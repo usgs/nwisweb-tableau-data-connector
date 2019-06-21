@@ -34,7 +34,7 @@ pipeline {
                         env.targetDomain = "QAQAQAQAQAQAQAQAQA"
                     }
                     else {
-                        targetDomain = "${params.BUILD_TYPE}"
+                        targetDomain = "\${params.BUILD_TYPE}"
                     }
                 }
                 sh """
