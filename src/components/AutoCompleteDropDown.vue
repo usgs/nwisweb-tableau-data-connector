@@ -6,6 +6,7 @@
       v-model="state"
       class="usa-input"
       type="text"
+      @input="onChange"
       list="states"
       style="width: 300px; margin: auto;"
     />
@@ -78,6 +79,11 @@ data: function(){
   return {
     state: ''
   }
+},
+methods: {
+  onChange() {
+        console.log("in onChange");
+    }
 }
 };
 </script>
