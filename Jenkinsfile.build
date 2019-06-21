@@ -34,7 +34,7 @@ pipeline {
                         targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
                     }
                     else {
-                        targetDomain = "${params.BUILD_TYPE}"
+                        targetDomain = "this would be the production site"
                     }
                 }
                 sh """
