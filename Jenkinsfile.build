@@ -1,4 +1,4 @@
-def targetDomain
+def targetDomain = "undeclared"
 
 pipeline {
     agent {
@@ -28,10 +28,10 @@ pipeline {
         stage('build') {
             steps {
                 if(${params.BUILD_TYPE} == 'QA') {
-                    targetDomain = s3://nwisweb-tableau-wdc-beta-website
+                    targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
                 }
                 else {
-                    targetDomain = nwisweb-tableau-wdc-beta-website
+                    targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
                 }
 
             sh """
