@@ -1,10 +1,12 @@
-var targetDomain = "undeclared"
-
 pipeline {
     agent {
         node {
             label 'project:any'
         }
+    }
+
+    environment {
+        targetDomain = "undeclared"
     }
 
     parameters {
@@ -29,7 +31,7 @@ pipeline {
             steps {
                 script {
                     if("\${params.BUILD_TYPE}" == 'QA') {
-                        "\$targetDomain" = "s3://nwisweb-tableau-wdc-beta-website"
+                        env.targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
                     }
                     else {
                         targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
@@ -41,7 +43,7 @@ pipeline {
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
                     dockerinstanceid=\$( docker ps -l -q )
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
-                    aws s3 cp $WORKSPACE/dist "\$targetDomain" --recursive
+                    aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive
                     aws s3 ls s3://nwisweb-tableau-wdc-beta-website
                     docker rm "\${dockerinstanceid}"
                 """
