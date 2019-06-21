@@ -3,7 +3,7 @@ import {
   generateURL,
   generateColList,
   getLongestTimesSeriesindices,
-  getSchema
+  generateSchemaColsFromData
 } from "../../src/components/WDCMethods.js";
 
 /*global  tableau:true*/
@@ -165,38 +165,26 @@ test("getLongestTimeSeriesIndices correctly throws error when given an empty lis
   }).toThrow();
 });
 
-test("getSchema should send a correct schema to the provided callback", () => {
+test("generateSchemaColsFromData generate the correct schema columns given a data json", () => {
   // todo this will need to be updated as we develop the schema more
 
   let result = [];
   let targetResult = [
-    { id: "1", alias: "1", dataType: tableau.dataTypeEnum.string },
-    { id: "2", alias: "2", dataType: tableau.dataTypeEnum.string },
-    { id: "3", alias: "3", dataType: tableau.dataTypeEnum.string }
+    { id: "1_2", alias: "1_2", dataType: tableau.dataTypeEnum.string },
+    { id: "2_3" , alias: "2_3" , dataType: tableau.dataTypeEnum.string },
+    { id: "3_4", alias: "3_4", dataType: tableau.dataTypeEnum.string }
   ];
-  let functionWrapper = {
-    mockSchemaCallback: input => {
-      result = input;
+  let input =
+  {value:
+    {
+      timeSeries:[
+        {"name": "USGS:1:2"},
+        {"name": "USGS:2:3"},
+        {"name": "USGS:3:4"},
+      ]
     }
   };
-  tableau.connectionData.columnList = ["1", "2", "3"];
-  getSchema(functionWrapper.mockSchemaCallback);
-  expect(result[0].columns).toEqual(targetResult);
+  result = generateSchemaColsFromData(input);
+  expect(result).toEqual(targetResult);
 });
 
-/* this test is posing issues
-
-test('getData should call the functions to call get on a url, append a formatted json to table, and finally evoke the done callback', async () => {
-let table = {'appendRows': ()=>{}};
-let functionWrapper = {'doneCallback': ()=>{},'generateURL': generateURL};
-//WDCMethods.generateURL = functionWrapper.generateURL;
-//let urlSPY = jest.spyOn(WDCMethods,'generateURL');
-let callBackSpy = jest.spyOn(functionWrapper, 'doneCallback');
-let appendRowsSpy = jest.spyOn(table, 'appendRows');
-getData(table, functionWrapper.doneCallback);
-//expect(urlSPY).toHaveBeenCalled();
-await expect(appendRowsSpy).toHaveBeenCalled();
-await expect(callBackSpy).toHaveBeenCalled();
-});
-
-*/

@@ -60,6 +60,28 @@ const generateURL = connectionData => {
 };
 
 /*
+takes query url to be sent to the NWISweb instantaneous values service and 
+generates an appropriate tableau schema.
+*/
+const generateSchemaColsFromData = data => {
+  let cols = [];
+  let timeSeries = data.value.timeSeries;
+  timeSeries.forEach(series => {
+    let name = series.name;
+    let nameTokens = name.split(":");
+    let site = nameTokens[1];
+    let paramType = nameTokens[2];
+    let column = site + "_" + paramType;
+    cols.push({
+      id: column,
+      alias: column,
+      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
+    });
+  });
+  return cols;
+};
+
+/*
 generates a URL, then fetches a json from that url and formats it in accordance with 
 the schema we have given tableau. 
 */
@@ -71,27 +93,20 @@ const getData = (table, doneCallback) => {
     doneCallback();
   });
 };
-
 /*
 generates a tableau schema based on the information in tableau.connectionData
 */
 const getSchema = schemaCallback => {
-  let cols = [];
-  tableau.connectionData.columnList.forEach(function(column) {
-    // we add all the columns to the schema
-    cols.push({
-      id: column,
-      alias: column,
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
-    });
+  let url = generateURL(tableau.connectionData);
+  get(url, "json").then(function(value) {
+    let cols = generateSchemaColsFromData(value);
+    let tableSchema = {
+      id: "WaterData",
+      alias: "useful information will be put here", //todo, add useful information
+      columns: cols
+    };
+    schemaCallback([tableSchema]);
   });
-
-  let tableSchema = {
-    id: "WaterData",
-    alias: "useful information will be put here", //todo, add useful information
-    columns: cols
-  };
-  schemaCallback([tableSchema]);
 };
 
 /*
@@ -116,5 +131,6 @@ export {
   formatJSONAsTable,
   generateURL,
   generateColList,
-  getLongestTimesSeriesindices
+  getLongestTimesSeriesindices,
+  generateSchemaColsFromData
 };
