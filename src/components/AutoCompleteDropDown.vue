@@ -3,9 +3,10 @@
     <br />
     <label class="autocomplete-dropdown">State or Territory</label>
     <input
-      v-model="value"
+      v-model="state"
       class="usa-input"
       type="text"
+      @input="onChange"
       list="states"
       style="width: 300px; margin: auto;"
     />
@@ -73,6 +74,16 @@
 
 <script>
 export default {
-  name: "AutocompleteDropdown"
+  name: "AutocompleteDropdown",
+  data: function() {
+    return {
+      state: ""
+    };
+  },
+  methods: {
+    onChange() {
+      this.$store.state.state = this.state; //TODO This is a nono refactor please
+    }
+  }
 };
 </script>

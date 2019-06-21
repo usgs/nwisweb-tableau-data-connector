@@ -98,12 +98,8 @@ export default {
         columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.parameters,
-        state: states[this.state]
-      }; // here we send columnList, to be used in defining our schema
-      alert(states[this.state]);
-      alert(this.state);
-      alert(JSON.stringify(states));
-      alert(JSON.stringify(store));
+        state: states[this.$store.state.state] //todo this is a nono refactor please
+      };
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
     },
