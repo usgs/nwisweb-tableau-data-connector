@@ -31,10 +31,10 @@ pipeline {
             steps {
                 script {
                     if("\${params.BUILD_TYPE}" == 'QA') {
-                        env.targetDomain = "balahablahabal"
+                        env.targetDomain = "QAQAQAQAQAQAQAQAQA"
                     }
                     else {
-                        targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
+                        targetDomain = "PRODUCTION"
                     }
                 }
                 sh """
