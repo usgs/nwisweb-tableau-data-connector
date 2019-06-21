@@ -1,3 +1,4 @@
+def targetDomain
 
 pipeline {
     agent {
@@ -5,7 +6,6 @@ pipeline {
             label 'project:any'
         }
     }
-
 
     parameters {
         choice(choices: ['QA', 'prod'], description: 'type of build', name: 'BUILD_TYPE')
@@ -26,19 +26,24 @@ pipeline {
                 }
         }
         stage('build') {
-              
-            
-               steps {
-               sh """
-                 docker build . --tag="dockerinstance"
-                 docker run dockerinstance
-                 pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
-                 dockerinstanceid=\$( docker ps -l -q )
-                 docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
-                 aws s3 cp $WORKSPACE/dist s3://nwisweb-tableau-wdc-beta-website --recursive
-                 aws s3 ls s3://nwisweb-tableau-wdc-beta-website
-                 docker rm "\${dockerinstanceid}"
-                """
+            steps {
+                if(${params.BUILD_TYPE} == 'QA') {
+                    targetDomain = nwisweb-tableau-wdc-beta-website
+                }
+                else {
+                    targetDomain = nwisweb-tableau-wdc-beta-website
+                }
+
+            sh """
+                docker build . --tag="dockerinstance"
+                docker run dockerinstance
+                pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
+                dockerinstanceid=\$( docker ps -l -q )
+                docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
+                aws s3 cp $WORKSPACE/dist s3://${targetDomain} --recursive
+                aws s3 ls s3://nwisweb-tableau-wdc-beta-website
+                docker rm "\${dockerinstanceid}"
+            """
             }
 
         }
