@@ -14,19 +14,32 @@
 
       <div class="container container-table">
         <div class="row vertical-center-row">
-          <div class="text-center col-md-4 col-md-offset-4">
+          <div
+            class="text-center col-md-4 col-md-offset-4"
+            style="text-align:center"
+          >
             <br />
             <label> Site or Sites </label>
-            <input v-model="sites" placeholder="edit me" />
+            <input
+              class="usa-input"
+              style="width: 300px; margin: auto;"
+              v-model="sites"
+              placeholder="edit me"
+            />
             <br />
             <label> Parameter Codes</label>
-            <input v-model="parameters" placeholder="edit me" />
+            <input
+              class="usa-input"
+              v-model="parameters"
+              placeholder="edit me"
+              style="width: 300px; margin: auto;"
+            />
             <br />
             <button
               type="button"
               v-on:click="requestData"
               id="submitButton"
-              class="btn btn-success"
+              class="usa-button"
               style="margin: 10px;"
             >
               Request Data
