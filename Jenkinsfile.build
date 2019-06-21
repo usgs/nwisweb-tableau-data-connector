@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     if("${params.BUILD_TYPE}" == "QA") {
-                        targetDomain = "s3://nwisweb-tableau-data-connector"
+                        targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
                     }
                     else {
                         targetDomain = "${params.BUILD_TYPE}"
