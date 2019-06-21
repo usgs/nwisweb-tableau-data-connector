@@ -61,6 +61,7 @@ import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
 import HeaderUSGS from "../components/HeaderUSGS";
 import FooterUSGS from "../components/FooterUSGS";
 import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
+import { states } from "./params.js";
 /*global  tableau:true*/
 
 export default {
@@ -97,7 +98,7 @@ export default {
         columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.parameters,
-        state: this.state
+        state: states[this.state]
       }; // here we send columnList, to be used in defining our schema
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();

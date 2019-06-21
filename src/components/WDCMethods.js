@@ -59,8 +59,12 @@ generates a URL for query paramaters contained in the connectionData object acce
 const generateURL = connectionData => {
   //todo standardize this template's format when we add more query info fields
   let paramList = connectionData.paramNums.replace(/\s/g, "").split(","); // split by comma, ignoring whitespace
-  let siteList = connectionData.siteNums.replace(/\s/g, "").split(",");
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${siteList.join()}&period=P1D&parameterCd=${paramList.join()}&siteStatus=all`;
+  let paramQuery = `&parameterCd=${paramList.join()}`;
+  // let siteList = connectionData.siteNums.replace(/\s/g, "").split(",");
+  //let siteQuery = `&sites=${siteList.join()}`;
+  let stateQuery = `&stateCd${connectionData.state}`;
+
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${stateQuery}${paramQuery}&period=P1D&siteStatus=all`;
 };
 
 /*

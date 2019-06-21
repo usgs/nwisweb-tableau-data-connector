@@ -94,26 +94,26 @@ export default {
     };
   },
   methods: {
-    computed: function() {
-        var optionArray = []
-            for (var key in this.options) {
-                if (has(this.options, key) && isEnumerable(this.options, key)) {
-                    optionArray.push([key, this.options[key]]);
-                }
-            }
-        return Object.entries(this.options).filter((option) => {
-            var optionText = option[0].toUpperCase()
-            return optionText.match(this.searchText.toUpperCase())
-        })
+    /*  computed: function() {
+      var optionArray = [];
+      for (var key in this.options) {
+        if (has(this.options, key) && isEnumerable(this.options, key)) {
+          optionArray.push([key, this.options[key]]);
+        }
+      }
+      return Object.entries(this.options).filter(option => {
+        var optionText = option[0].toUpperCase();
+        return optionText.match(this.searchText.toUpperCase());
+      });
     },
     onChange() {
-        this.isOpen = true;
-        this.filterResults();
+      //  this.isOpen = true;
+      //  this.filterResults();
     },
     setResult(result) {
-        this.searchText = result;
-        this.isOpen = false;
-    },
+      //  this.searchText = result;
+      //  this.isOpen = false;
+    }*/
   }
 };
 </script>
