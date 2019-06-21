@@ -5,8 +5,6 @@
     <input
       class="usa-input"
       type="text"
-      v-model="searchText"
-      @input="onChange"
       list="states"
       style="width: 300px; margin: auto;"
     />
@@ -69,51 +67,11 @@
       <option value="Wisconsin">Wisconsin</option>
       <option value="Wyoming">Wyoming</option>
     </datalist>
-
-    <ul v-show="isOpen" class="autocomplete-results">
-      <li
-        v-for="(result, i) in results"
-        :key="i"
-        @click="setResult(result)"
-        class="autocomplete-result"
-      >
-        {{ result }}
-      </li>
-    </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: "DropDownUSWDS",
-  data() {
-    return {
-      searchText: "",
-      results: [],
-      isOpen: false
-    };
-  },
-  methods: {
-    computed: function() {
-        var optionArray = []
-            for (var key in this.options) {
-                if (has(this.options, key) && isEnumerable(this.options, key)) {
-                    optionArray.push([key, this.options[key]]);
-                }
-            }
-        return Object.entries(this.options).filter((option) => {
-            var optionText = option[0].toUpperCase()
-            return optionText.match(this.searchText.toUpperCase())
-        })
-    },
-    onChange() {
-        this.isOpen = true;
-        this.filterResults();
-    },
-    setResult(result) {
-        this.searchText = result;
-        this.isOpen = false;
-    },
-  }
+  name: "DropDownUSWDS"
 };
 </script>
