@@ -35,7 +35,7 @@
               style="width: 300px; margin: auto;"
             />
             <br />
-            <AutoCompleteDropDown></AutoCompleteDropDown>
+            <AutoCompleteDropDown v-model="state"></AutoCompleteDropDown>
             <br />
             <button
               type="button"
@@ -96,7 +96,8 @@ export default {
       tableau.connectionData = {
         columnList: this.columnList,
         siteNums: this.sites,
-        paramNums: this.parameters
+        paramNums: this.parameters,
+        state: this.state
       }; // here we send columnList, to be used in defining our schema
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
