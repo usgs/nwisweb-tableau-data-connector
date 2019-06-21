@@ -30,7 +30,7 @@ pipeline {
         stage('build') {
             steps {
                 script {
-                    if("\${params.BUILD_TYPE}" == 'QA') {
+                    if("\${params.BUILD_TYPE}" == "QA") {
                         env.targetDomain = "QAQAQAQAQAQAQAQAQA"
                     }
                     else {
