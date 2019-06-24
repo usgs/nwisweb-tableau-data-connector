@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     onChange() {
-      this.$store.state.state = this.state; //TODO This is a nono refactor please
+      this.$store.commit("changeUSStateName", this.state);
     }
   }
 };

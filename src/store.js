@@ -7,6 +7,15 @@ export default new Vuex.Store({
   state: {
     state: "Michigan"
   },
-  mutations: {},
-  actions: {}
+  mutations: {
+    changeUSStateName: (state, USStateName) => {
+      state.state = USStateName;
+    }
+  },
+  actions: {},
+  getters: {
+    USStateName: state => {
+      return state.state;
+    }
+  }
 });
