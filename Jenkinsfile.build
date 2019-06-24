@@ -49,7 +49,7 @@ pipeline {
                         targetDomain = "this would be the production site"
                     }
                 }
-                sh "aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive"
+                sh "aws s3 cp $WORKSPACE/dist "\${targetDomain}" --recursive"
             }
         }
         stage('clean') {
