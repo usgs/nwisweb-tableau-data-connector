@@ -39,7 +39,7 @@ pipeline {
             }
 
         }
-        stage('push') {
+        stage('send to S3') {
             steps {
                 script {
                     if("${params.BUILD_TYPE}" == "QA") {
@@ -54,7 +54,7 @@ pipeline {
         }
         stage('clean') {
             steps {
-                sh "docker rm "\${dockerinstanceid}""
+                sh "docker rm "${dockerinstanceid}""
             }
         }
     }
