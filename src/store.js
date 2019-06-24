@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    state: "Michigan",
+    state: "",
     locationMode: locationMode.SITE
   },
   mutations: {

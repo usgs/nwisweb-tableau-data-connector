@@ -54,7 +54,7 @@
     }
   },
   "prettier": {
-    "jsxBracketSameLine": true
+    "jsxBracketSameLine": false
   },
   "postcss": {
     "plugins": {
