@@ -35,7 +35,8 @@
               style="width: 300px; margin: auto;"
             />
             <br />
-            <AutoCompleteDropDown v-model="state"></AutoCompleteDropDown>
+            <AutoCompleteDropDown></AutoCompleteDropDown>
+            <LocationQueryType></LocationQueryType>
             <br />
             <button
               type="button"
@@ -55,18 +56,15 @@
 </template>
 
 <script>
-import {
-  getData,
-  getSchema,
-  generateColList,
-  locationMode
-} from "./WDCMethods.js";
+import { getData, getSchema, generateColList } from "./WDCMethods.js";
 import HeaderUSWDSBanner from "../components/HeaderUSWDSBanner";
 import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
 import HeaderUSGS from "../components/HeaderUSGS";
 import FooterUSGS from "../components/FooterUSGS";
 import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
+import LocationQueryType from "../components/LocationQueryType";
 import { states } from "./params.js";
+import { locationMode } from "../enums.js";
 /*global  tableau:true*/
 
 export default {
@@ -79,7 +77,8 @@ export default {
     HeaderUSGS,
     HeaderUSWDSSelections,
     FooterUSGS,
-    AutoCompleteDropDown
+    AutoCompleteDropDown,
+    LocationQueryType
   },
   data: function() {
     return {

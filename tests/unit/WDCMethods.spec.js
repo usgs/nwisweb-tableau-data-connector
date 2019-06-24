@@ -3,9 +3,9 @@ import {
   generateURL,
   generateColList,
   getLongestTimesSeriesindices,
-  generateSchemaColsFromData,
-  locationMode
+  generateSchemaColsFromData
 } from "../../src/components/WDCMethods.js";
+import { locationMode } from "../../src/enums.js";
 
 /*global  tableau:true*/
 

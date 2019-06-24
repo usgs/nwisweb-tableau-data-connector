@@ -1,14 +1,6 @@
 import { get } from "../utils.js";
+import { locationMode } from "../enums.js";
 /*global  tableau:true*/
-
-/*
-enum for location query mode (site id, state, coordinate box, watershed etc...).
-Note that these location query modes are mutually exclusive.
-*/
-const locationMode = {
-  SITE: "site",
-  STATE: "state"
-};
 
 /*
 Given an array of timeseries objects, this function returns an array containing 
