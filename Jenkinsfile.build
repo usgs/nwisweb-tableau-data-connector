@@ -54,7 +54,9 @@ pipeline {
         }
         stage('clean') {
             steps {
-                sh "docker rm "${dockerinstanceid}""
+                sh """
+                    docker rm "\${dockerinstanceid}"
+                """
             }
         }
     }
