@@ -6,7 +6,6 @@
         <div class="usa-radio">
           <input
             class="usa-radio__input"
-            @input="onChange"
             id="site"
             v-model="selected"
             type="radio"
@@ -19,7 +18,6 @@
         <div class="usa-radio">
           <input
             class="usa-radio__input"
-            @input="onChange"
             id="state"
             v-model="selected"
             type="radio"
@@ -39,30 +37,14 @@ export default {
   name: "LocationQueryType",
   data: function() {
     return {
+      locationModeEnum: locationMode, //todo refactor this
       selected: "site"
     };
   },
-  methods: {
-    /*
+  /*
 we translate local hardcoded strings to enums here because it would be difficult to initialize the 
 radiobuttons to use the enums. 
 */
-    onChange() {
-      /* this.$refs.nextTick(() => {
-        let selectionEnum = "";
-        switch (this.selected) {
-          case "site":
-            selectionEnum = locationMode.SITE;
-            break;
-          case "state":
-            selectionEnum = locationMode.STATE;
-            break;
-        }
-        alert(this.selected);
-        this.$store.commit("changeLocationMode", selectionEnum);
-      });*/
-    }
-  },
   updated() {
     let selectionEnum = "";
     switch (this.selected) {

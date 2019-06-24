@@ -6,7 +6,6 @@
       v-model="state"
       class="usa-input"
       type="text"
-      @input="onChange"
       list="states"
       style="width: 300px; margin: auto;"
     />
@@ -80,10 +79,8 @@ export default {
       state: ""
     };
   },
-  methods: {
-    onChange() {
-      this.$store.commit("changeUSStateName", this.state);
-    }
+  updated() {
+    this.$store.commit("changeUSStateName", this.state);
   }
 };
 </script>

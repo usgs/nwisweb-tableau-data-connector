@@ -24,6 +24,7 @@
               class="usa-input"
               style="width: 300px; margin: auto;"
               v-model="sites"
+              :disabled="activeLocationMode != locationModeEnum.SITE"
               placeholder="edit me"
             />
             <br />
@@ -82,10 +83,12 @@ export default {
   },
   data: function() {
     return {
+      locationModeEnum: locationMode,
       columnList: [],
       sites: "01646500,05437641",
       parameters: "00060,00065",
-      state: "Michigan"
+      state: "Michigan",
+      activeLocationMode: locationMode.STATE
     };
   },
   created: function() {
@@ -103,7 +106,7 @@ export default {
         siteNums: this.sites,
         paramNums: this.parameters,
         state: states[this.$store.getters.USStateName],
-        locationMode: locationMode.STATE
+        locationMode: this.activeLocationMode
       };
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
@@ -118,6 +121,14 @@ export default {
       myConnector.getData = getData;
       tableau.registerConnector(myConnector);
     }
+  },
+  mounted: function() {
+    let store = this.$store;
+    store.subscribe((mutation) /*, state*/ => {
+      if (mutation.type == "changeLocationMode") {
+        this.activeLocationMode = store.getters.locationMode;
+      }
+    });
   }
 };
 </script>
