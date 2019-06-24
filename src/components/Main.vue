@@ -24,6 +24,7 @@
               class="usa-input"
               style="width: 300px; margin: auto;"
               v-model="sites"
+              :disabled="disabled"
               placeholder="edit me"
             />
             <br />
@@ -34,6 +35,9 @@
               placeholder="edit me"
               style="width: 300px; margin: auto;"
             />
+            <br />
+            <AutoCompleteDropDown></AutoCompleteDropDown>
+            <LocationQueryType></LocationQueryType>
             <br />
             <button
               type="button"
@@ -58,6 +62,10 @@ import HeaderUSWDSBanner from "../components/HeaderUSWDSBanner";
 import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
 import HeaderUSGS from "../components/HeaderUSGS";
 import FooterUSGS from "../components/FooterUSGS";
+import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
+import LocationQueryType from "../components/LocationQueryType";
+import { states } from "./params.js";
+import { locationMode } from "../enums.js";
 /*global  tableau:true*/
 
 export default {
@@ -69,13 +77,17 @@ export default {
     HeaderUSWDSBanner,
     HeaderUSGS,
     HeaderUSWDSSelections,
-    FooterUSGS
+    FooterUSGS,
+    AutoCompleteDropDown,
+    LocationQueryType
   },
   data: function() {
     return {
       columnList: [],
       sites: "01646500,05437641",
-      parameters: "00060,00065"
+      parameters: "00060,00065",
+      state: "Michigan",
+      activeLocationMode: locationMode.SITE
     };
   },
   created: function() {
@@ -91,8 +103,10 @@ export default {
       tableau.connectionData = {
         columnList: this.columnList,
         siteNums: this.sites,
-        paramNums: this.parameters
-      }; // here we send columnList, to be used in defining our schema
+        paramNums: this.parameters,
+        state: states[this.$store.getters.USStateName],
+        locationMode: this.activeLocationMode
+      };
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
     },
@@ -105,6 +119,19 @@ export default {
       myConnector.getSchema = getSchema;
       myConnector.getData = getData;
       tableau.registerConnector(myConnector);
+    }
+  },
+  mounted: function() {
+    let store = this.$store;
+    store.subscribe((mutation) /*, state*/ => {
+      if (mutation.type == "changeLocationMode") {
+        this.activeLocationMode = store.getters.locationMode;
+      }
+    });
+  },
+  computed: {
+    disabled() {
+      return this.activeLocationMode != locationMode.SITE;
     }
   }
 };

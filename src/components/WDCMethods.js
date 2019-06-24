@@ -1,4 +1,5 @@
 import { get } from "../utils.js";
+import { locationMode } from "../enums.js";
 /*global  tableau:true*/
 
 /*
@@ -31,7 +32,7 @@ const formatJSONAsTable = data => {
   let paramIndices = Array.from(timeSeries.keys());
 
   dataIndices.forEach(i => {
-    let newEntry = {};
+    let newEntry = { dateTime: "unknown" };
     paramIndices.forEach(c => {
       try {
         let name = timeSeries[c].name;
@@ -39,7 +40,11 @@ const formatJSONAsTable = data => {
         let site = nameTokens[1];
         let paramType = nameTokens[2];
         newEntry[site + "_" + paramType] =
-          data.value.timeSeries[c].values[0].value[i].value;
+          timeSeries[c].values[0].value[i].value;
+        if (newEntry["dateTime"] == "unknown") {
+          // here we naively assume that all time series will start at the same time, and not have any gaps TODO deal with this in a sensible way
+          newEntry["dateTime"] = timeSeries[c].values[0].value[i].dateTime;
+        }
       } catch (err) {
         //ignore index(out of range for this parameter for this site)
       }
@@ -55,8 +60,50 @@ generates a URL for query paramaters contained in the connectionData object acce
 const generateURL = connectionData => {
   //todo standardize this template's format when we add more query info fields
   let paramList = connectionData.paramNums.replace(/\s/g, "").split(","); // split by comma, ignoring whitespace
-  let siteList = connectionData.siteNums.replace(/\s/g, "").split(",");
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json&sites=${siteList.join()}&period=P1D&parameterCd=${paramList.join()}&siteStatus=all`;
+  let paramQuery = `&parameterCd=${paramList.join()}`;
+
+  let locationQuery = "";
+
+  switch (connectionData.locationMode) {
+    case locationMode.SITE: {
+      let siteList = connectionData.siteNums.replace(/\s/g, "").split(",");
+      locationQuery = `&sites=${siteList.join()}`;
+      break;
+    }
+    case locationMode.STATE: {
+      locationQuery = `&stateCd=${connectionData.state}`;
+      break;
+    }
+  }
+
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}&siteStatus=all`;
+};
+/*
+/*
+takes query url to be sent to the NWISweb instantaneous values service and 
+generates an appropriate tableau schema.
+*/
+const generateSchemaColsFromData = data => {
+  let cols = [];
+  cols.push({
+    id: "dateTime",
+    alias: "dateTime",
+    dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
+  });
+  let timeSeries = data.value.timeSeries;
+  timeSeries.forEach(series => {
+    let name = series.name;
+    let nameTokens = name.split(":");
+    let site = nameTokens[1];
+    let paramType = nameTokens[2];
+    let column = `${site}_${paramType}`;
+    cols.push({
+      id: column,
+      alias: column,
+      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
+    });
+  });
+  return cols;
 };
 
 /*
@@ -71,27 +118,20 @@ const getData = (table, doneCallback) => {
     doneCallback();
   });
 };
-
 /*
 generates a tableau schema based on the information in tableau.connectionData
 */
 const getSchema = schemaCallback => {
-  let cols = [];
-  tableau.connectionData.columnList.forEach(function(column) {
-    // we add all the columns to the schema
-    cols.push({
-      id: column,
-      alias: column,
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
-    });
+  let url = generateURL(tableau.connectionData);
+  get(url, "json").then(function(value) {
+    let cols = generateSchemaColsFromData(value);
+    let tableSchema = {
+      id: "WaterData",
+      alias: "useful information will be put here", //todo, add useful information
+      columns: cols
+    };
+    schemaCallback([tableSchema]);
   });
-
-  let tableSchema = {
-    id: "WaterData",
-    alias: "useful information will be put here", //todo, add useful information
-    columns: cols
-  };
-  schemaCallback([tableSchema]);
 };
 
 /*
@@ -116,5 +156,7 @@ export {
   formatJSONAsTable,
   generateURL,
   generateColList,
-  getLongestTimesSeriesindices
+  getLongestTimesSeriesindices,
+  generateSchemaColsFromData,
+  locationMode
 };

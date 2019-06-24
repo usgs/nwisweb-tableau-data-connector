@@ -53,6 +53,9 @@
       "parser": "babel-eslint"
     }
   },
+  "prettier": {
+    "jsxBracketSameLine": false
+  },
   "postcss": {
     "plugins": {
       "autoprefixer": {}
