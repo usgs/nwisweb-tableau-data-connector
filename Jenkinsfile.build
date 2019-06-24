@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        dockerinstanceid = "undeclared"
+        def dockerinstanceid = "undeclared"
     }
 
     parameters {
