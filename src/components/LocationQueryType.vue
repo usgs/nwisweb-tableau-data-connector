@@ -6,25 +6,29 @@
         <div class="usa-radio">
           <input
             class="usa-radio__input"
-            id="site"
+            :id="locationModeSite"
             v-model="selected"
             type="radio"
             checked
             name="Location-Query-Type"
-            value="site"
+            :value="locationModeSite"
           />
-          <label class="usa-radio__label" for="site">Site ID</label>
+          <label class="usa-radio__label" :for="locationModeSite"
+            >Site ID</label
+          >
         </div>
         <div class="usa-radio">
           <input
             class="usa-radio__input"
-            id="state"
+            :id="locationModeState"
             v-model="selected"
             type="radio"
             name="Location-Query-Type"
-            value="state"
+            :value="locationModeState"
           />
-          <label class="usa-radio__label" for="state">State or Territory</label>
+          <label class="usa-radio__label" :for="locationModeState"
+            >State or Territory</label
+          >
         </div>
       </fieldset>
     </form>
@@ -37,26 +41,21 @@ export default {
   name: "LocationQueryType",
   data: function() {
     return {
-      locationModeEnum: locationMode, //todo refactor this
-      selected: "site"
+      selected: locationMode.SITE
     };
   },
-  /*
-we translate local hardcoded strings to enums here because it would be difficult to initialize the 
-radiobuttons to use the enums. 
-*/
+
   updated() {
-    let selectionEnum = "";
-    switch (this.selected) {
-      case "site":
-        selectionEnum = locationMode.SITE;
-        break;
-      case "state":
-        selectionEnum = locationMode.STATE;
-        break;
+    this.$store.commit("changeLocationMode", this.selected);
+  },
+  computed: {
+    // fastidious attention to enum correctness
+    locationModeState() {
+      return locationMode.STATE;
+    },
+    locationModeSite() {
+      return locationMode.SITE;
     }
-    alert(this.selected);
-    this.$store.commit("changeLocationMode", selectionEnum);
   }
 };
 </script>

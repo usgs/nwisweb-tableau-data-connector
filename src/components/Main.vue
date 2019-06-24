@@ -24,7 +24,7 @@
               class="usa-input"
               style="width: 300px; margin: auto;"
               v-model="sites"
-              :disabled="activeLocationMode != locationModeEnum.SITE"
+              :disabled="disabled"
               placeholder="edit me"
             />
             <br />
@@ -83,12 +83,11 @@ export default {
   },
   data: function() {
     return {
-      locationModeEnum: locationMode,
       columnList: [],
       sites: "01646500,05437641",
       parameters: "00060,00065",
       state: "Michigan",
-      activeLocationMode: locationMode.STATE
+      activeLocationMode: locationMode.SITE
     };
   },
   created: function() {
@@ -129,6 +128,11 @@ export default {
         this.activeLocationMode = store.getters.locationMode;
       }
     });
+  },
+  computed: {
+    disabled() {
+      return this.activeLocationMode != locationMode.SITE;
+    }
   }
 };
 </script>

@@ -4,6 +4,7 @@
     <label class="autocomplete-dropdown">State or Territory</label>
     <input
       v-model="state"
+      :disabled="disabled"
       class="usa-input"
       type="text"
       list="states"
@@ -72,15 +73,30 @@
 </template>
 
 <script>
+import { locationMode } from "../enums.js";
 export default {
   name: "AutocompleteDropdown",
   data: function() {
     return {
-      state: ""
+      state: "",
+      activeLocationMode: locationMode.SITE
     };
   },
   updated() {
     this.$store.commit("changeUSStateName", this.state);
+  },
+  mounted: function() {
+    let store = this.$store;
+    store.subscribe((mutation) /*, state*/ => {
+      if (mutation.type == "changeLocationMode") {
+        this.activeLocationMode = store.getters.locationMode;
+      }
+    });
+  },
+  computed: {
+    disabled() {
+      return this.activeLocationMode != locationMode.STATE;
+    }
   }
 };
 </script>
