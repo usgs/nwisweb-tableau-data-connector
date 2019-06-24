@@ -24,7 +24,9 @@
             name="Location-Query-Type"
             value="state"
           />
-          <label class="usa-radio__label" for="state">State or Territory</label>
+          <label class="usa-radio__label" for="state"
+            >State or Territory
+          </label>
         </div>
       </fieldset>
     </form>
