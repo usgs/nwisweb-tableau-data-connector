@@ -29,6 +29,18 @@ pipeline {
         }
         stage('build') {
             steps {
+                sh """
+                    docker build . --tag="dockerinstance"
+                    docker run dockerinstance
+                    pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
+                    dockerinstanceid=\$( docker ps -l -q )
+                    docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
+                """
+            }
+
+        }
+        stage('push') {
+            steps {
                 script {
                     if("${params.BUILD_TYPE}" == "QA") {
                         targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
@@ -37,18 +49,13 @@ pipeline {
                         targetDomain = "this would be the production site"
                     }
                 }
-                sh """
-                    docker build . --tag="dockerinstance"
-                    docker run dockerinstance
-                    pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
-                    dockerinstanceid=\$( docker ps -l -q )
-                    docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
-                    aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive
-                    aws s3 ls s3://nwisweb-tableau-wdc-beta-website
-                    docker rm "\${dockerinstanceid}"
-                """
+                sh "aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive"
             }
-
+        }
+        stage('clean') {
+            steps {
+                sh "docker rm "\${dockerinstanceid}""
+            }
         }
     }
 }
