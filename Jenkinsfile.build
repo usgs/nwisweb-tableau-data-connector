@@ -5,9 +5,6 @@ pipeline {
         }
     }
 
-    environment {
-        targetDomain = "undeclared"
-    }
 
     parameters {
         choice(choices: ['QA', 'prod'], description: 'type of build', name: 'BUILD_TYPE')
