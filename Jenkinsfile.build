@@ -34,6 +34,13 @@ pipeline {
                     docker run dockerinstance
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
                     \"${dockerinstanceid}"=\$( docker ps -l -q )
+                    echo ${dockerinstanceid}
+                    echo \${dockerinstanceid}                    
+                    echo "${dockerinstanceid}"
+                    echo \"${dockerinstanceid}"
+
+
+
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
                 """
             }
