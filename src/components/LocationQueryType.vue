@@ -13,8 +13,8 @@
             name="Location-Query-Type"
             :value="locationModeSite"
           />
-          <label class="usa-radio__label" :for="locationModeSite"
-            >Site ID</label
+          <label class="usa-radio__label" :for="locationModeSite">
+            Site ID</label
           >
         </div>
         <div class="usa-radio">
@@ -26,8 +26,8 @@
             name="Location-Query-Type"
             :value="locationModeState"
           />
-          <label class="usa-radio__label" :for="locationModeState"
-            >State or Territory</label
+          <label class="usa-radio__label" :for="locationModeState">
+            State or Territory</label
           >
         </div>
       </fieldset>
