@@ -3,7 +3,8 @@ import {
   generateURL,
   generateColList,
   getLongestTimesSeriesindices,
-  generateSchemaColsFromData
+  generateSchemaColsFromData,
+  locationMode
 } from "../../src/components/WDCMethods.js";
 
 /*global  tableau:true*/
@@ -54,19 +55,19 @@ test("converting a fully-populated data JSON to table", () => {
   expect(formatJSONAsTable(input)).toEqual(targetResult);
 });
 
-
 //todo this test needs to be updated and possibly expanded
-/*
+
 test("correctly generate a URL given a list of sites and parameters with various whitespace", () => {
   const connectionData = {
     siteNums: "01646500 ,   05437641",
-    paramNums: "00060   ,00065"
+    paramNums: "00060   ,00065",
+    state: "Rhode Island",
+    locationMode: locationMode.SITE
   };
   expect(generateURL(connectionData)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500,05437641&period=P1D&parameterCd=00060,00065&siteStatus=all"
   );
 });
-*/
 
 test("correctly generates the column schema from sites and parameters", () => {
   const sites = "01646500,05437641";

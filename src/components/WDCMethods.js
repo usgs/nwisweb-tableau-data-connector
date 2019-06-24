@@ -2,6 +2,15 @@ import { get } from "../utils.js";
 /*global  tableau:true*/
 
 /*
+enum for location query mode (site id, state, coordinate box, watershed etc...).
+Note that these location query modes are mutually exclusive.
+*/
+const locationMode = {
+  SITE: "site",
+  STATE: "state"
+};
+
+/*
 Given an array of timeseries objects, this function returns an array containing 
 the ordered indices of the longest timeseries object in the list. In the event 
 that the list is empty, this function throws an error.
@@ -60,11 +69,22 @@ const generateURL = connectionData => {
   //todo standardize this template's format when we add more query info fields
   let paramList = connectionData.paramNums.replace(/\s/g, "").split(","); // split by comma, ignoring whitespace
   let paramQuery = `&parameterCd=${paramList.join()}`;
-  // let siteList = connectionData.siteNums.replace(/\s/g, "").split(",");
-  //let siteQuery = `&sites=${siteList.join()}`;
-  let stateQuery = `&stateCd=${connectionData.state}`;
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${stateQuery}${paramQuery}&period=P1D&siteStatus=all`;
+  let locationQuery = "";
+
+  switch (connectionData.locationMode) {
+    case locationMode.SITE: {
+      let siteList = connectionData.siteNums.replace(/\s/g, "").split(",");
+      locationQuery = `&sites=${siteList.join()}`;
+      break;
+    }
+    case locationMode.STATE: {
+      locationQuery = `&stateCd=${connectionData.state}`;
+      break;
+    }
+  }
+
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}&siteStatus=all`;
 };
 
 /*
@@ -145,5 +165,6 @@ export {
   generateURL,
   generateColList,
   getLongestTimesSeriesindices,
-  generateSchemaColsFromData
+  generateSchemaColsFromData,
+  locationMode
 };

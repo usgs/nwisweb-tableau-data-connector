@@ -64,6 +64,11 @@ import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
 import { states } from "./params.js";
 /*global  tableau:true*/
 
+const locationMode = {
+  SITE: "site",
+  STATE: "state"
+};
+
 export default {
   name: "Main",
   props: {
@@ -98,7 +103,8 @@ export default {
         columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.parameters,
-        state: states[this.$store.state.state] //todo this is a nono refactor please
+        state: states[this.$store.state.state], //todo this is a nono refactor please
+        locationMode: locationMode.STATE
       };
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
