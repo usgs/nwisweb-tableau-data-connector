@@ -78,7 +78,7 @@ const generateURL = connectionData => {
 
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}&siteStatus=all`;
 };
-
+/*
 /*
 takes query url to be sent to the NWISweb instantaneous values service and 
 generates an appropriate tableau schema.
@@ -96,7 +96,7 @@ const generateSchemaColsFromData = data => {
     let nameTokens = name.split(":");
     let site = nameTokens[1];
     let paramType = nameTokens[2];
-    let column = site + "_" + paramType;
+    let column = `${site}_${paramType}`;
     cols.push({
       id: column,
       alias: column,
