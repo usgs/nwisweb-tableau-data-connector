@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="usa-form">
+    <form :key="selected" class="usa-form">
       <fieldset class="usa-fieldset">
         <legend class="usa-sr-only">Location Query Type</legend>
         <div class="usa-radio">

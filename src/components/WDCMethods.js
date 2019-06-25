@@ -44,7 +44,7 @@ const formatJSONAsTable = (data, tableName) => {
 };
 
 /*
-generates a URL for query paramaters contained in the connectionData object accepted as an argument
+generates a URL for query parameters contained in the connectionData object accepted as an argument
 */
 const generateURL = connectionData => {
   //todo standardize this template's format when we add more query info fields

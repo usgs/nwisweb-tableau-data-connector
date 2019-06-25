@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="!disabled">
     <br />
     <label class="autocomplete-dropdown">State or Territory</label>
     <input
