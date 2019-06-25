@@ -84,7 +84,7 @@ export default {
     AutoCompleteDropDown,
     LocationQueryType,
     SiteTypeList,
-    ChosenSelect,
+    ChosenSelect
   },
   data: function() {
     return {

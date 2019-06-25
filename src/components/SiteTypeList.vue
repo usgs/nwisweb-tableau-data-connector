@@ -1,39 +1,39 @@
 <template>
   <div>
-    <ChosenSelect 
-      id="siteSelect" 
-      multiple=true 
-      v-model="item" 
-      :options="list">
-    </ChosenSelect>    
+    <ChosenSelect
+      id="siteSelect"
+      multiple="true"
+      v-model="item"
+      :options="list"
+    >
+    </ChosenSelect>
   </div>
 </template>
 
 <script>
-import { siteTypes } from "./params.js";
+import { siteTypes, get } from "./params.js";
 import ChosenSelect from "./ChosenSelect";
 
 export default {
   name: "SiteTypeList",
   components: {
-    ChosenSelect,    
+    ChosenSelect
   },
   data: function() {
     return {
       siteType: "",
-      item: null,
+      item: null
     };
   },
   updated() {
     this.$store.commit("changeUSStateName", this.state);
   },
   mounted() {
-    //let datalist = document.getElementById("siteSelect").getElementsByClassName("dataList");
+    get();
     let siteSelect = document.getElementById("siteSelect");
     let listFromFile = Object.keys(siteTypes);
     listFromFile.forEach(function(element) {
       console.log(element);
-      //datalist.innerHTML = `<option value=${element} />`;
       var option = document.createElement("option");
       var value = document.createTextNode(element);
       option.appendChild(value);
