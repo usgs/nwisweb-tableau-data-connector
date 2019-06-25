@@ -1,48 +1,44 @@
 <template>
   <div>
-    <form class="usa-form">
-      <fieldset class="usa-fieldset">
-        <legend class="usa-sr-only">Location Query Type</legend>
-        <div class="usa-form">
-          <select
-            class="usa-select"
-            id="siteSelect"
-            multiple="multiple"
-            size="5"
-            name="siteType"
-          >
-          </select>
-        </div>
-      </fieldset>
-    </form>
+    <ChosenSelect 
+      id="siteSelect" 
+      multiple=true 
+      v-model="item" 
+      :options="list">
+    </ChosenSelect>    
   </div>
 </template>
 
 <script>
-import {siteTypes} from "./params.js";
+import { siteTypes } from "./params.js";
+import ChosenSelect from "./ChosenSelect";
 
 export default {
   name: "SiteTypeList",
+  components: {
+    ChosenSelect,    
+  },
   data: function() {
     return {
-      siteType: ""
+      siteType: "",
+      item: null,
     };
   },
   updated() {
     this.$store.commit("changeUSStateName", this.state);
   },
   mounted() {
-      //let datalist = document.getElementById("siteSelect").getElementsByClassName("dataList");
-      let siteSelect = document.getElementById("siteSelect");
-      let listFromFile = Object.keys(siteTypes);
-      listFromFile.forEach(function(element) {
-        console.log(element);
-        //datalist.innerHTML = `<option value=${element} />`;
-        var option = document.createElement("option");
-        var value = document.createTextNode(element);
-        option.appendChild(value);
-        siteSelect.appendChild(option);
-      });
+    //let datalist = document.getElementById("siteSelect").getElementsByClassName("dataList");
+    let siteSelect = document.getElementById("siteSelect");
+    let listFromFile = Object.keys(siteTypes);
+    listFromFile.forEach(function(element) {
+      console.log(element);
+      //datalist.innerHTML = `<option value=${element} />`;
+      var option = document.createElement("option");
+      var value = document.createTextNode(element);
+      option.appendChild(value);
+      siteSelect.appendChild(option);
+    });
   }
 };
 </script>

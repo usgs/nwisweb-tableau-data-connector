@@ -10,10 +10,10 @@
     "production-build": "vue-cli-service test:unit && vue-cli-service build"
   },
   "dependencies": {
+    "chosen-js": "^1.8.7",
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
-    "vuex": "^3.0.1",
-    "select2": "~4.0"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

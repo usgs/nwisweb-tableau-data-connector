@@ -67,6 +67,8 @@ import LocationQueryType from "../components/LocationQueryType";
 import { states, siteTypes } from "./params.js";
 import { locationMode } from "../enums.js";
 import SiteTypeList from "../components/SiteTypeList";
+import ChosenSelect from "../components/ChosenSelect";
+
 /*global  tableau:true*/
 
 export default {
@@ -81,7 +83,8 @@ export default {
     FooterUSGS,
     AutoCompleteDropDown,
     LocationQueryType,
-    SiteTypeList
+    SiteTypeList,
+    ChosenSelect,
   },
   data: function() {
     return {
