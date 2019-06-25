@@ -2,12 +2,9 @@ import {
   formatJSONAsTable,
   generateURL,
   generateColList,
-  getLongestTimesSeriesindices,
-  generateSchemaColsFromData
+  generateSchemaTablesFromData
 } from "../../src/components/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
-
-/*global  tableau:true*/
 
 test("converting a fully-populated data JSON to table", () => {
   const input = {
@@ -20,10 +17,12 @@ test("converting a fully-populated data JSON to table", () => {
             {
               value: [
                 {
-                  value: "10800"
+                  value: "10800",
+                  dateTime: "0:00"
                 },
                 {
-                  value: "10800"
+                  value: "10800",
+                  dateTime: "0:00"
                 }
               ]
             }
@@ -35,10 +34,12 @@ test("converting a fully-populated data JSON to table", () => {
             {
               value: [
                 {
-                  value: "343"
+                  value: "343",
+                  dateTime: "0:00"
                 },
                 {
-                  value: "5465"
+                  value: "5465",
+                  dateTime: "0:00"
                 }
               ]
             }
@@ -48,11 +49,11 @@ test("converting a fully-populated data JSON to table", () => {
     }
   };
   const targetResult = [
-    { "01646500_00060": "10800", "01647500_00062": "343" },
-    { "01646500_00060": "10800", "01647500_00062": "5465" }
+    { "01646500_00060": "10800", dateTime: "0:00" },
+    { "01646500_00060": "10800", dateTime: "0:00" }
   ];
 
-  expect(formatJSONAsTable(input)).toEqual(targetResult);
+  expect(formatJSONAsTable(input, "01646500_00060")).toEqual(targetResult);
 });
 
 //todo this test needs to be updated and possibly expanded
@@ -81,46 +82,6 @@ test("correctly generates the column schema from sites and parameters", () => {
   expect(generateColList(sites, params)).toEqual(targetResult);
 });
 
-test("correctly returning an array of the indices of the longest time series", () => {
-  const timeSeries = [
-    {
-      name: "USGS:01646500:00060:00000",
-      values: [
-        {
-          value: [
-            {
-              value: "10800"
-            },
-            {
-              value: "10800"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      name: "USGS:01647500:00062:00000",
-      values: [
-        {
-          value: [
-            {
-              value: "343"
-            },
-            {
-              value: "543"
-            },
-            {
-              value: "343"
-            }
-          ]
-        }
-      ]
-    }
-  ];
-  const targetResult = [0, 1, 2];
-  expect(getLongestTimesSeriesindices(timeSeries)).toEqual(targetResult);
-});
-
 test("converting a non fully-populated data JSON to table", () => {
   const input = {
     value: {
@@ -132,10 +93,12 @@ test("converting a non fully-populated data JSON to table", () => {
             {
               value: [
                 {
-                  value: "10800"
+                  value: "10800",
+                  dateTime: "0:00"
                 },
                 {
-                  value: "10800"
+                  value: "10800",
+                  dateTime: "0:00"
                 }
               ]
             }
@@ -147,7 +110,12 @@ test("converting a non fully-populated data JSON to table", () => {
             {
               value: [
                 {
-                  value: "343"
+                  value: "343",
+                  dateTime: "0:00"
+                },
+                {
+                  value: "5465",
+                  dateTime: "0:00"
                 }
               ]
             }
@@ -156,43 +124,55 @@ test("converting a non fully-populated data JSON to table", () => {
       ]
     }
   };
-  const targetResult = [
-    { "01646500_00060": "10800", "01647500_00062": "343" },
-    { "01646500_00060": "10800" }
-  ];
+  //const targetResult = [
+  //  { "01646500_00060": "10800", "01647500_00062": "343" },
+  // { "01646500_00060": "10800" }
+  // ];
 
-  expect(formatJSONAsTable(input)).toEqual(targetResult);
-});
-
-test("getLongestTimeSeriesIndices correctly throws error when given an empty list", () => {
   expect(() => {
-    getLongestTimesSeriesindices([]);
+    formatJSONAsTable(input, "fake_name");
   }).toThrow();
 });
 
-test("generateSchemaColsFromData generate the correct schema columns given a data json", () => {
+test("generateSchemaTablesFromData generate the correct schema tables given a data json", () => {
   // todo this will need to be updated as we develop the schema more
 
   let result = [];
   let targetResult = [
     {
-      id: "dateTime",
-      alias: "dateTime",
-      dataType: tableau.dataTypeEnum.string
+      id: "01646500_00060",
+      alias: "useful information will be put here",
+      columns: [
+        { id: "dateTime", alias: "dateTime", dataType: "__STRING" },
+        { id: "01646500_00060", alias: "01646500_00060", dataType: "__STRING" }
+      ]
     },
-    { id: "1_2", alias: "1_2", dataType: tableau.dataTypeEnum.string },
-    { id: "2_3", alias: "2_3", dataType: tableau.dataTypeEnum.string },
-    { id: "3_4", alias: "3_4", dataType: tableau.dataTypeEnum.string }
+    {
+      id: "01646500_00065",
+      alias: "useful information will be put here",
+      columns: [
+        { id: "dateTime", alias: "dateTime", dataType: "__STRING" },
+        { id: "01646500_00065", alias: "01646500_00065", dataType: "__STRING" }
+      ]
+    },
+    {
+      id: "05437641_00065",
+      alias: "useful information will be put here",
+      columns: [
+        { id: "dateTime", alias: "dateTime", dataType: "__STRING" },
+        { id: "05437641_00065", alias: "05437641_00065", dataType: "__STRING" }
+      ]
+    }
   ];
   let input = {
     value: {
       timeSeries: [
-        { name: "USGS:1:2" },
-        { name: "USGS:2:3" },
-        { name: "USGS:3:4" }
+        { name: "USGS:01646500:00060" },
+        { name: "USGS:01646500:00065" },
+        { name: "USGS:05437641:00065" }
       ]
     }
   };
-  result = generateSchemaColsFromData(input);
+  result = generateSchemaTablesFromData(input);
   expect(result).toEqual(targetResult);
 });

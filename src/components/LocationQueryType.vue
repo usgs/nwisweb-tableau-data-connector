@@ -26,8 +26,8 @@
             name="Location-Query-Type"
             :value="locationModeState"
           />
-          <label class="usa-radio__label" for="state"
-            >State or Territory
+          <label class="usa-radio__label" for="state">
+            State or Territory
           </label>
         </div>
       </fieldset>
