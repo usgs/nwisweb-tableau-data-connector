@@ -63,6 +63,12 @@ const generateURL = connectionData => {
       locationQuery = `&stateCd=${connectionData.state}`;
       break;
     }
+    case locationMode.COORDS: {
+      // west south east north
+      let bounds = connectionData.boundaryCoords;
+      locationQuery = `&bBox=${bounds.west},${bounds.south},${bounds.east},${bounds.north}`;
+      break;
+    }
   }
 
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}&siteStatus=all`;

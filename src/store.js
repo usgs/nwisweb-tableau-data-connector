@@ -7,7 +7,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     state: "",
-    locationMode: locationMode.SITE
+    locationMode: locationMode.SITE,
+    coordinates: {}
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     },
     changeLocationMode: (state, newLocationMode) => {
       state.locationMode = newLocationMode;
+    },
+    changeCoordinates: (state, newCoordinates) => {
+      state.coordinates = newCoordinates;
     }
   },
   actions: {},
@@ -24,6 +28,9 @@ export default new Vuex.Store({
     },
     locationMode: state => {
       return state.locationMode;
+    },
+    coordinates: state => {
+      return state.coordinates;
     }
   }
 });

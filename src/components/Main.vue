@@ -35,6 +35,7 @@
             />
             <br />
             <AutoCompleteDropDown></AutoCompleteDropDown>
+            <CoordinatesInput></CoordinatesInput>
             <LocationQueryType></LocationQueryType>
             <br />
             <button
@@ -62,6 +63,7 @@ import HeaderUSGS from "../components/HeaderUSGS";
 import FooterUSGS from "../components/FooterUSGS";
 import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
 import LocationQueryType from "../components/LocationQueryType";
+import CoordinatesInput from "../components/CoordinatesInput";
 import { states } from "./params.js";
 import { locationMode } from "../enums.js";
 /*global  tableau:true*/
@@ -77,7 +79,8 @@ export default {
     HeaderUSWDSSelections,
     FooterUSGS,
     AutoCompleteDropDown,
-    LocationQueryType
+    LocationQueryType,
+    CoordinatesInput
   },
   data: function() {
     return {
@@ -103,6 +106,7 @@ export default {
         paramNums: this.parameters,
         state: states[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,
+        boundaryCoords: this.$store.getters.coordinates,
         cached: false
       };
       tableau.connectionName = "USGS Instantaneous Values Query";

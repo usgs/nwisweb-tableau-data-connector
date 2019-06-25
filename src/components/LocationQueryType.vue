@@ -26,8 +26,21 @@
             name="Location-Query-Type"
             :value="locationModeState"
           />
-          <label class="usa-radio__label" for="state">
+          <label class="usa-radio__label" :for="locationModeState">
             State or Territory
+          </label>
+        </div>
+        <div class="usa-radio">
+          <input
+            class="usa-radio__input"
+            :id="locationModeCoords"
+            v-model="selected"
+            type="radio"
+            name="Location-Query-Type"
+            :value="locationModeCoords"
+          />
+          <label class="usa-radio__label" :for="locationModeCoords">
+            Coordinate bounding box
           </label>
         </div>
       </fieldset>
@@ -55,6 +68,9 @@ export default {
     },
     locationModeSite() {
       return locationMode.SITE;
+    },
+    locationModeCoords() {
+      return locationMode.COORDS;
     }
   }
 };
