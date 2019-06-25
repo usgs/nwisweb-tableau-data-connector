@@ -23,34 +23,43 @@ const getLongestTimesSeriesindices = timeSeries => {
 };
 
 /*
+given the table.tableInfo.id given as an argument to the getdata methods, this method
+extracts the appropriate time series. 
+*/
+const getTimeSeriesByID = (timeSeries, tableName) => {
+  let resultSeries = {};
+  let found = false;
+  timeSeries.forEach(series => {
+    if (
+      tableName == `${series.name.split(":")[1]}_${series.name.split(":")[2]}`
+    ) {
+      found = true;
+      resultSeries = series;
+    }
+  });
+  if (found) {
+    return resultSeries;
+  } else {
+    alert("Schema Mismatch Error: Missing Table");
+  }
+};
+
+/*
 Takes a JSON and returns a table formatted in accordance with the schema provided to tableau.
 */
-const formatJSONAsTable = data => {
+const formatJSONAsTable = (data, tableName) => {
   let tableData = [];
   let timeSeries = data.value.timeSeries;
-  let dataIndices = getLongestTimesSeriesindices(timeSeries);
-  let paramIndices = Array.from(timeSeries.keys());
+  let tableSeries = getTimeSeriesByID(timeSeries, tableName);
+  let paramIndices = Array.from(tableSeries.values[0].value.keys());
 
-  dataIndices.forEach(i => {
-    let newEntry = { dateTime: "unknown" };
-    paramIndices.forEach(c => {
-      try {
-        let name = timeSeries[c].name;
-        let nameTokens = name.split(":");
-        let site = nameTokens[1];
-        let paramType = nameTokens[2];
-        newEntry[site + "_" + paramType] =
-          timeSeries[c].values[0].value[i].value;
-        if (newEntry["dateTime"] == "unknown") {
-          // here we naively assume that all time series will start at the same time, and not have any gaps TODO deal with this in a sensible way
-          newEntry["dateTime"] = timeSeries[c].values[0].value[i].dateTime;
-        }
-      } catch (err) {
-        //ignore index(out of range for this parameter for this site)
-      }
-    });
+  paramIndices.forEach(i => {
+    let newEntry = {};
+    newEntry["dateTime"] = tableSeries.values[0].value[i].dateTime;
+    newEntry[tableName] = tableSeries.values[0].value[i].value;
     tableData.push(newEntry);
   });
+
   return tableData;
 };
 
@@ -78,20 +87,21 @@ const generateURL = connectionData => {
 
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}&siteStatus=all`;
 };
-/*
+
 /*
 takes query url to be sent to the NWISweb instantaneous values service and 
 generates an appropriate tableau schema.
 */
-const generateSchemaColsFromData = data => {
-  let cols = [];
-  cols.push({
-    id: "dateTime",
-    alias: "dateTime",
-    dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
-  });
+const generateSchemaTablesFromData = data => {
+  let tableList = [];
   let timeSeries = data.value.timeSeries;
   timeSeries.forEach(series => {
+    let cols = [];
+    cols.push({
+      id: "dateTime",
+      alias: "dateTime",
+      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
+    });
     let name = series.name;
     let nameTokens = name.split(":");
     let site = nameTokens[1];
@@ -102,35 +112,41 @@ const generateSchemaColsFromData = data => {
       alias: column,
       dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
     });
+    let newSchema = {
+      id: column,
+      alias: "useful information will be put here", //todo, add useful information
+      columns: cols
+    };
+    tableList.push(newSchema);
   });
-  return cols;
+  return tableList;
 };
 
-/*
-generates a URL, then fetches a json from that url and formats it in accordance with 
-the schema we have given tableau. 
-*/
 const getData = (table, doneCallback) => {
-  let url = generateURL(tableau.connectionData);
+  if (!tableau.connectionData.cached) {
+    let url = generateURL(tableau.connectionData);
 
-  get(url, "json").then(function(value) {
-    table.appendRows(formatJSONAsTable(value));
+    get(url, "json").then(function(value) {
+      tableau.connectionData.cachedData = value;
+      tableau.connectionData.cached = true;
+      table.appendRows(formatJSONAsTable(value, table.tableInfo.id));
+      doneCallback();
+    });
+  } else {
+    table.appendRows(
+      formatJSONAsTable(tableau.connectionData.cachedData, table.tableInfo.id)
+    );
     doneCallback();
-  });
+  }
 };
+
 /*
 generates a tableau schema based on the information in tableau.connectionData
 */
 const getSchema = schemaCallback => {
   let url = generateURL(tableau.connectionData);
   get(url, "json").then(function(value) {
-    let cols = generateSchemaColsFromData(value);
-    let tableSchema = {
-      id: "WaterData",
-      alias: "useful information will be put here", //todo, add useful information
-      columns: cols
-    };
-    schemaCallback([tableSchema]);
+    schemaCallback(generateSchemaTablesFromData(value));
   });
 };
 
@@ -144,7 +160,7 @@ const generateColList = (sites, params) => {
   siteList.forEach(function(site) {
     paramList.forEach(function(param) {
       // we are creating a column for each property of each site
-      columnList.push(site + "_" + param);
+      columnList.push(`${site}_${param}`);
     });
   });
   return columnList;
@@ -157,6 +173,6 @@ export {
   generateURL,
   generateColList,
   getLongestTimesSeriesindices,
-  generateSchemaColsFromData,
+  generateSchemaTablesFromData,
   locationMode
 };

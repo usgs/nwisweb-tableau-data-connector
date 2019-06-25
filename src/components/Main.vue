@@ -105,7 +105,8 @@ export default {
         siteNums: this.sites,
         paramNums: this.parameters,
         state: states[this.$store.getters.USStateName],
-        locationMode: this.activeLocationMode
+        locationMode: this.activeLocationMode,
+        cached: false
       };
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
