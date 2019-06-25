@@ -70,6 +70,10 @@ const generateURL = connectionData => {
       locationQuery = `&bBox=${bounds.west},${bounds.south},${bounds.east},${bounds.north}`;
       break;
     }
+    case locationMode.HYDRO: {
+      let hydroCode = connectionData.hydroCode;
+      locationQuery = `&huc=${hydroCode}`;
+    }
   }
 
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}&siteStatus=all`;

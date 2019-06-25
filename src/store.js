@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     state: "",
+    hydroCode: "",
     locationMode: locationMode.SITE,
     coordinates: {}
   },
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     changeCoordinates: (state, newCoordinates) => {
       state.coordinates = newCoordinates;
+    },
+    changeHydroCode: (state, newHydroCode) => {
+      state.hydroCode = newHydroCode;
     }
   },
   actions: {},
@@ -31,6 +35,9 @@ export default new Vuex.Store({
     },
     coordinates: state => {
       return state.coordinates;
+    },
+    hydroCode: state => {
+      return state.hydroCode;
     }
   }
 });
