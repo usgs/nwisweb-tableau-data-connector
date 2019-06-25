@@ -25,14 +25,12 @@
               style="width: 300px; margin: auto;"
               v-model="sites"
               :disabled="disabled"
-              placeholder="edit me"
             />
             <br />
             <label> Parameter Codes</label>
             <input
               class="usa-input"
               v-model="parameters"
-              placeholder="edit me"
               style="width: 300px; margin: auto;"
             />
             <br />
@@ -86,7 +84,6 @@ export default {
       columnList: [],
       sites: "01646500,05437641",
       parameters: "00060,00065",
-      state: "Michigan",
       activeLocationMode: locationMode.SITE
     };
   },
@@ -127,6 +124,9 @@ export default {
     store.subscribe((mutation) /*, state*/ => {
       if (mutation.type == "changeLocationMode") {
         this.activeLocationMode = store.getters.locationMode;
+        if (store.getters.locationMode != locationMode.SITE) {
+          this.sites = "";
+        }
       }
     });
   },

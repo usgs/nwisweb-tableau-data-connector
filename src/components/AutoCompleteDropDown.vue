@@ -90,6 +90,9 @@ export default {
     store.subscribe((mutation) /*, state*/ => {
       if (mutation.type == "changeLocationMode") {
         this.activeLocationMode = store.getters.locationMode;
+        if (store.getters.locationMode != locationMode.STATE) {
+          this.state = "";
+        }
       }
     });
   },

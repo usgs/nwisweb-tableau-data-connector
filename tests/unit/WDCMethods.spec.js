@@ -49,8 +49,8 @@ test("converting a fully-populated data JSON to table", () => {
     }
   };
   const targetResult = [
-    { "01646500_00060": "10800", "dateTime": "0:00" },
-    { "01646500_00060": "10800", "dateTime": "0:00" }
+    { "01646500_00060": "10800", dateTime: "0:00" },
+    { "01646500_00060": "10800", dateTime: "0:00" }
   ];
 
   expect(formatJSONAsTable(input, "01646500_00060")).toEqual(targetResult);
@@ -126,10 +126,12 @@ test("converting a non fully-populated data JSON to table", () => {
   };
   //const targetResult = [
   //  { "01646500_00060": "10800", "01647500_00062": "343" },
-   // { "01646500_00060": "10800" }
- // ];
+  // { "01646500_00060": "10800" }
+  // ];
 
-  expect(()=>{formatJSONAsTable(input, "fake_name")}).toThrow();
+  expect(() => {
+    formatJSONAsTable(input, "fake_name");
+  }).toThrow();
 });
 
 test("generateSchemaTablesFromData generate the correct schema tables given a data json", () => {
