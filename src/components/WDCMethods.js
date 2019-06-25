@@ -34,9 +34,10 @@ const formatJSONAsTable = (data, tableName) => {
   let paramIndices = Array.from(tableSeries.values[0].value.keys());
 
   paramIndices.forEach(i => {
-    let newEntry = {};
-    newEntry["dateTime"] = tableSeries.values[0].value[i].dateTime;
-    newEntry[tableName] = tableSeries.values[0].value[i].value;
+    let newEntry = {
+      dateTime: tableSeries.values[0].value[i].dateTime,
+      [tableName]: tableSeries.values[0].value[i].value
+    };
     tableData.push(newEntry);
   });
 
@@ -163,5 +164,5 @@ export {
   generateURL,
   generateColList,
   generateSchemaTablesFromData,
-  locationMode
+  getTimeSeriesByID
 };
