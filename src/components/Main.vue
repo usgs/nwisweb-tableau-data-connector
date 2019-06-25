@@ -38,6 +38,8 @@
             <br />
             <AutoCompleteDropDown></AutoCompleteDropDown>
             <LocationQueryType></LocationQueryType>
+            <SiteTypeList></SiteTypeList>
+
             <br />
             <button
               type="button"
@@ -64,8 +66,9 @@ import HeaderUSGS from "../components/HeaderUSGS";
 import FooterUSGS from "../components/FooterUSGS";
 import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
 import LocationQueryType from "../components/LocationQueryType";
-import { states } from "./params.js";
+import { states, siteTypes } from "./params.js";
 import { locationMode } from "../enums.js";
+import SiteTypeList from "../components/SiteTypeList";
 /*global  tableau:true*/
 
 export default {
@@ -79,7 +82,8 @@ export default {
     HeaderUSWDSSelections,
     FooterUSGS,
     AutoCompleteDropDown,
-    LocationQueryType
+    LocationQueryType,
+    SiteTypeList
   },
   data: function() {
     return {

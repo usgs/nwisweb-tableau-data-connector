@@ -60,4 +60,17 @@ const states = {
   Wyoming: "WY"
 };
 
-export { states };
+const siteTypes = {
+  Glacier: "GL",
+  Ocean: "OC",
+  Coastal: "OC-CO",
+  Estuary: "ES",
+  Lake: "LK",
+  Stream: "ST",
+  Canal: "ST-CA",
+  Ditch: "ST-DCH",
+  "Tidal stream": "ST-TS",
+  Spring: "SP"
+};
+
+export { states, siteTypes };
