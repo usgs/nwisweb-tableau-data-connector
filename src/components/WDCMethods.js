@@ -3,26 +3,6 @@ import { locationMode } from "../enums.js";
 /*global  tableau:true*/
 
 /*
-Given an array of timeseries objects, this function returns an array containing 
-the ordered indices of the longest timeseries object in the list. In the event 
-that the list is empty, this function throws an error.
-*/
-const getLongestTimesSeriesindices = timeSeries => {
-  if (timeSeries.length == 0) {
-    throw new Error("no time series data");
-  }
-  let result = [];
-  let length = -1;
-  timeSeries.forEach(dataSeries => {
-    if (dataSeries.values[0].value.length > length) {
-      length = dataSeries.values[0].value.length;
-      result = Array.from(dataSeries.values[0].value.keys());
-    }
-  });
-  return result;
-};
-
-/*
 given the table.tableInfo.id given as an argument to the getdata methods, this method
 extracts the appropriate time series. 
 */
@@ -40,7 +20,7 @@ const getTimeSeriesByID = (timeSeries, tableName) => {
   if (found) {
     return resultSeries;
   } else {
-    alert("Schema Mismatch Error: Missing Table");
+    throw new Error("Schema Mismatch Error: Missing Table");
   }
 };
 
@@ -122,6 +102,10 @@ const generateSchemaTablesFromData = data => {
   return tableList;
 };
 
+/*
+retrieves and caches data if it has not already been cached, otherwise only
+reads data from a cache and appropriately populates a table. 
+*/
 const getData = (table, doneCallback) => {
   if (!tableau.connectionData.cached) {
     let url = generateURL(tableau.connectionData);
@@ -172,7 +156,6 @@ export {
   formatJSONAsTable,
   generateURL,
   generateColList,
-  getLongestTimesSeriesindices,
   generateSchemaTablesFromData,
   locationMode
 };
