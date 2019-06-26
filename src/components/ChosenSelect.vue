@@ -1,16 +1,21 @@
 <template>
   <select
+    class="usa-select test"
     :data-placeholder="placeholder"
     :multiple="multiple"
     :disabled="disabled"
   >
-    <option v-for="option in localOptions" v-bind:value="option[trackBy]">
-      {{ option[label] }}
+    <option v-for="option in localOptions" v-bind:value="option.value"> 
+      {{ option.value }}
     </option>
   </select>
 </template>
 
 <script>
+//import chosen from "chosen-js"
+import $ from "jquery";
+//let $ = jQuery;
+
 export default {
   name: "ChosenSelect",
   props: {

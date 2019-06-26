@@ -2,9 +2,11 @@
   <div>
     <ChosenSelect
       id="siteSelect"
-      multiple="true"
-      v-model="item"
-      :options="list"
+      multiple
+      optgroup
+      v-model="siteType"
+      :options="listFromFile"
+      style="width: 300px; height:300px; margin: auto;"
     >
     </ChosenSelect>
   </div>
@@ -22,21 +24,24 @@ export default {
   data: function() {
     return {
       siteType: "",
-      item: null
+      listFromFile: []
     };
   },
   updated() {
-    this.$store.commit("changeUSStateName", this.state);
+    console.log(this.siteType);
+    this.$store.commit("changeSiteType", this.siteType);
   },
   mounted() {
-    get();
     let siteSelect = document.getElementById("siteSelect");
-    let listFromFile = Object.keys(siteTypes);
-    listFromFile.forEach(function(element) {
-      console.log(element);
+    this.listFromFile = Object.keys(siteTypes);
+    this.listFromFile.forEach(function(element) {
+      // if(element.charAt(0) == "@"){
+
+      // }
+      //console.log(element);
       var option = document.createElement("option");
-      var value = document.createTextNode(element);
-      option.appendChild(value);
+      option.text = element;
+      option.value = element;
       siteSelect.appendChild(option);
     });
   }
