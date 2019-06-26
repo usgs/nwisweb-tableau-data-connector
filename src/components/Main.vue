@@ -103,7 +103,6 @@ export default {
   },
   created: function() {
     this.initializeWebDataConnector();
-    console.log(JSON.stringify(paramTypes));
   },
   methods: {
     /*
@@ -130,6 +129,8 @@ export default {
             object and assigns to it the functions responsible for contructing the schema and data from query parameters. 
         */
     initializeWebDataConnector: function() {
+      const paramData =  () => import("../fetchedValues/paramTypes.json");
+      alert(JSON.stringify(paramData));
       let myConnector = tableau.makeConnector();
       myConnector.getSchema = getSchema;
       myConnector.getData = getData;
