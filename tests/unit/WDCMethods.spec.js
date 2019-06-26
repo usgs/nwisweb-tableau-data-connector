@@ -125,10 +125,6 @@ test("converting a non fully-populated data JSON to table", () => {
       ]
     }
   };
-  //const targetResult = [
-  //  { "01646500_00060": "10800", "01647500_00062": "343" },
-  // { "01646500_00060": "10800" }
-  // ];
 
   expect(() => {
     formatJSONAsTable(input, "fake_name");
