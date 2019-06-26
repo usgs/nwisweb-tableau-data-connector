@@ -5,7 +5,7 @@
     :multiple="multiple"
     :disabled="disabled"
   >
-    <option v-for="option in localOptions" v-bind:value="option.value"> 
+    <option v-for="option in localOptions" v-bind:value="option.value">
       {{ option.value }}
     </option>
   </select>

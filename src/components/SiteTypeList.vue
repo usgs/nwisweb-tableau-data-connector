@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ChosenSelect
+    <!-- <ChosenSelect
       id="siteSelect"
       multiple
       optgroup
@@ -8,18 +8,45 @@
       :options="listFromFile"
       style="width: 300px; height:300px; margin: auto;"
     >
-    </ChosenSelect>
+    </ChosenSelect> -->
+    <multiselect
+      id="siteSelect"
+      :close-on-select="false"
+      :multiple="true"
+      :taggable="true"
+      v-model="siteType"
+      :options="listFromFile"
+      tag-placeholder="Add this as new tag" 
+      placeholder="Search or add a tag" 
+      label="name" track-by="code" 
+      @tag="addTag"
+    >
+    </multiselect>
+      <pre class="language-json"><code>{{ value  }}</code></pre>
+
   </div>
 </template>
 
 <script>
-import { siteTypes, get } from "./params.js";
+import { siteTypes } from "./params.js";
 import ChosenSelect from "./ChosenSelect";
+import Multiselect from "vue-multiselect";
 
 export default {
   name: "SiteTypeList",
   components: {
-    ChosenSelect
+    ChosenSelect,
+    Multiselect
+  },
+  methods: {
+    addTag(newTag) {
+      const tag = {
+        name: newTag,
+        code: newTag.substring(0,2) + Math.floor((Math.random() * 1000000))
+      }
+      this.listFromFile.push(tag);
+      this.siteType.push(tag);
+    }
   },
   data: function() {
     return {
@@ -35,15 +62,19 @@ export default {
     let siteSelect = document.getElementById("siteSelect");
     this.listFromFile = Object.keys(siteTypes);
     this.listFromFile.forEach(function(element) {
-      // if(element.charAt(0) == "@"){
-
-      // }
-      //console.log(element);
+      console.log(element);
       var option = document.createElement("option");
       option.text = element;
       option.value = element;
+      addTag(element);
       siteSelect.appendChild(option);
     });
   }
 };
 </script>
+
+<style scoped lang="scss">
+
+</style>
+
+
