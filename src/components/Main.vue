@@ -74,6 +74,7 @@ import HUCInput from "../components/HUCInput";
 import { states } from "./params.js";
 import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
+import paramTypes from "../fetchedValues/paramTypes.json";
 
 /*global  tableau:true*/
 
@@ -102,6 +103,7 @@ export default {
   },
   created: function() {
     this.initializeWebDataConnector();
+    console.log(JSON.stringify(paramTypes));
   },
   methods: {
     /*
