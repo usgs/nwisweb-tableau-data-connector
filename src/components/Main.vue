@@ -108,7 +108,7 @@ export default {
             This function is triggered when the user presses the button to confirm their query. 
             This closes the Web Data Connector interface.
         */
-    requestData: function() {
+    requestData: async function() {
       this.columnList = generateColList(this.sites, this.parameters);
       tableau.connectionData = {
         columnList: this.columnList,
@@ -120,8 +120,8 @@ export default {
         hydroCode: this.$store.getters.hydroCode,
         cached: false
       };
-      const paramData =  () => import("../fetchedValues/paramTypes.json");
-      alert(JSON.stringify(paramData()));
+      const paramData = await import("../fetchedValues/paramTypes.json");
+      alert(JSON.stringify(paramData));
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
     },
