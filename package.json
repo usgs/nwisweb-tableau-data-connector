@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "fetch-values": "node scripts/fetchParams.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --ext .js,.vue",
     "test:unit": "vue-cli-service test:unit",
-    "production-build": "vue-cli-service test:unit && vue-cli-service build",
-    "js-add": "node scripts/fetchParams.js"
+    "production-build": "vue-cli-service fetch-values && vue-cli-service test:unit && vue-cli-service build"
   },
   "dependencies": {
     "core-js": "^2.6.5",
