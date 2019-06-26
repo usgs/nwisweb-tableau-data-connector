@@ -121,6 +121,8 @@ export default {
         hydroCode: this.$store.getters.hydroCode,
         cached: false
       };
+      const paramData =  () => import("../fetchedValues/paramTypes.json");
+      alert(JSON.stringify(paramData()));
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
     },
@@ -129,8 +131,7 @@ export default {
             object and assigns to it the functions responsible for contructing the schema and data from query parameters. 
         */
     initializeWebDataConnector: function() {
-      const paramData =  () => import("../fetchedValues/paramTypes.json");
-      alert(JSON.stringify(paramData));
+      
       let myConnector = tableau.makeConnector();
       myConnector.getSchema = getSchema;
       myConnector.getData = getData;
