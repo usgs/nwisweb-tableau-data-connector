@@ -74,6 +74,8 @@
 
 <script>
 import { locationMode } from "../enums.js";
+import { mapState } from "vuex";
+
 export default {
   name: "AutocompleteDropdown",
   data: function() {
@@ -85,15 +87,16 @@ export default {
   updated() {
     this.$store.commit("changeUSStateName", this.state);
   },
-  mounted: function() {
-    let store = this.$store;
-    store.subscribe((mutation) /*, state*/ => {
-      if (mutation.type == "changeLocationMode") {
-        this.activeLocationMode = store.getters.locationMode;
+  watch: {
+    locationMode(newValue) {
+      this.activeLocationMode = newValue;
+      if (newValue != locationMode.STATE) {
+        this.state = "";
       }
-    });
+    }
   },
   computed: {
+    ...mapState(["locationMode"]),
     disabled() {
       return this.activeLocationMode != locationMode.STATE;
     }
