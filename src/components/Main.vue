@@ -64,6 +64,8 @@ import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
 import LocationQueryType from "../components/LocationQueryType";
 import { states } from "./params.js";
 import { locationMode } from "../enums.js";
+import { mapState } from "vuex";
+
 /*global  tableau:true*/
 
 export default {
@@ -119,18 +121,16 @@ export default {
       tableau.registerConnector(myConnector);
     }
   },
-  mounted: function() {
-    let store = this.$store;
-    store.subscribe((mutation) /*, state*/ => {
-      if (mutation.type == "changeLocationMode") {
-        this.activeLocationMode = store.getters.locationMode;
-        if (store.getters.locationMode != locationMode.SITE) {
-          this.sites = "";
-        }
+  watch: {
+    locationMode(newValue) {
+      this.activeLocationMode = newValue;
+      if (newValue != locationMode.SITE) {
+        this.sites = "";
       }
-    });
+    }
   },
   computed: {
+    ...mapState(["locationMode"]),
     disabled() {
       return this.activeLocationMode != locationMode.SITE;
     }
