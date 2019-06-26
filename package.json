@@ -7,12 +7,16 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --ext .js,.vue",
     "test:unit": "vue-cli-service test:unit",
-    "production-build": "vue-cli-service test:unit && vue-cli-service build"
+    "production-build": "vue-cli-service test:unit && vue-cli-service build",
+    "js-add": "node scripts/fetchParams.js"
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "csv-parse": "^4.4.3",
+    "dom-parser": "^0.1.6",
     "vue": "^2.6.10",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
