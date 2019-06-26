@@ -22,4 +22,4 @@ yarn-error.log*
 
 #generated files
 ./src/components/params.js
-./src/fetchedValues.*
+./src/fetchedValues/*
