@@ -6,10 +6,22 @@
       v-model="state"
       :disabled="disabled"
       class="usa-input"
+      list="states"
       type="text"
       style="width: 300px; margin: auto;"
     />
-    <datalist id="states"> </datalist>
+    <datalist id="csstates"> </datalist>
+    <br />
+    <label class="autocomplete-dropdown">County</label>
+    <input
+      v-model="county"
+      :disabled="disabled"
+      class="usa-input"
+      list="counties"
+      type="text"
+      style="width: 300px; margin: auto;"
+    />
+    <datalist id="cscounties"> </datalist>
   </div>
 </template>
 
@@ -17,18 +29,21 @@
 import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
 import stateList from "../fetchedValues/states.json";
+import countyInfo from "../fetchedValues/counties.json";
 
 export default {
-  name: "AutocompleteDropdown",
+  name: "CountySelect",
   data: function() {
     return {
       state: "",
+      county: "",
       activeLocationMode: locationMode.SITE
     };
   },
   methods: {
     populateStateList: function() {
-      let dropDown = document.getElementById("states");
+      let dropDown = document.getElementById("csstates");
+      alert(JSON.stringify(stateList));
       Object.keys(stateList).forEach(element => {
         let option = document.createElement("option");
         option.text = element;
@@ -38,7 +53,7 @@ export default {
     }
   },
   updated() {
-    this.$store.commit("changeUSStateName", this.state);
+    //this.$store.commit("changeUSStateName", this.state); todo
   },
   mounted() {
     this.populateStateList();
@@ -46,7 +61,7 @@ export default {
   watch: {
     locationMode(newValue) {
       this.activeLocationMode = newValue;
-      if (newValue != locationMode.STATE) {
+      if (newValue != locationMode.COUNTY) {
         this.state = "";
       }
     }
@@ -54,7 +69,7 @@ export default {
   computed: {
     ...mapState(["locationMode"]),
     disabled() {
-      return this.activeLocationMode != locationMode.STATE;
+      return this.activeLocationMode != locationMode.COUNTY;
     }
   }
 };

@@ -56,6 +56,19 @@
             Hydrologic Unit Code
           </label>
         </div>
+        <div class="usa-radio">
+          <input
+            class="usa-radio__input"
+            :id="locationModeCounty"
+            v-model="selected"
+            type="radio"
+            name="Location-Query-Type"
+            :value="locationModeCounty"
+          />
+          <label class="usa-radio__label" :for="locationModeCounty">
+            County Code
+          </label>
+        </div>
       </fieldset>
     </form>
   </div>
@@ -82,11 +95,14 @@ export default {
     locationModeSite() {
       return locationMode.SITE;
     },
-    locationModeCoords() {
+    locationModeCoords() { 
       return locationMode.COORDS;
     },
     locationModeHydro() {
       return locationMode.HYDRO;
+    },
+    locationModeCounty() {
+      return locationMode.COUNTY;
     }
   }
 };

@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     state: "",
     hydroCode: "",
+    countyCode: "",
     locationMode: locationMode.SITE,
     coordinates: {}
   },
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     changeHydroCode: (state, newHydroCode) => {
       state.hydroCode = newHydroCode;
+    },
+    changeCountyCode: (state, newCountyCode) => {
+      state.countyCode = newCountyCode;
     }
   },
   actions: {},
@@ -38,6 +42,9 @@ export default new Vuex.Store({
     },
     hydroCode: state => {
       return state.hydroCode;
+    },
+    countyCode: state => {
+      return state.countyCode;
     }
   }
 });
