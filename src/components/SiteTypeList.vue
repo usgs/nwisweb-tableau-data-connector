@@ -11,6 +11,7 @@
     </ChosenSelect> -->
     <multiselect
       id="siteSelect"
+      class="usa-select"
       :multiple="true"
       :taggable="true"
       v-model="siteType"
@@ -83,7 +84,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  span.custom__tag {
+  // div {
+  //   display: block
+  // }
+  span.custom__tag { //blue bubble around selected sitetype
     display: inline-block;
     padding: 3px 12px;
     background: #2491ff;
@@ -92,16 +96,13 @@ export default {
     border-radius: 8px;
     cursor: pointer;
 }
-  
-  div.multiselect__tags {
-    min-height: 40px;
-    display: block;
-    padding: 8px 40px 0 8px;
-    border-radius: 5px;
-    border: 1px solid #e8e8e8;
-    background: #fff;
-    font-size: 14px;
-  }
+  // div.multiselect__tags {
+  //   min-height: 40px;
+  //   display: block;
+  //   padding: 8px 40px 0 8px;
+  //   border-radius: 5px;
+  //   font-size: 14px;
+  // }
   div.multiselect {
     min-height: 40px;
     display: block;
@@ -110,6 +111,8 @@ export default {
     border: 1px solid #e8e8e8;
     background: #fff;
     font-size: 14px;
+    width: 300px;
+    margin: auto;
   }
 </style>
 
