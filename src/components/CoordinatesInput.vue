@@ -69,17 +69,6 @@ export default {
   updated() {
     this.$store.commit("changeCoordinates", this.coordinates);
   },
-  mounted: function() {
-    let store = this.$store;
-    store.subscribe((mutation) /*, state*/ => {
-      if (mutation.type == "changeLocationMode") {
-        this.activeLocationMode = store.getters.locationMode;
-        if (store.getters.locationMode != locationMode.COORDS) {
-          this.state = "";
-        }
-      }
-    });
-  },
   watch: {
     locationMode(newValue) {
       this.activeLocationMode = newValue;
