@@ -71,7 +71,6 @@ import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
 import LocationQueryType from "../components/LocationQueryType";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
-import { states } from "./params.js";
 import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
 
@@ -99,8 +98,9 @@ export default {
       parameters: "00060,00065",
       activeLocationMode: locationMode.SITE,
       paramData: {},
+      stateData: {},
       loadedParamData: false,
-      importedSchemaFunctions: false
+      loadedStateData: false
     };
   },
   created: function() {
@@ -112,30 +112,32 @@ export default {
             This closes the Web Data Connector interface.
         */
     requestData: async function() {
+      if (!this.loadedStateData) {
+        alert(
+          "The page is still loading: please retry this action in a moment"
+        );
+      }
       this.columnList = generateColList(this.sites, this.parameters);
       tableau.connectionData = {
         columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.parameters,
-        state: states[this.$store.getters.USStateName],
+        state: this.stateData[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,
         boundaryCoords: this.$store.getters.coordinates,
         hydroCode: this.$store.getters.hydroCode,
         cached: false
       };
 
-      if (this.loadedParamData) {
-        alert(JSON.stringify(this.paramData));
-      } else {
-        alert("loading param data, please try again shortly");
-      }
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
     },
     /*
       dynamically imports parameter data 
     */
-    fetchParamData: async function() {
+    fetchData: async function() {
+      this.stateData = await import("../fetchedValues/states.json");
+      this.loadedStateData = true;
       this.paramData = await import("../fetchedValues/paramTypes.json");
       this.loadedParamData = true;
     },
@@ -152,7 +154,7 @@ export default {
   },
   mounted: function() {
     this.$nextTick(function() {
-      this.fetchParamData();
+      this.fetchData();
     });
   },
   watch: {
