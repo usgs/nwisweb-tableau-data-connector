@@ -75,6 +75,8 @@ import { states } from "./params.js";
 import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
 
+let paramData = {};
+
 /*global  tableau:true*/
 
 export default {
@@ -120,22 +122,32 @@ export default {
         hydroCode: this.$store.getters.hydroCode,
         cached: false
       };
-      const paramData = await import("../fetchedValues/paramTypes.json");
+      // const paramData = await import("../fetchedValues/paramTypes.json");
       alert(JSON.stringify(paramData));
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
+    },
+    /*
+      fetches param data after the form has loaded
+    */
+    fetchParamData: async function() {
+      paramData = await import("../fetchedValues/paramTypes.json");
     },
     /*
             this function is called when the Main.vue instance is created. It creates the web connector 
             object and assigns to it the functions responsible for contructing the schema and data from query parameters. 
         */
     initializeWebDataConnector: function() {
-      
       let myConnector = tableau.makeConnector();
       myConnector.getSchema = getSchema;
       myConnector.getData = getData;
       tableau.registerConnector(myConnector);
     }
+  },
+  mounted: function() {
+    this.$nextTick(function() {
+      this.fetchParamData();
+    });
   },
   watch: {
     locationMode(newValue) {
