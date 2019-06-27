@@ -9,72 +9,86 @@
       style="width: 300px; height:300px; margin: auto;"
     >
     </ChosenSelect> -->
-    <multiselect
+    <span id="tagHolder"></span>
+    <Multiselect
       id="siteSelect"
-      :close-on-select="false"
       :multiple="true"
       :taggable="true"
       v-model="siteType"
       :options="listFromFile"
+      aria-hidden="false"
+      :close-on-select="false"
+      :hide-selected="true"
       tag-placeholder="Add this as new tag" 
-      placeholder="Search or add a tag" 
-      label="name" track-by="code" 
-      @tag="addTag"
+      placeholder="Search for a site type" 
     >
-    </multiselect>
-      <pre class="language-json"><code>{{ value  }}</code></pre>
-
+      <option v-for="option in siteType" v-bind:key="option.value">
+        {{ option.text }}
+      </option>
+    </Multiselect>
+    
   </div>
 </template>
 
 <script>
 import { siteTypes } from "./params.js";
-import ChosenSelect from "./ChosenSelect";
+//import ChosenSelect from "./ChosenSelect";
 import Multiselect from "vue-multiselect";
 
 export default {
   name: "SiteTypeList",
   components: {
-    ChosenSelect,
+    //ChosenSelect,
     Multiselect
-  },
-  methods: {
-    addTag(newTag) {
-      const tag = {
-        name: newTag,
-        code: newTag.substring(0,2) + Math.floor((Math.random() * 1000000))
-      }
-      this.listFromFile.push(tag);
-      this.siteType.push(tag);
-    }
   },
   data: function() {
     return {
-      siteType: "",
-      listFromFile: []
+      siteType: [],
+      listFromFile: [],
     };
   },
+  methods: {
+    addTag() {
+      console.log("in addTag");
+      let tagHolder = document.getElementById("tagHolder");
+      let newSiteType = this.siteType[0];
+      let tag = document.createElement("br");
+      tag.text = newSiteType;
+      tagHolder.appendChild(tag);
+    },
+    fillList() {
+      let siteSelect = document.getElementById("siteSelect");
+      this.listFromFile = Object.keys(siteTypes);
+      this.listFromFile.forEach(function(element) {
+        let option = document.createElement("option");
+        option.text = element;
+        option.value = element;
+        siteSelect.appendChild(option);
+                //console.log(element);
+
+      });
+    }
+  },
   updated() {
-    console.log(this.siteType);
+    console.log(this.siteType +" in updated");
+    this.addTag();
     this.$store.commit("changeSiteType", this.siteType);
   },
   mounted() {
-    let siteSelect = document.getElementById("siteSelect");
-    this.listFromFile = Object.keys(siteTypes);
-    this.listFromFile.forEach(function(element) {
-      console.log(element);
-      var option = document.createElement("option");
-      option.text = element;
-      option.value = element;
-      addTag(element);
-      siteSelect.appendChild(option);
-    });
+    this.fillList();
   }
 };
 </script>
 
 <style scoped lang="scss">
-
+  Multiselect {
+          width: 300px; 
+          height:300px; 
+          margin: auto;
+  }
+  .multiselect_tag {
+    color: red;
+  }
 </style>
 
 
