@@ -36,6 +36,7 @@
             <br />
             <AutoCompleteDropDown></AutoCompleteDropDown>
             <LocationQueryType></LocationQueryType>
+            <label>Site Type</label>
             <SiteTypeList></SiteTypeList>
 
             <br />

@@ -11,11 +11,14 @@
     </ChosenSelect> -->
     <multiselect
       id="siteSelect"
-      class="usa-select"
       :multiple="true"
       :taggable="true"
       v-model="siteType"
+       :max-height="600"
       :options="listFromFile"
+      :optionHeight="40"
+      :showPointer="true"
+      :searchable="true"
       :close-on-select="false"
       :hide-selected="true"
       tag-placeholder="Add this as new tag" 
@@ -84,9 +87,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  // div {
-  //   display: block
-  // }
+  @import "../style/vue-multiselect.scss";
+
   span.custom__tag { //blue bubble around selected sitetype
     display: inline-block;
     padding: 3px 12px;
@@ -95,14 +97,30 @@ export default {
     margin-bottom: 8px;
     border-radius: 8px;
     cursor: pointer;
-}
-  // div.multiselect__tags {
-  //   min-height: 40px;
-  //   display: block;
-  //   padding: 8px 40px 0 8px;
-  //   border-radius: 5px;
-  //   font-size: 14px;
-  // }
+  }
+  //li.multiselect__element {//the dropdown list items that currently have bullets
+  span.multiselect__option {
+    display: inline-block;
+    padding: 3px 12px;
+    background: #2491ff;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+  }
+  div.multiselect__content {
+    display: inline-block;
+  }
+  div.multiselect__content-wrapper {
+    display: inline-block;
+  }
+  input.multiselect__input {
+    min-height: 40px;
+    display: block;
+    padding: 8px 40px 0 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+  }
   div.multiselect {
     min-height: 40px;
     display: block;
