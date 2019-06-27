@@ -170,13 +170,13 @@ export default {
     */
     validateCoordinateInputs: function(coordinates) {
       if (this.$store.getters.locationMode != locationMode.COORDS) return true;
-      if (isNaN(coordinates.north))
+      if (isNaN(coordinates.north) || coordinates.north == "")
         return "non-numeric northern boundary coordinate";
-      if (isNaN(coordinates.south))
+      if (isNaN(coordinates.south) || coordinates.south == "")
         return "non-numeric southern boundary coordinate";
-      if (isNaN(coordinates.east))
+      if (isNaN(coordinates.east) || coordinates.east == "")
         return "non-numeric eastern boundary coordinate";
-      if (isNaN(coordinates.west))
+      if (isNaN(coordinates.west) || coordinates.west == "")
         return "non-numeric western boundary coordinate";
       if (parseInt(coordinates.north) > 90 || parseInt(coordinates.north) < -90)
         return "out of bounds northern boundary coordinate(-90 - 90)";

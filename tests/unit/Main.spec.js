@@ -95,6 +95,33 @@ describe("Main", () => {
       west: "1",
       east: "coordinates"
     };
+    coordinates = {
+      north: "",
+      south: "1",
+      west: "1",
+      east: "2"
+    };
+    expect(wrapper.vm.validateCoordinateInputs(coordinates)).not.toBe(true);
+    coordinates = {
+      north: "1",
+      south: "",
+      west: "1",
+      east: "2"
+    };
+    expect(wrapper.vm.validateCoordinateInputs(coordinates)).not.toBe(true);
+    coordinates = {
+      north: "2",
+      south: "1",
+      west: "",
+      east: "1"
+    };
+    expect(wrapper.vm.validateCoordinateInputs(coordinates)).not.toBe(true);
+    coordinates = {
+      north: "2",
+      south: "1",
+      west: "1",
+      east: ""
+    };
     expect(wrapper.vm.validateCoordinateInputs(coordinates)).not.toBe(true);
   });
   test("validateCoorinateInputs successfully rejects out of bounds numbers", () => {
