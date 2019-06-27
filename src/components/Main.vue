@@ -101,6 +101,10 @@ export default {
             This closes the Web Data Connector interface.
         */
     requestData: function() {
+      if (!this.validateFormInputs()) {
+        return;
+      }
+
       this.columnList = generateColList(this.sites, this.parameters);
       tableau.connectionData = {
         columnList: this.columnList,
@@ -123,6 +127,52 @@ export default {
       myConnector.getSchema = getSchema;
       myConnector.getData = getData;
       tableau.registerConnector(myConnector);
+    },
+    validateFormInputs: function() {
+      let stateStatus = this.validateStateInputs(
+        this.$store.getters.USStateName
+      );
+      if (!(stateStatus === true)) {
+        alert(stateStatus);
+        return false;
+      }
+      let coordStatus = this.validateCoordinateInputs(this.$store.getters.coordinates);
+      if (!(coordStatus === true)) {
+        alert(coordStatus);
+        return false;
+      }
+      //this.roundCoordinateInputs();
+      return true;
+    },
+    validateStateInputs: function(input) {
+      if (this.$store.getters.locationMode != locationMode.STATE) return true;
+      alert(input);
+      if (!states.hasOwnProperty(input)) return "invalid state selected";
+      return true;
+    },
+    validateCoordinateInputs: function(coordinates) {
+      if (this.$store.getters.locationMode != locationMode.COORDS) return true;
+      if (isNaN(coordinates.north))
+        return "non-numeric northern boundary coordinate";
+      if (isNaN(coordinates.south))
+        return "non-numeric southern boundary coordinate";
+      if (isNaN(coordinates.east))
+        return "non-numeric eastern boundary coordinate";
+      if (isNaN(coordinates.west))
+        return "non-numeric western boundary coordinate";
+      if (coordinates.south > coordinates.north)
+        return "southern boundary coordinate is north of northern boundary coordinate";
+      if (coordinates.west < coordinates.east)
+        return "western boundary coordinate is east of eastern boundary coordinate";
+      return true;
+    },
+    roundCoordinateInputs: function() {
+      let coordinates = this.$store.getters.coordinates;
+      coordinates.north = parseInt(coordinates.north).toFixed(6);
+      coordinates.south = parseInt(coordinates.south).toFixed(6);
+      coordinates.east = parseInt(coordinates.east).toFixed(6);
+      coordinates.west = parseInt(coordinates.west).toFixed(6);
+      this.$store.commit("changeCoordinates", coordinates);
     }
   },
   watch: {
