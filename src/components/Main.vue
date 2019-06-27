@@ -161,7 +161,6 @@ export default {
     */
     validateStateInputs: function(input) {
       if (this.$store.getters.locationMode != locationMode.STATE) return true;
-      alert(input);
       if (!states.hasOwnProperty(input)) return "invalid state selected";
       return true;
     },
