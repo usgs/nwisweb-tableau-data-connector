@@ -9,24 +9,25 @@
       style="width: 300px; height:300px; margin: auto;"
     >
     </ChosenSelect> -->
-    <span id="tagHolder"></span>
-    <Multiselect
+    <multiselect
       id="siteSelect"
       :multiple="true"
       :taggable="true"
       v-model="siteType"
       :options="listFromFile"
-      aria-hidden="false"
       :close-on-select="false"
       :hide-selected="true"
       tag-placeholder="Add this as new tag" 
       placeholder="Search for a site type" 
     >
-      <option v-for="option in siteType" v-bind:key="option.value">
-        {{ option.text }}
-      </option>
-    </Multiselect>
-    
+      <template v-for="option in siteType" slot="tag" slot-scope="{ option, remove }">
+        <span class="custom__tag">
+          {{ option }}
+          <span class="custom__remove" v-on:click="remove(option)">❌</span>
+        </span>
+      </template>
+      <span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+    </multiselect>
   </div>
 </template>
 
@@ -44,17 +45,18 @@ export default {
   data: function() {
     return {
       siteType: [],
+      option: "",
       listFromFile: [],
     };
   },
   methods: {
     addTag() {
       console.log("in addTag");
-      let tagHolder = document.getElementById("tagHolder");
+      //let tagHolder = document.getElementById("tagHolder");
       let newSiteType = this.siteType[0];
       let tag = document.createElement("br");
       tag.text = newSiteType;
-      tagHolder.appendChild(tag);
+      //tagHolder.appendChild(tag);
     },
     fillList() {
       let siteSelect = document.getElementById("siteSelect");
@@ -81,14 +83,26 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  Multiselect {
-          width: 300px; 
-          height:300px; 
-          margin: auto;
+  span.custom_tag {
+    min-height: 40px;
+    display: block;
+    padding: 8px 40px 0 8px;
+    border-radius: 5px;
+    border: 1px solid red;
+    background: red;
+    font-size: 14px;
   }
-  .multiselect_tag {
-    color: red;
+  
+  div.multiselect__tag {
+    min-height: 40px;
+    display: block;
+    padding: 8px 40px 0 8px;
+    border-radius: 5px;
+    border: 1px solid red;
+    background: red;
+    font-size: 14px;
   }
+  
 </style>
 
 
