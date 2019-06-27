@@ -128,6 +128,11 @@ export default {
       myConnector.getData = getData;
       tableau.registerConnector(myConnector);
     },
+    /*
+      function which validates user form inputs and updates vuex values to a query ready format. 
+      This function should be run and observed to return true before anything in the body of requestData 
+      is run. 
+    */
     validateFormInputs: function() {
       let stateStatus = this.validateStateInputs(
         this.$store.getters.USStateName
@@ -136,20 +141,34 @@ export default {
         alert(stateStatus);
         return false;
       }
-      let coordStatus = this.validateCoordinateInputs(this.$store.getters.coordinates);
+      let coordStatus = this.validateCoordinateInputs(
+        this.$store.getters.coordinates
+      );
       if (!(coordStatus === true)) {
         alert(coordStatus);
         return false;
       }
-      //this.roundCoordinateInputs();
+      this.$store.commit(
+        "changeCoordinates",
+        this.roundCoordinateInputs(this.$store.getters.coordinates)
+      );
       return true;
     },
+    /*
+      Ensures the user has selected a valid state or territory in their query. Always
+      returns true if the current vuex locationMode setting is not STATE.
+
+    */
     validateStateInputs: function(input) {
       if (this.$store.getters.locationMode != locationMode.STATE) return true;
       alert(input);
       if (!states.hasOwnProperty(input)) return "invalid state selected";
       return true;
     },
+    /*
+      ensures that the user has entered valid coordinates. Always returns true if the 
+      current locationMode setting is not COORDS.
+    */
     validateCoordinateInputs: function(coordinates) {
       if (this.$store.getters.locationMode != locationMode.COORDS) return true;
       if (isNaN(coordinates.north))
@@ -160,19 +179,30 @@ export default {
         return "non-numeric eastern boundary coordinate";
       if (isNaN(coordinates.west))
         return "non-numeric western boundary coordinate";
-      if (coordinates.south > coordinates.north)
+      if (parseInt(coordinates.north) > 90 || parseInt(coordinates.north) < -90)
+        return "out of bounds northern boundary coordinate(-90 - 90)";
+      if (parseInt(coordinates.south) > 90 || parseInt(coordinates.south) < -90)
+        return "out of bounds southern boundary coordinate(-90 - 90)";
+      if (parseInt(coordinates.east) > 180 || parseInt(coordinates.east) < -180)
+        return "out of bounds eastern boundary coordinate(-180 - 180)";
+      if (parseInt(coordinates.west) > 180 || parseInt(coordinates.west) < -180)
+        return "out of bounds western boundary coordinate(-180 - 180)";
+      if (parseInt(coordinates.south) >= parseInt(coordinates.north))
         return "southern boundary coordinate is north of northern boundary coordinate";
-      if (coordinates.west < coordinates.east)
+      if (parseInt(coordinates.west) >= parseInt(coordinates.east))
         return "western boundary coordinate is east of eastern boundary coordinate";
+
       return true;
     },
-    roundCoordinateInputs: function() {
-      let coordinates = this.$store.getters.coordinates;
+    /*
+      rounds coordinate inputs to 6 decimal places. Called in validateFormInputs()
+    */
+    roundCoordinateInputs: function(coordinates) {
       coordinates.north = parseInt(coordinates.north).toFixed(6);
       coordinates.south = parseInt(coordinates.south).toFixed(6);
       coordinates.east = parseInt(coordinates.east).toFixed(6);
       coordinates.west = parseInt(coordinates.west).toFixed(6);
-      this.$store.commit("changeCoordinates", coordinates);
+      return coordinates;
     }
   },
   watch: {
