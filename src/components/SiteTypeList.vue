@@ -83,26 +83,34 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  span.custom_tag {
+  span.custom__tag {
+    display: inline-block;
+    padding: 3px 12px;
+    background: #2491ff;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+  
+  div.multiselect__tags {
     min-height: 40px;
     display: block;
     padding: 8px 40px 0 8px;
     border-radius: 5px;
-    border: 1px solid red;
-    background: red;
+    border: 1px solid #e8e8e8;
+    background: #fff;
     font-size: 14px;
   }
-  
-  div.multiselect__tag {
+  div.multiselect {
     min-height: 40px;
     display: block;
     padding: 8px 40px 0 8px;
     border-radius: 5px;
-    border: 1px solid red;
-    background: red;
+    border: 1px solid #e8e8e8;
+    background: #fff;
     font-size: 14px;
   }
-  
 </style>
 
 
