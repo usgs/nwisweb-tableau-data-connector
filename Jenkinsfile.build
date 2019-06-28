@@ -41,9 +41,11 @@ pipeline {
                 script {
                     if("${params.BUILD_TYPE}" == "QA") {
                         targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
+                        versionChange = "patch"
                     }
                     else {
                         targetDomain = "this would be the production site"
+                        versionChange = "minor"
                     }
                 }
                 sh """
