@@ -2,7 +2,8 @@ import {
   formatJSONAsTable,
   generateURL,
   generateColList,
-  generateSchemaTablesFromData
+  generateSchemaTablesFromData,
+  getTimeSeriesByID
 } from "../../src/components/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
 
@@ -124,14 +125,70 @@ test("converting a non fully-populated data JSON to table", () => {
       ]
     }
   };
-  //const targetResult = [
-  //  { "01646500_00060": "10800", "01647500_00062": "343" },
-  // { "01646500_00060": "10800" }
-  // ];
 
   expect(() => {
     formatJSONAsTable(input, "fake_name");
   }).toThrow();
+});
+
+test("getTimeSeriesByID  correctly gets a time series by ID", () => {
+  let timeSeries = [
+    {
+      name: "USGS:01646500:00060:00000",
+      values: [
+        {
+          value: [
+            {
+              value: "10800",
+              dateTime: "0:00"
+            },
+            {
+              value: "10800",
+              dateTime: "0:00"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "USGS:01647500:00062:00000",
+      values: [
+        {
+          value: [
+            {
+              value: "343",
+              dateTime: "0:00"
+            },
+            {
+              value: "5465",
+              dateTime: "0:00"
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  let tableName = "01647500_00062";
+  let targetResult = {
+    name: "USGS:01647500:00062:00000",
+    values: [
+      {
+        value: [
+          {
+            value: "343",
+            dateTime: "0:00"
+          },
+          {
+            value: "5465",
+            dateTime: "0:00"
+          }
+        ]
+      }
+    ]
+  };
+
+  expect(getTimeSeriesByID(timeSeries, tableName)).toEqual(targetResult);
 });
 
 test("generateSchemaTablesFromData generate the correct schema tables given a data json", () => {
