@@ -35,7 +35,7 @@ pipeline {
                 }
                 sh """
                     pwd
-                    echo 'minor' >versionNum.txt
+                    echo 'patch' >versionNum.txt
                     ls -al
                     docker build . --tag="dockerinstance"
                     docker run dockerinstance
