@@ -25,7 +25,18 @@ pipeline {
         }
         stage('build') {
             steps {
+                script {
+                    if("${params.BUILD_TYPE}" == "QA") {
+                        versionChange = "patch"
+                    }
+                    else {
+                        versionChange = "minor"
+                    }
+                }
                 sh """
+                    pwd
+                    echo 'minor' >versionNum.txt
+                    ls -al
                     docker build . --tag="dockerinstance"
                     docker run dockerinstance
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
@@ -41,15 +52,12 @@ pipeline {
                 script {
                     if("${params.BUILD_TYPE}" == "QA") {
                         targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
-                        versionChange = "patch"
                     }
                     else {
                         targetDomain = "this would be the production site"
-                        versionChange = "minor"
                     }
                 }
                 sh """
-                npm version "${versionChange}"
                 aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive
                 """
             }
