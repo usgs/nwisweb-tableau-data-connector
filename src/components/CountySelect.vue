@@ -67,6 +67,9 @@ export default {
         dropDown.appendChild(option);
       });
     },
+    storeCountySelection: function() {
+      this.$store.commit("changeCountyCode", this.county);
+    },
     getCounties: function(stateName) {
       if (!(stateName in fipsInfo)) {
         return [];
@@ -82,7 +85,7 @@ export default {
     }
   },
   updated() {
-    //this.$store.commit("changeUSStateName", this.state); todo
+    this.storeCountySelection();
   },
   mounted() {
     this.populateStateList();

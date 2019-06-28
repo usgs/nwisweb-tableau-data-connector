@@ -136,6 +136,7 @@ export default {
         locationMode: this.activeLocationMode,
         boundaryCoords: this.$store.getters.coordinates,
         hydroCode: this.$store.getters.hydroCode,
+        countyCode: this.$store.getters.countyCode,
         cached: false
       };
 

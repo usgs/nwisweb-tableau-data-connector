@@ -73,6 +73,12 @@ const generateURL = connectionData => {
     case locationMode.HYDRO: {
       let hydroCode = connectionData.hydroCode;
       locationQuery = `&huc=${hydroCode}`;
+      break;
+    }
+    case locationMode.COUNTY: {
+      let countyCode = connectionData.countyCode;
+      locationQuery = `&countyCd=${countyCode}`;
+      break;
     }
   }
 
