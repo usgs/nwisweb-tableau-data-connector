@@ -1,9 +1,9 @@
 #!/bin/bash
 
-
+versionNum=`cat versionNum.txt`
+cat versionNum.txt
 cd usr/local/bin/nwisweb-tableau-data-connector
 npm install
-versionNum=`cat versionNum.txt`
-npm version minor
+npm version "$versionNum"
 npm run production-build
 
