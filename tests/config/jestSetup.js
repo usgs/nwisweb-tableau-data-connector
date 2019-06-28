@@ -4,11 +4,16 @@ import { resolve } from "dns";
 let recentRequest = "no requests";
 global.recentRequest = recentRequest;
 
-/*global  getSchema:true*/
+//mock of alert to supress warning;
+const alert = jest.fn();
+global.window.alert = alert;
+
+/*global jest:true*/
+
 //mock of tableau module
 let tableau = {};
 tableau.makeConnector = function() {
-  return { getSchema };
+  return {};
 };
 tableau.registerConnector = function() {};
 tableau.connectionData = { columnList: [], siteNums: "", paramNums: "" };

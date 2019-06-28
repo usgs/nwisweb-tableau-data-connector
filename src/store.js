@@ -8,7 +8,10 @@ export default new Vuex.Store({
   state: {
     state: "",
     locationMode: locationMode.SITE,
-    coordinates: {}
+    coordinates: {},
+    validStateInput: false,
+    validCoordsInput: false,
+    formValidated: false
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -19,6 +22,9 @@ export default new Vuex.Store({
     },
     changeCoordinates: (state, newCoordinates) => {
       state.coordinates = newCoordinates;
+    },
+    changeFormValidationState: (state, newFormValidationState) => {
+      state.formValidated = newFormValidationState;
     }
   },
   actions: {},
@@ -31,6 +37,9 @@ export default new Vuex.Store({
     },
     coordinates: state => {
       return state.coordinates;
+    },
+    formValidated: state => {
+      return state.formValidated;
     }
   }
 });
