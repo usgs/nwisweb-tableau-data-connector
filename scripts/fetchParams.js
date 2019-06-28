@@ -151,7 +151,7 @@ let statesTemplate = `
 
 let fipsTemplate = `
 {
-  
+    "Northern Mariana Islands": "69",
     "Delaware": "10",
     "District of Columbia": "11",
     "Florida": "12",
