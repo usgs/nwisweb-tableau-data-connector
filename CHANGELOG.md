@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2019-06-28
 ### Added
 - Added CHANGELOG.md
+- Added Coordinates as a location query parameter
+- Added form input verification and corresponding test battery for site,state,and coordinate input
 
 ### Changed
 - Started tracking changes by manually adding to CHANGELOG.md
+
+
