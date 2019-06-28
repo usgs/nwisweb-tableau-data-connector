@@ -246,7 +246,7 @@ export default {
     */
     validateHydroCodeInputs: function(hydroCode) {
       if (this.$store.getters.locationMode != locationMode.HYDRO) return true;
-      let regex = /^(((\d{2})(((,(\d{8}))|){10}))|(\d{2})|(\d{10})|((\d{8})(((,(\d{8}))|){9})))$/;
+      let regex = /^(((\d{2})(((,(\d{8}))|){10}))|(\d{2})|(\d{8})|((\d{8})(((,(\d{8}))|){9})))$/;
       if (!hydroCode.replace(/\s/g, "").match(regex)) {
         return "hydrologic unit code format is invalid. You may specify up to 1 major hydrologic unit code followed by up to 10 minor hydrologic unit codes, separated by commas.";
       }
