@@ -83,9 +83,15 @@ export default {
       selected: locationMode.SITE
     };
   },
-
-  updated() {
-    this.$store.commit("changeLocationMode", this.selected);
+  methods: {
+    updateGlobalLocationMode: function(input) {
+      this.$store.commit("changeLocationMode", input);
+    }
+  },
+  watch: {
+    selected: function(newValue /*, oldValue*/) {
+      this.updateGlobalLocationMode(newValue);
+    }
   },
   computed: {
     // fastidious attention to enum correctness
@@ -95,7 +101,7 @@ export default {
     locationModeSite() {
       return locationMode.SITE;
     },
-    locationModeCoords() { 
+    locationModeCoords() {
       return locationMode.COORDS;
     },
     locationModeHydro() {
