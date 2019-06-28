@@ -49,6 +49,7 @@ pipeline {
                     }
                 }
                 sh """
+                npm version "${versionChange}"
                 aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive
                 """
             }
