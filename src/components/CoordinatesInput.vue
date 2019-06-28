@@ -51,6 +51,8 @@
 
 <script>
 import { locationMode } from "../enums.js";
+import { mapState } from "vuex";
+
 export default {
   name: "CoordinatesInput",
   data: function() {
@@ -67,18 +69,16 @@ export default {
   updated() {
     this.$store.commit("changeCoordinates", this.coordinates);
   },
-  mounted: function() {
-    let store = this.$store;
-    store.subscribe((mutation) /*, state*/ => {
-      if (mutation.type == "changeLocationMode") {
-        this.activeLocationMode = store.getters.locationMode;
-        if (store.getters.locationMode != locationMode.COORDS) {
-          this.state = "";
-        }
+  watch: {
+    locationMode(newValue) {
+      this.activeLocationMode = newValue;
+      if (newValue != locationMode.COORDS) {
+        this.coordinates = { north: "", south: "", east: "", west: "" };
       }
-    });
+    }
   },
   computed: {
+    ...mapState(["locationMode"]),
     disabled() {
       return this.activeLocationMode != locationMode.COORDS;
     }

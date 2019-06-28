@@ -9,7 +9,10 @@ export default new Vuex.Store({
     state: "",
     hydroCode: "",
     locationMode: locationMode.SITE,
-    coordinates: {}
+    coordinates: {},
+    validStateInput: false,
+    validCoordsInput: false,
+    formValidated: false
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -23,6 +26,9 @@ export default new Vuex.Store({
     },
     changeHydroCode: (state, newHydroCode) => {
       state.hydroCode = newHydroCode;
+    },
+    changeFormValidationState: (state, newFormValidationState) => {
+      state.formValidated = newFormValidationState;
     }
   },
   actions: {},
@@ -38,6 +44,9 @@ export default new Vuex.Store({
     },
     hydroCode: state => {
       return state.hydroCode;
+    },
+    formValidated: state => {
+      return state.formValidated;
     }
   }
 });
