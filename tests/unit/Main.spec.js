@@ -219,4 +219,46 @@ describe("Main", () => {
     };
     expect(wrapper.vm.validateCoordinateInputs(coordinates)).toBe(true);
   });
+  test("validateSiteInputs successfully accepts valid params", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        locationMode: () => {
+          return locationMode.SITE;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let siteList = "11111111, 11111111  , 11112222";
+    expect(wrapper.vm.validateSiteInputs(siteList)).toBe(true);
+    siteList = "11111111  , 11112222";
+    expect(wrapper.vm.validateSiteInputs(siteList)).toBe(true);
+    siteList = "11112222";
+    expect(wrapper.vm.validateSiteInputs(siteList)).toBe(true);
+  });
+  test("validateSiteInputs successfully rejects invalid params", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        locationMode: () => {
+          return locationMode.SITE;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let siteList = "11111,111, 11111111  , 11112222";
+    expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
+    siteList = "";
+    expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
+    siteList = "11112,,,,,222";
+    expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
+    siteList = "11111111 11111111";
+    expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
+    siteList = "11111111 ,11111111,1111111";
+    expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
+  });
 });

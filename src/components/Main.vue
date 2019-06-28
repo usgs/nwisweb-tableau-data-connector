@@ -148,6 +148,13 @@ export default {
         alert(coordStatus);
         return false;
       }
+
+      let siteListStatus = this.validateSiteInputs(this.sites);
+      if (!(siteListStatus === true)) {
+        alert(siteListStatus);
+        return false;
+      }
+
       this.$store.commit(
         "changeCoordinates",
         this.roundCoordinateInputs(this.$store.getters.coordinates)
@@ -202,6 +209,17 @@ export default {
       coordinates.east = parseInt(coordinates.east).toFixed(6);
       coordinates.west = parseInt(coordinates.west).toFixed(6);
       return coordinates;
+    },
+    /*
+    validates the input format of the list of site codes
+    */
+    validateSiteInputs: function(sites) {
+      if (this.$store.getters.locationMode != locationMode.SITE) return true;
+      let regex = /^((\d{8}),)*(\d{8})$/; // 1 or more comma-separated 8 digit numbers
+      if (!sites.replace(/\s/g, "").match(regex)) {
+        return "site list in invalid format";
+      }
+      return true;
     }
   },
   watch: {
