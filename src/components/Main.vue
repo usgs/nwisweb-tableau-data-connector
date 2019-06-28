@@ -141,7 +141,9 @@ export default {
         boundaryCoords: this.$store.getters.coordinates,
         hydroCode: this.$store.getters.hydroCode,
         countyCode: this.$store.getters.countyCode,
-        cached: false
+        cached: false,
+        siteTypeListActive: this.$store.getters.siteTypeListActive,
+        siteTypeList: this.$store.getters.siteType,
       };
 
       tableau.connectionName = "USGS Instantaneous Values Query";

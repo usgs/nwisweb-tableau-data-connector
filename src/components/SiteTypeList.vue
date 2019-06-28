@@ -13,7 +13,7 @@
       id="siteSelect"
       :multiple="true"
       :taggable="true"
-      v-model="siteType"
+      v-model="selectedSiteType"
        :max-height="600"
       :options="listFromFile"
       :optionHeight="40"
@@ -24,7 +24,7 @@
       tag-placeholder="Add this as new tag" 
       placeholder="Search for a site type" 
     >
-      <template v-for="option in siteType" slot="tag" slot-scope="{ option, remove }">
+      <template v-for="option in selectedSiteType" slot="tag" slot-scope="{ option, remove }">
         <span class="custom__tag">
           {{ option }}
           <span class="custom__remove" v-on:click="remove(option)">❌</span>
@@ -37,51 +37,48 @@
 
 <script>
 import { siteTypes } from "./params.js";
-//import ChosenSelect from "./ChosenSelect";
 import Multiselect from "vue-multiselect";
 
 export default {
   name: "SiteTypeList",
   components: {
-    //ChosenSelect,
     Multiselect
   },
   data: function() {
     return {
-      siteType: [],
+      selectedSiteType: [], //site types the user has clicked on
+      STCodes: [], //holds STCodes of sites that user has selected
       option: "",
-      listFromFile: [],
+      listFromFile: [], //list of keys from siteTypes in param.js
     };
   },
   methods: {
-    addTag() {
-      console.log("in addTag");
-      //let tagHolder = document.getElementById("tagHolder");
-      let newSiteType = this.siteType[0];
-      let tag = document.createElement("br");
-      tag.text = newSiteType;
-      //tagHolder.appendChild(tag);
-    },
-    fillList() {
+    fillDropdown() {
       let siteSelect = document.getElementById("siteSelect");
       this.listFromFile = Object.keys(siteTypes);
       this.listFromFile.forEach(function(element) {
+      //siteTypes.forEach(function(element) {
         let option = document.createElement("option");
-        option.text = element;
-        option.value = element;
+        option.text = siteTypes[element];
+        //alert(siteTypes[element]);
+        option.value = siteTypes[element];
         siteSelect.appendChild(option);
                 //console.log(element);
 
       });
-    }
+    },
+    fill
   },
   updated() {
-    console.log(this.siteType +" in updated");
-    this.addTag();
-    this.$store.commit("changeSiteType", this.siteType);
+    let self = this;
+    if(this.selectedSiteType.length > 0) {
+      this.STCodes.push(siteTypes[this.selectedSiteType[this.selectedSiteType.length-1]]);
+    }
+    this.$store.commit("changeSiteTypeListActive", true);
+    this.$store.commit("changeSiteType", this.STCodes);
   },
   mounted() {
-    this.fillList();
+    this.fillDropdown();
   }
 };
 </script>

@@ -1,5 +1,6 @@
 import { get } from "../utils.js";
 import { locationMode } from "../enums.js";
+
 /*global  tableau:true*/
 
 /*
@@ -53,6 +54,7 @@ const generateURL = connectionData => {
   let paramQuery = `&parameterCd=${paramList.join()}`;
 
   let locationQuery = "";
+  let siteTypeQuery = "";
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -82,7 +84,13 @@ const generateURL = connectionData => {
     }
   }
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}&siteStatus=all`;
+  if (connectionData.siteTypeListActive) {
+    let siteType = connectionData.siteTypeList.join(",");
+    siteTypeQuery = `&siteType=${siteType}`;
+    alert(siteTypeQuery);
+  }
+
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}&siteStatus=all`;
 };
 
 /*

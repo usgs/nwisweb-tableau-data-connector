@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     state: "",
+    siteTypeListActive: false,
     siteType: "",
     hydroCode: "",
     countyCode: "",
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     changeLocationMode: (state, newLocationMode) => {
       state.locationMode = newLocationMode;
+    },
+    changeSiteTypeListActive: (state, siteTypeListActive) => {
+      state.siteTypeListActive = siteTypeListActive;
     },
     changeSiteType: (state, siteType) => {
       state.siteType = siteType;
@@ -46,6 +50,9 @@ export default new Vuex.Store({
     },
     siteType: state => {
       return state.siteType;
+    },
+    siteTypeListActive: state => {
+      return state.siteTypeListActive;
     },
     coordinates: state => {
       return state.coordinates;
