@@ -10,6 +10,5 @@ npm version patch
 
 git add .
 git commit -m "automated version number update"
-git push origin autoversion-test
 npm run production-build
 
