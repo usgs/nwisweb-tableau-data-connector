@@ -6,7 +6,6 @@ versionNum=`cat versionNum.txt`
 cat versionNum.txt
 cd usr/local/bin/nwisweb-tableau-data-connector
 npm install
-bumpversion major
-npm version patch
+bumpversion major --allow-dirty
 npm run production-build
 
