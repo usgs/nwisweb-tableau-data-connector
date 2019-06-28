@@ -262,7 +262,6 @@ describe("Main", () => {
     expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
   });
 
-
   test("validateHydroCodeInputs successfully accepts valid params", () => {
     store = new Vuex.Store({
       state: {},
@@ -281,9 +280,11 @@ describe("Main", () => {
     expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).toBe(true);
     hydroCode = "11111111";
     expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).toBe(true);
-    hydroCode = "11,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
+    hydroCode =
+      "11,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
     expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).toBe(true);
-    hydroCode = "11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
+    hydroCode =
+      "11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
     expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).toBe(true);
   });
 
@@ -305,15 +306,14 @@ describe("Main", () => {
     expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
     hydroCode = "1111111111";
     expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
-    hydroCode = "11,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
+    hydroCode =
+      "11,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
     expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
-    hydroCode = "11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
+    hydroCode =
+      "11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
     expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
-    hydroCode = "11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,111111111";
+    hydroCode =
+      "11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,111111111";
     expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
-
   });
-
-
-
 });
