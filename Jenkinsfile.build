@@ -34,7 +34,7 @@ pipeline {
                     }
                 }
                 sh """
-                    echo 'patch' >versionNum.txt
+                    echo "patch" >versionNum.txt
                     docker build . --tag="dockerinstance"
                     docker run dockerinstance
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
