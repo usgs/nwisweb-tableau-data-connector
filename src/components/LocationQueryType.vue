@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="usa-form">
+    <form :key="selected" class="usa-form">
       <fieldset class="usa-fieldset">
         <legend class="usa-sr-only">Location Query Type</legend>
         <div class="usa-radio">
@@ -26,8 +26,47 @@
             name="Location-Query-Type"
             :value="locationModeState"
           />
-          <label class="usa-radio__label" for="state">
+          <label class="usa-radio__label" :for="locationModeState">
             State or Territory
+          </label>
+        </div>
+        <div class="usa-radio">
+          <input
+            class="usa-radio__input"
+            :id="locationModeCoords"
+            v-model="selected"
+            type="radio"
+            name="Location-Query-Type"
+            :value="locationModeCoords"
+          />
+          <label class="usa-radio__label" :for="locationModeCoords">
+            Coordinate Bounding Box
+          </label>
+        </div>
+        <div class="usa-radio">
+          <input
+            class="usa-radio__input"
+            :id="locationModeHydro"
+            v-model="selected"
+            type="radio"
+            name="Location-Query-Type"
+            :value="locationModeHydro"
+          />
+          <label class="usa-radio__label" :for="locationModeHydro">
+            Hydrologic Unit Code
+          </label>
+        </div>
+        <div class="usa-radio">
+          <input
+            class="usa-radio__input"
+            :id="locationModeCounty"
+            v-model="selected"
+            type="radio"
+            name="Location-Query-Type"
+            :value="locationModeCounty"
+          />
+          <label class="usa-radio__label" :for="locationModeCounty">
+            County Code
           </label>
         </div>
       </fieldset>
@@ -44,9 +83,15 @@ export default {
       selected: locationMode.SITE
     };
   },
-
-  updated() {
-    this.$store.commit("changeLocationMode", this.selected);
+  methods: {
+    updateGlobalLocationMode: function(input) {
+      this.$store.commit("changeLocationMode", input);
+    }
+  },
+  watch: {
+    selected: function(newValue /*, oldValue*/) {
+      this.updateGlobalLocationMode(newValue);
+    }
   },
   computed: {
     // fastidious attention to enum correctness
@@ -55,6 +100,15 @@ export default {
     },
     locationModeSite() {
       return locationMode.SITE;
+    },
+    locationModeCoords() {
+      return locationMode.COORDS;
+    },
+    locationModeHydro() {
+      return locationMode.HYDRO;
+    },
+    locationModeCounty() {
+      return locationMode.COUNTY;
     }
   }
 };

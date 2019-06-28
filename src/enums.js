@@ -4,7 +4,10 @@ Note that these location query modes are mutually exclusive.
 */
 const locationMode = {
   SITE: "site",
-  STATE: "state"
+  STATE: "state",
+  COORDS: "coordinates",
+  HYDRO: "hydrological unit code",
+  COUNTY: "county"
 };
 
 export { locationMode };

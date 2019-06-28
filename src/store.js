@@ -7,8 +7,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     state: "",
+    siteType: "",
+    hydroCode: "",
+    countyCode: "",
     locationMode: locationMode.SITE,
-    siteType: ""
+    coordinates: {},
+    validStateInput: false,
+    validCoordsInput: false,
+    formValidated: false
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -19,6 +25,15 @@ export default new Vuex.Store({
     },
     changeSiteType: (state, siteType) => {
       state.siteType = siteType;
+    },
+    changeCoordinates: (state, newCoordinates) => {
+      state.coordinates = newCoordinates;
+    },
+    changeHydroCode: (state, newHydroCode) => {
+      state.hydroCode = newHydroCode;
+    },
+    changeCountyCode: (state, newCountyCode) => {
+      state.countyCode = newCountyCode;
     }
   },
   actions: {},
@@ -31,6 +46,15 @@ export default new Vuex.Store({
     },
     siteType: state => {
       return state.siteType;
+    },
+    coordinates: state => {
+      return state.coordinates;
+    },
+    hydroCode: state => {
+      return state.hydroCode;
+    },
+    countyCode: state => {
+      return state.countyCode;
     }
   }
 });

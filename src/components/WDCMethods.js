@@ -45,7 +45,7 @@ const formatJSONAsTable = (data, tableName) => {
 };
 
 /*
-generates a URL for query paramaters contained in the connectionData object accepted as an argument
+generates a URL for query parameters contained in the connectionData object accepted as an argument
 */
 const generateURL = connectionData => {
   //todo standardize this template's format when we add more query info fields
@@ -62,6 +62,22 @@ const generateURL = connectionData => {
     }
     case locationMode.STATE: {
       locationQuery = `&stateCd=${connectionData.state}`;
+      break;
+    }
+    case locationMode.COORDS: {
+      // west south east north
+      let bounds = connectionData.boundaryCoords;
+      locationQuery = `&bBox=${bounds.west},${bounds.south},${bounds.east},${bounds.north}`;
+      break;
+    }
+    case locationMode.HYDRO: {
+      let hydroCode = connectionData.hydroCode;
+      locationQuery = `&huc=${hydroCode}`;
+      break;
+    }
+    case locationMode.COUNTY: {
+      let countyCode = connectionData.countyCode;
+      locationQuery = `&countyCd=${countyCode}`;
       break;
     }
   }
