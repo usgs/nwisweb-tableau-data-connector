@@ -249,7 +249,7 @@ export default {
     */
     validateSiteInputs: function(sites) {
       if (this.$store.getters.locationMode != locationMode.SITE) return true;
-      let regex = /^((\d{8}),)*(\d{8})$/; // 1 or more comma-separated 8 digit numbers
+      let regex = /^((\d+),)*(\d+)$/; // 1 or more comma-separated 8 digit numbers
       if (!sites.replace(/\s/g, "").match(regex)) {
         return "site list in invalid format";
       }
