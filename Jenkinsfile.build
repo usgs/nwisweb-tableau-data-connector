@@ -31,14 +31,10 @@ pipeline {
                     if("${params.RELEASE_TYPE}" == "Release") {
                         versionChange = "minor"
                     }
-                    else {
-                        tagType = "Snapshot"
-                    }
                 }
                 
                 sh """
                     echo "${versionChange}" >versionNum.txt
-                    ls -al
                     docker build . --tag="dockerinstance"
                     docker run dockerinstance
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
