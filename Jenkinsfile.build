@@ -31,6 +31,9 @@ pipeline {
                     if("${params.RELEASE_TYPE}" == "Release") {
                         versionChange = "minor"
                     }
+                    else {
+                        tagType = "Snapshot"
+                    }
                 }
                 
                 sh """
@@ -48,7 +51,7 @@ pipeline {
 
                 sshagent (credentials: ['wma-eto-eb-rsa']) {
                     sh """ 
-                        git tag `cat newVerNum.txt`-"${params.RELEASE_TYPE}"
+                        git tag `cat newVerNum.txt` "${tagType}
                         git add .
                         git commit -m "automatic version number increment"
                         git pull origin autoversion-test
