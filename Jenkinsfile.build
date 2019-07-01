@@ -56,7 +56,7 @@ pipeline {
                         git commit -m "automatic version number increment"
                         git pull origin autoversion-test
                         git show-ref
-                        git push -u origin autoversion-test
+                        git push -u origin HEAD:autoversion-test
                     """
                 }
             }
