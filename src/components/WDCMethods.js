@@ -76,7 +76,7 @@ const generateURL = connectionData => {
       break;
     }
     case locationMode.COUNTY: {
-      let countyCode = connectionData.countyCode;
+      let countyCode = connectionData.countyCode.join(",");
       locationQuery = `&countyCd=${countyCode}`;
       break;
     }
