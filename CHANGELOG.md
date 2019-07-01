@@ -7,10 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <div>
   <b>Current Version: </b>
   <b id="version"></b>
+    <script>
+        document.getElementById("version").innerHTML = process.env.npm_package_version;
+    </script>
 </div>
-<script>
-    document.getElementById("version").innerHTML = process.env.npm_package_version;
-</script>
 
 ## [Unreleased]
 
