@@ -28,6 +28,7 @@ pipeline {
         stage('build') {
             steps {
                 script {
+                    versionChange = ""
                     if("${params.RELEASE_TYPE}" == "Release") {
                         versionChange = "minor"
                     }
