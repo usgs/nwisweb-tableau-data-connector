@@ -11,8 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added CHANGELOG.md
 - Added Coordinates as a location query parameter
 - Added form input verification and corresponding test battery for site,state,and coordinate input
-
+- inactive location parameter forms are now hidden
+- added input form for hydrological unit codes
+- added input form for up to 10 counties
 ### Changed
-- Started tracking changes by manually adding to CHANGELOG.md
 
 

@@ -30,9 +30,12 @@ export default new Vuex.Store({
     },
     changeCountyCode: (state, newCountyCode) => {
       state.countyCode = newCountyCode;
+<<<<<<< HEAD
     },
     changeFormValidationState: (state, newFormValidationState) => {
       state.formValidated = newFormValidationState;
+=======
+>>>>>>> dev-county
     }
   },
   actions: {},
@@ -51,9 +54,12 @@ export default new Vuex.Store({
     },
     countyCode: state => {
       return state.countyCode;
+<<<<<<< HEAD
     },
     formValidated: state => {
       return state.formValidated;
+=======
+>>>>>>> dev-county
     }
   }
 });

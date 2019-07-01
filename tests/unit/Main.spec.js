@@ -317,5 +317,13 @@ describe("Main", () => {
     hydroCode =
       "11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,111111111";
     expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode = "11,1111111a,11111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode = "1f";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode = "1111111f";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode = "1111111.";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
   });
 });

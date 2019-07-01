@@ -88,7 +88,7 @@ export default {
         dropDown.appendChild(option);
       });
     },
-    storeCountySelection: function() {
+    commitCountySelection: function() {
       this.$store.commit("changeCountyCode", this.counties);
     },
     getCounties: function(stateName) {
@@ -141,7 +141,7 @@ export default {
     }
   },
   updated() {
-    this.storeCountySelection();
+    this.commitCountySelection();
   },
   mounted() {
     this.populateStateList();
@@ -151,6 +151,8 @@ export default {
       this.activeLocationMode = newValue;
       if (newValue != locationMode.COUNTY) {
         this.state = "";
+        this.county = "";
+        this.counties = [];
       }
     },
     state: function() {
