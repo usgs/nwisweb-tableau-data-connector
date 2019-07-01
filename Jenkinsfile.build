@@ -11,16 +11,6 @@ pipeline {
     triggers {
         pollSCM('H/5 * * * *')
     }
-    sshagent (credentials: ['wma-eto-eb-rsa']) {
-                    sh """ 
-                        git add .
-                        git commit -m "automatic version number increment"
-                        git remote add origin git@code.usgs.gov:water/nwisweb-tableau-data-connector.git
-                        git pull origin autoversion-test
-                        git show-ref
-                        git push -u origin autoversion-test
-                    """
-                }
 
     stages {
         stage('clean workspace'){
@@ -64,6 +54,8 @@ pipeline {
                     sh """ 
                         git add .
                         git commit -m "automatic version number increment"
+                        git remote add origin git@code.usgs.gov:water/nwisweb-tableau-data-connector.git
+                        git pull origin autoversion-test
                         git show-ref
                         git push -u origin autoversion-test
                     """
