@@ -53,6 +53,7 @@ pipeline {
                     sh """ 
                         git add .
                         git commit -m "automatic version number increment"
+                        git remote add origin git@code.usgs.gov:water/nwisweb-tableau-data-connector.git
                         git push origin autoversion-test
                     """
                 }
