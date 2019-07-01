@@ -49,9 +49,16 @@ pipeline {
                     docker rm "\${dockerinstanceid}"            
                 """
 
+                script {
+                    if("${params.RELEASE_TYPE}" == "Release") {
+                        sh """
+                            git tag `cat newVerNum.txt`
+                        """
+                    }
+                }
+
                 sshagent (credentials: ['wma-eto-eb-rsa']) {
                     sh """ 
-                        git tag `cat newVerNum.txt` "${tagType}
                         git add .
                         git commit -m "automatic version number increment"
                         git pull origin autoversion-test
