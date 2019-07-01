@@ -1,12 +1,11 @@
 #!/bin/bash
 
+cd usr/local/bin/nwisweb-tableau-data-connector
 pwd
 ls -al
 versionNum=`cat versionNum.txt`
 cat versionNum.txt
-cd usr/local/bin/nwisweb-tableau-data-connector
 npm install
 npm --no-git-tag-version version patch --force
-
 npm run production-build
 
