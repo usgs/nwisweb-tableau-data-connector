@@ -45,6 +45,7 @@ pipeline {
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/package.json" $WORKSPACE
                     ls -al
                     cat package.json
+                    git branch
                     git add .
                     git commit -m "automatic version bump"
                 """
