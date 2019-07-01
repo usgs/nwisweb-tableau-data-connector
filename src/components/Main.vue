@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { getData, getSchema, generateColList } from "./WDCMethods.js";
+import { getData, getSchema, generateColList } from "../WDCMethods.js";
 import HeaderUSWDSBanner from "../components/HeaderUSWDSBanner";
 import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
 import HeaderUSGS from "../components/HeaderUSGS";

@@ -1,5 +1,5 @@
-import { get } from "../utils.js";
-import { locationMode } from "../enums.js";
+import { get } from "./utils.js";
+import { locationMode } from "./enums.js";
 /*global  tableau:true*/
 
 /*

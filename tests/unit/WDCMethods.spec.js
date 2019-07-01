@@ -4,7 +4,7 @@ import {
   generateColList,
   generateSchemaTablesFromData,
   getTimeSeriesByID
-} from "../../src/components/WDCMethods.js";
+} from "../../src/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
 
 test("converting a fully-populated data JSON to table", () => {
