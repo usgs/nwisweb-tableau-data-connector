@@ -44,10 +44,7 @@ pipeline {
                     dockerinstanceid=\$( docker ps -l -q )
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/package.json" $WORKSPACE
-                    ls -al
-                    cat package.json
-                    git branch
-                    
+                    docker rm "\${dockerinstanceid}"            
                 """
 
                 sshagent (credentials: ['wma-eto-eb-rsa']) {
@@ -55,7 +52,6 @@ pipeline {
                         git add .
                         git commit -m "automatic version number increment"
                         git pull origin autoversion-test
-                        git show-ref
                         git push -u origin HEAD:autoversion-test
                     """
                 }
