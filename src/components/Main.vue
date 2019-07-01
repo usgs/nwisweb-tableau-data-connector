@@ -182,21 +182,21 @@ export default {
     */
     validateCoordinateInputs: function(coordinates) {
       if (this.$store.getters.locationMode != locationMode.COORDS) return true;
-      if (isNaN(coordinates.north) || coordinates.north == "")
+      if (!this.isNumeric(coordinates.north))
         return "non-numeric northern boundary coordinate";
-      if (isNaN(coordinates.south) || coordinates.south == "")
+      if (!this.isNumeric(coordinates.south))
         return "non-numeric southern boundary coordinate";
-      if (isNaN(coordinates.east) || coordinates.east == "")
+      if (!this.isNumeric(coordinates.east))
         return "non-numeric eastern boundary coordinate";
-      if (isNaN(coordinates.west) || coordinates.west == "")
+      if (!this.isNumeric(coordinates.west))
         return "non-numeric western boundary coordinate";
-      if (parseInt(coordinates.north) > 90 || parseInt(coordinates.north) < -90)
+      if (!this.isWithinLongitudeBounds(coordinates.north))
         return "out of bounds northern boundary coordinate(-90 - 90)";
-      if (parseInt(coordinates.south) > 90 || parseInt(coordinates.south) < -90)
-        return "out of bounds southern boundary coordinate(-90 - 90)";
-      if (parseInt(coordinates.east) > 180 || parseInt(coordinates.east) < -180)
+      if (!this.isWithinLongitudeBounds(coordinates.south))
+        return "out of bounds south boundary coordinate(-90 - 90)";
+      if (!this.isWithinLatitudeBounds(coordinates.east))
         return "out of bounds eastern boundary coordinate(-180 - 180)";
-      if (parseInt(coordinates.west) > 180 || parseInt(coordinates.west) < -180)
+      if (!this.isWithinLatitudeBounds(coordinates.west))
         return "out of bounds western boundary coordinate(-180 - 180)";
       if (parseInt(coordinates.south) >= parseInt(coordinates.north))
         return "southern boundary coordinate is north of northern boundary coordinate";
@@ -204,6 +204,17 @@ export default {
         return "western boundary coordinate is east of eastern boundary coordinate";
 
       return true;
+    },
+    isNumeric: function(value) {
+      return !isNaN(value) && value != "";
+    },
+    isWithinLatitudeBounds: function(latitude) {
+      let numericLatitude = parseInt(latitude);
+      return numericLatitude > -180 && numericLatitude < 180;
+    },
+    isWithinLongitudeBounds: function(longitude) {
+      let numericLongitude = parseInt(longitude);
+      return numericLongitude > -90 && numericLongitude < 90;
     },
     /*
       rounds coordinate inputs to 6 decimal places. Called in validateFormInputs()
