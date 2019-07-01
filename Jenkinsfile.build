@@ -9,6 +9,7 @@ pipeline {
         choice(choices: ['QA', 'prod'], description: 's3 bucket that the build will target', name: 'BUILD_DEST')
         choice(choices: ['Release', 'Snapshot'], description: 'type of release', name: 'RELEASE_TYPE')
     }
+
     triggers {
         pollSCM('H/5 * * * *')
     }
@@ -27,16 +28,13 @@ pipeline {
         stage('build') {
             steps {
                 script {
-                    if("${params.BUILD_DEST}" == "QA") {
-                        versionChange = "patch"
-                    }
-                    else {
+                    if("${params.RELEASE_TYPE}" == "Release") {
                         versionChange = "minor"
                     }
                 }
                 
                 sh """
-                    echo "patch" >versionNum.txt
+                    echo "${versionChange}" >versionNum.txt
                     pwd
                     ls -al
                     docker build . --tag="dockerinstance"
