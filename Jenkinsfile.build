@@ -47,7 +47,6 @@ pipeline {
                     cat package.json
                     git add .
                     git commit -m "automatic version bump"
-                    docker rm "\${dockerinstanceid}"
                 """
                 script {
                     sshagent (credentials: ['wma-eto-eb-rsa']) {
