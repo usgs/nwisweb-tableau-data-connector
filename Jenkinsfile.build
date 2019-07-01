@@ -47,7 +47,6 @@ pipeline {
                     cat package.json
                     git add .
                     git commit -m "automatic version bump"
-                    git push origin autoversion-test
                     docker rm "\${dockerinstanceid}"
                 """
                 script {
