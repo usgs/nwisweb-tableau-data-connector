@@ -42,7 +42,7 @@ pipeline {
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
                     dockerinstanceid=\$( docker ps -l -q )
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
-                    docker cp  "\${dockerinstanceid}/usr/local/bin/nwisweb-tableau-data-connector/package.json $WORKSPACE
+                    docker cp  "\${dockerinstanceid}/usr/local/bin/nwisweb-tableau-data-connector/package.json" $WORKSPACE
                     ls -al
                     docker rm "\${dockerinstanceid}"
                 """
