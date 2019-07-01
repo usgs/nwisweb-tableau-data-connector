@@ -50,6 +50,11 @@ pipeline {
                     git push origin autoversion-test
                     docker rm "\${dockerinstanceid}"
                 """
+                script {
+                    sshagent (credentials: ['wma-eto-eb-rsa']) {
+                        sh "git push origin autoversion-test"
+                    }
+                }
             }
 
         }
