@@ -13,6 +13,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added form input verification and corresponding test battery for site,state,and coordinate input
 - inactive location parameter forms are now hidden
 ### Changed
-- Started tracking changes by manually adding to CHANGELOG.md
 
 
