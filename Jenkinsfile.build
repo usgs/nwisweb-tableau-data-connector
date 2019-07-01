@@ -33,6 +33,16 @@ pipeline {
                         versionChange = "minor"
                     }
                 }
+                sshagent (credentials: ['wma-eto-eb-rsa']) {
+                    sh """ 
+                        git add .
+                        git commit -m "automatic version number increment"
+                        git remote add origin git@code.usgs.gov:water/nwisweb-tableau-data-connector.git
+                        git pull origin autoversion-test
+                        git show-ref
+                        git push -u origin autoversion-test
+                    """
+                }
                 sh """
                     echo "patch" >versionNum.txt
                     pwd
@@ -54,7 +64,7 @@ pipeline {
                         git add .
                         git commit -m "automatic version number increment"
                         git show-ref
-                        git push origin autoversion-test
+                        git push -u origin autoversion-test
                     """
                 }
             }
