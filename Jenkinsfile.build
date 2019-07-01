@@ -32,7 +32,6 @@ pipeline {
                     else {
                         versionChange = "minor"
                     }
-                    withCredentials([string(credentialsId: 'ep', variable: 'TOKEN')])
                 }
                 sh """
                     echo "patch" >versionNum.txt
