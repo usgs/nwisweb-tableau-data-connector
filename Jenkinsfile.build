@@ -35,7 +35,6 @@ pipeline {
                 
                 sh """
                     echo "${versionChange}" >versionNum.txt
-                    pwd
                     ls -al
                     docker build . --tag="dockerinstance"
                     docker run dockerinstance
