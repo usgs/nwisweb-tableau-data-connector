@@ -107,14 +107,14 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
   );
 });
 
-test("correctly generate a URL given a hydrological Unit Code", () => {
+test("correctly generate a URL given a list of counties", () => {
   const connectionData = {
     paramNums: "00060,00065",
-    countyCode: "26161",
+    countyCode: [11111,22222],
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=26161&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=all"
   );
 });
 
