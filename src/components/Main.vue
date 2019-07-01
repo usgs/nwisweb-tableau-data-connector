@@ -254,12 +254,6 @@ export default {
         return "site list in invalid format";
       }
       return true;
-    },
-    /*
-      validates the list of counties input by the user
-    */
-    validateCountyInputs: function(counties) {
-      //placeholder for now todo
     }
   },
   mounted: function() {

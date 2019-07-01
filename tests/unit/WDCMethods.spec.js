@@ -110,7 +110,7 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
 test("correctly generate a URL given a list of counties", () => {
   const connectionData = {
     paramNums: "00060,00065",
-    countyCode: [11111,22222],
+    countyCode: [11111, 22222],
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
