@@ -168,33 +168,29 @@ export default {
       is run. 
     */
     validateFormInputs: function() {
-      let queryMode = this.$store.getters.locationMode;
       let stateStatus = this.validateStateInputs(
-        this.$store.getters.USStateName,
-        queryMode
+        this.$store.getters.USStateName
       );
       if (!(stateStatus === true)) {
         alert(stateStatus);
         return false;
       }
       let coordStatus = this.validateCoordinateInputs(
-        this.$store.getters.coordinates,
-        queryMode
+        this.$store.getters.coordinates
       );
       if (!(coordStatus === true)) {
         alert(coordStatus);
         return false;
       }
 
-      let siteListStatus = this.validateSiteInputs(this.sites, queryMode);
+      let siteListStatus = this.validateSiteInputs(this.sites);
       if (!(siteListStatus === true)) {
         alert(siteListStatus);
         return false;
       }
 
       let HydroCodeStatus = this.validateHydroCodeInputs(
-        this.$store.getters.hydroCode,
-        queryMode
+        this.$store.getters.hydroCode
       );
       if (!(HydroCodeStatus === true)) {
         alert(HydroCodeStatus);
@@ -212,8 +208,8 @@ export default {
       returns true if the current vuex locationMode setting is not STATE.
 
     */
-    validateStateInputs: function(input, queryMode) {
-      if (queryMode != locationMode.STATE) return true;
+    validateStateInputs: function(input, this) {
+      if (this.$store.getters.locationMode != locationMode.STATE) return true;
       if (!(input in this.stateData)) return "invalid state selected";
       return true;
     },
@@ -221,8 +217,8 @@ export default {
       ensures that the user has entered valid coordinates. Always returns true if the 
       current locationMode setting is not COORDS.
     */
-    validateCoordinateInputs: function(coordinates, queryMode) {
-      if (queryMode != locationMode.COORDS) return true;
+    validateCoordinateInputs: function(coordinates,this) {
+      if (this.$store.getters.locationMode != locationMode.COORDS) return true;
       if (!this.isNumeric(coordinates.north))
         return "non-numeric northern boundary coordinate";
       if (!this.isNumeric(coordinates.south))
@@ -270,8 +266,8 @@ export default {
     /*
     validates the input format of the list of site codes
     */
-    validateSiteInputs: function(sites, queryMode) {
-      if (queryMode != locationMode.SITE) return true;
+    validateSiteInputs: function(sites,this) {
+      if (this.$store.getters.locationMode != locationMode.SITE) return true;
       let regex = /^((\d+),)*(\d+)$/; // 1 or more comma-separated 8 digit numbers
       if (!sites.replace(/\s/g, "").match(regex)) {
         return "site list in invalid format";
@@ -284,8 +280,8 @@ export default {
       A minor HUCs must be 8 digits long."
       Above excerpt taken from waterservices.usgs.com
     */
-    validateHydroCodeInputs: function(hydroCode, queryMode) {
-      if (queryMode != locationMode.HYDRO) return true;
+    validateHydroCodeInputs: function(hydroCode,this) {
+      if (this.$store.getters.locationMode != locationMode.HYDRO) return true;
       let regex = /^(((\d{2})(((,(\d{8}))|){10}))|(\d{2})|(\d{8})|((\d{8})(((,(\d{8}))|){9})))$/;
       if (!hydroCode.replace(/\s/g, "").match(regex)) {
         return "hydrologic unit code format is invalid. You may specify up to 1 major hydrologic unit code followed by up to 10 minor hydrologic unit codes, separated by commas.";
