@@ -54,10 +54,10 @@ describe("Main", () => {
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let state = "not a state";
-    expect(wrapper.vm.validateStateInputs(state)).toBe(true);
+    expect(wrapper.vm.validateStateInputs(state,locationMode.STATE)).toBe(true);
   });
 
-  test("validateCoorinateInputs successfully rejects non-numeric parameters", () => {
+  test("validateCoordinateInputs successfully rejects non-numeric parameters", () => {
     store = new Vuex.Store({
       state: {},
       modules: {},
