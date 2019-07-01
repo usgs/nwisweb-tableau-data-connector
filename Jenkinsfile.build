@@ -46,12 +46,15 @@ pipeline {
                     ls -al
                     cat package.json
                     git branch
-                    git add .
-                    git commit -m "automatic version bump"
+                    
                 """
 
                 sshagent (credentials: ['wma-eto-eb-rsa']) {
-                    sh "git push origin autoversion-test"
+                    sh """ 
+                        git add .
+                        git commit -m "automatic version number increment"
+                        git push origin autoversion-test
+                    """
                 }
             }
         }
