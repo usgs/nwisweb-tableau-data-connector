@@ -72,7 +72,7 @@ const generateURL = connectionData => {
     }
     case locationMode.HYDRO: {
       let hydroCode = connectionData.hydroCode;
-      locationQuery = `&huc=${hydroCode}`;
+      locationQuery = `&huc=${hydroCode.replace(/\s/g, "")}`;
     }
   }
 
