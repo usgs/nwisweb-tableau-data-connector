@@ -1,9 +1,9 @@
 #!/bin/bash
 
 cd usr/local/bin/nwisweb-tableau-data-connector
-versionNum=`cat versionNum.txt`
+versionType=`cat versionNum.txt`
 cat versionNum.txt
 npm install
-npm --no-git-tag-version version $versionNum --force
+npm --no-git-tag-version version $versionType --force >newVerNum.txt
 npm run production-build
 
