@@ -20,7 +20,7 @@ import { mapState } from "vuex";
 import stateList from "../fetchedValues/states.json";
 
 export default {
-  name: "AutocompleteDropdown",
+  name: "StateSelect",
   data: function() {
     return {
       state: "",

@@ -39,7 +39,7 @@
               />
             </div>
 
-            <AutoCompleteDropDown></AutoCompleteDropDown>
+            <StateSelect></StateSelect>
             <CoordinatesInput></CoordinatesInput>
             <HUCInput></HUCInput>
             <CountySelect></CountySelect>
@@ -68,7 +68,7 @@ import HeaderUSWDSBanner from "../components/HeaderUSWDSBanner";
 import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
 import HeaderUSGS from "../components/HeaderUSGS";
 import FooterUSGS from "../components/FooterUSGS";
-import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
+import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
 import LocationQueryType from "../components/LocationQueryType";
 import CoordinatesInput from "../components/CoordinatesInput";
@@ -89,7 +89,7 @@ export default {
     HeaderUSGS,
     HeaderUSWDSSelections,
     FooterUSGS,
-    AutoCompleteDropDown,
+    StateSelect,
     LocationQueryType,
     CoordinatesInput,
     HUCInput,
