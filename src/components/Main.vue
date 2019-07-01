@@ -189,6 +189,14 @@ export default {
         return false;
       }
 
+      let HydroCodeStatus = this.validateHydroCodeInputs(
+        this.$store.getters.hydroCode
+      );
+      if (!(HydroCodeStatus === true)) {
+        alert(HydroCodeStatus);
+        return false;
+      }
+
       this.$store.commit(
         "changeCoordinates",
         this.roundCoordinateInputs(this.$store.getters.coordinates)
@@ -263,6 +271,20 @@ export default {
       let regex = /^((\d+),)*(\d+)$/; // 1 or more comma-separated 8 digit numbers
       if (!sites.replace(/\s/g, "").match(regex)) {
         return "site list in invalid format";
+      }
+      return true;
+    },
+    /*
+      "You can specify one major Hydrologic Unit code and up to 10 minor Hydrologic Unit codes. 
+      Separate HUCs with commas. For performance reasons, no more than one major HUC (a two digit code) is allowed. 
+      A minor HUCs must be 8 digits long."
+      Above excerpt taken from waterservices.usgs.com
+    */
+    validateHydroCodeInputs: function(hydroCode) {
+      if (this.$store.getters.locationMode != locationMode.HYDRO) return true;
+      let regex = /^(((\d{2})(((,(\d{8}))|){10}))|(\d{2})|(\d{8})|((\d{8})(((,(\d{8}))|){9})))$/;
+      if (!hydroCode.replace(/\s/g, "").match(regex)) {
+        return "hydrologic unit code format is invalid. You may specify up to 1 major hydrologic unit code followed by up to 10 minor hydrologic unit codes, separated by commas.";
       }
       return true;
     }
