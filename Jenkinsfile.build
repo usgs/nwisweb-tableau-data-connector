@@ -48,14 +48,14 @@ pipeline {
                     git add .
                     git commit -m "automatic version bump"
                 """
-                script {
-                    sshagent (credentials: ['wma-eto-eb-rsa']) {
-                        sh "git push origin autoversion-test"
-                    }
+
+                sshagent (credentials: ['wma-eto-eb-rsa']) {
+                    sh "git push origin autoversion-test"
                 }
             }
-
         }
+
+        
         stage('send to S3') {
             steps {
                 script {
