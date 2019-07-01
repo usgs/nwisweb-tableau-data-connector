@@ -48,7 +48,7 @@ pipeline {
 
                 sshagent (credentials: ['wma-eto-eb-rsa']) {
                     sh """ 
-                        git tag -a "v0.1.0-${params.RELEASE_TYPE}"
+                        git tag v0.1.0-"${params.RELEASE_TYPE}"
                         git add .
                         git commit -m "automatic version number increment"
                         git pull origin autoversion-test
