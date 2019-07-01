@@ -18,6 +18,8 @@
 
 <script>
 import { locationMode } from "../enums.js";
+import { mapState } from "vuex";
+
 export default {
   name: "CoordinatesInput",
   data: function() {
@@ -26,21 +28,24 @@ export default {
       activeLocationMode: locationMode.SITE
     };
   },
-  updated() {
-    this.$store.commit("changeHydroCode", this.hydroUnitCode);
+  methods: {
+    commitHydroCodes: function() {
+      this.$store.commit("changeHydroCode", this.hydroUnitCode);
+    }
   },
-  mounted: function() {
-    let store = this.$store;
-    store.subscribe((mutation) /*, state*/ => {
-      if (mutation.type == "changeLocationMode") {
-        this.activeLocationMode = store.getters.locationMode;
-        if (store.getters.locationMode != locationMode.HYDRO) {
-          this.state = "";
-        }
+  watch: {
+    hydroUnitCode: function(newValue) {
+      this.commitHydroCodes(newValue);
+    },
+    locationMode: function(newLocationMode) {
+      if (newLocationMode != locationMode.HYDRO) {
+        this.hydroUnitCode = "";
       }
-    });
+      this.activeLocationMode = newLocationMode;
+    }
   },
   computed: {
+    ...mapState(["locationMode"]),
     disabled() {
       return this.activeLocationMode != locationMode.HYDRO;
     }
