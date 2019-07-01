@@ -53,7 +53,7 @@ pipeline {
                     sh """ 
                         git add .
                         git commit -m "automatic version number increment"
-                        git pull origin autoversion-test
+                        git show-refs
                         git push origin autoversion-test
                     """
                 }
