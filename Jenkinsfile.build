@@ -46,8 +46,6 @@ pipeline {
                     docker rm "\${dockerinstanceid}"            
                 """
 
-               
-
                 sshagent (credentials: ['wma-eto-eb-rsa']) {
                     sh """
                         if [\"${params.RELEASE_TYPE}\" = "Release"]
