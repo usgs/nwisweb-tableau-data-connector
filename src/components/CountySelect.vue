@@ -32,15 +32,12 @@
 
     <h6>Selected Counties</h6>
 
-    <input-tags v-model="tags">
-      <div
-        class="tags-input"
-        slot-scope="{ tag, removeTag, inputEventHandlers, inputBindings }"
-      >
+    <input-tags v-model="countyNames" style="max-width: 375px; margin: auto;">
+      <div class="tags-input">
         <span
           v-for="(tag, key) in countyNames"
           class="tags-input-tag"
-          :key="countyNames"
+          :key="key"
         >
           <span>{{ tag }}</span>
           <button
@@ -70,16 +67,12 @@ export default {
   name: "CountySelect",
   data: function() {
     return {
-      tags: ["test1", "test2"],
       state: "",
       county: "",
       counties: [],
       countyNames: [],
       activeLocationMode: locationMode.SITE
     };
-  },
-  components: {
-    VueTags
   },
   methods: {
     populateStateList: function() {

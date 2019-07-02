@@ -74,7 +74,6 @@ import LocationQueryType from "../components/LocationQueryType";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import { locationMode } from "../enums.js";
-import VueTags from "vue-tags";
 
 import { mapState } from "vuex";
 
@@ -94,8 +93,7 @@ export default {
     LocationQueryType,
     CoordinatesInput,
     HUCInput,
-    CountySelect,
-    VueTags
+    CountySelect
   },
   data: function() {
     return {
