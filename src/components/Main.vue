@@ -64,13 +64,7 @@
 
 <script>
 import { getData, getSchema, generateColList } from "../WDCMethods.js";
-import {
-  validateStateInputs,
-  validateCoordinateInputs,
-  roundCoordinateInputs,
-  validateSiteInputs,
-  validateHydroCodeInputs
-} from "../inputValidation.js";
+import { validateFormInputs } from "../inputValidation.js";
 import HeaderUSWDSBanner from "../components/HeaderUSWDSBanner";
 import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
 import HeaderUSGS from "../components/HeaderUSGS";
@@ -130,7 +124,7 @@ export default {
         return;
       }
 
-      if (!this.validateFormInputs()) {
+      if (!validateFormInputs(this)) {
         return;
       }
 
@@ -168,50 +162,6 @@ export default {
       myConnector.getSchema = getSchema;
       myConnector.getData = getData;
       tableau.registerConnector(myConnector);
-    },
-    /*
-      function which validates user form inputs and updates vuex values to a query ready format. 
-      This function should be run and observed to return true before anything in the body of requestData 
-      is run. 
-    */
-    validateFormInputs: function() {
-      let stateStatus = validateStateInputs(
-        this.$store.getters.USStateName,
-        this
-      );
-      if (!(stateStatus === true)) {
-        alert(stateStatus);
-        return false;
-      }
-      let coordStatus = validateCoordinateInputs(
-        this.$store.getters.coordinates,
-        this
-      );
-      if (!(coordStatus === true)) {
-        alert(coordStatus);
-        return false;
-      }
-
-      let siteListStatus = validateSiteInputs(this.sites, this);
-      if (!(siteListStatus === true)) {
-        alert(siteListStatus);
-        return false;
-      }
-
-      let HydroCodeStatus = validateHydroCodeInputs(
-        this.$store.getters.hydroCode,
-        this
-      );
-      if (!(HydroCodeStatus === true)) {
-        alert(HydroCodeStatus);
-        return false;
-      }
-
-      this.$store.commit(
-        "changeCoordinates",
-        roundCoordinateInputs(this.$store.getters.coordinates)
-      );
-      return true;
     }
   },
   mounted: function() {

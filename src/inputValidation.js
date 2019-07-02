@@ -88,7 +88,53 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
   return true;
 };
 
+/*
+      function which validates user form inputs and updates vuex values to a query ready format. 
+      This function should be run and observed to return true before anything in the body of requestData 
+      is run. 
+    */
+const validateFormInputs = instance => {
+  let stateStatus = validateStateInputs(
+    instance.$store.getters.USStateName,
+    instance
+  );
+  if (!(stateStatus === true)) {
+    alert(stateStatus);
+    return false;
+  }
+  let coordStatus = validateCoordinateInputs(
+    instance.$store.getters.coordinates,
+    instance
+  );
+  if (!(coordStatus === true)) {
+    alert(coordStatus);
+    return false;
+  }
+
+  let siteListStatus = validateSiteInputs(instance.sites, instance);
+  if (!(siteListStatus === true)) {
+    alert(siteListStatus);
+    return false;
+  }
+
+  let HydroCodeStatus = validateHydroCodeInputs(
+    instance.$store.getters.hydroCode,
+    instance
+  );
+  if (!(HydroCodeStatus === true)) {
+    alert(HydroCodeStatus);
+    return false;
+  }
+
+  instance.$store.commit(
+    "changeCoordinates",
+    roundCoordinateInputs(instance.$store.getters.coordinates)
+  );
+  return true;
+};
+
 export {
+  validateFormInputs,
   validateStateInputs,
   validateCoordinateInputs,
   roundCoordinateInputs,
