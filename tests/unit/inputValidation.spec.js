@@ -131,7 +131,7 @@ describe("Main", () => {
     };
     expect(validateCoordinateInputs(coordinates, wrapper.vm)).not.toBe(true);
   });
-  test("validateCoorinateInputs successfully rejects out of bounds numbers", () => {
+  test("validateCoordinateInputs successfully rejects out of bounds numbers", () => {
     store = new Vuex.Store({
       state: {},
       modules: {},
@@ -172,7 +172,7 @@ describe("Main", () => {
     };
     expect(validateCoordinateInputs(coordinates, wrapper.vm)).not.toBe(true);
   });
-  test("validateCoorinateInputs successfully rejects invalid boundaries", () => {
+  test("validateCoordinateInputs successfully rejects invalid boundaries", () => {
     store = new Vuex.Store({
       state: {},
       modules: {},
@@ -199,7 +199,7 @@ describe("Main", () => {
     };
     expect(validateCoordinateInputs(coordinates, wrapper.vm)).not.toBe(true);
   });
-  test("validateCoorinateInputs successfully accepts valid boundaries", () => {
+  test("validateCoordinateInputs successfully accepts valid boundaries", () => {
     store = new Vuex.Store({
       state: {},
       modules: {},
