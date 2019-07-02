@@ -7,7 +7,7 @@ pipeline {
 
     parameters {
         choice(choices: ['QA', 'prod'], description: 's3 bucket that the build will target', name: 'BUILD_DEST')
-        choice(choices: ['Release', 'Snapshot'], description: 'type of release', name: 'RELEASE_TYPE')
+        choice(choices: ['Snapshot', 'Release'], description: 'type of release', name: 'RELEASE_TYPE')
     }
 
     triggers {
@@ -46,21 +46,18 @@ pipeline {
                     docker rm "\${dockerinstanceid}"            
                 """
 
-                script {
-                    if("${params.RELEASE_TYPE}" == "Release") {
-                        sh """
-                            git tag `cat newVerNum.txt`
-                        """
-                    }
-                }
+               
 
                 sshagent (credentials: ['wma-eto-eb-rsa']) {
-                    sh """ 
-                        git add .
-                        git commit -m "automatic version number increment"
-                        git pull origin autoversion-test
-                        git push -u origin HEAD:autoversion-test
-                        git push origin --tag
+                    sh """
+                        if [\"${params.RELEASE_TYPE}\" = "Release"]
+                        then
+                            git add .
+                            git commit -m "automatic version number increment"
+                            git pull origin autoversion-test
+                            git push -u origin HEAD:autoversion-test
+                            git push origin --tag
+                        fi
                     """
                 }
             }
