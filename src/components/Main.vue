@@ -64,6 +64,13 @@
 
 <script>
 import { getData, getSchema, generateColList } from "../WDCMethods.js";
+import {
+  validateStateInputs,
+  validateCoordinateInputs,
+  roundCoordinateInputs,
+  validateSiteInputs,
+  validateHydroCodeInputs
+} from "../inputValidation.js";
 import HeaderUSWDSBanner from "../components/HeaderUSWDSBanner";
 import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
 import HeaderUSGS from "../components/HeaderUSGS";
@@ -168,29 +175,32 @@ export default {
       is run. 
     */
     validateFormInputs: function() {
-      let stateStatus = this.validateStateInputs(
-        this.$store.getters.USStateName
+      let stateStatus = validateStateInputs(
+        this.$store.getters.USStateName,
+        this
       );
       if (!(stateStatus === true)) {
         alert(stateStatus);
         return false;
       }
-      let coordStatus = this.validateCoordinateInputs(
-        this.$store.getters.coordinates
+      let coordStatus = validateCoordinateInputs(
+        this.$store.getters.coordinates,
+        this
       );
       if (!(coordStatus === true)) {
         alert(coordStatus);
         return false;
       }
 
-      let siteListStatus = this.validateSiteInputs(this.sites);
+      let siteListStatus = validateSiteInputs(this.sites, this);
       if (!(siteListStatus === true)) {
         alert(siteListStatus);
         return false;
       }
 
-      let HydroCodeStatus = this.validateHydroCodeInputs(
-        this.$store.getters.hydroCode
+      let HydroCodeStatus = validateHydroCodeInputs(
+        this.$store.getters.hydroCode,
+        this
       );
       if (!(HydroCodeStatus === true)) {
         alert(HydroCodeStatus);
@@ -199,93 +209,8 @@ export default {
 
       this.$store.commit(
         "changeCoordinates",
-        this.roundCoordinateInputs(this.$store.getters.coordinates)
+        roundCoordinateInputs(this.$store.getters.coordinates)
       );
-      return true;
-    },
-    /*
-      Ensures the user has selected a valid state or territory in their query. Always
-      returns true if the current vuex locationMode setting is not STATE.
-
-    */
-    validateStateInputs: function(input, this) {
-      if (this.$store.getters.locationMode != locationMode.STATE) return true;
-      if (!(input in this.stateData)) return "invalid state selected";
-      return true;
-    },
-    /*
-      ensures that the user has entered valid coordinates. Always returns true if the 
-      current locationMode setting is not COORDS.
-    */
-    validateCoordinateInputs: function(coordinates,this) {
-      if (this.$store.getters.locationMode != locationMode.COORDS) return true;
-      if (!this.isNumeric(coordinates.north))
-        return "non-numeric northern boundary coordinate";
-      if (!this.isNumeric(coordinates.south))
-        return "non-numeric southern boundary coordinate";
-      if (!this.isNumeric(coordinates.east))
-        return "non-numeric eastern boundary coordinate";
-      if (!this.isNumeric(coordinates.west))
-        return "non-numeric western boundary coordinate";
-      if (!this.isWithinLongitudeBounds(coordinates.north))
-        return "out of bounds northern boundary coordinate(-90 - 90)";
-      if (!this.isWithinLongitudeBounds(coordinates.south))
-        return "out of bounds south boundary coordinate(-90 - 90)";
-      if (!this.isWithinLatitudeBounds(coordinates.east))
-        return "out of bounds eastern boundary coordinate(-180 - 180)";
-      if (!this.isWithinLatitudeBounds(coordinates.west))
-        return "out of bounds western boundary coordinate(-180 - 180)";
-      if (parseInt(coordinates.south) >= parseInt(coordinates.north))
-        return "southern boundary coordinate is north of northern boundary coordinate";
-      if (parseInt(coordinates.west) >= parseInt(coordinates.east))
-        return "western boundary coordinate is east of eastern boundary coordinate";
-
-      return true;
-    },
-    isNumeric: function(value) {
-      return !isNaN(value) && value != "";
-    },
-    isWithinLatitudeBounds: function(latitude) {
-      let numericLatitude = parseInt(latitude);
-      return numericLatitude > -180 && numericLatitude < 180;
-    },
-    isWithinLongitudeBounds: function(longitude) {
-      let numericLongitude = parseInt(longitude);
-      return numericLongitude > -90 && numericLongitude < 90;
-    },
-    /*
-      rounds coordinate inputs to 6 decimal places. Called in validateFormInputs()
-    */
-    roundCoordinateInputs: function(coordinates) {
-      coordinates.north = parseInt(coordinates.north).toFixed(6);
-      coordinates.south = parseInt(coordinates.south).toFixed(6);
-      coordinates.east = parseInt(coordinates.east).toFixed(6);
-      coordinates.west = parseInt(coordinates.west).toFixed(6);
-      return coordinates;
-    },
-    /*
-    validates the input format of the list of site codes
-    */
-    validateSiteInputs: function(sites,this) {
-      if (this.$store.getters.locationMode != locationMode.SITE) return true;
-      let regex = /^((\d+),)*(\d+)$/; // 1 or more comma-separated 8 digit numbers
-      if (!sites.replace(/\s/g, "").match(regex)) {
-        return "site list in invalid format";
-      }
-      return true;
-    },
-    /*
-      "You can specify one major Hydrologic Unit code and up to 10 minor Hydrologic Unit codes. 
-      Separate HUCs with commas. For performance reasons, no more than one major HUC (a two digit code) is allowed. 
-      A minor HUCs must be 8 digits long."
-      Above excerpt taken from waterservices.usgs.com
-    */
-    validateHydroCodeInputs: function(hydroCode,this) {
-      if (this.$store.getters.locationMode != locationMode.HYDRO) return true;
-      let regex = /^(((\d{2})(((,(\d{8}))|){10}))|(\d{2})|(\d{8})|((\d{8})(((,(\d{8}))|){9})))$/;
-      if (!hydroCode.replace(/\s/g, "").match(regex)) {
-        return "hydrologic unit code format is invalid. You may specify up to 1 major hydrologic unit code followed by up to 10 minor hydrologic unit codes, separated by commas.";
-      }
       return true;
     }
   },
