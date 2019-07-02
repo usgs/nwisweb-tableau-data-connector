@@ -31,15 +31,28 @@
     </button>
 
     <h6>Selected Counties</h6>
-    <ul class="usa-list" style=" width:300px; margin:auto;">
-      <li
-        :key="key"
-        v-for="(county, key) in countyNames"
-        v-on:click="removeElement(key)"
+
+    <input-tags v-model="tags">
+      <div
+        class="tags-input"
+        slot-scope="{ tag, removeTag, inputEventHandlers, inputBindings }"
       >
-        {{ county }}
-      </li>
-    </ul>
+        <span
+          v-for="(tag, key) in countyNames"
+          class="tags-input-tag"
+          :key="countyNames"
+        >
+          <span>{{ tag }}</span>
+          <button
+            type="button"
+            class="tags-input-remove"
+            v-on:click="removeElement(key)"
+          >
+            &times;
+          </button>
+        </span>
+      </div>
+    </input-tags>
   </div>
 </template>
 
@@ -50,17 +63,23 @@ import stateList from "../fetchedValues/states.json";
 import countyInfo from "../fetchedValues/counties.json";
 import fipsInfo from "../fetchedValues/fips.json";
 import Vue from "vue";
+import VueTags from "vue-tags";
+Vue.component("input-tags", VueTags);
 
 export default {
   name: "CountySelect",
   data: function() {
     return {
+      tags: ["test1", "test2"],
       state: "",
       county: "",
       counties: [],
       countyNames: [],
       activeLocationMode: locationMode.SITE
     };
+  },
+  components: {
+    VueTags
   },
   methods: {
     populateStateList: function() {
