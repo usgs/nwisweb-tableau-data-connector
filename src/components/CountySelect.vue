@@ -152,9 +152,6 @@ export default {
       Vue.delete(this.counties, index);
     }
   },
-  updated() {
-    this.commitCountySelection();
-  },
   mounted() {
     this.populateStateList();
   },
@@ -176,6 +173,7 @@ export default {
       newValue.forEach(element => {
         this.countyNames.push(this.getCountyNameFromCode(element));
       });
+      this.commitCountySelection();
     }
   },
   computed: {

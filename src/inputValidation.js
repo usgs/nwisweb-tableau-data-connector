@@ -16,8 +16,9 @@ const validateStateInputs = (input, instance) => {
     */
 const validateCoordinateInputs = (coordinates, instance) => {
   if (instance.$store.getters.locationMode != locationMode.COORDS) return true;
-  if (!isNumeric(coordinates.north))
+  if (!isNumeric(coordinates.north)) {
     return "non-numeric northern boundary coordinate";
+  }
   if (!isNumeric(coordinates.south))
     return "non-numeric southern boundary coordinate";
   if (!isNumeric(coordinates.east))

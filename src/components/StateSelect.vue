@@ -36,10 +36,10 @@ export default {
         option.value = element;
         dropDown.appendChild(option);
       });
+    },
+    commitStateSelection: function(newValue) {
+      this.$store.commit("changeUSStateName", newValue);
     }
-  },
-  updated() {
-    this.$store.commit("changeUSStateName", this.state);
   },
   mounted() {
     this.populateStateList();
@@ -50,6 +50,9 @@ export default {
       if (newValue != locationMode.STATE) {
         this.state = "";
       }
+    },
+    state: function(newValue) {
+      this.commitStateSelection(newValue);
     }
   },
   computed: {
