@@ -57,8 +57,6 @@ test("converting a fully-populated data JSON to table", () => {
   expect(formatJSONAsTable(input, "01646500_00060")).toEqual(targetResult);
 });
 
-
-
 test("correctly generate a URL given a list of sites and parameters with various whitespace", () => {
   const connectionData = {
     siteNums: "01646500 ,   05437641",
@@ -80,7 +78,6 @@ test("correctly generate a URL given a state", () => {
   expect(generateURL(connectionData)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&stateCd=ri&period=P1D&parameterCd=00060,00065&siteStatus=all"
   );
-
 });
 
 test("correctly generate a URL given a coordinate bounding box", () => {
@@ -97,7 +94,6 @@ test("correctly generate a URL given a coordinate bounding box", () => {
   expect(generateURL(connectionData)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&bBox=1.000000,1.000000,2.000000,2.000000&period=P1D&parameterCd=00060,00065&siteStatus=all"
   );
-
 });
 
 test("correctly generate a URL given a hydrological Unit Code", () => {
@@ -109,7 +105,6 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
   expect(generateURL(connectionData)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&siteStatus=all"
   );
-
 });
 
 test("correctly generate a URL given a hydrological Unit Code", () => {
@@ -121,7 +116,6 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
   expect(generateURL(connectionData)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=26161&period=P1D&parameterCd=00060,00065&siteStatus=all"
   );
-
 });
 
 test("correctly generates the column schema from sites and parameters", () => {

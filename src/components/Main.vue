@@ -143,7 +143,7 @@ export default {
         countyCode: this.$store.getters.countyCode,
         cached: false,
         siteTypeListActive: this.$store.getters.siteTypeListActive,
-        siteTypeList: this.$store.getters.siteType,
+        siteTypeList: this.$store.getters.siteType
       };
 
       tableau.connectionName = "USGS Instantaneous Values Query";
