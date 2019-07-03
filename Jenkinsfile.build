@@ -8,6 +8,7 @@ pipeline {
     parameters {
         choice(choices: ['QA', 'prod'], description: 's3 bucket that the build will target', name: 'BUILD_DEST')
         choice(choices: ['Snapshot', 'Release'], description: 'type of release', name: 'RELEASE_TYPE')
+        choice(choices: ['minor', 'major', 'patch'], description: 'release version', name: 'RELEASE_VERSION')
     }
 
     triggers {
@@ -30,7 +31,7 @@ pipeline {
                 script {
                     versionChange = ""
                     if("${params.RELEASE_TYPE}" == "Release") {
-                        versionChange = "minor"
+                        versionChange = "${params.RELEASE_VERSION}"
                     }
                 }
                 
@@ -75,9 +76,7 @@ pipeline {
 
                 }
                 sh """
-                    aws s3 ls "${targetDomain}" --recursive
                     aws s3 rm "${targetDomain}" --recursive
-                    aws s3 ls "${targetDomain}" --recursive
                     aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive
                 """
             }
