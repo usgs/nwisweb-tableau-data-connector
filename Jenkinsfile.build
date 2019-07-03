@@ -73,11 +73,11 @@ pipeline {
                         targetDomain = "this would be the production site"
                     }
                                     //aws s3 rm ./* --recursive --dryrun
+                                    //                aws s3 ls "${targetDomain}
+
 
                 }
                 sh """
-                aws s3 cd nwisweb-tableau-wdc-beta-website
-                aws s3 ls "${targetDomain}
                 aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive
                 """
             }
