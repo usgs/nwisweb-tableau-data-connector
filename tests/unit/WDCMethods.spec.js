@@ -14,6 +14,14 @@ test("converting a fully-populated data JSON to table", () => {
       timeSeries: [
         {
           name: "USGS:01646500:00060:00000",
+          sourceInfo: {
+            geoLocation: {
+              geogLocation: {
+                latitude: "0.000000",
+                longitude: "0.000000"
+              }
+            }
+          },
           values: [
             {
               value: [
@@ -31,6 +39,14 @@ test("converting a fully-populated data JSON to table", () => {
         },
         {
           name: "USGS:01647500:00062:00000",
+          sourceInfo: {
+            geoLocation: {
+              geogLocation: {
+                latitude: "0.00000",
+                longitude: "0.00000"
+              }
+            }
+          },
           values: [
             {
               value: [
@@ -50,8 +66,18 @@ test("converting a fully-populated data JSON to table", () => {
     }
   };
   const targetResult = [
-    { "01646500_00060": "10800", dateTime: "0:00" },
-    { "01646500_00060": "10800", dateTime: "0:00" }
+    {
+      "01646500_00060": "10800",
+      dateTime: "0:00",
+      latitude: "0.000000",
+      longitude: "0.000000"
+    },
+    {
+      "01646500_00060": "10800",
+      dateTime: "0:00",
+      latitude: "0.000000",
+      longitude: "0.000000"
+    }
   ];
 
   expect(formatJSONAsTable(input, "01646500_00060")).toEqual(targetResult);
@@ -245,25 +271,31 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
   let targetResult = [
     {
       id: "01646500_00060",
-      alias: "useful information will be put here",
+      alias: "01646500_00060",
       columns: [
         { id: "dateTime", alias: "dateTime", dataType: "__STRING" },
+        { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
+        { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "01646500_00060", alias: "01646500_00060", dataType: "__STRING" }
       ]
     },
     {
       id: "01646500_00065",
-      alias: "useful information will be put here",
+      alias: "01646500_00065",
       columns: [
         { id: "dateTime", alias: "dateTime", dataType: "__STRING" },
+        { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
+        { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "01646500_00065", alias: "01646500_00065", dataType: "__STRING" }
       ]
     },
     {
       id: "05437641_00065",
-      alias: "useful information will be put here",
+      alias: "05437641_00065",
       columns: [
         { id: "dateTime", alias: "dateTime", dataType: "__STRING" },
+        { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
+        { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "05437641_00065", alias: "05437641_00065", dataType: "__STRING" }
       ]
     }
@@ -271,9 +303,39 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
   let input = {
     value: {
       timeSeries: [
-        { name: "USGS:01646500:00060" },
-        { name: "USGS:01646500:00065" },
-        { name: "USGS:05437641:00065" }
+        {
+          name: "USGS:01646500:00060",
+          sourceInfo: {
+            geoLocation: {
+              geogLocation: {
+                latitude: "0.000000",
+                longitude: "0.000000"
+              }
+            }
+          }
+        },
+        {
+          name: "USGS:01646500:00065",
+          sourceInfo: {
+            geoLocation: {
+              geogLocation: {
+                latitude: "0.000000",
+                longitude: "0.000000"
+              }
+            }
+          }
+        },
+        {
+          name: "USGS:05437641:00065",
+          sourceInfo: {
+            geoLocation: {
+              geogLocation: {
+                latitude: "0.000000",
+                longitude: "0.000000"
+              }
+            }
+          }
+        }
       ]
     }
   };
