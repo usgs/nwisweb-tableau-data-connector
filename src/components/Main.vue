@@ -71,8 +71,8 @@ import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
 import LocationQueryType from "../components/LocationQueryType";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
-import { states } from "./params.js";
 import { locationMode } from "../enums.js";
+
 import { mapState } from "vuex";
 
 /*global  tableau:true*/
@@ -97,7 +97,11 @@ export default {
       columnList: [],
       sites: "01646500,05437641",
       parameters: "00060,00065",
-      activeLocationMode: locationMode.SITE
+      activeLocationMode: locationMode.SITE,
+      paramData: {},
+      stateData: {},
+      loadedParamData: false,
+      loadedStateData: false
     };
   },
   created: function() {
@@ -109,6 +113,13 @@ export default {
             This closes the Web Data Connector interface.
         */
     requestData: function() {
+      if (!this.loadedStateData) {
+        alert(
+          "The page is still loading: please retry this action in a moment"
+        );
+        return;
+      }
+
       if (!this.validateFormInputs()) {
         return;
       }
@@ -118,14 +129,24 @@ export default {
         columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.parameters,
-        state: states[this.$store.getters.USStateName],
+        state: this.stateData[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,
         boundaryCoords: this.$store.getters.coordinates,
         hydroCode: this.$store.getters.hydroCode,
         cached: false
       };
+
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
+    },
+    /*
+      dynamically imports parameter data 
+    */
+    fetchData: async function() {
+      this.stateData = await import("../fetchedValues/states.json");
+      this.loadedStateData = true;
+      this.paramData = await import("../fetchedValues/paramTypes.json");
+      this.loadedParamData = true;
     },
     /*
             this function is called when the Main.vue instance is created. It creates the web connector 
@@ -185,7 +206,7 @@ export default {
     */
     validateStateInputs: function(input) {
       if (this.$store.getters.locationMode != locationMode.STATE) return true;
-      if (!states.hasOwnProperty(input)) return "invalid state selected";
+      if (!(input in this.stateData)) return "invalid state selected";
       return true;
     },
     /*
@@ -263,6 +284,11 @@ export default {
       }
       return true;
     }
+  },
+  mounted: function() {
+    this.$nextTick(function() {
+      this.fetchData();
+    });
   },
   watch: {
     locationMode(newValue) {

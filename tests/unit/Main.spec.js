@@ -37,6 +37,7 @@ describe("Main", () => {
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let state = "Montana";
+    wrapper.vm.stateData = { Montana: "MT" };
     expect(wrapper.vm.validateStateInputs(state)).toBe(true);
   });
 
