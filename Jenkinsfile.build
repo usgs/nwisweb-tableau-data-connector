@@ -53,6 +53,7 @@ pipeline {
                                 git add .
                                 git commit -m "automatic version number increment"
                                 git pull origin autoversion-test
+                                git tag `cat newVerNum.txt`
                                 git push -u origin HEAD:autoversion-test
                                 git push origin --tag
                             """
