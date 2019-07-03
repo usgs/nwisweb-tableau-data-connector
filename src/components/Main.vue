@@ -35,6 +35,7 @@
             />
             <br />
             <AutoCompleteDropDown></AutoCompleteDropDown>
+            <CoordinatesInput></CoordinatesInput>
             <LocationQueryType></LocationQueryType>
             <br />
             <button
@@ -62,6 +63,7 @@ import HeaderUSGS from "../components/HeaderUSGS";
 import FooterUSGS from "../components/FooterUSGS";
 import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
 import LocationQueryType from "../components/LocationQueryType";
+import CoordinatesInput from "../components/CoordinatesInput";
 import { states } from "./params.js";
 import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
@@ -79,7 +81,8 @@ export default {
     HeaderUSWDSSelections,
     FooterUSGS,
     AutoCompleteDropDown,
-    LocationQueryType
+    LocationQueryType,
+    CoordinatesInput
   },
   data: function() {
     return {
@@ -98,6 +101,10 @@ export default {
             This closes the Web Data Connector interface.
         */
     requestData: function() {
+      if (!this.validateFormInputs()) {
+        return;
+      }
+
       this.columnList = generateColList(this.sites, this.parameters);
       tableau.connectionData = {
         columnList: this.columnList,
@@ -105,6 +112,7 @@ export default {
         paramNums: this.parameters,
         state: states[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,
+        boundaryCoords: this.$store.getters.coordinates,
         cached: false
       };
       tableau.connectionName = "USGS Instantaneous Values Query";
@@ -119,6 +127,110 @@ export default {
       myConnector.getSchema = getSchema;
       myConnector.getData = getData;
       tableau.registerConnector(myConnector);
+    },
+    /*
+      function which validates user form inputs and updates vuex values to a query ready format. 
+      This function should be run and observed to return true before anything in the body of requestData 
+      is run. 
+    */
+    validateFormInputs: function() {
+      let stateStatus = this.validateStateInputs(
+        this.$store.getters.USStateName
+      );
+      if (!(stateStatus === true)) {
+        alert(stateStatus);
+        return false;
+      }
+      let coordStatus = this.validateCoordinateInputs(
+        this.$store.getters.coordinates
+      );
+      if (!(coordStatus === true)) {
+        alert(coordStatus);
+        return false;
+      }
+
+      let siteListStatus = this.validateSiteInputs(this.sites);
+      if (!(siteListStatus === true)) {
+        alert(siteListStatus);
+        return false;
+      }
+
+      this.$store.commit(
+        "changeCoordinates",
+        this.roundCoordinateInputs(this.$store.getters.coordinates)
+      );
+      return true;
+    },
+    /*
+      Ensures the user has selected a valid state or territory in their query. Always
+      returns true if the current vuex locationMode setting is not STATE.
+
+    */
+    validateStateInputs: function(input) {
+      if (this.$store.getters.locationMode != locationMode.STATE) return true;
+      if (!states.hasOwnProperty(input)) return "invalid state selected";
+      return true;
+    },
+    /*
+      ensures that the user has entered valid coordinates. Always returns true if the 
+      current locationMode setting is not COORDS.
+    */
+    validateCoordinateInputs: function(coordinates) {
+      if (this.$store.getters.locationMode != locationMode.COORDS) return true;
+      if (!this.isNumeric(coordinates.north))
+        return "non-numeric northern boundary coordinate";
+      if (!this.isNumeric(coordinates.south))
+        return "non-numeric southern boundary coordinate";
+      if (!this.isNumeric(coordinates.east))
+        return "non-numeric eastern boundary coordinate";
+      if (!this.isNumeric(coordinates.west))
+        return "non-numeric western boundary coordinate";
+      if (!this.isWithinLongitudeBounds(coordinates.north))
+        return "out of bounds northern boundary coordinate(-90 - 90)";
+      if (!this.isWithinLongitudeBounds(coordinates.south))
+        return "out of bounds south boundary coordinate(-90 - 90)";
+      if (!this.isWithinLatitudeBounds(coordinates.east))
+        return "out of bounds eastern boundary coordinate(-180 - 180)";
+      if (!this.isWithinLatitudeBounds(coordinates.west))
+        return "out of bounds western boundary coordinate(-180 - 180)";
+      if (parseInt(coordinates.south) >= parseInt(coordinates.north))
+        return "southern boundary coordinate is north of northern boundary coordinate";
+      if (parseInt(coordinates.west) >= parseInt(coordinates.east))
+        return "western boundary coordinate is east of eastern boundary coordinate";
+
+      return true;
+    },
+    isNumeric: function(value) {
+      return !isNaN(value) && value != "";
+    },
+    isWithinLatitudeBounds: function(latitude) {
+      let numericLatitude = parseInt(latitude);
+      return numericLatitude > -180 && numericLatitude < 180;
+    },
+    isWithinLongitudeBounds: function(longitude) {
+      let numericLongitude = parseInt(longitude);
+      return numericLongitude > -90 && numericLongitude < 90;
+    },
+    /*
+      rounds coordinate inputs to 6 decimal places. Called in validateFormInputs()
+    */
+    roundCoordinateInputs: function(coordinates) {
+      coordinates.north = parseInt(coordinates.north).toFixed(6);
+      coordinates.south = parseInt(coordinates.south).toFixed(6);
+      coordinates.east = parseInt(coordinates.east).toFixed(6);
+      coordinates.west = parseInt(coordinates.west).toFixed(6);
+      return coordinates;
+    },
+    /*
+    validates the input format of the list of site codes
+    */
+    validateSiteInputs: function(sites) {
+      if (this.$store.getters.locationMode != locationMode.SITE) return true;
+      let regex = /^((\d{8}),)*(\d{8})$/; // 1 or more comma-separated 8 digit numbers
+      if (!sites.replace(/\s/g, "").match(regex)) {
+        return "site list in invalid format";
+      }
+      return true;
     }
   },
   watch: {

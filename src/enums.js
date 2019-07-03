@@ -4,7 +4,8 @@ Note that these location query modes are mutually exclusive.
 */
 const locationMode = {
   SITE: "site",
-  STATE: "state"
+  STATE: "state",
+  COORDS: "coordinates"
 };
 
 export { locationMode };
