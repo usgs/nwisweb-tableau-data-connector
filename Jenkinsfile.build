@@ -62,7 +62,6 @@ pipeline {
                 }
             }
         }
-
         
         stage('send to S3') {
             steps {
@@ -75,6 +74,7 @@ pipeline {
                     }
                 }
                 sh """
+                aws rm --recursive --dryrun
                 aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive
                 """
             }
