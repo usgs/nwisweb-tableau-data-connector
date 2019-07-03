@@ -73,7 +73,6 @@ pipeline {
                     else {
                         targetDomain = "this would be the production site"
                     }
-
                 }
                 sh """
                     aws s3 rm "${targetDomain}" --recursive
