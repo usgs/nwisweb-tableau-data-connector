@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="usa-form">
+    <form :key="selected" class="usa-form">
       <fieldset class="usa-fieldset">
         <legend class="usa-sr-only">Location Query Type</legend>
         <div class="usa-radio">
@@ -40,7 +40,33 @@
             :value="locationModeCoords"
           />
           <label class="usa-radio__label" :for="locationModeCoords">
-            Coordinate bounding box
+            Coordinate Bounding Box
+          </label>
+        </div>
+        <div class="usa-radio">
+          <input
+            class="usa-radio__input"
+            :id="locationModeHydro"
+            v-model="selected"
+            type="radio"
+            name="Location-Query-Type"
+            :value="locationModeHydro"
+          />
+          <label class="usa-radio__label" :for="locationModeHydro">
+            Hydrologic Unit Code
+          </label>
+        </div>
+        <div class="usa-radio">
+          <input
+            class="usa-radio__input"
+            :id="locationModeCounty"
+            v-model="selected"
+            type="radio"
+            name="Location-Query-Type"
+            :value="locationModeCounty"
+          />
+          <label class="usa-radio__label" :for="locationModeCounty">
+            County Code
           </label>
         </div>
       </fieldset>
@@ -77,6 +103,12 @@ export default {
     },
     locationModeCoords() {
       return locationMode.COORDS;
+    },
+    locationModeHydro() {
+      return locationMode.HYDRO;
+    },
+    locationModeCounty() {
+      return locationMode.COUNTY;
     }
   }
 };

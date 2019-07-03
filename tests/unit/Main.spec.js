@@ -37,6 +37,7 @@ describe("Main", () => {
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let state = "Montana";
+    wrapper.vm.stateData = { Montana: "MT" };
     expect(wrapper.vm.validateStateInputs(state)).toBe(true);
   });
 
@@ -192,7 +193,7 @@ describe("Main", () => {
     };
     expect(wrapper.vm.validateCoordinateInputs(coordinates)).not.toBe(true);
   });
-  test("validateCoorinateInputs successfully accepts valid params", () => {
+  test("validateCoorinateInputs successfully accepts valid boundaries", () => {
     store = new Vuex.Store({
       state: {},
       modules: {},
@@ -250,15 +251,79 @@ describe("Main", () => {
       actions: {}
     });
     const wrapper = shallowMount(Main, { store, localVue });
-    let siteList = "11111,111, 11111111  , 11112222";
-    expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
-    siteList = "";
+
+    let siteList = "";
     expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
     siteList = "11112,,,,,222";
     expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
-    siteList = "11111111 11111111";
+    siteList = ",11111111 , 11111111";
     expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
-    siteList = "11111111 ,11111111,1111111";
+    siteList = "11111111 ,11111111,1111111,";
     expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
+    siteList = "";
+    expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
+  });
+
+  test("validateHydroCodeInputs successfully accepts valid params", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        locationMode: () => {
+          return locationMode.HYDRO;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let hydroCode = "11";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).toBe(true);
+    hydroCode = "11,11111111,11111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).toBe(true);
+    hydroCode = "11111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).toBe(true);
+    hydroCode =
+      "11,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).toBe(true);
+    hydroCode =
+      "11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).toBe(true);
+  });
+
+  test("validateHydroCodeInputs successfully rejects invalid params", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        locationMode: () => {
+          return locationMode.HYDRO;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let hydroCode = "1";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode = "11,1111111,11111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode = "1111111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode =
+      "11,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode =
+      "11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode =
+      "11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,11111111,111111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode = "11,1111111a,11111111";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode = "1f";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode = "1111111f";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
+    hydroCode = "1111111.";
+    expect(wrapper.vm.validateHydroCodeInputs(hydroCode)).not.toBe(true);
   });
 });

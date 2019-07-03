@@ -21,3 +21,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+#generated files
+./src/components/params.js
+./src/fetchedValues/*.json

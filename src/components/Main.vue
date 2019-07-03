@@ -19,23 +19,30 @@
             style="text-align:center"
           >
             <br />
-            <label> Site or Sites </label>
-            <input
-              class="usa-input"
-              style="width: 300px; margin: auto;"
-              v-model="sites"
-              :disabled="disabled"
-            />
             <br />
-            <label> Parameter Codes</label>
-            <input
-              class="usa-input"
-              v-model="parameters"
-              style="width: 300px; margin: auto;"
-            />
-            <br />
+            <div>
+              <label> Parameter Codes</label>
+              <input
+                class="usa-input"
+                v-model="parameters"
+                style="width: 300px; margin: auto;"
+              />
+              <br />
+            </div>
+            <div v-show="!disabled">
+              <label> Site or Sites </label>
+              <input
+                class="usa-input"
+                style="width: 300px; margin: auto;"
+                v-model="sites"
+                :disabled="disabled"
+              />
+            </div>
+
             <AutoCompleteDropDown></AutoCompleteDropDown>
             <CoordinatesInput></CoordinatesInput>
+            <HUCInput></HUCInput>
+            <CountySelect></CountySelect>
             <LocationQueryType></LocationQueryType>
             <br />
             <button
@@ -62,10 +69,12 @@ import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
 import HeaderUSGS from "../components/HeaderUSGS";
 import FooterUSGS from "../components/FooterUSGS";
 import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
+import CountySelect from "../components/CountySelect";
 import LocationQueryType from "../components/LocationQueryType";
 import CoordinatesInput from "../components/CoordinatesInput";
-import { states } from "./params.js";
+import HUCInput from "../components/HUCInput";
 import { locationMode } from "../enums.js";
+
 import { mapState } from "vuex";
 
 /*global  tableau:true*/
@@ -82,14 +91,20 @@ export default {
     FooterUSGS,
     AutoCompleteDropDown,
     LocationQueryType,
-    CoordinatesInput
+    CoordinatesInput,
+    HUCInput,
+    CountySelect
   },
   data: function() {
     return {
       columnList: [],
       sites: "01646500,05437641",
       parameters: "00060,00065",
-      activeLocationMode: locationMode.SITE
+      activeLocationMode: locationMode.SITE,
+      paramData: {},
+      stateData: {},
+      loadedParamData: false,
+      loadedStateData: false
     };
   },
   created: function() {
@@ -101,6 +116,13 @@ export default {
             This closes the Web Data Connector interface.
         */
     requestData: function() {
+      if (!this.loadedStateData) {
+        alert(
+          "The page is still loading: please retry this action in a moment!"
+        );
+        return;
+      }
+
       if (!this.validateFormInputs()) {
         return;
       }
@@ -110,13 +132,25 @@ export default {
         columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.parameters,
-        state: states[this.$store.getters.USStateName],
+        state: this.stateData[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,
         boundaryCoords: this.$store.getters.coordinates,
+        hydroCode: this.$store.getters.hydroCode,
+        countyCode: this.$store.getters.countyCode,
         cached: false
       };
+
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
+    },
+    /*
+      dynamically imports parameter data 
+    */
+    fetchData: async function() {
+      this.stateData = await import("../fetchedValues/states.json");
+      this.loadedStateData = true;
+      this.paramData = await import("../fetchedValues/paramTypes.json");
+      this.loadedParamData = true;
     },
     /*
             this function is called when the Main.vue instance is created. It creates the web connector 
@@ -155,6 +189,14 @@ export default {
         return false;
       }
 
+      let HydroCodeStatus = this.validateHydroCodeInputs(
+        this.$store.getters.hydroCode
+      );
+      if (!(HydroCodeStatus === true)) {
+        alert(HydroCodeStatus);
+        return false;
+      }
+
       this.$store.commit(
         "changeCoordinates",
         this.roundCoordinateInputs(this.$store.getters.coordinates)
@@ -168,7 +210,7 @@ export default {
     */
     validateStateInputs: function(input) {
       if (this.$store.getters.locationMode != locationMode.STATE) return true;
-      if (!states.hasOwnProperty(input)) return "invalid state selected";
+      if (!(input in this.stateData)) return "invalid state selected";
       return true;
     },
     /*
@@ -177,21 +219,21 @@ export default {
     */
     validateCoordinateInputs: function(coordinates) {
       if (this.$store.getters.locationMode != locationMode.COORDS) return true;
-      if (isNaN(coordinates.north) || coordinates.north == "")
+      if (!this.isNumeric(coordinates.north))
         return "non-numeric northern boundary coordinate";
-      if (isNaN(coordinates.south) || coordinates.south == "")
+      if (!this.isNumeric(coordinates.south))
         return "non-numeric southern boundary coordinate";
-      if (isNaN(coordinates.east) || coordinates.east == "")
+      if (!this.isNumeric(coordinates.east))
         return "non-numeric eastern boundary coordinate";
-      if (isNaN(coordinates.west) || coordinates.west == "")
+      if (!this.isNumeric(coordinates.west))
         return "non-numeric western boundary coordinate";
-      if (parseInt(coordinates.north) > 90 || parseInt(coordinates.north) < -90)
+      if (!this.isWithinLongitudeBounds(coordinates.north))
         return "out of bounds northern boundary coordinate(-90 - 90)";
-      if (parseInt(coordinates.south) > 90 || parseInt(coordinates.south) < -90)
-        return "out of bounds southern boundary coordinate(-90 - 90)";
-      if (parseInt(coordinates.east) > 180 || parseInt(coordinates.east) < -180)
+      if (!this.isWithinLongitudeBounds(coordinates.south))
+        return "out of bounds south boundary coordinate(-90 - 90)";
+      if (!this.isWithinLatitudeBounds(coordinates.east))
         return "out of bounds eastern boundary coordinate(-180 - 180)";
-      if (parseInt(coordinates.west) > 180 || parseInt(coordinates.west) < -180)
+      if (!this.isWithinLatitudeBounds(coordinates.west))
         return "out of bounds western boundary coordinate(-180 - 180)";
       if (parseInt(coordinates.south) >= parseInt(coordinates.north))
         return "southern boundary coordinate is north of northern boundary coordinate";
@@ -199,6 +241,17 @@ export default {
         return "western boundary coordinate is east of eastern boundary coordinate";
 
       return true;
+    },
+    isNumeric: function(value) {
+      return !isNaN(value) && value != "";
+    },
+    isWithinLatitudeBounds: function(latitude) {
+      let numericLatitude = parseInt(latitude);
+      return numericLatitude > -180 && numericLatitude < 180;
+    },
+    isWithinLongitudeBounds: function(longitude) {
+      let numericLongitude = parseInt(longitude);
+      return numericLongitude > -90 && numericLongitude < 90;
     },
     /*
       rounds coordinate inputs to 6 decimal places. Called in validateFormInputs()
@@ -215,12 +268,31 @@ export default {
     */
     validateSiteInputs: function(sites) {
       if (this.$store.getters.locationMode != locationMode.SITE) return true;
-      let regex = /^((\d{8}),)*(\d{8})$/; // 1 or more comma-separated 8 digit numbers
+      let regex = /^((\d+),)*(\d+)$/; // 1 or more comma-separated 8 digit numbers
       if (!sites.replace(/\s/g, "").match(regex)) {
         return "site list in invalid format";
       }
       return true;
+    },
+    /*
+      "You can specify one major Hydrologic Unit code and up to 10 minor Hydrologic Unit codes. 
+      Separate HUCs with commas. For performance reasons, no more than one major HUC (a two digit code) is allowed. 
+      A minor HUCs must be 8 digits long."
+      Above excerpt taken from waterservices.usgs.com
+    */
+    validateHydroCodeInputs: function(hydroCode) {
+      if (this.$store.getters.locationMode != locationMode.HYDRO) return true;
+      let regex = /^(((\d{2})(((,(\d{8}))|){10}))|(\d{2})|(\d{8})|((\d{8})(((,(\d{8}))|){9})))$/;
+      if (!hydroCode.replace(/\s/g, "").match(regex)) {
+        return "hydrologic unit code format is invalid. You may specify up to 1 major hydrologic unit code followed by up to 10 minor hydrologic unit codes, separated by commas.";
+      }
+      return true;
     }
+  },
+  mounted: function() {
+    this.$nextTick(function() {
+      this.fetchData();
+    });
   },
   watch: {
     locationMode(newValue) {
@@ -245,6 +317,7 @@ h3 {
 ul {
   list-style-type: none;
   padding: 0;
+  margin: auto;
 }
 li {
   display: inline-block;
