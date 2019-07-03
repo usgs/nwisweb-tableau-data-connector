@@ -97,8 +97,9 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: "dateTime",
       alias: "dateTime",
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
+      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
     });
+
     let name = series.name;
     let nameTokens = name.split(":");
     let site = nameTokens[1];
@@ -107,7 +108,7 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: column,
       alias: column,
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
+      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
     });
     let newSchema = {
       id: column,
@@ -124,18 +125,22 @@ retrieves and caches data if it has not already been cached, otherwise only
 reads data from a cache and appropriately populates a table. 
 */
 const getData = (table, doneCallback) => {
-  if (!tableau.connectionData.cached) {
-    let url = generateURL(tableau.connectionData);
+  let connectionData = JSON.parse(tableau.connectionData);
+  if (!connectionData.cached) {
+    let url = generateURL(connectionData);
 
     get(url, "json").then(function(value) {
-      tableau.connectionData.cachedData = value;
-      tableau.connectionData.cached = true;
-      table.appendRows(formatJSONAsTable(value, table.tableInfo.id));
+      connectionData.cachedData = JSON.parse(value);
+      connectionData.cached = true;
+      tableau.connectionData = JSON.stringify(connectionData);
+      table.appendRows(
+        formatJSONAsTable(connectionData.cachedData, table.tableInfo.id)
+      );
       doneCallback();
     });
   } else {
     table.appendRows(
-      formatJSONAsTable(tableau.connectionData.cachedData, table.tableInfo.id)
+      formatJSONAsTable(connectionData.cachedData, table.tableInfo.id)
     );
     doneCallback();
   }
@@ -145,10 +150,13 @@ const getData = (table, doneCallback) => {
 generates a tableau schema based on the information in tableau.connectionData
 */
 const getSchema = schemaCallback => {
-  let url = generateURL(tableau.connectionData);
-  get(url, "json").then(function(value) {
-    schemaCallback(generateSchemaTablesFromData(value));
-  });
+  let connectionData = JSON.parse(tableau.connectionData);
+  let url = generateURL(connectionData);
+  get(url, "json")
+    .then(function(value) {
+      schemaCallback(generateSchemaTablesFromData(JSON.parse(value)));
+    })
+    .catch(err => alert(err));
 };
 
 /*
