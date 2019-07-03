@@ -48,7 +48,7 @@ pipeline {
 
                 sshagent (credentials: ['wma-eto-eb-rsa']) {
                     sh """
-                        if [${params.RELEASE_TYPE} == "Release"]
+                        if ["${params.RELEASE_TYPE}" == "Release"]
                         then
                             git add .
                             git commit -m "automatic version number increment"
