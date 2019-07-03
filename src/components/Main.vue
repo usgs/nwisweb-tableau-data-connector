@@ -41,6 +41,7 @@
 
             <AutoCompleteDropDown></AutoCompleteDropDown>
             <CoordinatesInput></CoordinatesInput>
+            <HUCInput></HUCInput>
             <LocationQueryType></LocationQueryType>
             <br />
             <button
@@ -69,6 +70,7 @@ import FooterUSGS from "../components/FooterUSGS";
 import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
 import LocationQueryType from "../components/LocationQueryType";
 import CoordinatesInput from "../components/CoordinatesInput";
+import HUCInput from "../components/HUCInput";
 import { states } from "./params.js";
 import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
@@ -87,7 +89,8 @@ export default {
     FooterUSGS,
     AutoCompleteDropDown,
     LocationQueryType,
-    CoordinatesInput
+    CoordinatesInput,
+    HUCInput
   },
   data: function() {
     return {
@@ -118,6 +121,7 @@ export default {
         state: states[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,
         boundaryCoords: this.$store.getters.coordinates,
+        hydroCode: this.$store.getters.hydroCode,
         cached: false
       };
       tableau.connectionName = "USGS Instantaneous Values Query";
@@ -157,6 +161,14 @@ export default {
       let siteListStatus = this.validateSiteInputs(this.sites);
       if (!(siteListStatus === true)) {
         alert(siteListStatus);
+        return false;
+      }
+
+      let HydroCodeStatus = this.validateHydroCodeInputs(
+        this.$store.getters.hydroCode
+      );
+      if (!(HydroCodeStatus === true)) {
+        alert(HydroCodeStatus);
         return false;
       }
 
@@ -234,6 +246,20 @@ export default {
       let regex = /^((\d{8}),)*(\d{8})$/; // 1 or more comma-separated 8 digit numbers
       if (!sites.replace(/\s/g, "").match(regex)) {
         return "site list in invalid format";
+      }
+      return true;
+    },
+    /*
+      "You can specify one major Hydrologic Unit code and up to 10 minor Hydrologic Unit codes. 
+      Separate HUCs with commas. For performance reasons, no more than one major HUC (a two digit code) is allowed. 
+      A minor HUCs must be 8 digits long."
+      Above excerpt taken from waterservices.usgs.com
+    */
+    validateHydroCodeInputs: function(hydroCode) {
+      if (this.$store.getters.locationMode != locationMode.HYDRO) return true;
+      let regex = /^(((\d{2})(((,(\d{8}))|){10}))|(\d{2})|(\d{8})|((\d{8})(((,(\d{8}))|){9})))$/;
+      if (!hydroCode.replace(/\s/g, "").match(regex)) {
+        return "hydrologic unit code format is invalid. You may specify up to 1 major hydrologic unit code followed by up to 10 minor hydrologic unit codes, separated by commas.";
       }
       return true;
     }

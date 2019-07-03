@@ -40,7 +40,20 @@
             :value="locationModeCoords"
           />
           <label class="usa-radio__label" :for="locationModeCoords">
-            Coordinate bounding box
+            Coordinate Bounding Box
+          </label>
+        </div>
+        <div class="usa-radio">
+          <input
+            class="usa-radio__input"
+            :id="locationModeHydro"
+            v-model="selected"
+            type="radio"
+            name="Location-Query-Type"
+            :value="locationModeHydro"
+          />
+          <label class="usa-radio__label" :for="locationModeHydro">
+            Hydrologic Unit Code
           </label>
         </div>
       </fieldset>
@@ -77,6 +90,9 @@ export default {
     },
     locationModeCoords() {
       return locationMode.COORDS;
+    },
+    locationModeHydro() {
+      return locationMode.HYDRO;
     }
   }
 };
