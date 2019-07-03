@@ -48,14 +48,15 @@ pipeline {
 
                 sshagent (credentials: ['wma-eto-eb-rsa']) {
                     script {
-                         if("${params.RELEASE_TYPE}" == "Release") {
+                        if("${params.RELEASE_TYPE}" == "Release") {
                             sh """
-                                    git add .
-                                    git commit -m "automatic version number increment"
-                                    git pull origin autoversion-test
-                                    git push -u origin HEAD:autoversion-test
-                                    git push origin --tag
+                                git add .
+                                git commit -m "automatic version number increment"
+                                git pull origin autoversion-test
+                                git push -u origin HEAD:autoversion-test
+                                git push origin --tag
                             """
+                        }                    
                     }
                 }
             }
