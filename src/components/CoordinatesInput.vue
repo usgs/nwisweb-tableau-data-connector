@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="!disabled">
     <form class="usa-form" style="margin: auto;">
       <label class="usa-label" for="input-type-text"
         >Northern Boundary Latitude</label

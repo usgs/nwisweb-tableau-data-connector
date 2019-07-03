@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added CHANGELOG.md
 - Added Coordinates as a location query parameter
 - Added form input verification and corresponding test battery for site,state,and coordinate input
-
+- inactive location parameter forms are now hidden
 ### Changed
 
 

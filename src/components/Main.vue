@@ -19,21 +19,26 @@
             style="text-align:center"
           >
             <br />
-            <label> Site or Sites </label>
-            <input
-              class="usa-input"
-              style="width: 300px; margin: auto;"
-              v-model="sites"
-              :disabled="disabled"
-            />
             <br />
-            <label> Parameter Codes</label>
-            <input
-              class="usa-input"
-              v-model="parameters"
-              style="width: 300px; margin: auto;"
-            />
-            <br />
+            <div>
+              <label> Parameter Codes</label>
+              <input
+                class="usa-input"
+                v-model="parameters"
+                style="width: 300px; margin: auto;"
+              />
+              <br />
+            </div>
+            <div v-show="!disabled">
+              <label> Site or Sites </label>
+              <input
+                class="usa-input"
+                style="width: 300px; margin: auto;"
+                v-model="sites"
+                :disabled="disabled"
+              />
+            </div>
+
             <AutoCompleteDropDown></AutoCompleteDropDown>
             <CoordinatesInput></CoordinatesInput>
             <LocationQueryType></LocationQueryType>
