@@ -42,6 +42,7 @@
             <AutoCompleteDropDown></AutoCompleteDropDown>
             <CoordinatesInput></CoordinatesInput>
             <HUCInput></HUCInput>
+            <CountySelect></CountySelect>
             <LocationQueryType></LocationQueryType>
             <br />
             <button
@@ -68,6 +69,7 @@ import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
 import HeaderUSGS from "../components/HeaderUSGS";
 import FooterUSGS from "../components/FooterUSGS";
 import AutoCompleteDropDown from "../components/AutoCompleteDropDown";
+import CountySelect from "../components/CountySelect";
 import LocationQueryType from "../components/LocationQueryType";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
@@ -90,7 +92,8 @@ export default {
     AutoCompleteDropDown,
     LocationQueryType,
     CoordinatesInput,
-    HUCInput
+    HUCInput,
+    CountySelect
   },
   data: function() {
     return {
@@ -115,7 +118,7 @@ export default {
     requestData: function() {
       if (!this.loadedStateData) {
         alert(
-          "The page is still loading: please retry this action in a moment"
+          "The page is still loading: please retry this action in a moment!"
         );
         return;
       }
@@ -133,6 +136,7 @@ export default {
         locationMode: this.activeLocationMode,
         boundaryCoords: this.$store.getters.coordinates,
         hydroCode: this.$store.getters.hydroCode,
+        countyCode: this.$store.getters.countyCode,
         cached: false
       };
 
@@ -264,7 +268,7 @@ export default {
     */
     validateSiteInputs: function(sites) {
       if (this.$store.getters.locationMode != locationMode.SITE) return true;
-      let regex = /^((\d{8}),)*(\d{8})$/; // 1 or more comma-separated 8 digit numbers
+      let regex = /^((\d+),)*(\d+)$/; // 1 or more comma-separated 8 digit numbers
       if (!sites.replace(/\s/g, "").match(regex)) {
         return "site list in invalid format";
       }
@@ -313,6 +317,7 @@ h3 {
 ul {
   list-style-type: none;
   padding: 0;
+  margin: auto;
 }
 li {
   display: inline-block;

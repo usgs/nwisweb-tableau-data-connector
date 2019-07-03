@@ -251,15 +251,16 @@ describe("Main", () => {
       actions: {}
     });
     const wrapper = shallowMount(Main, { store, localVue });
-    let siteList = "11111,111, 11111111  , 11112222";
-    expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
-    siteList = "";
+
+    let siteList = "";
     expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
     siteList = "11112,,,,,222";
     expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
-    siteList = "11111111 11111111";
+    siteList = ",11111111 , 11111111";
     expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
-    siteList = "11111111 ,11111111,1111111";
+    siteList = "11111111 ,11111111,1111111,";
+    expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
+    siteList = "";
     expect(wrapper.vm.validateSiteInputs(siteList)).not.toBe(true);
   });
 

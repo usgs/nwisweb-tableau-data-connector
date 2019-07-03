@@ -8,12 +8,12 @@ const fs = require('fs');
 
 
 
-const tsvToJSON = (tsv) => {
-  let lines = tsv.split('\n');
+const rdbToJSON = (rdb) => {
+  let lines = rdb.split('\n');
   lines.splice(0,7);
-  lines.splice(1,1); // quick way to remove unnecesarry lines to make the rdb readable as tsv
-  tsv =  lines.join('\n');
-    let data =    parse(tsv, {
+  lines.splice(1,1); // quick way to remove unnecesarry lines to make the rdb readable as rdb
+  rdb =  lines.join('\n');
+    let data =    parse(rdb, {
         columns: true,
         skip_empty_lines: true,
         delimiter: "\t"
@@ -73,7 +73,7 @@ siteString = value[0];
 countyString = value[1];
 paramString = value[2];
  
-paramData = tsvToJSON(paramString)
+paramData = rdbToJSON(paramString)
 abridgedParamData = []
 paramData.forEach(value => {
 abridgedParamData.push({id: value["parm_cd"] , name: value["parm_nm"]});
@@ -82,8 +82,8 @@ abridgedParamData.push({id: value["parm_cd"] , name: value["parm_nm"]});
 
 
 let abridgedParamJSONString = JSON.stringify(abridgedParamData);
-let siteTypesJSONString = JSON.stringify(tsvToJSON(siteString));
-let countyJSONString = JSON.stringify(tsvToJSON(countyString));
+let siteTypesJSONString = JSON.stringify(rdbToJSON(siteString));
+let countyJSONString = JSON.stringify(rdbToJSON(countyString));
 
 
 
@@ -99,7 +99,6 @@ let statesTemplate =
   "Connecticut": "CT",
   "Delaware": "DE",
   "District of Columbia": "DC",
-  "Federated States Of Micronesia": "FM",
   "Florida": "FL",
   "Georgia": "GA",
   "Guam": "GU",
@@ -112,7 +111,6 @@ let statesTemplate =
   "Kentucky": "KY",
   "Louisiana": "LA",
   "Maine": "ME",
-  "Marshall Islands": "MH",
   "Maryland": "MD",
   "Massachusetts": "MA",
   "Michigan": "MI",
@@ -132,7 +130,6 @@ let statesTemplate =
   "Ohio": "OH",
   "Oklahoma": "OK",
   "Oregon": "OR",
-  "Palau": "PW",
   "Pennsylvania": "PA",
   "Puerto Rico": "PR",
   "Rhode Island": "RI",
@@ -149,6 +146,69 @@ let statesTemplate =
   "Wisconsin": "WI",
   "Wyoming": "WY"
 }
+
+
+let fipsTemplate = {
+    "Northern Mariana Islands": "69",
+    "Delaware": "10",
+    "District of Columbia": "11",
+    "Florida": "12",
+    "Georgia": "13",
+    "Hawaii": "15",
+    "Idaho": "16",
+    "Illinois": "17",
+    "Indiana": "18",
+    "Iowa": "19",
+    "Kansas": "20",
+    "Kentucky": "21",
+    "Louisiana": "22",
+    "Maine": "23",
+    "Maryland": "24",
+    "Massachusetts": "25",
+    "Michigan": "26",
+    "Minnesota": "27",
+    "Mississippi": "28",
+    "Missouri": "29",
+    "Montana": "30",
+    "Nebraska": "31",
+    "Nevada": "32",
+    "New Hampshire": "33",
+    "New Jersey": "34",
+    "New Mexico": "35",
+    "New York": "36",
+    "North Carolina": "37",
+    "North Dakota": "38",
+    "Ohio": "39",
+    "Oklahoma": "40",
+    "Oregon": "41",
+    "Pennsylvania": "42",
+    "Rhode Island": "44",
+    "South Carolina": "45",
+    "South Dakota": "46",
+    "Tennessee": "47",
+    "Texas": "48",
+    "Utah": "49",
+    "Vermont": "50",
+    "Virginia": "51",
+    "Washington": "53",
+    "West Virginia": "54",
+    "Wisconsin": "55",
+    "Wyoming": "56",
+    "American Samoa": "60",
+    "Guam": "66",
+    "Puerto Rico": "72",
+    "Virgin Islands": "78",
+    "Alabama": "01",
+    "Alaska": "02",
+    "Arizona": "04",
+    "Arkansas": "05",
+    "California": "06",
+    "Colorado": "08",
+    "Connecticut": "09"
+  
+  }
+
+
 
 fs.writeFile("./src/fetchedValues/states.json", JSON.stringify(statesTemplate), function(err) {
   if(err) {
@@ -180,6 +240,14 @@ fs.writeFile("./src/fetchedValues/counties.json", countyJSONString, function(err
   }
 
   console.log("./src/fetchedValues/counties.json was saved!");
+}); 
+
+fs.writeFile("./src/fetchedValues/fips.json", JSON.stringify(fipsTemplate), function(err) {
+  if(err) {
+      return console.log(err);
+  }
+
+  console.log("./src/fetchedValues/fips.json was saved!");
 }); 
 
 

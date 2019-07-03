@@ -6,7 +6,8 @@ const locationMode = {
   SITE: "site",
   STATE: "state",
   COORDS: "coordinates",
-  HYDRO: "hydrological unit code"
+  HYDRO: "hydrological unit code",
+  COUNTY: "county"
 };
 
 export { locationMode };
