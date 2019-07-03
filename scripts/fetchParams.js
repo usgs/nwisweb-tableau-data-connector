@@ -64,9 +64,11 @@ let countyString = "";
 let paramString = "";
 
 
-Promise.all([get("https://help.waterdata.usgs.gov/code/site_tp_query?fmt=rdb"),
-            get("https://help.waterdata.usgs.gov/code/county_query?fmt=rdb"),
-get("https://help.waterdata.usgs.gov/code/parameter_cd_query?fmt=rdb&group_cd=%")]).then((value)=>{
+Promise.all(
+  [get("https://help.waterdata.usgs.gov/code/site_tp_query?fmt=rdb"),          
+  get("https://help.waterdata.usgs.gov/code/county_query?fmt=rdb"),
+  get("https://help.waterdata.usgs.gov/code/parameter_cd_query?fmt=rdb&group_cd=%")]
+  ).then((value)=>{
 siteString = value[0];
 countyString = value[1];
 paramString = value[2];
