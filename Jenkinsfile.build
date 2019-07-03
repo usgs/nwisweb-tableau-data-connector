@@ -72,12 +72,11 @@ pipeline {
                     else {
                         targetDomain = "this would be the production site"
                     }
-                                    //aws s3 rm ./* --recursive --dryrun
 
                 }
                 sh """
                 aws s3 rm "${targetDomain}" --recursive --dryrun
-                aws s3 ls "${targetDomain}"
+                aws s3 ls "${targetDomain}" --recursive
                 aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive
                 """
             }
