@@ -23,4 +23,3 @@ yarn-error.log*
 #generated files
 ./src/components/params.js
 ./src/fetchedValues/*.json
-./src/fetchedValues/counties.json
