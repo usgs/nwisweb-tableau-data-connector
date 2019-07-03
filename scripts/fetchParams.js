@@ -87,7 +87,7 @@ let countyJSONString = JSON.stringify(tsvToJSON(countyString));
 
 
 
-let statesTemplate = `
+let statesTemplate = 
 {
   "Alabama": "AL",
   "Alaska": "AK",
@@ -148,9 +148,9 @@ let statesTemplate = `
   "West Virginia": "WV",
   "Wisconsin": "WI",
   "Wyoming": "WY"
-}`
+}
 
-fs.writeFile("./src/fetchedValues/states.json", statesTemplate, function(err) {
+fs.writeFile("./src/fetchedValues/states.json", JSON.stringify(statesTemplate), function(err) {
   if(err) {
       return console.log(err);
   }
