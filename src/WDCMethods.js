@@ -136,14 +136,26 @@ retrieves and caches data if it has not already been cached, otherwise only
 reads data from a cache and appropriately populates a table. 
 */
 const getData = (table, doneCallback) => {
-  let connectionData = JSON.parse(tableau.connectionData);
+  let connectionData;
+  if (typeof tableau.connectionData === "string") {
+    connectionData = JSON.parse(tableau.connectionData);
+  } else {
+    connectionData = tableau.connectionData;
+  }
   if (!connectionData.cached) {
     let url = generateURL(connectionData);
 
     get(url, "json").then(function(value) {
-      connectionData.cachedData = JSON.parse(value);
+      if (typeof value === "string") {
+        connectionData.cachedData = JSON.parse(value);
+      } else {
+        connectionData.cachedData = value;
+      }
       connectionData.cached = true;
-      tableau.connectionData = JSON.stringify(connectionData);
+      if (typeof tableau.connectionData === "string") {
+        // this update is only necesarry if we're dealing with connection data as a string
+        tableau.connectionData = JSON.stringify(connectionData);
+      }
       table.appendRows(
         formatJSONAsTable(connectionData.cachedData, table.tableInfo.id)
       );
@@ -161,11 +173,20 @@ const getData = (table, doneCallback) => {
 generates a tableau schema based on the information in tableau.connectionData
 */
 const getSchema = schemaCallback => {
-  let connectionData = JSON.parse(tableau.connectionData);
+  let connectionData;
+  if (typeof tableau.connectionData === "string") {
+    connectionData = JSON.parse(tableau.connectionData);
+  } else {
+    connectionData = tableau.connectionData;
+  }
   let url = generateURL(connectionData);
   get(url, "json")
     .then(function(value) {
-      schemaCallback(generateSchemaTablesFromData(JSON.parse(value)));
+      if (typeof value === "string") {
+        schemaCallback(generateSchemaTablesFromData(JSON.parse(value)));
+      } else {
+        schemaCallback(generateSchemaTablesFromData(value));
+      }
     })
     .catch(err => alert(err));
 };

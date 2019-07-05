@@ -129,7 +129,7 @@ export default {
       }
 
       this.columnList = generateColList(this.sites, this.parameters);
-      tableau.connectionData = JSON.stringify({
+      let connectionData = {
         columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.parameters,
@@ -139,7 +139,12 @@ export default {
         hydroCode: this.$store.getters.hydroCode,
         countyCode: this.$store.getters.countyCode,
         cached: false
-      });
+      };
+      if (typeof tableau.connectionData === "string") {
+        tableau.connectionData = JSON.stringify(connectionData);
+      } else {
+        tableau.connectionData = connectionData;
+      }
 
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
