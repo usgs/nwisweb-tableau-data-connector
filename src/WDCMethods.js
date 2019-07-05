@@ -36,6 +36,8 @@ const formatJSONAsTable = (data, tableName) => {
   paramIndices.forEach(i => {
     let newEntry = {
       dateTime: tableSeries.values[0].value[i].dateTime,
+      latitude: tableSeries.sourceInfo.geoLocation.geogLocation.latitude,
+      longitude: tableSeries.sourceInfo.geoLocation.geogLocation.latitude,
       [tableName]: tableSeries.values[0].value[i].value
     };
     tableData.push(newEntry);
@@ -99,7 +101,16 @@ const generateSchemaTablesFromData = data => {
       alias: "dateTime",
       dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
     });
-
+    cols.push({
+      id: "latitude",
+      alias: "latitude",
+      dataType: tableau.dataTypeEnum.float //placeholder until we develop connectionData more
+    });
+    cols.push({
+      id: "longitude",
+      alias: "longitude",
+      dataType: tableau.dataTypeEnum.float //placeholder until we develop connectionData more
+    });
     let name = series.name;
     let nameTokens = name.split(":");
     let site = nameTokens[1];
@@ -112,7 +123,7 @@ const generateSchemaTablesFromData = data => {
     });
     let newSchema = {
       id: column,
-      alias: "useful information will be put here", //todo, add useful information
+      alias: column, //todo, add useful information
       columns: cols
     };
     tableList.push(newSchema);
