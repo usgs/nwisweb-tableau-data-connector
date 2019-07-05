@@ -3,7 +3,7 @@ import { locationMode } from "./enums.js";
 /*global  tableau:true*/
 
 /*
-given the table.tableInfo.id given as an argument to the getdata methods, this method
+given the table.variable.variableDescription given as an argument to the getdata methods, this method
 extracts the appropriate time series. 
 */
 const getTimeSeriesByID = (timeSeries, tableName) => {
@@ -11,7 +11,10 @@ const getTimeSeriesByID = (timeSeries, tableName) => {
   let found = false;
   timeSeries.forEach(series => {
     if (
-      tableName == `${series.name.split(":")[1]}_${series.name.split(":")[2]}`
+      tableName ==
+      `${sanitizeVariableName(series.variable.variableDescription)}_${
+        series.sourceInfo.siteCode[0].value
+      }`
     ) {
       found = true;
       resultSeries = series;
@@ -31,6 +34,10 @@ const reformatTimeString = timeString => {
   return timeString.replace("T", " ").substring(0, 23);
 };
 
+const sanitizeVariableName = variableName => {
+  return variableName.replace(/\s/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
+};
+
 /*
 Takes a JSON and returns a table formatted in accordance with the schema provided to tableau.
 */
@@ -44,7 +51,8 @@ const formatJSONAsTable = (data, tableName) => {
     let newEntry = {
       dateTime: reformatTimeString(tableSeries.values[0].value[i].dateTime),
       latitude: tableSeries.sourceInfo.geoLocation.geogLocation.latitude,
-      longitude: tableSeries.sourceInfo.geoLocation.geogLocation.latitude,
+      longitude: tableSeries.sourceInfo.geoLocation.geogLocation.longitude,
+      units: tableSeries.variable.unit.unitCode,
       [tableName]: tableSeries.values[0].value[i].value
     };
     tableData.push(newEntry);
@@ -118,11 +126,15 @@ const generateSchemaTablesFromData = data => {
       alias: "longitude",
       dataType: tableau.dataTypeEnum.float //placeholder until we develop connectionData more
     });
-    let name = series.name;
-    let nameTokens = name.split(":");
-    let site = nameTokens[1];
-    let paramType = nameTokens[2];
-    let column = `${site}_${paramType}`;
+    cols.push({
+      id: "units",
+      alias: "units",
+      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
+    });
+    let column = `${sanitizeVariableName(
+      series.variable.variableDescription
+    )}_${series.sourceInfo.siteCode[0].value}`; // this assumes there is only 1 sitecode
+
     cols.push({
       id: column,
       alias: column,

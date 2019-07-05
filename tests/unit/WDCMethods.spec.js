@@ -7,80 +7,98 @@ import {
 } from "../../src/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
 
-test("converting a fully-populated data JSON to table", () => {
-  const input = {
-    value: {
-      //barebones mockup of a data json with data series of uniform length
-      timeSeries: [
-        {
-          name: "USGS:01646500:00060:00000",
-          sourceInfo: {
-            geoLocation: {
-              geogLocation: {
-                latitude: "0.000000",
-                longitude: "0.000000"
-              }
+const validDataJSON = {
+  value: {
+    //barebones mockup of a data json with data series of uniform length
+    timeSeries: [
+      {
+        name: "USGS:01646500:00060:00000",
+        sourceInfo: {
+          geoLocation: {
+            geogLocation: {
+              latitude: "0.000000",
+              longitude: "0.000000"
             }
           },
-          values: [
-            {
-              value: [
-                {
-                  value: "10800",
-                  dateTime: "2019-07-05T10:45:00.000-04:00"
-                },
-                {
-                  value: "10800",
-                  dateTime: "2019-07-05T10:45:00.000-04:00"
-                }
-              ]
-            }
-          ]
+          siteCode: [{ value: "01646500" }]
         },
-        {
-          name: "USGS:01647500:00062:00000",
-          sourceInfo: {
-            geoLocation: {
-              geogLocation: {
-                latitude: "0.00000",
-                longitude: "0.00000"
+        variable: {
+          variableDescription: "flow",
+          unit: {
+            unitCode: "ft3/s"
+          }
+        },
+        values: [
+          {
+            value: [
+              {
+                value: "10800",
+                dateTime: "2019-07-05T10:45:00.000-04:00"
+              },
+              {
+                value: "10800",
+                dateTime: "2019-07-05T10:45:00.000-04:00"
               }
+            ]
+          }
+        ]
+      },
+      {
+        name: "USGS:01647500:00062:00000",
+        sourceInfo: {
+          geoLocation: {
+            geogLocation: {
+              latitude: "0.00000",
+              longitude: "0.00000"
             }
           },
-          values: [
-            {
-              value: [
-                {
-                  value: "343",
-                  dateTime: "2019-07-05T10:45:00.000-04:00"
-                },
-                {
-                  value: "5465",
-                  dateTime: "2019-07-05T10:45:00.000-04:00"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  };
+          siteCode: [{ value: "01646501" }]
+        },
+        variable: {
+          variableDescription: "height",
+          unit: {
+            unitCode: "ft"
+          }
+        },
+        values: [
+          {
+            value: [
+              {
+                value: "343",
+                dateTime: "2019-07-05T10:45:00.000-04:00"
+              },
+              {
+                value: "5465",
+                dateTime: "2019-07-05T10:45:00.000-04:00"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+};
+
+test("converting a fully-populated data JSON to table", () => {
+  const input = validDataJSON;
   const targetResult = [
     {
-      "01646500_00060": "10800",
+      flow_01646500: "10800",
       dateTime: "2019-07-05 10:45:00.000",
       latitude: "0.000000",
-      longitude: "0.000000"
+      longitude: "0.000000",
+      units: "ft3/s"
     },
     {
-      "01646500_00060": "10800",
+      flow_01646500: "10800",
       dateTime: "2019-07-05 10:45:00.000",
       latitude: "0.000000",
-      longitude: "0.000000"
+      longitude: "0.000000",
+      units: "ft3/s"
     }
   ];
 
-  expect(formatJSONAsTable(input, "01646500_00060")).toEqual(targetResult);
+  expect(formatJSONAsTable(input, "flow_01646500")).toEqual(targetResult);
 });
 
 test("correctly generate a URL given a list of sites and parameters with various whitespace", () => {
@@ -156,48 +174,8 @@ test("correctly generates the column schema from sites and parameters", () => {
   expect(generateColList(sites, params)).toEqual(targetResult);
 });
 
-test("converting a non fully-populated data JSON to table", () => {
-  const input = {
-    value: {
-      //barebones mockup of a data json with data series of non uniform length
-      timeSeries: [
-        {
-          name: "USGS:01646500:00060:00000",
-          values: [
-            {
-              value: [
-                {
-                  value: "10800",
-                  dateTime: "2019-07-05T10:45:00.000-04:00"
-                },
-                {
-                  value: "10800",
-                  dateTime: "2019-07-05T10:45:00.000-04:00"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          name: "USGS:01647500:00062:00000",
-          values: [
-            {
-              value: [
-                {
-                  value: "343",
-                  dateTime: "2019-07-05T10:45:00.000-04:00"
-                },
-                {
-                  value: "5465",
-                  dateTime: "2019-07-05T10:45:00.000-04:00"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  };
+test("error on call to formatJSONAsTable with non-existent table name", () => {
+  const input = validDataJSON;
 
   expect(() => {
     formatJSONAsTable(input, "fake_name");
@@ -205,61 +183,10 @@ test("converting a non fully-populated data JSON to table", () => {
 });
 
 test("getTimeSeriesByID  correctly gets a time series by ID", () => {
-  let timeSeries = [
-    {
-      name: "USGS:01646500:00060:00000",
-      values: [
-        {
-          value: [
-            {
-              value: "10800",
-              dateTime: "2019-07-05T10:45:00.000-04:00"
-            },
-            {
-              value: "10800",
-              dateTime: "2019-07-05T10:45:00.000-04:00"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      name: "USGS:01647500:00062:00000",
-      values: [
-        {
-          value: [
-            {
-              value: "343",
-              dateTime: "2019-07-05T10:45:00.000-04:00"
-            },
-            {
-              value: "5465",
-              dateTime: "2019-07-05T10:45:00.000-04:00"
-            }
-          ]
-        }
-      ]
-    }
-  ];
+  let timeSeries = validDataJSON.value.timeSeries;
 
-  let tableName = "01647500_00062";
-  let targetResult = {
-    name: "USGS:01647500:00062:00000",
-    values: [
-      {
-        value: [
-          {
-            value: "343",
-            dateTime: "2019-07-05T10:45:00.000-04:00"
-          },
-          {
-            value: "5465",
-            dateTime: "2019-07-05T10:45:00.000-04:00"
-          }
-        ]
-      }
-    ]
-  };
+  let tableName = "flow_01646500";
+  let targetResult = validDataJSON.value.timeSeries[0];
 
   expect(getTimeSeriesByID(timeSeries, tableName)).toEqual(targetResult);
 });
@@ -270,75 +197,33 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
   let result = [];
   let targetResult = [
     {
-      id: "01646500_00060",
-      alias: "01646500_00060",
+      id: "flow_01646500",
+      alias: "flow_01646500",
       columns: [
         { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
-        { id: "01646500_00060", alias: "01646500_00060", dataType: "__STRING" }
+        { id: "units", alias: "units", dataType: "__STRING" },
+        { id: "flow_01646500", alias: "flow_01646500", dataType: "__STRING" }
       ]
     },
     {
-      id: "01646500_00065",
-      alias: "01646500_00065",
+      id: "height_01646501",
+      alias: "height_01646501",
       columns: [
         { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
-        { id: "01646500_00065", alias: "01646500_00065", dataType: "__STRING" }
-      ]
-    },
-    {
-      id: "05437641_00065",
-      alias: "05437641_00065",
-      columns: [
-        { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
-        { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
-        { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
-        { id: "05437641_00065", alias: "05437641_00065", dataType: "__STRING" }
-      ]
-    }
-  ];
-  let input = {
-    value: {
-      timeSeries: [
+        { id: "units", alias: "units", dataType: "__STRING" },
         {
-          name: "USGS:01646500:00060",
-          sourceInfo: {
-            geoLocation: {
-              geogLocation: {
-                latitude: "0.000000",
-                longitude: "0.000000"
-              }
-            }
-          }
-        },
-        {
-          name: "USGS:01646500:00065",
-          sourceInfo: {
-            geoLocation: {
-              geogLocation: {
-                latitude: "0.000000",
-                longitude: "0.000000"
-              }
-            }
-          }
-        },
-        {
-          name: "USGS:05437641:00065",
-          sourceInfo: {
-            geoLocation: {
-              geogLocation: {
-                latitude: "0.000000",
-                longitude: "0.000000"
-              }
-            }
-          }
+          id: "height_01646501",
+          alias: "height_01646501",
+          dataType: "__STRING"
         }
       ]
     }
-  };
+  ];
+  let input = validDataJSON;
   result = generateSchemaTablesFromData(input);
   expect(result).toEqual(targetResult);
 });
