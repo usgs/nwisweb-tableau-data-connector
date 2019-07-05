@@ -1,16 +1,29 @@
 <template>
   <div id="app">
-    <Main msg="NWIS Tableau Data Connector" />
+    <HeaderUSWDSBanner></HeaderUSWDSBanner>
+    <HeaderUSGS></HeaderUSGS>
+    <HeaderUSWDSSelections
+      titleForSelectionHeader="NWISWeb Tableau Web Data Connector"
+    ></HeaderUSWDSSelections>
+    <router-view style="min-height: 500px;"> </router-view>
+    <FooterUSGS></FooterUSGS>
   </div>
 </template>
 
 <script>
-import Main from "./components/Main.vue";
+// @ is an alias to /src
+import HeaderUSWDSBanner from "@/components/HeaderUSWDSBanner";
+import HeaderUSWDSSelections from "@/components/HeaderUSWDSSelections";
+import HeaderUSGS from "@/components/HeaderUSGS";
+import FooterUSGS from "@/components/FooterUSGS";
 
 export default {
   name: "app",
   components: {
-    Main
+    HeaderUSWDSBanner,
+    HeaderUSWDSSelections,
+    HeaderUSGS,
+    FooterUSGS
   }
 };
 </script>
@@ -23,5 +36,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
+  min-height: 500px;
 }
 </style>
