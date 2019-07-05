@@ -99,7 +99,7 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: "dateTime",
       alias: "dateTime",
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
+      dataType: tableau.dataTypeEnum.datetime //placeholder until we develop connectionData more
     });
     cols.push({
       id: "latitude",
