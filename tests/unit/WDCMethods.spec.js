@@ -27,11 +27,11 @@ test("converting a fully-populated data JSON to table", () => {
               value: [
                 {
                   value: "10800",
-                  dateTime: "0:00"
+                  dateTime: "2019-07-05T10:45:00.000-04:00"
                 },
                 {
                   value: "10800",
-                  dateTime: "0:00"
+                  dateTime: "2019-07-05T10:45:00.000-04:00"
                 }
               ]
             }
@@ -52,11 +52,11 @@ test("converting a fully-populated data JSON to table", () => {
               value: [
                 {
                   value: "343",
-                  dateTime: "0:00"
+                  dateTime: "2019-07-05T10:45:00.000-04:00"
                 },
                 {
                   value: "5465",
-                  dateTime: "0:00"
+                  dateTime: "2019-07-05T10:45:00.000-04:00"
                 }
               ]
             }
@@ -68,13 +68,13 @@ test("converting a fully-populated data JSON to table", () => {
   const targetResult = [
     {
       "01646500_00060": "10800",
-      dateTime: "0:00",
+      dateTime: "2019-07-05 10:45:00.000",
       latitude: "0.000000",
       longitude: "0.000000"
     },
     {
       "01646500_00060": "10800",
-      dateTime: "0:00",
+      dateTime: "2019-07-05 10:45:00.000",
       latitude: "0.000000",
       longitude: "0.000000"
     }
@@ -168,11 +168,11 @@ test("converting a non fully-populated data JSON to table", () => {
               value: [
                 {
                   value: "10800",
-                  dateTime: "0:00"
+                  dateTime: "2019-07-05T10:45:00.000-04:00"
                 },
                 {
                   value: "10800",
-                  dateTime: "0:00"
+                  dateTime: "2019-07-05T10:45:00.000-04:00"
                 }
               ]
             }
@@ -185,11 +185,11 @@ test("converting a non fully-populated data JSON to table", () => {
               value: [
                 {
                   value: "343",
-                  dateTime: "0:00"
+                  dateTime: "2019-07-05T10:45:00.000-04:00"
                 },
                 {
                   value: "5465",
-                  dateTime: "0:00"
+                  dateTime: "2019-07-05T10:45:00.000-04:00"
                 }
               ]
             }
@@ -213,11 +213,11 @@ test("getTimeSeriesByID  correctly gets a time series by ID", () => {
           value: [
             {
               value: "10800",
-              dateTime: "0:00"
+              dateTime: "2019-07-05T10:45:00.000-04:00"
             },
             {
               value: "10800",
-              dateTime: "0:00"
+              dateTime: "2019-07-05T10:45:00.000-04:00"
             }
           ]
         }
@@ -230,11 +230,11 @@ test("getTimeSeriesByID  correctly gets a time series by ID", () => {
           value: [
             {
               value: "343",
-              dateTime: "0:00"
+              dateTime: "2019-07-05T10:45:00.000-04:00"
             },
             {
               value: "5465",
-              dateTime: "0:00"
+              dateTime: "2019-07-05T10:45:00.000-04:00"
             }
           ]
         }
@@ -250,11 +250,11 @@ test("getTimeSeriesByID  correctly gets a time series by ID", () => {
         value: [
           {
             value: "343",
-            dateTime: "0:00"
+            dateTime: "2019-07-05T10:45:00.000-04:00"
           },
           {
             value: "5465",
-            dateTime: "0:00"
+            dateTime: "2019-07-05T10:45:00.000-04:00"
           }
         ]
       }
@@ -273,7 +273,7 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
       id: "01646500_00060",
       alias: "01646500_00060",
       columns: [
-        { id: "dateTime", alias: "dateTime", dataType: "__STRING" },
+        { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "01646500_00060", alias: "01646500_00060", dataType: "__STRING" }
@@ -283,7 +283,7 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
       id: "01646500_00065",
       alias: "01646500_00065",
       columns: [
-        { id: "dateTime", alias: "dateTime", dataType: "__STRING" },
+        { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "01646500_00065", alias: "01646500_00065", dataType: "__STRING" }
@@ -293,7 +293,7 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
       id: "05437641_00065",
       alias: "05437641_00065",
       columns: [
-        { id: "dateTime", alias: "dateTime", dataType: "__STRING" },
+        { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "05437641_00065", alias: "05437641_00065", dataType: "__STRING" }
