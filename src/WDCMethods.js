@@ -34,6 +34,10 @@ const reformatTimeString = timeString => {
   return timeString.replace("T", " ").substring(0, 23);
 };
 
+/*
+sanitizes a variable name to name it suitable for concatenation into a talbeau column header
+*/
+
 const sanitizeVariableName = variableName => {
   return variableName.replace(/\s/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
 };
@@ -233,5 +237,6 @@ export {
   generateColList,
   generateSchemaTablesFromData,
   getTimeSeriesByID,
-  reformatTimeString
+  reformatTimeString,
+  sanitizeVariableName
 };
