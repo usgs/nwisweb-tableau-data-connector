@@ -89,6 +89,38 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
   return true;
 };
 
+const validateSiteTypeInputs = (input, instance) => {
+  if (!(input in instance.stateData)) {
+    return "invalid site type selected";
+  }
+  return true;
+};
+
+/*
+warns the user if they have no query parameters selected. This is the only pathological state not protected
+ against from within the  ParamSelect component, because it is a valid interactive session state.
+*/
+const validateParamInputs = paramList => {
+  if (paramList.length != 0) {
+    return true;
+  } else {
+    return "parameter query requires between 1 and 100 parameters";
+  }
+};
+
+/*
+warns the user if they have no counties selected. This is the only pathological state not protected
+ against from within the CountySelect  component, because it is a valid interactive session state.
+*/
+const validateCountyInputs = (countyList, instance) => {
+  if (instance.$store.getters.locationMode != locationMode.COUNTY) return true;
+  if (countyList.length != 0) {
+    return true;
+  } else {
+    return "county query requires between 1 and 10 counties";
+  }
+};
+
 /*
       function which validates user form inputs and updates vuex values to a query ready format. 
       This function should be run and observed to return true before anything in the body of requestData 
@@ -126,6 +158,20 @@ const validateFormInputs = instance => {
     alert(HydroCodeStatus);
     return false;
   }
+  let paramStatus = validateParamInputs(instance.$store.getters.paramCodes);
+  if (!(paramStatus == true)) {
+    alert(paramStatus);
+    return false;
+  }
+
+  let countyStatus = validateCountyInputs(
+    instance.$store.getters.countyCode,
+    instance
+  );
+  if (!(countyStatus == true)) {
+    alert(countyStatus);
+    return false;
+  }
 
   instance.$store.commit(
     "changeCoordinates",
@@ -140,5 +186,8 @@ export {
   validateCoordinateInputs,
   roundCoordinateInputs,
   validateSiteInputs,
-  validateHydroCodeInputs
+  validateHydroCodeInputs,
+  validateCountyInputs,
+  validateParamInputs,
+  validateSiteTypeInputs
 };

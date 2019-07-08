@@ -6,12 +6,6 @@
     </head>
 
     <body>
-      <HeaderUSWDSBanner></HeaderUSWDSBanner>
-      <HeaderUSGS></HeaderUSGS>
-      <HeaderUSWDSSelections
-        titleForSelectionHeader="NWISWeb Tableau Web Data Connector"
-      ></HeaderUSWDSSelections>
-
       <div class="container container-table">
         <div class="row vertical-center-row">
           <div
@@ -19,14 +13,8 @@
             style="text-align:center"
           >
             <br />
-            <br />
             <div>
-              <label> Parameter Codes</label>
-              <input
-                class="usa-input"
-                v-model="parameters"
-                style="width: 300px; margin: auto;"
-              />
+              <ParamSelect></ParamSelect>
               <br />
             </div>
             <div v-show="!disabled">
@@ -44,6 +32,8 @@
             <HUCInput></HUCInput>
             <CountySelect></CountySelect>
             <LocationQueryType></LocationQueryType>
+            <SiteTypeList></SiteTypeList>
+
             <br />
             <button
               type="button"
@@ -56,7 +46,6 @@
             </button>
           </div>
         </div>
-        <FooterUSGS></FooterUSGS>
       </div>
     </body>
   </div>
@@ -65,17 +54,14 @@
 <script>
 import { getData, getSchema, generateColList } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
-import HeaderUSWDSBanner from "../components/HeaderUSWDSBanner";
-import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
-import HeaderUSGS from "../components/HeaderUSGS";
-import FooterUSGS from "../components/FooterUSGS";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
 import LocationQueryType from "../components/LocationQueryType";
+import { locationMode } from "../enums.js";
+import SiteTypeList from "../components/SiteTypeList";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
-import { locationMode } from "../enums.js";
-
+import ParamSelect from "../components/ParamSelect";
 import { mapState } from "vuex";
 
 /*global  tableau:true*/
@@ -86,14 +72,12 @@ export default {
     msg: String
   },
   components: {
-    HeaderUSWDSBanner,
-    HeaderUSGS,
-    HeaderUSWDSSelections,
-    FooterUSGS,
     StateSelect,
     LocationQueryType,
+    SiteTypeList,
     CoordinatesInput,
     HUCInput,
+    ParamSelect,
     CountySelect
   },
   data: function() {
@@ -128,17 +112,22 @@ export default {
         return;
       }
 
-      this.columnList = generateColList(this.sites, this.parameters);
+      this.columnList = generateColList(
+        this.sites,
+        this.$store.getters.paramCodes
+      );
       let connectionData = {
         columnList: this.columnList,
         siteNums: this.sites,
-        paramNums: this.parameters,
+        paramNums: this.$store.getters.paramCodes,
         state: this.stateData[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,
         boundaryCoords: this.$store.getters.coordinates,
         hydroCode: this.$store.getters.hydroCode,
         countyCode: this.$store.getters.countyCode,
-        cached: false
+        cached: false,
+        siteTypeListActive: this.$store.getters.siteTypeListActive,
+        siteTypeList: this.$store.getters.siteType
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);

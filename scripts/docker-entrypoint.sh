@@ -5,4 +5,3 @@ versionType=`cat versionNum.txt`
 npm install
 npm --no-git-tag-version version $versionType --force >newVerNum.txt
 npm run production-build
-

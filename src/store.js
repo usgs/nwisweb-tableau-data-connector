@@ -7,8 +7,11 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     state: "",
+    siteTypeListActive: false,
+    siteType: "",
     hydroCode: "",
-    countyCode: "",
+    countyCode: [],
+    paramCodes: [],
     locationMode: locationMode.SITE,
     coordinates: {},
     validStateInput: false,
@@ -22,6 +25,12 @@ export default new Vuex.Store({
     changeLocationMode: (state, newLocationMode) => {
       state.locationMode = newLocationMode;
     },
+    changeSiteTypeListActive: (state, siteTypeListActive) => {
+      state.siteTypeListActive = siteTypeListActive;
+    },
+    changeSiteType: (state, siteType) => {
+      state.siteType = siteType;
+    },
     changeCoordinates: (state, newCoordinates) => {
       state.coordinates = newCoordinates;
     },
@@ -30,6 +39,9 @@ export default new Vuex.Store({
     },
     changeCountyCode: (state, newCountyCode) => {
       state.countyCode = newCountyCode;
+    },
+    changeParamCodes: (state, newParamCodes) => {
+      state.paramCodes = newParamCodes;
     }
   },
   actions: {},
@@ -40,6 +52,12 @@ export default new Vuex.Store({
     locationMode: state => {
       return state.locationMode;
     },
+    siteType: state => {
+      return state.siteType;
+    },
+    siteTypeListActive: state => {
+      return state.siteTypeListActive;
+    },
     coordinates: state => {
       return state.coordinates;
     },
@@ -48,6 +66,9 @@ export default new Vuex.Store({
     },
     countyCode: state => {
       return state.countyCode;
+    },
+    paramCodes: state => {
+      return state.paramCodes;
     }
   }
 });

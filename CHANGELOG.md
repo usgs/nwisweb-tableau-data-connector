@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added longitude and latitude columns to data Schema
 - updated time column in schema to use tableau's datetime format, and created a script to translate into tableau-compliant datetime format. 
 - added unit code column to the schema
+- added about page
+- added search menu for parameter codes
+- Added input for selection of multiple site types by user
+- Added support for semantic versioning into project
+- Jenkinsfile.build will now allow users to automatically increment version numbers in package.json and add git tags to builds
+
+
 ### Changed
 
 

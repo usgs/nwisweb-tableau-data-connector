@@ -106,7 +106,7 @@ test("converting a fully-populated data JSON to table", () => {
 test("correctly generate a URL given a list of sites and parameters with various whitespace", () => {
   const connectionData = {
     siteNums: "01646500 ,   05437641",
-    paramNums: "00060   ,00065",
+    paramNums: ["00060", "00065"],
     state: "Rhode Island",
     locationMode: locationMode.SITE
   };
@@ -117,7 +117,7 @@ test("correctly generate a URL given a list of sites and parameters with various
 
 test("correctly generate a URL given a state", () => {
   const connectionData = {
-    paramNums: "00060,00065",
+    paramNums: ["00060", "00065"],
     state: "ri",
     locationMode: locationMode.STATE
   };
@@ -128,7 +128,7 @@ test("correctly generate a URL given a state", () => {
 
 test("correctly generate a URL given a coordinate bounding box", () => {
   const connectionData = {
-    paramNums: "00060,00065",
+    paramNums: ["00060", "00065"],
     boundaryCoords: {
       north: "2.000000",
       south: "1.000000",
@@ -144,7 +144,7 @@ test("correctly generate a URL given a coordinate bounding box", () => {
 
 test("correctly generate a URL given a hydrological Unit Code", () => {
   const connectionData = {
-    paramNums: "00060,00065",
+    paramNums: ["00060", "00065"],
     hydroCode: "02070010",
     locationMode: locationMode.HYDRO
   };
@@ -155,7 +155,7 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
 
 test("correctly generate a URL given a list of counties", () => {
   const connectionData = {
-    paramNums: "00060,00065",
+    paramNums: ["00060", "00065"],
     countyCode: [11111, 22222],
     locationMode: locationMode.COUNTY
   };
@@ -166,7 +166,8 @@ test("correctly generate a URL given a list of counties", () => {
 
 test("correctly generates the column schema from sites and parameters", () => {
   const sites = "01646500,05437641";
-  const params = "00060,00065";
+  const params = ["00060", "00065"];
+
   const targetResult = [
     "01646500_00060",
     "01646500_00065",
