@@ -25,6 +25,13 @@ const getTimeSeriesByID = (timeSeries, tableName) => {
 };
 
 /*
+  reformats time string from site-provided datetime to tableau compliant format. Time zone is removed, as it can be calculated from the geo-coords if they are provided.
+*/
+const reformatTimeString = timeString => {
+  return timeString.replace("T", " ").substring(0, 23);
+};
+
+/*
 Takes a JSON and returns a table formatted in accordance with the schema provided to tableau.
 */
 const formatJSONAsTable = (data, tableName) => {
@@ -35,7 +42,7 @@ const formatJSONAsTable = (data, tableName) => {
 
   paramIndices.forEach(i => {
     let newEntry = {
-      dateTime: tableSeries.values[0].value[i].dateTime,
+      dateTime: reformatTimeString(tableSeries.values[0].value[i].dateTime),
       latitude: tableSeries.sourceInfo.geoLocation.geogLocation.latitude,
       longitude: tableSeries.sourceInfo.geoLocation.geogLocation.latitude,
       [tableName]: tableSeries.values[0].value[i].value
@@ -98,7 +105,7 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: "dateTime",
       alias: "dateTime",
-      dataType: tableau.dataTypeEnum.string
+      dataType: tableau.dataTypeEnum.datetime
     });
     cols.push({
       id: "latitude",
@@ -213,5 +220,6 @@ export {
   generateURL,
   generateColList,
   generateSchemaTablesFromData,
-  getTimeSeriesByID
+  getTimeSeriesByID,
+  reformatTimeString
 };
