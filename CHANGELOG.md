@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - updated time column in schema to use tableau's datetime format, and created a script to translate into tableau-compliant datetime format. 
 - added unit code column to the schema
 - added about page
+- added search menu for parameter codes
 ### Changed
 
 
