@@ -5,7 +5,8 @@ import {
   validateStateInputs,
   validateCoordinateInputs,
   validateSiteInputs,
-  validateHydroCodeInputs
+  validateHydroCodeInputs,
+  validateSiteTypeInputs
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
 const localVue = createLocalVue();
@@ -331,5 +332,30 @@ describe("Main", () => {
     expect(validateHydroCodeInputs(hydroCode, wrapper.vm)).not.toBe(true);
     hydroCode = "1111111.";
     expect(validateHydroCodeInputs(hydroCode, wrapper.vm)).not.toBe(true);
+  });
+
+  test("validateSiteTypeInputs rejects an invalid site type", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {},
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let siteType = "not a site type";
+    expect(validateSiteTypeInputs(siteType, wrapper.vm)).not.toBe(true);
+  });
+
+  test("validateSiteTypeInputs accepts a valid site type", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {},
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let siteType = "Tunnel, shaft, or mine";
+    wrapper.vm.stateData = { "Tunnel, shaft, or mine": "SB-TSM" };
+    expect(validateSiteTypeInputs(siteType, wrapper.vm)).toBe(true);
   });
 });

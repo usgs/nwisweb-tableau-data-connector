@@ -89,6 +89,13 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
   return true;
 };
 
+const validateSiteTypeInputs = (input, instance) => {
+  if (!(input in instance.stateData)) {
+    return "invalid site type selected";
+  }
+  return true;
+};
+
 /*
       function which validates user form inputs and updates vuex values to a query ready format. 
       This function should be run and observed to return true before anything in the body of requestData 
@@ -140,5 +147,6 @@ export {
   validateCoordinateInputs,
   roundCoordinateInputs,
   validateSiteInputs,
-  validateHydroCodeInputs
+  validateHydroCodeInputs,
+  validateSiteTypeInputs
 };

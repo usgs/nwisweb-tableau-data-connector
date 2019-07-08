@@ -73,7 +73,15 @@ export default {
       });
     },
     addSiteTypeToSiteTypeList: function() {
-      this.siteTypeList.push(this.siteType);
+      if(!(this.getSiteTypeNameFromCode(this.siteType) == "invalid")) {
+        if(!this.siteTypeList.includes(this.siteType)) {
+          this.siteTypeList.push(this.siteType);
+        } else {
+          alert("Site Type selected already in selection");
+        }
+      } else {
+        alert("invalid site type entered");
+      }
     },
     removeElement: function(index) {
       Vue.delete(this.siteTypeList, index);

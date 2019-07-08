@@ -25,8 +25,8 @@ yarn-error.log*
 *.sw?
 
 #generated files
-./src/components/params.js
-./src/fetchedValues/*.json
+src/components/params.js
+src/fetchedValues/*.json
 
 src/fetchedValues/counties.json
 src/fetchedValues/fips.json
