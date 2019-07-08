@@ -57,7 +57,6 @@ const formatJSONAsTable = (data, tableName) => {
 generates a URL for query parameters contained in the connectionData object accepted as an argument
 */
 const generateURL = connectionData => {
-  //todo standardize this template's format when we add more query info fields
   let paramList = connectionData.paramNums.replace(/\s/g, "").split(","); // split by comma, ignoring whitespace
   let paramQuery = `&parameterCd=${paramList.join()}`;
 
@@ -106,17 +105,17 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: "dateTime",
       alias: "dateTime",
-      dataType: tableau.dataTypeEnum.datetime //placeholder until we develop connectionData more
+      dataType: tableau.dataTypeEnum.datetime
     });
     cols.push({
       id: "latitude",
       alias: "latitude",
-      dataType: tableau.dataTypeEnum.float //placeholder until we develop connectionData more
+      dataType: tableau.dataTypeEnum.float
     });
     cols.push({
       id: "longitude",
       alias: "longitude",
-      dataType: tableau.dataTypeEnum.float //placeholder until we develop connectionData more
+      dataType: tableau.dataTypeEnum.float
     });
     let name = series.name;
     let nameTokens = name.split(":");
@@ -126,11 +125,11 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: column,
       alias: column,
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
+      dataType: tableau.dataTypeEnum.string
     });
     let newSchema = {
       id: column,
-      alias: column, //todo, add useful information
+      alias: column,
       columns: cols
     };
     tableList.push(newSchema);

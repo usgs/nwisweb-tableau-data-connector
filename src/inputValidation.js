@@ -33,9 +33,9 @@ const validateCoordinateInputs = (coordinates, instance) => {
     return "out of bounds eastern boundary coordinate(-180 - 180)";
   if (!isWithinLatitudeBounds(coordinates.west))
     return "out of bounds western boundary coordinate(-180 - 180)";
-  if (parseInt(coordinates.south) >= parseInt(coordinates.north))
+  if (parseFloat(coordinates.south) >= parseFloat(coordinates.north))
     return "southern boundary coordinate is north of northern boundary coordinate";
-  if (parseInt(coordinates.west) >= parseInt(coordinates.east))
+  if (parseFloat(coordinates.west) >= parseFloat(coordinates.east))
     return "western boundary coordinate is east of eastern boundary coordinate";
 
   return true;
@@ -46,21 +46,21 @@ const isNumeric = value => {
 };
 
 const isWithinLatitudeBounds = latitude => {
-  let numericLatitude = parseInt(latitude);
+  let numericLatitude = parseFloat(latitude);
   return numericLatitude > -180 && numericLatitude < 180;
 };
 const isWithinLongitudeBounds = longitude => {
-  let numericLongitude = parseInt(longitude);
+  let numericLongitude = parseFloat(longitude);
   return numericLongitude > -90 && numericLongitude < 90;
 };
 /*
       rounds coordinate inputs to 6 decimal places. Called in validateFormInputs()
     */
 const roundCoordinateInputs = coordinates => {
-  coordinates.north = parseInt(coordinates.north).toFixed(6);
-  coordinates.south = parseInt(coordinates.south).toFixed(6);
-  coordinates.east = parseInt(coordinates.east).toFixed(6);
-  coordinates.west = parseInt(coordinates.west).toFixed(6);
+  coordinates.north = parseFloat(coordinates.north).toFixed(6);
+  coordinates.south = parseFloat(coordinates.south).toFixed(6);
+  coordinates.east = parseFloat(coordinates.east).toFixed(6);
+  coordinates.west = parseFloat(coordinates.west).toFixed(6);
   return coordinates;
 };
 /*
