@@ -106,7 +106,6 @@ const generateURL = connectionData => {
   if (connectionData.siteTypeListActive) {
     let siteType = connectionData.siteTypeList.join(",");
     siteTypeQuery = `&siteType=${siteType}`;
-    alert(siteTypeQuery);
   }
 
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}&siteStatus=all`;
