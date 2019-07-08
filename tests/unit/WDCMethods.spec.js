@@ -3,7 +3,8 @@ import {
   generateURL,
   generateColList,
   generateSchemaTablesFromData,
-  getTimeSeriesByID
+  getTimeSeriesByID,
+  reformatTimeString
 } from "../../src/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
 
@@ -341,4 +342,10 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
   };
   result = generateSchemaTablesFromData(input);
   expect(result).toEqual(targetResult);
+});
+
+test("reformatTimeString correctly reformats timestring recieved from query into tableau compliant format", () => {
+  let input = "2019-07-05T10:45:00.000-04:00";
+  let expected = "2019-07-05 10:45:00.000";
+  expect(reformatTimeString(input)).toEqual(expected);
 });
