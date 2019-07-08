@@ -5,7 +5,9 @@ import {
   validateStateInputs,
   validateCoordinateInputs,
   validateSiteInputs,
-  validateHydroCodeInputs
+  validateHydroCodeInputs,
+  validateCountyInputs,
+  validateParamInputs
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
 const localVue = createLocalVue();
@@ -331,5 +333,80 @@ describe("Main", () => {
     expect(validateHydroCodeInputs(hydroCode, wrapper.vm)).not.toBe(true);
     hydroCode = "1111111.";
     expect(validateHydroCodeInputs(hydroCode, wrapper.vm)).not.toBe(true);
+  });
+
+  /*
+We're only testing the lower bound because other form validation is
+done in CountySelect.vue
+*/
+  test("validateCountyInputs successfully rejects invalid params", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        locationMode: () => {
+          return locationMode.COUNTY;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let countyCode = [];
+    expect(validateCountyInputs(countyCode, wrapper.vm)).not.toBe(true);
+  });
+  test("validateCountyInputs successfully accepts valid params", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        locationMode: () => {
+          return locationMode.HYDRO;
+        }
+      },
+      actions: {}
+    });
+    let wrapper = shallowMount(Main, { store, localVue });
+    let countyCode = [];
+    expect(validateCountyInputs(countyCode, wrapper.vm)).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        locationMode: () => {
+          return locationMode.COUNTY;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    countyCode = ["test"];
+    expect(validateCountyInputs(countyCode, wrapper.vm)).toBe(true);
+  });
+
+  /*
+We're only testing the lower bound because other form validation is
+done in ParamSelect.vue
+*/
+  test("validateParamInputs successfully rejects invalid params", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {},
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let paramCode = [];
+    expect(validateParamInputs(paramCode, wrapper.vm)).not.toBe(true);
+  });
+  test("validateParamInputs successfully accepts valid params", () => {
+    const store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {},
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let paramCode = ["test"];
+    expect(validateParamInputs(paramCode, wrapper.vm)).toBe(true);
   });
 });

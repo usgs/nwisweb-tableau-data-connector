@@ -91,7 +91,7 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
 
 /*
 warns the user if they have no query parameters selected. This is the only pathological state not protected
- against from within the  ParamSelect component.
+ against from within the  ParamSelect component, because it is a valid interactive session state.
 */
 const validateParamInputs = paramList => {
   if (paramList.length != 0) {
@@ -103,7 +103,7 @@ const validateParamInputs = paramList => {
 
 /*
 warns the user if they have no counties selected. This is the only pathological state not protected
- against from within the CountySelect  component.
+ against from within the CountySelect  component, because it is a valid interactive session state.
 */
 const validateCountyInputs = (countyList, instance) => {
   if (instance.$store.getters.locationMode != locationMode.COUNTY) return true;
@@ -179,5 +179,7 @@ export {
   validateCoordinateInputs,
   roundCoordinateInputs,
   validateSiteInputs,
-  validateHydroCodeInputs
+  validateHydroCodeInputs,
+  validateCountyInputs,
+  validateParamInputs
 };
