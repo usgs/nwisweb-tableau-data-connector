@@ -13,14 +13,8 @@
             style="text-align:center"
           >
             <br />
-            <br />
             <div>
-              <label> Parameter Codes</label>
-              <input
-                class="usa-input"
-                v-model="parameters"
-                style="width: 300px; margin: auto;"
-              />
+              <ParamSelect></ParamSelect>
               <br />
             </div>
             <div v-show="!disabled">
@@ -63,6 +57,7 @@ import CountySelect from "../components/CountySelect";
 import LocationQueryType from "../components/LocationQueryType";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
+import ParamSelect from "../components/ParamSelect";
 import { locationMode } from "../enums.js";
 
 import { mapState } from "vuex";
@@ -79,6 +74,7 @@ export default {
     LocationQueryType,
     CoordinatesInput,
     HUCInput,
+    ParamSelect,
     CountySelect
   },
   data: function() {
@@ -113,11 +109,14 @@ export default {
         return;
       }
 
-      this.columnList = generateColList(this.sites, this.parameters);
+      this.columnList = generateColList(
+        this.sites,
+        this.$store.getters.paramCodes
+      );
       let connectionData = {
         columnList: this.columnList,
         siteNums: this.sites,
-        paramNums: this.parameters,
+        paramNums: this.$store.getters.paramCodes,
         state: this.stateData[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,
         boundaryCoords: this.$store.getters.coordinates,

@@ -9,6 +9,7 @@ export default new Vuex.Store({
     state: "",
     hydroCode: "",
     countyCode: "",
+    paramCodes: [],
     locationMode: locationMode.SITE,
     coordinates: {},
     validStateInput: false,
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     changeCountyCode: (state, newCountyCode) => {
       state.countyCode = newCountyCode;
+    },
+    changeParamCodes: (state, newParamCodes) => {
+      state.paramCodes = newParamCodes;
     }
   },
   actions: {},
@@ -48,6 +52,9 @@ export default new Vuex.Store({
     },
     countyCode: state => {
       return state.countyCode;
+    },
+    paramCodes: state => {
+      return state.paramCodes;
     }
   }
 });

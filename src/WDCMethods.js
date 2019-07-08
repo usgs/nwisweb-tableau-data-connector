@@ -69,8 +69,7 @@ const formatJSONAsTable = (data, tableName) => {
 generates a URL for query parameters contained in the connectionData object accepted as an argument
 */
 const generateURL = connectionData => {
-  let paramList = connectionData.paramNums.replace(/\s/g, "").split(","); // split by comma, ignoring whitespace
-  let paramQuery = `&parameterCd=${paramList.join()}`;
+  let paramQuery = `&parameterCd=${connectionData.paramNums.join()}`;
 
   let locationQuery = "";
 
@@ -216,8 +215,7 @@ const getSchema = schemaCallback => {
 /*
     Generates the list of possible columns (set product of all sites, and all parameters)
 */
-const generateColList = (sites, params) => {
-  let paramList = params.replace(/\s/g, "").split(",");
+const generateColList = (sites, paramList) => {
   let siteList = sites.replace(/\s/g, "").split(",");
   let columnList = [];
   siteList.forEach(function(site) {
