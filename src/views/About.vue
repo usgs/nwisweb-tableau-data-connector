@@ -10,14 +10,14 @@
 
     <br />
     <br />
-    <b> Who is this system designed for </b> <br />
+    <b> Who is this system designed for ?</b> <br />
     This system is designed for users of the Tableau software who want to
     seamlessly integrate USGS Water data into their analytics operations. This
     system is open to the public.
 
     <br />
     <br />
-    <b> What does this system provide </b> <br />
+    <b> What does this system provide ?</b> <br />
     This system provides USGS Water data and an accompanying Tableau schema for
     each parameter for each site, including geographic coordinates and datetimes
     for each observation. When invoking this system through the Tableau web data
