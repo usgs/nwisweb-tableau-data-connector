@@ -90,6 +90,30 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
 };
 
 /*
+warns the user if they have no query parameters selected. This is the only pathological state not protected
+ against from within the  ParamSelect component.
+*/
+const validateParamInputs = paramList => {
+  if (paramList.length != 0) {
+    return true;
+  } else {
+    return "parameter query requires between 1 and 100 parameters";
+  }
+};
+
+/*
+warns the user if they have no counties selected. This is the only pathological state not protected
+ against from within the CountySelect  component.
+*/
+const validateCountyInputs = countyList => {
+  if (countyList.length != 0) {
+    return true;
+  } else {
+    return "county query requires between 1 and 10 counties";
+  }
+};
+
+/*
       function which validates user form inputs and updates vuex values to a query ready format. 
       This function should be run and observed to return true before anything in the body of requestData 
       is run. 
@@ -124,6 +148,17 @@ const validateFormInputs = instance => {
   );
   if (!(HydroCodeStatus === true)) {
     alert(HydroCodeStatus);
+    return false;
+  }
+  let paramStatus = validateParamInputs(instance.$store.getters.paramCodes);
+  if (!(paramStatus == true)) {
+    alert(paramStatus);
+    return false;
+  }
+
+  let countyStatus = validateCountyInputs(instance.$store.getters.countyCode);
+  if (!(countyStatus == true)) {
+    alert(countyStatus);
     return false;
   }
 

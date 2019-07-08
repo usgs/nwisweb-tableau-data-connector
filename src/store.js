@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     state: "",
     hydroCode: "",
-    countyCode: "",
+    countyCode: [],
     paramCodes: [],
     locationMode: locationMode.SITE,
     coordinates: {},
