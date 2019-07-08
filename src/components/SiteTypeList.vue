@@ -1,138 +1,96 @@
 <template>
   <div>
-    <!-- <ChosenSelect
-      id="siteSelect"
-      multiple
-      optgroup
+    <br />
+    <label class="autocomplete-dropdown">Site Type</label>
+    <input
       v-model="siteType"
-      :options="listFromFile"
-      style="width: 300px; height:300px; margin: auto;"
+      class="usa-input"
+      list="siteTypeDl"
+      type="text"
+      style="width: 300px; margin: auto;"
+    />
+    <datalist id="siteTypeDL"> </datalist>
+    <button
+      class="usa-button"
+      v-on:click="addSiteTypeToSiteTypeList"
+      style="margin-top: 30px"
     >
-    </ChosenSelect> -->
-    <!-- <multiselect
-      id="siteSelect"
-      :multiple="true"
-      :taggable="true"
-      v-model="selectedSiteType"
-      :max-height="600"
-      :options="listFromFile"
-      :optionHeight="40"
-      :showPointer="true"
-      :searchable="true"
-      :close-on-select="false"
-      :hide-selected="true"
-      tag-placeholder="Add this as new tag"
-      placeholder="Search for a site type"
-    >
-      <template
-        v-for="option in selectedSiteType"
-        slot="tag"
-        slot-scope="{ option, remove }"
-      >
-        <span class="custom__tag">
-          {{ option }}
-          <span class="custom__remove" v-on:click="remove(option)">❌</span>
+      Add SiteType
+    </button>
+
+    <h6>Selected SiteTypes</h6>
+
+    <input-tags v-model="siteTypeNames" style="max-width: 375px; margin: auto;">
+      <div class="tags-input">
+        <span
+          v-for="(tag, key) in siteTypeNames"
+          class="tags-input-tag"
+          :key="key"
+        >
+          <span>{{ tag }}</span>
+          <button
+            type="button"
+            class="tags-input-remove"
+            v-on:click="removeElement(key)"
+          >
+            &times;
+          </button>
         </span>
-      </template>
-      <span slot="noResult"
-        >Oops! No elements found. Consider changing the search query.</span
-      >
-    </multiselect> -->
+      </div>
+    </input-tags>
   </div>
 </template>
 
 <script>
-import { siteTypes } from "./params.js";
-import Multiselect from "vue-multiselect";
+import siteTypes from "../fetchedValues/siteTypes.json";
+import VueTags from "vue-tags";
+import Vue from "vue";
+
+Vue.component("input-tags", VueTags);
 
 export default {
   name: "SiteTypeList",
   components: {
-    Multiselect
+    VueTags
   },
   data: function() {
     return {
-      selectedSiteType: [], //site types the user has clicked on
+      tags: ["test1"],
+      siteType: "",
+      siteTypeList: [],
+      siteTypeNames: [],
       STCodes: [], //holds STCodes of sites that user has selected
-      option: "",
-      listFromFile: [] //list of keys from siteTypes in param.js
+      option: ""
     };
   },
   methods: {
-    fillDropdown() {
-      let siteSelect = document.getElementById("siteSelect");
-      this.listFromFile = Object.keys(siteTypes);
-      this.listFromFile.forEach(function(element) {
-        //siteTypes.forEach(function(element) {
+    commitSiteTypeSelection: function() {
+      this.$store.commit("changeSiteTypeListActive", true);
+      this.$store.commit("changeSiteType", this.STCodes);
+    },
+    populateSiteType: function() {
+      let siteSelect = document.getElementById("siteTypeDL");
+      siteTypes.forEach(element => {
         let option = document.createElement("option");
-        option.text = siteTypes[element];
-        //alert(siteTypes[element]);
-        option.value = siteTypes[element];
+        option.text = element["site_tp_ln"];
+        option.value = element["site_tp_cd"];
         siteSelect.appendChild(option);
-        //console.log(element);
       });
+    },
+    addSiteTypeToSiteTypeList: function() {
+      console.log("add");
+      this.siteTypeList.push(this.siteType);
+    },
+    removeElement: function(index) {
+            console.log("remove");
+      Vue.delete(this.siteTypeList, index);
     }
   },
   updated() {
-    if (this.selectedSiteType.length > 0) {
-      this.STCodes.push(
-        siteTypes[this.selectedSiteType[this.selectedSiteType.length - 1]]
-      );
-    }
-    this.$store.commit("changeSiteTypeListActive", true);
-    this.$store.commit("changeSiteType", this.STCodes);
+    this.commitSiteTypeSelection();
   },
   mounted() {
-    this.fillDropdown();
+    this.populateSiteType();
   }
 };
 </script>
-
-<style scoped lang="scss">
-@import "../style/vue-multiselect.scss";
-
-span.custom__tag {
-  //blue bubble around selected sitetype
-  display: inline-block;
-  padding: 3px 12px;
-  background: #2491ff;
-  margin-right: 8px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-//li.multiselect__element {//the dropdown list items that currently have bullets
-span.multiselect__option {
-  display: inline-block;
-  padding: 3px 12px;
-  background: #2491ff;
-  margin-right: 8px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-}
-div.multiselect__content {
-  display: inline-block;
-}
-div.multiselect__content-wrapper {
-  display: inline-block;
-}
-input.multiselect__input {
-  min-height: 40px;
-  display: block;
-  padding: 8px 40px 0 8px;
-  border-radius: 5px;
-  font-size: 14px;
-  width: 100%;
-}
-div.multiselect {
-  min-height: 40px;
-  display: block;
-  padding: 8px 40px 0 8px;
-  border-radius: 5px;
-  border: 1px solid #e8e8e8;
-  background: #fff;
-  font-size: 14px;
-  width: 300px;
-  margin: auto;
-}
-</style>

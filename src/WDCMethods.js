@@ -1,11 +1,5 @@
-<<<<<<< HEAD:src/components/WDCMethods.js
-import { get } from "../utils.js";
-import { locationMode } from "../enums.js";
-
-=======
 import { get } from "./utils.js";
 import { locationMode } from "./enums.js";
->>>>>>> 669f7d04d02344c7c66e04365bb1b667e1e4748b:src/WDCMethods.js
 /*global  tableau:true*/
 
 /*

@@ -44,7 +44,6 @@
             <HUCInput></HUCInput>
             <CountySelect></CountySelect>
             <LocationQueryType></LocationQueryType>
-            <label>Site Type</label>
             <SiteTypeList></SiteTypeList>
 
             <br />

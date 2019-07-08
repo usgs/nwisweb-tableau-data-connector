@@ -115,10 +115,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- form.usa-form {
-   width: 300px; 
-   height:200px; 
-   margin: auto;
-   margin-top: 20px;
- }
+form.usa-form {
+  width: 300px;
+  height: 200px;
+  margin: auto;
+  margin-top: 20px;
+}
 </style>
