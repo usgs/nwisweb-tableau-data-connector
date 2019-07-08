@@ -3,7 +3,7 @@ import { locationMode } from "./enums.js";
 /*global  tableau:true*/
 
 /*
-given the table.tableInfo.id given as an argument to the getdata methods, this method
+given the table.variable.variableDescription given as an argument to the getdata methods, this method
 extracts the appropriate time series. 
 */
 const getTimeSeriesByID = (timeSeries, tableName) => {
@@ -11,7 +11,10 @@ const getTimeSeriesByID = (timeSeries, tableName) => {
   let found = false;
   timeSeries.forEach(series => {
     if (
-      tableName == `${series.name.split(":")[1]}_${series.name.split(":")[2]}`
+      tableName ==
+      `${sanitizeVariableName(series.variable.variableDescription)}_${
+        series.sourceInfo.siteCode[0].value
+      }`
     ) {
       found = true;
       resultSeries = series;
@@ -25,6 +28,21 @@ const getTimeSeriesByID = (timeSeries, tableName) => {
 };
 
 /*
+  reformats time string from site-provided datetime to tableau compliant format. Time zone is removed, as it can be calculated from the geo-coords if they are provided.
+*/
+const reformatTimeString = timeString => {
+  return timeString.replace("T", " ").substring(0, 23);
+};
+
+/*
+sanitizes a variable name to name it suitable for concatenation into a talbeau column header
+*/
+
+const sanitizeVariableName = variableName => {
+  return variableName.replace(/\s/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
+};
+
+/*
 Takes a JSON and returns a table formatted in accordance with the schema provided to tableau.
 */
 const formatJSONAsTable = (data, tableName) => {
@@ -35,7 +53,10 @@ const formatJSONAsTable = (data, tableName) => {
 
   paramIndices.forEach(i => {
     let newEntry = {
-      dateTime: tableSeries.values[0].value[i].dateTime,
+      dateTime: reformatTimeString(tableSeries.values[0].value[i].dateTime),
+      latitude: tableSeries.sourceInfo.geoLocation.geogLocation.latitude,
+      longitude: tableSeries.sourceInfo.geoLocation.geogLocation.longitude,
+      units: tableSeries.variable.unit.unitCode,
       [tableName]: tableSeries.values[0].value[i].value
     };
     tableData.push(newEntry);
@@ -48,7 +69,6 @@ const formatJSONAsTable = (data, tableName) => {
 generates a URL for query parameters contained in the connectionData object accepted as an argument
 */
 const generateURL = connectionData => {
-  //todo standardize this template's format when we add more query info fields
   let paramList = connectionData.paramNums.replace(/\s/g, "").split(","); // split by comma, ignoring whitespace
   let paramQuery = `&parameterCd=${paramList.join()}`;
 
@@ -104,22 +124,35 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: "dateTime",
       alias: "dateTime",
+      dataType: tableau.dataTypeEnum.datetime
+    });
+    cols.push({
+      id: "latitude",
+      alias: "latitude",
+      dataType: tableau.dataTypeEnum.float
+    });
+    cols.push({
+      id: "longitude",
+      alias: "longitude",
+      dataType: tableau.dataTypeEnum.float
+    });
+    cols.push({
+      id: "units",
+      alias: "units",
       dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
     });
+    let column = `${sanitizeVariableName(
+      series.variable.variableDescription
+    )}_${series.sourceInfo.siteCode[0].value}`; // this assumes there is only 1 sitecode
 
-    let name = series.name;
-    let nameTokens = name.split(":");
-    let site = nameTokens[1];
-    let paramType = nameTokens[2];
-    let column = `${site}_${paramType}`;
     cols.push({
       id: column,
       alias: column,
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
+      dataType: tableau.dataTypeEnum.string
     });
     let newSchema = {
       id: column,
-      alias: "useful information will be put here", //todo, add useful information
+      alias: column,
       columns: cols
     };
     tableList.push(newSchema);
@@ -210,5 +243,7 @@ export {
   generateURL,
   generateColList,
   generateSchemaTablesFromData,
-  getTimeSeriesByID
+  getTimeSeriesByID,
+  reformatTimeString,
+  sanitizeVariableName
 };
