@@ -20,7 +20,7 @@ tableau.connectionData = { columnList: [], siteNums: "", paramNums: "" };
 tableau.dataTypeEnum = {};
 tableau.dataTypeEnum.string = "__STRING";
 tableau.dataTypeEnum.float = "__FLOAT";
- // this is a mockup of the enum, so that when testing getSchema, our mock tableau can still provide some value
+// this is a mockup of the enum, so that when testing getSchema, our mock tableau can still provide some value
 tableau.connectionData.paramNums = ""; // in the place of the real tableau enum
 tableau.connectionData.siteNums = "";
 global.tableau = tableau;

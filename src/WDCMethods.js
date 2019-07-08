@@ -98,7 +98,7 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: "dateTime",
       alias: "dateTime",
-      dataType: tableau.dataTypeEnum.string 
+      dataType: tableau.dataTypeEnum.string
     });
     cols.push({
       id: "latitude",
@@ -118,11 +118,11 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: column,
       alias: column,
-      dataType: tableau.dataTypeEnum.string 
+      dataType: tableau.dataTypeEnum.string
     });
     let newSchema = {
       id: column,
-      alias: column, 
+      alias: column,
       columns: cols
     };
     tableList.push(newSchema);
