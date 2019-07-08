@@ -105,7 +105,8 @@ const validateParamInputs = paramList => {
 warns the user if they have no counties selected. This is the only pathological state not protected
  against from within the CountySelect  component.
 */
-const validateCountyInputs = countyList => {
+const validateCountyInputs = (countyList, instance) => {
+  if (instance.$store.getters.locationMode != locationMode.COUNTY) return true;
   if (countyList.length != 0) {
     return true;
   } else {
@@ -156,7 +157,10 @@ const validateFormInputs = instance => {
     return false;
   }
 
-  let countyStatus = validateCountyInputs(instance.$store.getters.countyCode);
+  let countyStatus = validateCountyInputs(
+    instance.$store.getters.countyCode,
+    instance
+  );
   if (!(countyStatus == true)) {
     alert(countyStatus);
     return false;
