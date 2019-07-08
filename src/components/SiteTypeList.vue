@@ -60,7 +60,6 @@ export default {
   },
   methods: {
     commitSiteTypeSelection: function() {
-      this.$store.commit("changeSiteTypeListActive", true);
       this.$store.commit("changeSiteType", this.siteTypeList);
     },
     populateSiteType: function() {
@@ -73,8 +72,8 @@ export default {
       });
     },
     addSiteTypeToSiteTypeList: function() {
-      if(!(this.getSiteTypeNameFromCode(this.siteType) == "invalid")) {
-        if(!this.siteTypeList.includes(this.siteType)) {
+      if (!(this.getSiteTypeNameFromCode(this.siteType) == "invalid")) {
+        if (!this.siteTypeList.includes(this.siteType)) {
           this.siteTypeList.push(this.siteType);
         } else {
           alert("Site Type selected already in selection");
