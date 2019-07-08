@@ -5,7 +5,7 @@
     <input
       v-model="siteType"
       class="usa-input"
-      list="siteTypeDl"
+      list="siteTypeDL"
       type="text"
       style="width: 300px; margin: auto;"
     />
@@ -45,28 +45,23 @@
 import siteTypes from "../fetchedValues/siteTypes.json";
 import VueTags from "vue-tags";
 import Vue from "vue";
-
 Vue.component("input-tags", VueTags);
 
 export default {
   name: "SiteTypeList",
-  components: {
-    VueTags
-  },
   data: function() {
     return {
-      tags: ["test1"],
+      tags: [],
       siteType: "",
-      siteTypeList: [],
+      siteTypeList: [], //holds selected siteTypes
       siteTypeNames: [],
-      STCodes: [], //holds STCodes of sites that user has selected
       option: ""
     };
   },
   methods: {
     commitSiteTypeSelection: function() {
       this.$store.commit("changeSiteTypeListActive", true);
-      this.$store.commit("changeSiteType", this.STCodes);
+      this.$store.commit("changeSiteType", this.siteTypeList);
     },
     populateSiteType: function() {
       let siteSelect = document.getElementById("siteTypeDL");
@@ -78,19 +73,32 @@ export default {
       });
     },
     addSiteTypeToSiteTypeList: function() {
-      console.log("add");
       this.siteTypeList.push(this.siteType);
     },
     removeElement: function(index) {
-            console.log("remove");
       Vue.delete(this.siteTypeList, index);
+    },
+    getSiteTypeNameFromCode: function(siteTypeCode) {
+      let result = "invalid";
+      siteTypes.forEach(element => {
+        if (element["site_tp_cd"] == siteTypeCode) {
+          result = element["site_tp_ln"];
+        }
+      });
+      return result;
     }
-  },
-  updated() {
-    this.commitSiteTypeSelection();
   },
   mounted() {
     this.populateSiteType();
+  },
+  watch: {
+    siteTypeList: function(newValue) {
+      this.siteTypeNames = [];
+      newValue.forEach(element => {
+        this.siteTypeNames.push(this.getSiteTypeNameFromCode(element));
+      });
+      this.commitSiteTypeSelection();
+    }
   }
 };
 </script>
