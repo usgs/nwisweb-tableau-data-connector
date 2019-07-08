@@ -54,12 +54,12 @@ export default {
       tags: [],
       siteType: "",
       siteTypeList: [], //holds selected siteTypes
-      siteTypeNames: [],
-      option: ""
+      siteTypeNames: []
     };
   },
   methods: {
     commitSiteTypeSelection: function() {
+      this.$store.commit("changeSiteTypeListActive", true);
       this.$store.commit("changeSiteType", this.siteTypeList);
     },
     populateSiteType: function() {
