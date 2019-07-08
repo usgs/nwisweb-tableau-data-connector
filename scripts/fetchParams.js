@@ -8,12 +8,12 @@ const fs = require('fs');
 
 
 
-const tsvToJSON = (tsv) => {
-  let lines = tsv.split('\n');
+const rdbToJSON = (rdb) => {
+  let lines = rdb.split('\n');
   lines.splice(0,7);
-  lines.splice(1,1); // quick way to remove unnecesarry lines to make the rdb readable as tsv
-  tsv =  lines.join('\n');
-    let data =    parse(tsv, {
+  lines.splice(1,1); // quick way to remove unnecesarry lines to make the rdb readable as rdb
+  rdb =  lines.join('\n');
+    let data =    parse(rdb, {
         columns: true,
         skip_empty_lines: true,
         delimiter: "\t"
@@ -64,14 +64,16 @@ let countyString = "";
 let paramString = "";
 
 
-Promise.all([get("https://help.waterdata.usgs.gov/code/site_tp_query?fmt=rdb"),
-            get("https://help.waterdata.usgs.gov/code/county_query?fmt=rdb"),
-get("https://help.waterdata.usgs.gov/code/parameter_cd_query?fmt=rdb&group_cd=%")]).then((value)=>{
+Promise.all(
+  [get("https://help.waterdata.usgs.gov/code/site_tp_query?fmt=rdb"),          
+  get("https://help.waterdata.usgs.gov/code/county_query?fmt=rdb"),
+  get("https://help.waterdata.usgs.gov/code/parameter_cd_query?fmt=rdb&group_cd=%")]
+  ).then((value)=>{
 siteString = value[0];
 countyString = value[1];
 paramString = value[2];
  
-paramData = tsvToJSON(paramString)
+paramData = rdbToJSON(paramString)
 abridgedParamData = []
 paramData.forEach(value => {
 abridgedParamData.push({id: value["parm_cd"] , name: value["parm_nm"]});
@@ -80,12 +82,12 @@ abridgedParamData.push({id: value["parm_cd"] , name: value["parm_nm"]});
 
 
 let abridgedParamJSONString = JSON.stringify(abridgedParamData);
-let siteTypesJSONString = JSON.stringify(tsvToJSON(siteString));
-let countyJSONString = JSON.stringify(tsvToJSON(countyString));
+let siteTypesJSONString = JSON.stringify(rdbToJSON(siteString));
+let countyJSONString = JSON.stringify(rdbToJSON(countyString));
 
 
 
-let statesTemplate = `
+let statesTemplate = 
 {
   "Alabama": "AL",
   "Alaska": "AK",
@@ -97,7 +99,6 @@ let statesTemplate = `
   "Connecticut": "CT",
   "Delaware": "DE",
   "District of Columbia": "DC",
-  "Federated States Of Micronesia": "FM",
   "Florida": "FL",
   "Georgia": "GA",
   "Guam": "GU",
@@ -110,7 +111,6 @@ let statesTemplate = `
   "Kentucky": "KY",
   "Louisiana": "LA",
   "Maine": "ME",
-  "Marshall Islands": "MH",
   "Maryland": "MD",
   "Massachusetts": "MA",
   "Michigan": "MI",
@@ -130,7 +130,6 @@ let statesTemplate = `
   "Ohio": "OH",
   "Oklahoma": "OK",
   "Oregon": "OR",
-  "Palau": "PW",
   "Pennsylvania": "PA",
   "Puerto Rico": "PR",
   "Rhode Island": "RI",
@@ -146,11 +145,10 @@ let statesTemplate = `
   "West Virginia": "WV",
   "Wisconsin": "WI",
   "Wyoming": "WY"
-}`
+}
 
 
-let fipsTemplate = `
-{
+let fipsTemplate = {
     "Northern Mariana Islands": "69",
     "Delaware": "10",
     "District of Columbia": "11",
@@ -209,10 +207,10 @@ let fipsTemplate = `
     "Connecticut": "09"
   
   }
-`
 
 
-fs.writeFile("./src/fetchedValues/states.json", statesTemplate, function(err) {
+
+fs.writeFile("./src/fetchedValues/states.json", JSON.stringify(statesTemplate), function(err) {
   if(err) {
       return console.log(err);
   }
@@ -244,7 +242,7 @@ fs.writeFile("./src/fetchedValues/counties.json", countyJSONString, function(err
   console.log("./src/fetchedValues/counties.json was saved!");
 }); 
 
-fs.writeFile("./src/fetchedValues/fips.json", fipsTemplate, function(err) {
+fs.writeFile("./src/fetchedValues/fips.json", JSON.stringify(fipsTemplate), function(err) {
   if(err) {
       return console.log(err);
   }

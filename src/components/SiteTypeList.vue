@@ -9,7 +9,7 @@
       style="width: 300px; height:300px; margin: auto;"
     >
     </ChosenSelect> -->
-    <multiselect
+    <!-- <multiselect
       id="siteSelect"
       :multiple="true"
       :taggable="true"
@@ -37,7 +37,7 @@
       <span slot="noResult"
         >Oops! No elements found. Consider changing the search query.</span
       >
-    </multiselect>
+    </multiselect> -->
   </div>
 </template>
 

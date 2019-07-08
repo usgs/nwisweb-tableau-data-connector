@@ -22,6 +22,34 @@
       style="width: 300px; margin: auto;"
     />
     <datalist id="cscounties"> </datalist>
+    <button
+      class="usa-button"
+      v-on:click="addCountyToCounties"
+      style="margin-top: 30px"
+    >
+      Add County
+    </button>
+
+    <h6>Selected Counties</h6>
+
+    <input-tags v-model="countyNames" style="max-width: 375px; margin: auto;">
+      <div class="tags-input">
+        <span
+          v-for="(tag, key) in countyNames"
+          class="tags-input-tag"
+          :key="key"
+        >
+          <span>{{ tag }}</span>
+          <button
+            type="button"
+            class="tags-input-remove"
+            v-on:click="removeElement(key)"
+          >
+            &times;
+          </button>
+        </span>
+      </div>
+    </input-tags>
   </div>
 </template>
 
@@ -31,6 +59,9 @@ import { mapState } from "vuex";
 import stateList from "../fetchedValues/states.json";
 import countyInfo from "../fetchedValues/counties.json";
 import fipsInfo from "../fetchedValues/fips.json";
+import Vue from "vue";
+import VueTags from "vue-tags";
+Vue.component("input-tags", VueTags);
 
 export default {
   name: "CountySelect",
@@ -38,6 +69,8 @@ export default {
     return {
       state: "",
       county: "",
+      counties: [],
+      countyNames: [],
       activeLocationMode: locationMode.SITE
     };
   },
@@ -67,8 +100,8 @@ export default {
         dropDown.appendChild(option);
       });
     },
-    storeCountySelection: function() {
-      this.$store.commit("changeCountyCode", this.county);
+    commitCountySelection: function() {
+      this.$store.commit("changeCountyCode", this.counties);
     },
     getCounties: function(stateName) {
       if (!(stateName in fipsInfo)) {
@@ -82,10 +115,42 @@ export default {
         }
       }
       return result;
+    },
+    getCountyNameFromCode: function(fullCountyCode) {
+      if (fullCountyCode.length != 5) {
+        return "invalid";
+      }
+      let stateCode = fullCountyCode.substring(0, 2);
+      let countyCode = fullCountyCode.substring(2, 5);
+      let result = "invalid";
+      countyInfo.forEach(element => {
+        if (
+          element["state_cd"] == stateCode &&
+          element["county_cd"] == countyCode
+        ) {
+          result = element["county_nm"];
+        }
+      });
+      return result;
+    },
+    addCountyToCounties: function() {
+      if (!(this.getCountyNameFromCode(this.county) == "invalid")) {
+        if (!this.counties.includes(this.county)) {
+          if (this.counties.length < 10) {
+            this.counties.push(this.county);
+          } else {
+            alert("Maximum number of counties already selected.");
+          }
+        } else {
+          alert("County selected already in selection.");
+        }
+      } else {
+        alert("invalid county code entered");
+      }
+    },
+    removeElement: function(index) {
+      Vue.delete(this.counties, index);
     }
-  },
-  updated() {
-    this.storeCountySelection();
   },
   mounted() {
     this.populateStateList();
@@ -95,11 +160,20 @@ export default {
       this.activeLocationMode = newValue;
       if (newValue != locationMode.COUNTY) {
         this.state = "";
+        this.county = "";
+        this.counties = [];
       }
     },
     state: function() {
       this.populateCountyList();
       this.county = "";
+    },
+    counties: function(newValue) {
+      this.countyNames = [];
+      newValue.forEach(element => {
+        this.countyNames.push(this.getCountyNameFromCode(element));
+      });
+      this.commitCountySelection();
     }
   },
   computed: {

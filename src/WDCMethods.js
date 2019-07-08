@@ -1,6 +1,11 @@
+<<<<<<< HEAD:src/components/WDCMethods.js
 import { get } from "../utils.js";
 import { locationMode } from "../enums.js";
 
+=======
+import { get } from "./utils.js";
+import { locationMode } from "./enums.js";
+>>>>>>> 669f7d04d02344c7c66e04365bb1b667e1e4748b:src/WDCMethods.js
 /*global  tableau:true*/
 
 /*
@@ -78,7 +83,7 @@ const generateURL = connectionData => {
       break;
     }
     case locationMode.COUNTY: {
-      let countyCode = connectionData.countyCode;
+      let countyCode = connectionData.countyCode.join(",");
       locationQuery = `&countyCd=${countyCode}`;
       break;
     }
@@ -105,8 +110,9 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: "dateTime",
       alias: "dateTime",
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
+      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
     });
+
     let name = series.name;
     let nameTokens = name.split(":");
     let site = nameTokens[1];
@@ -115,7 +121,7 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: column,
       alias: column,
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectiondata more
+      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
     });
     let newSchema = {
       id: column,
@@ -132,18 +138,34 @@ retrieves and caches data if it has not already been cached, otherwise only
 reads data from a cache and appropriately populates a table. 
 */
 const getData = (table, doneCallback) => {
-  if (!tableau.connectionData.cached) {
-    let url = generateURL(tableau.connectionData);
+  let connectionData;
+  if (typeof tableau.connectionData === "string") {
+    connectionData = JSON.parse(tableau.connectionData);
+  } else {
+    connectionData = tableau.connectionData;
+  }
+  if (!connectionData.cached) {
+    let url = generateURL(connectionData);
 
     get(url, "json").then(function(value) {
-      tableau.connectionData.cachedData = value;
-      tableau.connectionData.cached = true;
-      table.appendRows(formatJSONAsTable(value, table.tableInfo.id));
+      if (typeof value === "string") {
+        connectionData.cachedData = JSON.parse(value);
+      } else {
+        connectionData.cachedData = value;
+      }
+      connectionData.cached = true;
+      if (typeof tableau.connectionData === "string") {
+        // this update is only necesarry if we're dealing with connection data as a string
+        tableau.connectionData = JSON.stringify(connectionData);
+      }
+      table.appendRows(
+        formatJSONAsTable(connectionData.cachedData, table.tableInfo.id)
+      );
       doneCallback();
     });
   } else {
     table.appendRows(
-      formatJSONAsTable(tableau.connectionData.cachedData, table.tableInfo.id)
+      formatJSONAsTable(connectionData.cachedData, table.tableInfo.id)
     );
     doneCallback();
   }
@@ -153,10 +175,22 @@ const getData = (table, doneCallback) => {
 generates a tableau schema based on the information in tableau.connectionData
 */
 const getSchema = schemaCallback => {
-  let url = generateURL(tableau.connectionData);
-  get(url, "json").then(function(value) {
-    schemaCallback(generateSchemaTablesFromData(value));
-  });
+  let connectionData;
+  if (typeof tableau.connectionData === "string") {
+    connectionData = JSON.parse(tableau.connectionData);
+  } else {
+    connectionData = tableau.connectionData;
+  }
+  let url = generateURL(connectionData);
+  get(url, "json")
+    .then(function(value) {
+      if (typeof value === "string") {
+        schemaCallback(generateSchemaTablesFromData(JSON.parse(value)));
+      } else {
+        schemaCallback(generateSchemaTablesFromData(value));
+      }
+    })
+    .catch(err => alert(err));
 };
 
 /*

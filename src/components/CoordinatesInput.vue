@@ -66,8 +66,10 @@ export default {
       activeLocationMode: locationMode.SITE
     };
   },
-  updated() {
-    this.$store.commit("changeCoordinates", this.coordinates);
+  methods: {
+    commitCoordinateSelection: function(newValue) {
+      this.$store.commit("changeCoordinates", newValue);
+    }
   },
   watch: {
     locationMode(newValue) {
@@ -75,6 +77,12 @@ export default {
       if (newValue != locationMode.COORDS) {
         this.coordinates = { north: "", south: "", east: "", west: "" };
       }
+    },
+    coordinates: {
+      handler: function(newValue) {
+        this.commitCoordinateSelection(newValue);
+      },
+      deep: true
     }
   },
   computed: {

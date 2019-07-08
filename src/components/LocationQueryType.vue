@@ -84,13 +84,13 @@ export default {
     };
   },
   methods: {
-    updateGlobalLocationMode: function(input) {
+    commitGlobalLocationMode: function(input) {
       this.$store.commit("changeLocationMode", input);
     }
   },
   watch: {
     selected: function(newValue /*, oldValue*/) {
-      this.updateGlobalLocationMode(newValue);
+      this.commitGlobalLocationMode(newValue);
     }
   },
   computed: {

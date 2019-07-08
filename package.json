@@ -12,14 +12,15 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "csv-parse": "^4.4.3",
-    "dom-parser": "^0.1.6",
     "vue": "^2.6.10",
+    "vue-tags": "^1.0.4",
     "vuex": "^3.0.1",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
+    "csv-parse": "^4.4.3",
+    "dom-parser": "^0.1.6",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-plugin-unit-jest": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
