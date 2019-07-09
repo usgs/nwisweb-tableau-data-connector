@@ -28,8 +28,4 @@ yarn-error.log*
 ./src/components/params.js
 ./src/fetchedValues/*.json
 
-src/fetchedValues/counties.json
-src/fetchedValues/fips.json
-src/fetchedValues/paramTypes.json
-src/fetchedValues/siteTypes.json
-src/fetchedValues/states.json
+src/fetchedValues/*.json
