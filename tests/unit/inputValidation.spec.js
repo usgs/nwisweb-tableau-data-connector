@@ -7,7 +7,8 @@ import {
   validateSiteInputs,
   validateHydroCodeInputs,
   validateCountyInputs,
-  validateParamInputs
+  validateParamInputs,
+  validateSiteTypeInputs
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
 const localVue = createLocalVue();
@@ -408,5 +409,23 @@ done in ParamSelect.vue
     const wrapper = shallowMount(Main, { store, localVue });
     let paramCode = ["test"];
     expect(validateParamInputs(paramCode, wrapper.vm)).toBe(true);
+  });
+  test("validateSiteTypeInputs rejects an invalid site type", () => {
+    const store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {},
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let siteType = "not a site type";
+    expect(validateSiteTypeInputs(siteType, wrapper.vm)).not.toBe(true);
+  });
+
+  test("validateSiteTypeInputs accepts a valid site type", () => {
+    const wrapper = shallowMount(Main, { store, localVue });
+    let siteType = "Tunnel, shaft, or mine";
+    wrapper.vm.stateData = { "Tunnel, shaft, or mine": "SB-TSM" };
+    expect(validateSiteTypeInputs(siteType, wrapper.vm)).toBe(true);
   });
 });

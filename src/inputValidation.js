@@ -89,6 +89,13 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
   return true;
 };
 
+const validateSiteTypeInputs = (input, instance) => {
+  if (!(input in instance.stateData)) {
+    return "invalid site type selected";
+  }
+  return true;
+};
+
 /*
 warns the user if they have no query parameters selected. This is the only pathological state not protected
  against from within the  ParamSelect component, because it is a valid interactive session state.
@@ -181,5 +188,6 @@ export {
   validateSiteInputs,
   validateHydroCodeInputs,
   validateCountyInputs,
-  validateParamInputs
+  validateParamInputs,
+  validateSiteTypeInputs
 };

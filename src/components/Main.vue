@@ -32,6 +32,8 @@
             <HUCInput></HUCInput>
             <CountySelect></CountySelect>
             <LocationQueryType></LocationQueryType>
+            <SiteTypeList></SiteTypeList>
+
             <br />
             <button
               type="button"
@@ -55,11 +57,11 @@ import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
 import LocationQueryType from "../components/LocationQueryType";
+import { locationMode } from "../enums.js";
+import SiteTypeList from "../components/SiteTypeList";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import ParamSelect from "../components/ParamSelect";
-import { locationMode } from "../enums.js";
-
 import { mapState } from "vuex";
 
 /*global  tableau:true*/
@@ -72,6 +74,7 @@ export default {
   components: {
     StateSelect,
     LocationQueryType,
+    SiteTypeList,
     CoordinatesInput,
     HUCInput,
     ParamSelect,
@@ -122,7 +125,9 @@ export default {
         boundaryCoords: this.$store.getters.coordinates,
         hydroCode: this.$store.getters.hydroCode,
         countyCode: this.$store.getters.countyCode,
-        cached: false
+        cached: false,
+        siteTypeListActive: this.$store.getters.siteTypeListActive,
+        siteTypeList: this.$store.getters.siteType
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
