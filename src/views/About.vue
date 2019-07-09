@@ -2,10 +2,10 @@
   <div class="about">
     <b> How to use the NWISWeb Tableau Web Data Connector</b> <br />
 
-    This system requires a desktop Tableau client. To use this system, first install a
-    Tableau desktop client on your PC then enter the URL for this page under the
-    web data connector option in the connect menu. Details of the constraints
-    imposed by the database that feeds this tool are available
+    This system requires a desktop Tableau client. To use this system, first
+    install a Tableau desktop client on your PC then enter the URL for this page
+    under the web data connector option in the connect menu. Details of the
+    constraints imposed by the database that feeds this tool are available
     <a href="https://waterservices.usgs.gov/rest/IV-Service.html">here</a>.
 
     <br />
@@ -21,7 +21,7 @@
     This system provides USGS Water data and an accompanying Tableau schema for
     each parameter for each site, including geographic coordinates and datetimes
     for each observation. When invoking this system through the Tableau web data
-    connector option, the data is automatically loaded into Tableau in the format 
-    specified by the generated schema. 
+    connector option, the data is automatically loaded into Tableau in the
+    format specified by the generated schema.
   </div>
 </template>
