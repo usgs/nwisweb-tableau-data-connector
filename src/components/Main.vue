@@ -101,9 +101,7 @@ export default {
             This closes the Web Data Connector interface.
         */
     requestData: function() {
-
-      if(tableau.platformVersion == "undefined")
-      {
+      if (tableau.platformVersion == "undefined") {
         return;
       }
       if (!this.loadedStateData) {
