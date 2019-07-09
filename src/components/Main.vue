@@ -6,12 +6,6 @@
     </head>
 
     <body>
-      <HeaderUSWDSBanner></HeaderUSWDSBanner>
-      <HeaderUSGS></HeaderUSGS>
-      <HeaderUSWDSSelections
-        titleForSelectionHeader="NWISWeb Tableau Web Data Connector"
-      ></HeaderUSWDSSelections>
-
       <div class="container container-table">
         <div class="row vertical-center-row">
           <div
@@ -56,7 +50,6 @@
             </button>
           </div>
         </div>
-        <FooterUSGS></FooterUSGS>
       </div>
     </body>
   </div>
@@ -65,10 +58,6 @@
 <script>
 import { getData, getSchema, generateColList } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
-import HeaderUSWDSBanner from "../components/HeaderUSWDSBanner";
-import HeaderUSWDSSelections from "../components/HeaderUSWDSSelections";
-import HeaderUSGS from "../components/HeaderUSGS";
-import FooterUSGS from "../components/FooterUSGS";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
 import LocationQueryType from "../components/LocationQueryType";
@@ -86,10 +75,6 @@ export default {
     msg: String
   },
   components: {
-    HeaderUSWDSBanner,
-    HeaderUSGS,
-    HeaderUSWDSSelections,
-    FooterUSGS,
     StateSelect,
     LocationQueryType,
     CoordinatesInput,

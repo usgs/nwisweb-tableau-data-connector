@@ -3,24 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "fetch": "node scripts/fetchParams.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --ext .js,.vue",
-    "test:unit": "vue-cli-service test:unit",
-    "production-build": "node scripts/fetchParams.js && vue-cli-service test:unit && vue-cli-service build"
+    "fetch": "node scripts/fetchParams.js",
+    "production-build": "node scripts/fetchParams.js && vue-cli-service test:unit && vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
+    "vue-router": "^3.0.3",
     "vue-tags": "^1.0.4",
     "vuex": "^3.0.1",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
-    "csv-parse": "^4.4.3",
-    "dom-parser": "^0.1.6",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-plugin-unit-jest": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
@@ -28,6 +27,8 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
+    "csv-parse": "^4.4.3",
+    "dom-parser": "^0.1.6",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^5.0.0",
     "eslint-plugin-prettier": "^3.1.0",
