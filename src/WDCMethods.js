@@ -52,11 +52,18 @@ const formatJSONAsTable = (data, tableName) => {
   let paramIndices = Array.from(tableSeries.values[0].value.keys());
 
   paramIndices.forEach(i => {
+    let qualList = [];
+    tableSeries.values[0].qualifier.forEach(qualifier => {
+      qualList.push(
+        `${qualifier.qualifierCode}:${qualifier.qualifierDescription}`
+      );
+    });
     let newEntry = {
       dateTime: reformatTimeString(tableSeries.values[0].value[i].dateTime),
       latitude: tableSeries.sourceInfo.geoLocation.geogLocation.latitude,
       longitude: tableSeries.sourceInfo.geoLocation.geogLocation.longitude,
       units: tableSeries.variable.unit.unitCode,
+      qualifier: qualList.join(","),
       [tableName]: tableSeries.values[0].value[i].value
     };
     tableData.push(newEntry);
@@ -137,7 +144,12 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: "units",
       alias: "units",
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
+      dataType: tableau.dataTypeEnum.string
+    });
+    cols.push({
+      id: "qualifier",
+      alias: "qualifier",
+      dataType: tableau.dataTypeEnum.string
     });
     let column = `${sanitizeVariableName(
       series.variable.variableDescription
