@@ -102,11 +102,10 @@ export default {
         */
     requestData: function() {
 
-      if(tableau.platformVersion == "undefined"}
+      if(tableau.platformVersion == "undefined")
       {
-        throw "not desktop";
         return;
-      };
+      }
       if (!this.loadedStateData) {
         alert(
           "The page is still loading: please retry this action in a moment!"
