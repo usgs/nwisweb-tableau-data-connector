@@ -63,6 +63,7 @@ import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import ParamSelect from "../components/ParamSelect";
 import { mapState } from "vuex";
+import { notify } from "../notifications.js";
 
 /*global  tableau:true*/
 
@@ -105,7 +106,7 @@ export default {
         return;
       }
       if (!this.loadedStateData) {
-        alert(
+        notify(
           "The page is still loading: please retry this action in a moment!"
         );
         return;
