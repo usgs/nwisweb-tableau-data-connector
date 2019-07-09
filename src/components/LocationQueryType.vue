@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin:auto;">
     <form :key="selected" class="usa-form">
       <fieldset class="usa-fieldset">
         <legend class="usa-sr-only">Location Query Type</legend>

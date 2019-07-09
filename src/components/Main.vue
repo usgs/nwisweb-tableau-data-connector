@@ -6,17 +6,14 @@
     </head>
 
     <body>
-      <div class="container container-table">
-        <div class="row vertical-center-row">
+      <div class="row">
+        <div class="leftcolumn">
           <div
             class="text-center col-md-4 col-md-offset-4"
             style="text-align:center"
           >
             <br />
-            <div>
-              <ParamSelect></ParamSelect>
-              <br />
-            </div>
+
             <div v-show="!disabled">
               <label> Site or Sites </label>
               <input
@@ -31,7 +28,10 @@
             <CoordinatesInput></CoordinatesInput>
             <HUCInput></HUCInput>
             <CountySelect></CountySelect>
-            <LocationQueryType></LocationQueryType>
+            <div>
+              <ParamSelect></ParamSelect>
+              <br />
+            </div>
             <SiteTypeList></SiteTypeList>
 
             <br />
@@ -45,6 +45,9 @@
               Request Data
             </button>
           </div>
+        </div>
+        <div class="rightcolumn">
+          <LocationQueryType></LocationQueryType>
         </div>
       </div>
     </body>
@@ -194,5 +197,21 @@ li {
 }
 a {
   color: #42b983;
+}
+.leftcolumn {
+  float: left;
+  padding: 10px;
+  width: 50%;
+}
+.rightcolumn {
+  float: right;
+  padding: 10px;
+  width: 50%;
+}
+.row {
+  content: "";
+  display: table;
+  clear: both;
+  width: 100%;
 }
 </style>

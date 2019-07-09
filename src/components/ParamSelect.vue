@@ -13,13 +13,13 @@
         style="width: 300px; margin: auto; display: inline-block"
       />
       <datalist id="csparams"> </datalist>
-      <button
+      <!-- <button
         class="usa-button"
         v-on:click="toggleWideInput"
         style=" margin-top: 30px display: inline-block"
       >
         Expand
-      </button>
+      </button> -->
     </span>
     <br />
     <button class="usa-button" v-on:click="addParam" style="margin-top: 30px">
