@@ -72,6 +72,7 @@ const generateURL = connectionData => {
   let paramQuery = `&parameterCd=${connectionData.paramNums.join()}`;
 
   let locationQuery = "";
+  let siteTypeQuery = "";
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -101,7 +102,12 @@ const generateURL = connectionData => {
     }
   }
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}&siteStatus=all`;
+  if (connectionData.siteTypeListActive) {
+    let siteType = connectionData.siteTypeList.join(",");
+    siteTypeQuery = `&siteType=${siteType}`;
+  }
+
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}&siteStatus=all`;
 };
 
 /*
