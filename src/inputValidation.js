@@ -113,7 +113,6 @@ const validateSiteTypeInputs = (input, instance, siteTypeData) => {
   if (!instance.$store.getters.siteTypeListActive) {
     return true;
   }
-  alert("site type list active");
   let found = inObjList(siteTypeData, input, "site_tp_cd");
   return found ? found : "invalid site type selected";
 };
