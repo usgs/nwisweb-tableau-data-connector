@@ -50,7 +50,7 @@ describe("Main", () => {
     expect(validateStateInputs(state, wrapper.vm)).toBe(true);
   });
 
-  test("validateStateInputs ingores an invalid state query when locationmode is not STATE", () => {
+  test("validateStateInputs ignores an invalid state query when locationmode is not STATE", () => {
     store = new Vuex.Store({
       state: {},
       modules: {},

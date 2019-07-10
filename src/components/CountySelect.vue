@@ -29,9 +29,11 @@
     >
       Add County
     </button>
-
-    <h6>Selected Counties</h6>
-
+    <br />
+    <span>
+      <h6 style="display: inline-block;">Selected Counties</h6>
+      <ToolTip hint="test" url="https://www.google.com"></ToolTip>
+    </span>
     <input-tags v-model="countyNames" style="max-width: 375px; margin: auto;">
       <div class="tags-input">
         <span
@@ -60,6 +62,7 @@ import stateList from "../fetchedValues/states.json";
 import countyInfo from "../fetchedValues/counties.json";
 import fipsInfo from "../fetchedValues/fips.json";
 import Vue from "vue";
+import ToolTip from "../components/ToolTip";
 import VueTags from "vue-tags";
 Vue.component("input-tags", VueTags);
 
@@ -73,6 +76,9 @@ export default {
       countyNames: [],
       activeLocationMode: locationMode.SITE
     };
+  },
+  components: {
+    ToolTip
   },
   methods: {
     populateStateList: function() {
