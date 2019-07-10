@@ -9,15 +9,13 @@ export default new Vuex.Store({
     state: "",
     siteTypeListActive: false,
     agencyActive: false,
+    agencyCode: "",
     siteType: "",
     hydroCode: "",
     countyCode: [],
     paramCodes: [],
     locationMode: locationMode.SITE,
-    coordinates: {},
-    validStateInput: false,
-    validCoordsInput: false,
-    formValidated: false
+    coordinates: {}
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -43,6 +41,9 @@ export default new Vuex.Store({
     },
     changeParamCodes: (state, newParamCodes) => {
       state.paramCodes = newParamCodes;
+    },
+    changeAgencyCode: (state, newAgencyCode) => {
+      state.agencyCode = newAgencyCode;
     },
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
@@ -73,6 +74,9 @@ export default new Vuex.Store({
     },
     paramCodes: state => {
       return state.paramCodes;
+    },
+    agencyCode: state => {
+      return state.agencyCode;
     },
     agencyActive: state => {
       return state.agencyActive;

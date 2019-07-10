@@ -129,7 +129,9 @@ export default {
         countyCode: this.$store.getters.countyCode,
         cached: false,
         siteTypeListActive: this.$store.getters.siteTypeListActive,
-        siteTypeList: this.$store.getters.siteType
+        siteTypeList: this.$store.getters.siteType,
+        agencyCodeActive: this.$store.getters.agencyCodeActive,
+        agencyCode: this.$store.getters.agencyCode
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);

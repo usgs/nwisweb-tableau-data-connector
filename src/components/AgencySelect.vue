@@ -36,7 +36,7 @@ export default {
     commitAgencySelection: function(newValue) {
       let agencyActive = newValue != "";
       this.$store.commit("changeAgencyActive", agencyActive);
-      this.$store.commit("changeSelectedAgency", newValue);
+      this.$store.commit("changeAgencyCode", newValue);
     }
   },
   mounted() {

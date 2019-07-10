@@ -1,4 +1,5 @@
 import { locationMode } from "./enums.js";
+import agencyData from "./fetchedValues/agency.json";
 
 /*
       Ensures the user has selected a valid state or territory in their query. Always
@@ -122,6 +123,26 @@ const validateCountyInputs = (countyList, instance) => {
 };
 
 /*
+  Warns the user if they have selected an invalid agency code.
+*/
+const validateAgencyInputs = (agency, instance) => {
+  if (!instance.$store.getters.agencyActive) {
+    return true;
+  }
+  let returnTrue = false;
+  agencyData.forEach(element => {
+    if (element["agency_cd"] == agency) {
+      returnTrue = true;
+    }
+  });
+  if (returnTrue) {
+    return true;
+  }
+
+  return "invalid agency code";
+};
+
+/*
       function which validates user form inputs and updates vuex values to a query ready format. 
       This function should be run and observed to return true before anything in the body of requestData 
       is run. 
@@ -159,7 +180,7 @@ const validateFormInputs = instance => {
     return false;
   }
   let paramStatus = validateParamInputs(instance.$store.getters.paramCodes);
-  if (!(paramStatus == true)) {
+  if (!(paramStatus === true)) {
     alert(paramStatus);
     return false;
   }
@@ -168,8 +189,17 @@ const validateFormInputs = instance => {
     instance.$store.getters.countyCode,
     instance
   );
-  if (!(countyStatus == true)) {
+  if (!(countyStatus === true)) {
     alert(countyStatus);
+    return false;
+  }
+
+  let agencyStatus = validateAgencyInputs(
+    instance.$store.getters.agencyCode,
+    instance
+  );
+  if (!(agencyStatus === true)) {
+    alert(agencyStatus); //todo update to notify when merging with dev-alert
     return false;
   }
 
