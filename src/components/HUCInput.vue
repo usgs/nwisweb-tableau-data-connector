@@ -1,9 +1,12 @@
 <template>
   <div v-show="!disabled">
     <form class="usa-form" style="margin: auto;">
-      <label class="usa-label" for="input-type-text"
-        >Hydrologic Unit Code</label
-      >
+      <span>
+        <label class="use-input" style="display: inline-block;"
+          >Hydrologic unit Code</label
+        >
+        <ToolTip hint="todo" url="https://www.google.com"></ToolTip>
+      </span>
       <input
         class="usa-input"
         :disabled="disabled"
@@ -19,9 +22,13 @@
 <script>
 import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
+import ToolTip from "../components/ToolTip";
 
 export default {
   name: "CoordinatesInput",
+  components: {
+    ToolTip
+  },
   data: function() {
     return {
       hydroUnitCode: "",

@@ -1,7 +1,10 @@
 <template>
   <div>
     <br />
-    <label class="autocomplete-dropdown">Parameter</label>
+    <span>
+      <label class="use-input" style="display: inline-block;">Parameters</label>
+      <ToolTip hint="todo" url="https://www.google.com"></ToolTip>
+    </span>
     <br />
     <span>
       <input
@@ -54,10 +57,14 @@
 <script>
 import Vue from "vue";
 import VueTags from "vue-tags";
+import ToolTip from "./ToolTip";
 Vue.component("input-tags", VueTags);
 
 export default {
   name: "ParamSelect",
+  components: {
+    ToolTip
+  },
   data: function() {
     return {
       loadedParamData: false,

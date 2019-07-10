@@ -1,7 +1,12 @@
 <template>
   <div v-show="!disabled">
     <br />
-    <label class="autocomplete-dropdown">State or Territory</label>
+    <span>
+      <label class="use-input" style="display: inline-block;"
+        >State or Territory</label
+      >
+      <ToolTip hint="todo" url="https://www.google.com"></ToolTip>
+    </span>
     <input
       v-model="state"
       :disabled="disabled"
@@ -17,10 +22,14 @@
 <script>
 import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
+import ToolTip from "./ToolTip";
 import stateList from "../fetchedValues/states.json";
 
 export default {
   name: "StateSelect",
+  components: {
+    ToolTip
+  },
   data: function() {
     return {
       state: "",
