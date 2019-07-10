@@ -130,7 +130,7 @@ export default {
         cached: false,
         siteTypeListActive: this.$store.getters.siteTypeListActive,
         siteTypeList: this.$store.getters.siteType,
-        agencyCodeActive: this.$store.getters.agencyCodeActive,
+        agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode
       };
       if (typeof tableau.connectionData === "string") {

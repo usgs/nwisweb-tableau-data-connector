@@ -1,5 +1,5 @@
 <template>
-  <div v-show="!disabled">
+  <div>
     <br />
     <label class="autocomplete-dropdown">Agency Code</label>
     <input

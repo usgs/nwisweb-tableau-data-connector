@@ -10,7 +10,7 @@ export default new Vuex.Store({
     siteTypeListActive: false,
     agencyActive: false,
     agencyCode: "",
-    siteType: "",
+    siteType: [],
     hydroCode: "",
     countyCode: [],
     paramCodes: [],

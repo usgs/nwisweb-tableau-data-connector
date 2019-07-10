@@ -1,14 +1,29 @@
 import { locationMode } from "./enums.js";
 import agencyData from "./fetchedValues/agency.json";
+import stateData from "./fetchedValues/states.json";
+import siteTypeData from "./fetchedValues/siteTypes.json";
+
+/*
+useful helper function to allow searching lists of dictionaries for a value at a specific key.
+*/
+const inObjList = (list, target, key) => {
+  let returnVal = false;
+  list.forEach(element => {
+    if (target == element[key]) {
+      returnVal = true;
+    }
+  });
+  return returnVal;
+};
 
 /*
       Ensures the user has selected a valid state or territory in their query. Always
       returns true if the current vuex locationMode setting is not STATE.
 
     */
-const validateStateInputs = (input, instance) => {
+const validateStateInputs = (input, instance, stateData) => {
   if (instance.$store.getters.locationMode != locationMode.STATE) return true;
-  if (!(input in instance.stateData)) return "invalid state selected";
+  if (!(input in stateData)) return "invalid state selected";
   return true;
 };
 /*
@@ -90,11 +105,17 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
   return true;
 };
 
-const validateSiteTypeInputs = (input, instance) => {
-  if (!(input in instance.stateData)) {
-    return "invalid site type selected";
+/*
+warns the user if they entered an invalid site-type code
+
+*/
+const validateSiteTypeInputs = (input, instance, siteTypeData) => {
+  if (!instance.$store.getters.siteTypeListActive) {
+    return true;
   }
-  return true;
+  alert("site type list active");
+  let found = inObjList(siteTypeData, input, "site_tp_cd");
+  return found ? found : "invalid site type selected";
 };
 
 /*
@@ -125,21 +146,12 @@ const validateCountyInputs = (countyList, instance) => {
 /*
   Warns the user if they have selected an invalid agency code.
 */
-const validateAgencyInputs = (agency, instance) => {
+const validateAgencyInputs = (agency, instance, agencyData) => {
   if (!instance.$store.getters.agencyActive) {
     return true;
   }
-  let returnTrue = false;
-  agencyData.forEach(element => {
-    if (element["agency_cd"] == agency) {
-      returnTrue = true;
-    }
-  });
-  if (returnTrue) {
-    return true;
-  }
-
-  return "invalid agency code";
+  let found = inObjList(agencyData, agency, "agency_cd");
+  return found ? found : "invalid agency code";
 };
 
 /*
@@ -150,7 +162,8 @@ const validateAgencyInputs = (agency, instance) => {
 const validateFormInputs = instance => {
   let stateStatus = validateStateInputs(
     instance.$store.getters.USStateName,
-    instance
+    instance,
+    stateData
   );
   if (!(stateStatus === true)) {
     alert(stateStatus);
@@ -194,9 +207,20 @@ const validateFormInputs = instance => {
     return false;
   }
 
+  let siteTypeListStatus = validateSiteTypeInputs(
+    instance.$store.getters.siteType,
+    instance,
+    siteTypeData
+  );
+  if (!(siteTypeListStatus === true)) {
+    alert(siteTypeListStatus); //todo update to notify when merging with dev-alert
+    return false;
+  }
+
   let agencyStatus = validateAgencyInputs(
     instance.$store.getters.agencyCode,
-    instance
+    instance,
+    agencyData
   );
   if (!(agencyStatus === true)) {
     alert(agencyStatus); //todo update to notify when merging with dev-alert
@@ -219,5 +243,6 @@ export {
   validateHydroCodeInputs,
   validateCountyInputs,
   validateParamInputs,
-  validateSiteTypeInputs
+  validateSiteTypeInputs,
+  validateAgencyInputs
 };

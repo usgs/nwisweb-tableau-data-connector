@@ -59,7 +59,8 @@ export default {
   },
   methods: {
     commitSiteTypeSelection: function() {
-      this.$store.commit("changeSiteTypeListActive", true);
+      let siteTypeStatus = this.siteTypeList.length != 0;
+      this.$store.commit("changeSiteTypeListActive", siteTypeStatus);
       this.$store.commit("changeSiteType", this.siteTypeList);
     },
     populateSiteType: function() {
