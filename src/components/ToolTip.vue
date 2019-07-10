@@ -20,6 +20,7 @@ export default {
 </script>
 
 <style lang="scss">
+//LICENCE MIT - Created by Guillaume CHAU (@Akryum)
 .tooltip {
   display: block !important;
   z-index: 10000;

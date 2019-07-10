@@ -1,7 +1,10 @@
 <template>
   <div v-show="!disabled">
     <br />
-    <label class="autocomplete-dropdown">State or Territory</label>
+    <span>
+      <label style="display: inline-block;">State or Territory</label>
+      <ToolTip hint="todo" url="https://www.google.com"></ToolTip>
+    </span>
     <input
       v-model="state"
       :disabled="disabled"
@@ -12,7 +15,10 @@
     />
     <datalist id="csstates"> </datalist>
     <br />
-    <label class="autocomplete-dropdown">County</label>
+    <span>
+      <label style="display: inline-block;">County</label>
+      <ToolTip hint="todo" url="https://www.google.com"></ToolTip>
+    </span>
     <input
       v-model="county"
       :disabled="disabled"
@@ -29,11 +35,7 @@
     >
       Add County
     </button>
-    <br />
-    <span>
-      <h6 style="display: inline-block;">Selected Counties</h6>
-      <ToolTip hint="test" url="https://www.google.com"></ToolTip>
-    </span>
+    <h6>Selected Counties</h6>
     <input-tags v-model="countyNames" style="max-width: 375px; margin: auto;">
       <div class="tags-input">
         <span
