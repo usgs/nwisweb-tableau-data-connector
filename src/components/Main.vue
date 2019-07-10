@@ -98,13 +98,21 @@ export default {
   },
   methods: {
     /*
+      Warns users on standalone browsers that they need Tableau to proceed with data collection.
+    */
+    browserWarning: function() {
+      if (tableau.platformVersion == undefined) {
+        notify(
+          "The NWIS Tableau Web Data Connector must be accessed from Tableau desktop or Tableau server!"
+        );
+      }
+    },
+    /*
             This function is triggered when the user presses the button to confirm their query. 
             This closes the Web Data Connector interface.
         */
     requestData: function() {
-      if (tableau.platformVersion == "undefined") {
-        return;
-      }
+      this.browserWarning();
       if (!this.loadedStateData) {
         notify(
           "The page is still loading: please retry this action in a moment!"
@@ -165,6 +173,7 @@ export default {
   mounted: function() {
     this.$nextTick(function() {
       this.fetchData();
+      this.browserWarning();
     });
   },
   watch: {
