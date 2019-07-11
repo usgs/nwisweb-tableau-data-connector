@@ -4,7 +4,6 @@ import stateData from "./fetchedValues/states.json";
 import siteTypeData from "./fetchedValues/siteTypes.json";
 import { notify } from "./notifications.js";
 
-
 /*
 useful helper function to allow searching lists of dictionaries for a value at a specific key.
 */
@@ -214,7 +213,7 @@ const validateFormInputs = instance => {
     siteTypeData
   );
   if (!(siteTypeListStatus === true)) {
-    notify(siteTypeListStatus); 
+    notify(siteTypeListStatus);
     return false;
   }
 
@@ -224,7 +223,7 @@ const validateFormInputs = instance => {
     agencyData
   );
   if (!(agencyStatus === true)) {
-    notify(agencyStatus); 
+    notify(agencyStatus);
     return false;
   }
 
