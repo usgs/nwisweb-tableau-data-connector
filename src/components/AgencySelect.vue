@@ -6,7 +6,7 @@
         >Agency Code</label
       >
       <ToolTip
-        hint="The complete list of agency codes is available here."
+        hint="The complete list of agency codes is available here. This is an optional parameter. Only one agency code may be selected at a time."
         url="https://help.waterdata.usgs.gov/code/agency_cd_query?fmt=html?display=inline"
       ></ToolTip>
     </span>
