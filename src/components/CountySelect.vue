@@ -31,14 +31,14 @@
       type="text"
     />
     <datalist id="cscounties"> </datalist>
-    <button class="usa-button usa-button-custom" v-on:click="addCountyToCounties">
+    <button
+      class="usa-button usa-button-custom"
+      v-on:click="addCountyToCounties"
+    >
       Add County
     </button>
     <h6 class="selected-tags">Selected Counties</h6>
-    <input-tags
-      v-model="countyNames"
-      class="input-tags-element"
-    >
+    <input-tags v-model="countyNames" class="input-tags-element">
       <div class="tags-input">
         <span
           v-for="(tag, key) in countyNames"

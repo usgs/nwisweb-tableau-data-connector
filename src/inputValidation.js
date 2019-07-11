@@ -104,7 +104,7 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
     return "hydrologic unit code format is invalid. You may specify up to 1 major hydrologic unit code followed by up to 10 minor hydrologic unit codes, separated by commas.";
   }
   return true;
-}
+};
 
 /*
  warns the user if they have specified a duration in a format non-compliant with the ISO 8601 duration specification
@@ -115,8 +115,11 @@ const validateISO_8601Duration = (duration, instance) => {
     return true;
   }
   let regex = /^P((\d)+Y)?((\d)+M)?((\d)+W)?((\d)+D)?((T(\d)+H((\d)+M)?((\d)+S)?|T(\d)+M((\d)+S)?|T(\d)+S))?$/;
-  let antiregex = /^P$/ 
-  if (!duration.replace(/\s/g, "").match(regex) || duration.replace(/\s/g, "").match(antiregex)) {
+  let antiregex = /^P$/;
+  if (
+    !duration.replace(/\s/g, "").match(regex) ||
+    duration.replace(/\s/g, "").match(antiregex)
+  ) {
     return "duration code formatting invalid; please refer to link provided in the tooltip";
   }
 

@@ -8,7 +8,12 @@
         url="https://help.waterdata.usgs.gov/code/site_tp_query?fmt=html?display=inline"
       ></ToolTip>
     </span>
-    <input v-model="siteType" class="usa-input usa-input-custom" list="siteTypeDL" type="text" />
+    <input
+      v-model="siteType"
+      class="usa-input usa-input-custom"
+      list="siteTypeDL"
+      type="text"
+    />
     <datalist id="siteTypeDL"> </datalist>
     <button
       class="usa-button usa-button-custom"
