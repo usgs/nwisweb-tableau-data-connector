@@ -5,7 +5,6 @@ import uswds from "uswds";
 import router from "./router";
 
 Vue.config.productionTip = false;
-
 Vue.config.productionTip = false;
 Vue.use(uswds);
 

@@ -45,6 +45,8 @@
 import siteTypes from "../fetchedValues/siteTypes.json";
 import VueTags from "vue-tags";
 import Vue from "vue";
+import { notify } from "../notifications.js";
+
 Vue.component("input-tags", VueTags);
 
 export default {
@@ -62,6 +64,7 @@ export default {
       let siteTypeStatus = this.siteTypeList.length != 0;
       this.$store.commit("changeSiteTypeListActive", siteTypeStatus);
       this.$store.commit("changeSiteType", this.siteTypeList);
+      notify(siteTypeStatus);
     },
     populateSiteType: function() {
       let siteSelect = document.getElementById("siteTypeDL");
@@ -77,10 +80,10 @@ export default {
         if (!this.siteTypeList.includes(this.siteType)) {
           this.siteTypeList.push(this.siteType);
         } else {
-          alert("Site Type selected already in selection");
+          notify("Site Type selected already in selection");
         }
       } else {
-        alert("invalid site type entered");
+        notify("invalid site type entered");
       }
     },
     removeElement: function(index) {

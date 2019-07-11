@@ -2,6 +2,8 @@ import { locationMode } from "./enums.js";
 import agencyData from "./fetchedValues/agency.json";
 import stateData from "./fetchedValues/states.json";
 import siteTypeData from "./fetchedValues/siteTypes.json";
+import { notify } from "./notifications.js";
+
 
 /*
 useful helper function to allow searching lists of dictionaries for a value at a specific key.
@@ -165,7 +167,7 @@ const validateFormInputs = instance => {
     stateData
   );
   if (!(stateStatus === true)) {
-    alert(stateStatus);
+    notify(stateStatus);
     return false;
   }
   let coordStatus = validateCoordinateInputs(
@@ -173,13 +175,13 @@ const validateFormInputs = instance => {
     instance
   );
   if (!(coordStatus === true)) {
-    alert(coordStatus);
+    notify(coordStatus);
     return false;
   }
 
   let siteListStatus = validateSiteInputs(instance.sites, instance);
   if (!(siteListStatus === true)) {
-    alert(siteListStatus);
+    notify(siteListStatus);
     return false;
   }
 
@@ -188,12 +190,12 @@ const validateFormInputs = instance => {
     instance
   );
   if (!(HydroCodeStatus === true)) {
-    alert(HydroCodeStatus);
+    notify(HydroCodeStatus);
     return false;
   }
   let paramStatus = validateParamInputs(instance.$store.getters.paramCodes);
   if (!(paramStatus === true)) {
-    alert(paramStatus);
+    notify(paramStatus);
     return false;
   }
 
@@ -202,7 +204,7 @@ const validateFormInputs = instance => {
     instance
   );
   if (!(countyStatus === true)) {
-    alert(countyStatus);
+    notify(countyStatus);
     return false;
   }
 
@@ -212,7 +214,7 @@ const validateFormInputs = instance => {
     siteTypeData
   );
   if (!(siteTypeListStatus === true)) {
-    alert(siteTypeListStatus); //todo update to notify when merging with dev-alert
+    notify(siteTypeListStatus); 
     return false;
   }
 
@@ -222,7 +224,7 @@ const validateFormInputs = instance => {
     agencyData
   );
   if (!(agencyStatus === true)) {
-    alert(agencyStatus); //todo update to notify when merging with dev-alert
+    notify(agencyStatus); 
     return false;
   }
 

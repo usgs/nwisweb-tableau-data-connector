@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added support for semantic versioning into project
 - Jenkinsfile.build will now allow users to automatically increment version numbers in package.json and add git tags to builds
 - Added ability to filter by agency code in queries
+- Added Tableau Desktop Compatible alerts
 
 ### Changed
 

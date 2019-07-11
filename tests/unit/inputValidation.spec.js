@@ -12,8 +12,11 @@ import {
   validateAgencyInputs
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
+import Notifications from "vue-notification";
+
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(Notifications);
 
 describe("Main", () => {
   let store;
