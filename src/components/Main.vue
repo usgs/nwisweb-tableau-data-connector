@@ -198,24 +198,7 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
-@import "../style/leftJustified.css";
-
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: auto;
-}
-
-li {
-  display: inline-block;
-}
-a {
-  color: #42b983;
-}
+<style lang="scss" scoped>
 .leftcolumn {
   float: left;
   padding: 10px;

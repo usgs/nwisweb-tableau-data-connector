@@ -1,6 +1,5 @@
 <template>
   <div v-show="!disabled">
-    <br />
     <span class="label-span">
       <label>State or Territory</label>
       <ToolTip

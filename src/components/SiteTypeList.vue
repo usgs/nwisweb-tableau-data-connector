@@ -115,7 +115,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "../style/leftJustified.css";
-</style>
