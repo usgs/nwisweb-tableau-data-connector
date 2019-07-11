@@ -66,6 +66,8 @@ import fipsInfo from "../fetchedValues/fips.json";
 import Vue from "vue";
 import ToolTip from "../components/ToolTip";
 import VueTags from "vue-tags";
+import { notify } from "../notifications.js";
+
 Vue.component("input-tags", VueTags);
 
 export default {
@@ -147,13 +149,13 @@ export default {
           if (this.counties.length < 10) {
             this.counties.push(this.county);
           } else {
-            alert("Maximum number of counties already selected.");
+            notify("Maximum number of counties already selected.");
           }
         } else {
-          alert("County selected already in selection.");
+          notify("County selected already in selection.");
         }
       } else {
-        alert("invalid county code entered");
+        notify("invalid county code entered");
       }
     },
     removeElement: function(index) {

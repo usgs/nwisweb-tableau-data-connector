@@ -6,7 +6,6 @@ import router from "./router";
 import VTooltip from "v-tooltip";
 
 Vue.config.productionTip = false;
-
 Vue.config.productionTip = false;
 Vue.use(uswds);
 Vue.use(VTooltip);

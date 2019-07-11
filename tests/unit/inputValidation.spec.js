@@ -8,11 +8,15 @@ import {
   validateHydroCodeInputs,
   validateCountyInputs,
   validateParamInputs,
-  validateSiteTypeInputs
+  validateSiteTypeInputs,
+  validateAgencyInputs
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
+import Notifications from "vue-notification";
+
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(Notifications);
 
 describe("Main", () => {
   let store;
@@ -30,7 +34,9 @@ describe("Main", () => {
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let state = "not a state";
-    expect(validateStateInputs(state, wrapper.vm)).not.toBe(true);
+    expect(validateStateInputs(state, wrapper.vm, { Montana: "MT" })).not.toBe(
+      true
+    );
   });
 
   test("validateStateInputs accepts a valid state query", () => {
@@ -46,8 +52,9 @@ describe("Main", () => {
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let state = "Montana";
-    wrapper.vm.stateData = { Montana: "MT" };
-    expect(validateStateInputs(state, wrapper.vm)).toBe(true);
+    expect(validateStateInputs(state, wrapper.vm, { Montana: "MT" })).toBe(
+      true
+    );
   });
 
   test("validateStateInputs ignores an invalid state query when locationmode is not STATE", () => {
@@ -414,18 +421,75 @@ done in ParamSelect.vue
     const store = new Vuex.Store({
       state: {},
       modules: {},
-      getters: {},
+      getters: {
+        siteTypeListActive: () => {
+          return true;
+        }
+      },
       actions: {}
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let siteType = "not a site type";
-    expect(validateSiteTypeInputs(siteType, wrapper.vm)).not.toBe(true);
+    expect(
+      validateSiteTypeInputs(siteType, wrapper.vm, [
+        { site_tp_cd: "validSiteType" }
+      ])
+    ).not.toBe(true);
   });
 
   test("validateSiteTypeInputs accepts a valid site type", () => {
+    const store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        siteTypeListActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
     const wrapper = shallowMount(Main, { store, localVue });
-    let siteType = "Tunnel, shaft, or mine";
-    wrapper.vm.stateData = { "Tunnel, shaft, or mine": "SB-TSM" };
-    expect(validateSiteTypeInputs(siteType, wrapper.vm)).toBe(true);
+    let siteType = "validSiteType";
+    expect(
+      validateSiteTypeInputs(siteType, wrapper.vm, [
+        { site_tp_cd: "validSiteType" }
+      ])
+    ).toBe(true);
+  });
+
+  test("validateAgencyInputs rejects an invalid agency", () => {
+    const store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        agencyActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let agency = "not an an agency";
+    expect(
+      validateAgencyInputs(agency, wrapper.vm, [{ agency_cd: "agencyA" }])
+    ).not.toBe(true);
+  });
+
+  test("validateAgencyInputs accepts a valid agency", () => {
+    const store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        agencyActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let siteType = "agencyA";
+    expect(
+      validateAgencyInputs(siteType, wrapper.vm, [{ agency_cd: "agencyA" }])
+    ).toBe(true);
   });
 });
