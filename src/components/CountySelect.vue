@@ -1,8 +1,7 @@
 <template>
   <div v-show="!disabled">
-    <br />
-    <span>
-      <label style="display: inline-block;">State or Territory</label>
+    <span class="input-desc">
+      <label>State or Territory</label>
       <ToolTip
         hint="This is an optional field; when populated with a valid state name, county or equivalent subdivision suggestions from the current state or territory will be available in the county input field in compatibe browsers. This field takes one US State or territory name, with the first letter capitalized. The list of allowed states and territories mirrors the list of allowed states and territories in the tool linked here. "
         url="https://waterservices.usgs.gov/rest/IV-Test-Tool.html"
@@ -11,15 +10,14 @@
     <input
       v-model="state"
       :disabled="disabled"
-      class="usa-input"
+      class="usa-input usa-input-custom"
       list="csstates"
       type="text"
-      style="width: 300px; margin: auto;"
     />
     <datalist id="csstates"> </datalist>
     <br />
-    <span>
-      <label style="display: inline-block;">County</label>
+    <span class="input-desc">
+      <label>County</label>
       <ToolTip
         hint="The complete list of county fips cods is available here. If you are entering the codes manually, please format them as follows &ltState Cd&gt&ltCounty Cd&gt. Each code is a 5 digit number."
         url="https://help.waterdata.usgs.gov/code/county_query?fmt=html?display=inline"
@@ -28,21 +26,19 @@
     <input
       v-model="county"
       :disabled="disabled"
-      class="usa-input"
+      class="usa-input usa-input-custom"
       list="cscounties"
       type="text"
-      style="width: 300px; margin: auto;"
     />
     <datalist id="cscounties"> </datalist>
-    <button
-      class="usa-button"
-      v-on:click="addCountyToCounties"
-      style="margin-top: 30px"
-    >
+    <button class="usa-button usa-button-custom" v-on:click="addCountyToCounties">
       Add County
     </button>
-    <h6>Selected Counties</h6>
-    <input-tags v-model="countyNames" style="max-width: 375px; margin: auto;">
+    <h6 class="selected-tags">Selected Counties</h6>
+    <input-tags
+      v-model="countyNames"
+      class="input-tags-element"
+    >
       <div class="tags-input">
         <span
           v-for="(tag, key) in countyNames"

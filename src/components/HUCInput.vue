@@ -1,24 +1,20 @@
 <template>
   <div v-show="!disabled">
-    <form class="usa-form" style="margin: auto;">
-      <span>
-        <label class="use-input" style="display: inline-block;"
-          >Hydrologic Unit Code</label
-        >
-        <ToolTip
-          hint="The complete list of hydrologic unit codes is available here."
-          url="https://water.usgs.gov/GIS/huc_name.html"
-        ></ToolTip>
-      </span>
-      <input
-        class="usa-input"
-        :disabled="disabled"
-        v-model="hydroUnitCode"
-        id="input-type-text"
-        name="input-type-text"
-        type="text"
-      />
-    </form>
+    <span class="input-desc">
+      <label>Hydrologic Unit Code</label>
+      <ToolTip
+        hint="The complete list of hydrologic unit codes is available here."
+        url="https://water.usgs.gov/GIS/huc_name.html"
+      ></ToolTip>
+    </span>
+    <input
+      class="usa-input usa-input-custom"
+      :disabled="disabled"
+      v-model="hydroUnitCode"
+      id="input-type-text"
+      name="input-type-text"
+      type="text"
+    />
   </div>
 </template>
 
@@ -62,3 +58,4 @@ export default {
   }
 };
 </script>
+

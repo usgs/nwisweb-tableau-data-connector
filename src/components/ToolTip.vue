@@ -4,9 +4,7 @@
       <img
         v-tooltip="{ content: hint, classes: ['tooltip'] }"
         src="../assets/help.jpg"
-        style="width:20px;
-  height:20px;
-"
+        style="width:20px; height:20px; margin-left:5px;"
       />
     </a>
   </div>

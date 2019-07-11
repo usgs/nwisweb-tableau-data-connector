@@ -1,22 +1,14 @@
 <template>
   <div>
     <br />
-    <span>
-      <label class="use-input" style="display: inline-block;"
-        >Agency Code</label
-      >
+    <span class="input-desc">
+      <label>Agency Code</label>
       <ToolTip
         hint="The complete list of agency codes is available here. This is an optional parameter. Only one agency code may be selected at a time."
         url="https://help.waterdata.usgs.gov/code/agency_cd_query?fmt=html?display=inline"
       ></ToolTip>
     </span>
-    <input
-      v-model="agency"
-      class="usa-input"
-      type="text"
-      list="agencylist"
-      style="width: 300px; margin: auto;"
-    />
+    <input v-model="agency" class="usa-input usa-input-custom" type="text" list="agencylist" />
     <datalist id="agencylist"> </datalist>
   </div>
 </template>
@@ -61,3 +53,4 @@ export default {
   }
 };
 </script>
+

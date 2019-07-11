@@ -6,54 +6,47 @@
     </head>
 
     <body>
-      <div class="container container-table">
-        <div class="row vertical-center-row">
-          <div
-            class="text-center col-md-4 col-md-offset-4"
-            style="text-align:center"
-          >
+      <div class="row">
+        <div class="leftcolumn">
+          <div class="text-center col-md-4 col-md-offset-4">
             <br />
-            <div>
-              <ParamSelect></ParamSelect>
-              <br />
-            </div>
             <div v-show="!disabled">
-              <span>
-                <label class="use-input" style="display: inline-block;"
-                  >Site or Sites</label
-                >
+              <span class="input-desc">
+                <label>Site or Sites</label>
                 <ToolTip
                   hint="This field takes comma-separated 8-15 digit site codes. Open this link in a new tab to use the NWISWeb location finder, remember to limit your search to time-series sites."
                   url="http://maps.waterdata.usgs.gov/mapper/"
                 ></ToolTip>
               </span>
-              <input
-                class="usa-input"
-                style="width: 300px; margin: auto;"
-                v-model="sites"
-                :disabled="disabled"
-              />
+              <input class="usa-input usa-input-custom" v-model="sites" :disabled="disabled" />
             </div>
 
             <StateSelect></StateSelect>
             <CoordinatesInput></CoordinatesInput>
             <HUCInput></HUCInput>
             <CountySelect></CountySelect>
-            <LocationQueryType></LocationQueryType>
+            <div>
+              <ParamSelect></ParamSelect>
+              <br />
+            </div>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
-            <br />
-            <button
-              type="button"
-              v-on:click="requestData"
-              id="submitButton"
-              class="usa-button"
-              style="margin: 10px;"
-            >
-              Request Data
-            </button>
           </div>
         </div>
+        <div class="rightcolumn">
+          <LocationQueryType></LocationQueryType>
+        </div>
+      </div>
+      <div>
+        <br />
+        <button
+          type="button"
+          v-on:click="requestData"
+          id="submitButton"
+          class="usa-button request-data"
+        >
+          Request Data
+        </button>
       </div>
     </body>
   </div>
@@ -96,8 +89,7 @@ export default {
   data: function() {
     return {
       columnList: [],
-      sites: "01646500,05437641",
-      parameters: "00060,00065",
+      sites: "",
       activeLocationMode: locationMode.SITE,
       paramData: {},
       stateData: {},
@@ -206,20 +198,25 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
+<style lang="scss" scoped>
+.leftcolumn {
+  float: left;
+  padding: 10px;
+  width: 38%;
+  margin-left: 10%;
+  margin-right: 2%;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.rightcolumn {
+  float: right;
+  padding: 10px;
+  width: 38%;
+  margin-left: 2%;
+  margin-right: 10%;
+}
+.row {
+  display: table;
+  width: 100%;
   margin: auto;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+  clear: both;
 }
 </style>

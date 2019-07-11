@@ -1,34 +1,25 @@
 <template>
   <div>
     <br />
-    <span>
-      <label class="use-input" style="display: inline-block;"
-        >Site Type Code</label
-      >
+    <span class="input-desc">
+      <label>Site Type Code</label>
       <ToolTip
         hint="The complete list of site type codes is available here."
         url="https://help.waterdata.usgs.gov/code/site_tp_query?fmt=html?display=inline"
       ></ToolTip>
     </span>
-    <input
-      v-model="siteType"
-      class="usa-input"
-      list="siteTypeDL"
-      type="text"
-      style="width: 300px; margin: auto;"
-    />
+    <input v-model="siteType" class="usa-input usa-input-custom" list="siteTypeDL" type="text" />
     <datalist id="siteTypeDL"> </datalist>
     <button
-      class="usa-button"
+      class="usa-button usa-button-custom"
       v-on:click="addSiteTypeToSiteTypeList"
-      style="margin-top: 30px"
     >
       Add Site Type
     </button>
 
-    <h6>Selected Site Types</h6>
+    <h6 class="selected-tags">Selected SiteTypes</h6>
 
-    <input-tags v-model="siteTypeNames" style="max-width: 375px; margin: auto;">
+    <input-tags v-model="siteTypeNames" class="input-tags-element">
       <div class="tags-input">
         <span
           v-for="(tag, key) in siteTypeNames"
