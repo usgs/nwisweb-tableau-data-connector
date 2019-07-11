@@ -25,3 +25,10 @@
     format specified by the generated schema.
   </div>
 </template>
+
+<style lang="scss" scoped>
+.about {
+  text-align: left;
+  margin: 20px;
+}
+</style>

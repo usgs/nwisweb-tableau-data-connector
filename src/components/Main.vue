@@ -18,7 +18,11 @@
                   url="http://maps.waterdata.usgs.gov/mapper/"
                 ></ToolTip>
               </span>
-              <input class="usa-input usa-input-custom" v-model="sites" :disabled="disabled" />
+              <input
+                class="usa-input usa-input-custom"
+                v-model="sites"
+                :disabled="disabled"
+              />
             </div>
 
             <StateSelect></StateSelect>
