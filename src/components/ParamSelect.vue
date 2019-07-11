@@ -23,9 +23,7 @@
       Add Parameter
     </button>
     <h6 class="selected-tags">Selected parameters</h6>
-    <input-tags 
-      v-model="selectedParams" 
-      class="input-tags-element">
+    <input-tags v-model="selectedParams" class="input-tags-element">
       <div class="tags-input">
         <span
           v-for="(tag, key) in selectedParams"
