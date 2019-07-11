@@ -89,8 +89,7 @@ export default {
   data: function() {
     return {
       columnList: [],
-      sites: "01646500,05437641",
-      parameters: "00060,00065",
+      sites: "",
       activeLocationMode: locationMode.SITE,
       paramData: {},
       stateData: {},
