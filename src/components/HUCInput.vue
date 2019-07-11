@@ -1,20 +1,20 @@
 <template>
   <div v-show="!disabled">
-      <span class="label-span">
-        <label>Hydrologic Unit Code</label>
-        <ToolTip
-          hint="The complete list of hydrologic unit codes is available here."
-          url="https://water.usgs.gov/GIS/huc_name.html"
-        ></ToolTip>
-      </span>
-      <input
-        class="usa-input"
-        :disabled="disabled"
-        v-model="hydroUnitCode"
-        id="input-type-text"
-        name="input-type-text"
-        type="text"
-      />
+    <span class="label-span">
+      <label>Hydrologic Unit Code</label>
+      <ToolTip
+        hint="The complete list of hydrologic unit codes is available here."
+        url="https://water.usgs.gov/GIS/huc_name.html"
+      ></ToolTip>
+    </span>
+    <input
+      class="usa-input"
+      :disabled="disabled"
+      v-model="hydroUnitCode"
+      id="input-type-text"
+      name="input-type-text"
+      type="text"
+    />
   </div>
 </template>
 
@@ -60,5 +60,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../style/leftJustified.css";
+@import "../style/leftJustified.css";
 </style>

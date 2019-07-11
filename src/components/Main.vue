@@ -8,24 +8,17 @@
     <body>
       <div class="row">
         <div class="leftcolumn">
-          <div
-            class="text-center col-md-4 col-md-offset-4"
-          >
+          <div class="text-center col-md-4 col-md-offset-4">
             <br />
             <div v-show="!disabled">
               <span class="label-span">
-                <label>Site or Sites</label
-                >
+                <label>Site or Sites</label>
                 <ToolTip
                   hint="This field takes comma-separated 8-15 digit site codes. Open this link in a new tab to use the NWISWeb location finder, remember to limit your search to time-series sites."
                   url="http://maps.waterdata.usgs.gov/mapper/"
                 ></ToolTip>
               </span>
-              <input
-                class="usa-input"
-                v-model="sites"
-                :disabled="disabled"
-              />
+              <input class="usa-input" v-model="sites" :disabled="disabled" />
             </div>
 
             <StateSelect></StateSelect>
@@ -45,15 +38,15 @@
         </div>
       </div>
       <div>
-            <br />
-            <button
-              type="button"
-              v-on:click="requestData"
-              id="submitButton"
-              class="usa-button request-data"
-            >
-              Request Data
-            </button>
+        <br />
+        <button
+          type="button"
+          v-on:click="requestData"
+          id="submitButton"
+          class="usa-button request-data"
+        >
+          Request Data
+        </button>
       </div>
     </body>
   </div>
@@ -207,7 +200,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-  @import "../style/leftJustified.css";
+@import "../style/leftJustified.css";
 
 h3 {
   margin: 40px 0 0;

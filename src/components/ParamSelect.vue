@@ -23,24 +23,21 @@
       Add Parameter
     </button>
     <h6 class="selected-tags">Selected parameters</h6>
-    <input-tags
-      v-model="selectedParams"
-      class="input-tags-element"
-    >
+    <input-tags v-model="selectedParams" class="input-tags-element">
       <div class="tags-input">
         <span
           v-for="(tag, key) in selectedParams"
           class="tags-input-tag"
           :key="key"
-        > 
-            <span>{{ tag }}</span>
-            <button
-              type="button"
-              class="tags-input-remove"
-              v-on:click="removeElement(key)"
-            >
-              &times;
-            </button>          
+        >
+          <span>{{ tag }}</span>
+          <button
+            type="button"
+            class="tags-input-remove"
+            v-on:click="removeElement(key)"
+          >
+            &times;
+          </button>
         </span>
       </div>
     </input-tags>
@@ -131,5 +128,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../style/leftJustified.css";
+@import "../style/leftJustified.css";
 </style>

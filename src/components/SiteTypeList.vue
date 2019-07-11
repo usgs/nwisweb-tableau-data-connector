@@ -2,19 +2,13 @@
   <div>
     <br />
     <span class="label-span">
-      <label>Site Type Code</label
-      >
+      <label>Site Type Code</label>
       <ToolTip
         hint="The complete list of site type codes is available here."
         url="https://help.waterdata.usgs.gov/code/site_tp_query?fmt=html?display=inline"
       ></ToolTip>
     </span>
-    <input
-      v-model="siteType"
-      class="usa-input"
-      list="siteTypeDL"
-      type="text"
-    />
+    <input v-model="siteType" class="usa-input" list="siteTypeDL" type="text" />
     <datalist id="siteTypeDL"> </datalist>
     <button
       class="usa-button add-button"
@@ -25,9 +19,7 @@
 
     <h6 class="selected-tags">Selected SiteTypes</h6>
 
-    <input-tags 
-      v-model="siteTypeNames"
-      class="input-tags-element" >
+    <input-tags v-model="siteTypeNames" class="input-tags-element">
       <div class="tags-input">
         <span
           v-for="(tag, key) in siteTypeNames"
@@ -125,5 +117,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "../style/leftJustified.css";
+@import "../style/leftJustified.css";
 </style>
