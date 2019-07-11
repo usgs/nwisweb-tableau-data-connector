@@ -3,7 +3,7 @@
     <form :key="selected" class="usa-form">
       <fieldset class="usa-fieldset">
         <legend class="usa-sr-only">Location Query Type</legend>
-        <div class="usa-radio">
+        <div class="usa-radio usa-radio-custom">
           <input
             class="usa-radio__input"
             :id="locationModeSite"
@@ -17,7 +17,7 @@
             Site ID</label
           >
         </div>
-        <div class="usa-radio">
+        <div class="usa-radio usa-radio-custom">
           <input
             class="usa-radio__input"
             :id="locationModeState"
@@ -30,7 +30,7 @@
             State or Territory
           </label>
         </div>
-        <div class="usa-radio">
+        <div class="usa-radio usa-radio-custom">
           <input
             class="usa-radio__input"
             :id="locationModeCoords"
@@ -43,7 +43,7 @@
             Coordinate Bounding Box
           </label>
         </div>
-        <div class="usa-radio">
+        <div class="usa-radio usa-radio-custom">
           <input
             class="usa-radio__input"
             :id="locationModeHydro"
@@ -56,7 +56,7 @@
             Hydrologic Unit Code
           </label>
         </div>
-        <div class="usa-radio">
+        <div class="usa-radio usa-radio-custom">
           <input
             class="usa-radio__input"
             :id="locationModeCounty"

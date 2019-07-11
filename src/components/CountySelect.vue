@@ -1,6 +1,6 @@
 <template>
   <div v-show="!disabled">
-    <span class="label-span">
+    <span class="input-desc">
       <label>State or Territory</label>
       <ToolTip
         hint="This is an optional field; when populated with a valid state name, county or equivalent subdivision suggestions from the current state or territory will be available in the county input field in compatibe browsers. This field takes one US State or territory name, with the first letter capitalized. The list of allowed states and territories mirrors the list of allowed states and territories in the tool linked here. "
@@ -10,13 +10,13 @@
     <input
       v-model="state"
       :disabled="disabled"
-      class="usa-input"
+      class="usa-input usa-input-custom"
       list="csstates"
       type="text"
     />
     <datalist id="csstates"> </datalist>
     <br />
-    <span class="label-span">
+    <span class="input-desc">
       <label>County</label>
       <ToolTip
         hint="The complete list of county fips cods is available here. If you are entering the codes manually, please format them as follows &ltState Cd&gt&ltCounty Cd&gt. Each code is a 5 digit number."
@@ -26,21 +26,18 @@
     <input
       v-model="county"
       :disabled="disabled"
-      class="usa-input"
+      class="usa-input usa-input-custom"
       list="cscounties"
       type="text"
     />
     <datalist id="cscounties"> </datalist>
-    <button class="usa-button add-button" v-on:click="addCountyToCounties">
+    <button class="usa-button usa-button-custom" v-on:click="addCountyToCounties">
       Add County
     </button>
-
     <h6 class="selected-tags">Selected Counties</h6>
-
     <input-tags
       v-model="countyNames"
       class="input-tags-element"
-      style="max-width: 375px; margin: auto;"
     >
       <div class="tags-input">
         <span

@@ -1,7 +1,7 @@
 <template>
   <div>
     <br />
-    <span class="label-span">
+    <span class="input-desc">
       <label>Parameters</label>
       <ToolTip
         hint="The complete list of parameter codes is available here."
@@ -12,18 +12,20 @@
       <input
         id="paraminput"
         v-model="param"
-        class="usa-input"
+        class="usa-input usa-input-custom"
         list="csparams"
         type="text"
       />
       <datalist id="csparams"> </datalist>
     </span>
     <br />
-    <button class="usa-button add-button" v-on:click="addParam">
+    <button class="usa-button usa-button-custom" v-on:click="addParam">
       Add Parameter
     </button>
     <h6 class="selected-tags">Selected parameters</h6>
-    <input-tags v-model="selectedParams" class="input-tags-element">
+    <input-tags 
+      v-model="selectedParams" 
+      class="input-tags-element">
       <div class="tags-input">
         <span
           v-for="(tag, key) in selectedParams"

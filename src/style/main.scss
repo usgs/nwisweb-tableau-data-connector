@@ -1,7 +1,7 @@
-.usa-radio {
+.usa-radio-custom {
     text-align: left;
 }
-.add-button {
+.usa-button-custom {
     float: left;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -25,16 +25,12 @@
     text-align:left;
     clear: both;
 }
-.usa-input {
+.usa-input-custom {
     max-width: 300px; 
     display: block;
     clear: both;
 }
-.label-span {
-    text-align: left;
-    display: block;
-}
-.input-label {
+.input-desc {
     text-align: left;
     display: block;
 }
