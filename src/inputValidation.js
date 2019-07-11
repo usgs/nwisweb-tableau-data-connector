@@ -117,7 +117,7 @@ const validateISO_8601Duration = (duration, instance) => {
   let regex = /^P((\d)+Y)?((\d)+M)?((\d)+W)?((\d)+D)?((T(\d)+H((\d)+M)?((\d)+S)?|T(\d)+M((\d)+S)?|T(\d)+S))?$/;
   let antiregex = /^P$/;
   if (
-    !duration.replace(/\s/g, "").match(regex) ||
+    (!(duration.replace(/\s/g, "").match(regex) ))||
     duration.replace(/\s/g, "").match(antiregex)
   ) {
     return "duration code formatting invalid; please refer to link provided in the tooltip";
@@ -273,5 +273,6 @@ export {
   validateCountyInputs,
   validateParamInputs,
   validateSiteTypeInputs,
-  validateAgencyInputs
+  validateAgencyInputs,
+  validateISO_8601Duration
 };

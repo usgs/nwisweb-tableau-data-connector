@@ -9,7 +9,8 @@ import {
   validateCountyInputs,
   validateParamInputs,
   validateSiteTypeInputs,
-  validateAgencyInputs
+  validateAgencyInputs,
+  validateISO_8601Duration
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
 import Notifications from "vue-notification";
@@ -505,25 +506,48 @@ done in ParamSelect.vue
       actions: {}
     });
     const wrapper = shallowMount(Main, { store, localVue });
-    expect(validateAgencyInputs("P1D", wrapper.vm)).toBe(true);
-    expect(validateAgencyInputs("P1M", wrapper.vm)).toBe(true);
-    expect(validateAgencyInputs("P1Y", wrapper.vm)).toBe(true);
-    expect(validateAgencyInputs("P1W", wrapper.vm)).toBe(true);
+    expect(validateISO_8601Duration("P1D", wrapper.vm)).toBe(true);
+    expect(validateISO_8601Duration("P1M", wrapper.vm)).toBe(true);
+    expect(validateISO_8601Duration("P1Y", wrapper.vm)).toBe(true);
+    expect(validateISO_8601Duration("PT1M4534534534S", wrapper.vm)).toBe(true);
     expect(
-      validateAgencyInputs("P1W34324234234234234324DT435457384H", wrapper.vm)
+      validateISO_8601Duration("P1W34324234234234234324DT435457384H", wrapper.vm)
     ).toBe(true);
-    expect(validateAgencyInputs("P4444M0000D", wrapper.vm)).toBe(true);
+    expect(validateISO_8601Duration("P4444M0000D", wrapper.vm)).toBe(true);
     expect(
-      validateAgencyInputs(
-        "P35897345987Y48875M39875374Wt3453454345435M587934598S",
+      validateISO_8601Duration(
+        "P35897345987Y48875M39875374WT3453454345435M587934598S",
         wrapper.vm
       )
     ).toBe(true);
     expect(
-      validateAgencyInputs(
+      validateISO_8601Duration(
         "P34573475347537534757477777475384Y9348239482309483248320948329DT349850934850934S",
         wrapper.vm
       )
     ).toBe(true);
+  });
+  test("validateISO_8601Duration rejects non-compliant codes", () => {
+    const store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        durationCodeActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    expect(validateISO_8601Duration("P", wrapper.vm)).not.toBe(true);
+    expect(validateISO_8601Duration("T", wrapper.vm)).not.toBe(true);
+    expect(validateISO_8601Duration("T1S", wrapper.vm)).not.toBe(true);
+    expect(validateISO_8601Duration("P32432S", wrapper.vm)).not.toBe(true);
+    expect(validateISO_8601Duration("T32432SP45345M", wrapper.vm)).not.toBe(true);
+    expect(validateISO_8601Duration("P234234D43534W", wrapper.vm)).not.toBe(true);
+    expect(validateISO_8601Duration("PT345345S435345M", wrapper.vm)).not.toBe(true);
+   
+
+   
   });
 });
