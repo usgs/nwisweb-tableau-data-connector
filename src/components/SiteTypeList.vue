@@ -64,7 +64,6 @@ export default {
       let siteTypeStatus = this.siteTypeList.length != 0;
       this.$store.commit("changeSiteTypeListActive", siteTypeStatus);
       this.$store.commit("changeSiteType", this.siteTypeList);
-      notify(siteTypeStatus);
     },
     populateSiteType: function() {
       let siteSelect = document.getElementById("siteTypeDL");
