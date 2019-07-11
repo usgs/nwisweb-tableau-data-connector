@@ -1,4 +1,5 @@
 import { locationMode } from "./enums.js";
+import { notify } from "./notifications.js";
 
 /*
       Ensures the user has selected a valid state or territory in their query. Always
@@ -132,7 +133,7 @@ const validateFormInputs = instance => {
     instance
   );
   if (!(stateStatus === true)) {
-    alert(stateStatus);
+    notify(stateStatus);
     return false;
   }
   let coordStatus = validateCoordinateInputs(
@@ -140,13 +141,13 @@ const validateFormInputs = instance => {
     instance
   );
   if (!(coordStatus === true)) {
-    alert(coordStatus);
+    notify(coordStatus);
     return false;
   }
 
   let siteListStatus = validateSiteInputs(instance.sites, instance);
   if (!(siteListStatus === true)) {
-    alert(siteListStatus);
+    notify(siteListStatus);
     return false;
   }
 
@@ -155,12 +156,12 @@ const validateFormInputs = instance => {
     instance
   );
   if (!(HydroCodeStatus === true)) {
-    alert(HydroCodeStatus);
+    notify(HydroCodeStatus);
     return false;
   }
   let paramStatus = validateParamInputs(instance.$store.getters.paramCodes);
   if (!(paramStatus == true)) {
-    alert(paramStatus);
+    notify(paramStatus);
     return false;
   }
 
@@ -169,7 +170,7 @@ const validateFormInputs = instance => {
     instance
   );
   if (!(countyStatus == true)) {
-    alert(countyStatus);
+    notify(countyStatus);
     return false;
   }
 

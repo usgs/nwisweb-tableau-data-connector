@@ -54,6 +54,7 @@
 <script>
 import Vue from "vue";
 import VueTags from "vue-tags";
+import { notify } from "../notifications.js";
 Vue.component("input-tags", VueTags);
 
 export default {
@@ -97,7 +98,7 @@ export default {
     },
     addParam: function() {
       if (!this.loadedParamData) {
-        alert("Please wait for param data to load");
+        notify("Please wait for param data to load");
         return;
       }
       if (this.paramList.includes(this.param)) {
@@ -105,13 +106,13 @@ export default {
           if (this.selectedParams.length < 100) {
             this.selectedParams.push(this.param);
           } else {
-            alert("Maximum number of parameters already selected.");
+            notify("Maximum number of parameters already selected.");
           }
         } else {
-          alert("parameter selected already in selection.");
+          notify("parameter selected already in selection.");
         }
       } else {
-        alert("invalid param code entered");
+        notify("invalid param code entered");
       }
     },
     toggleWideInput: function() {
