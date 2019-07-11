@@ -2,13 +2,15 @@ pipeline {
     agent {
         node {
             label 'project:any'
-        }
+        }   
     }
 
     parameters {
         choice(choices: ['QA', 'prod'], description: 's3 bucket that the build will target', name: 'BUILD_DEST')
         choice(choices: ['Snapshot', 'Release'], description: 'type of release', name: 'RELEASE_TYPE')
         choice(choices: ['minor', 'major', 'patch'], description: 'release version', name: 'RELEASE_VERSION')
+        string(defaultValue: "", description: 'Specific Commit to build', name: 'COMMIT')
+        string(defaultValue: "", description: 'Specific Tag to Build', name: 'TAG')
     }
 
     triggers {
@@ -21,10 +23,34 @@ pipeline {
             cleanWs()
          }
         }
-        stage('checkout'){
-            steps{
-                checkout scm
+          stage('checkout'){
+            steps {
+                script {
+                    buildSource = "refs/heads/master"
+                    if ("${TAG}" != "") {
+                        buildSource = "refs/tags/${TAG}"
+                    }
+                    else if ("${COMMIT}" != "") {
+                        buildSource = "${COMMIT}"
+                    }
                 }
+                checkout ([
+                    $class: 'GitSCM',
+                    branches: [[name: buildSource]],
+                    doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                    extensions: [
+                        [
+                          $class: 'WipeWorkspace'
+                        ],
+                        [
+                          $class: 'LocalBranch',
+                          localBranch: "**"
+                        ]
+                    ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: scm.userRemoteConfigs
+                ])
+            }
         }
         stage('build') {
             steps {
@@ -38,13 +64,13 @@ pipeline {
                 sh """
                     echo "${versionChange}" >versionNum.txt
                     docker build . --tag="dockerinstance"
-                    docker run dockerinstance
+                    docker run --name nwisweb_data_connector_docker dockerinstance
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
-                    dockerinstanceid=\$( docker ps -l -q )
+                    dockerinstanceid=\$( docker ps -aqf "name=nwisweb_data_connector_docker" )
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/package.json" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/newVerNum.txt" $WORKSPACE
-                    docker rm "\${dockerinstanceid}"            
+                    docker rm "\${dockerinstanceid}"
                 """
 
                 sshagent (credentials: ['wma-eto-eb-rsa']) {

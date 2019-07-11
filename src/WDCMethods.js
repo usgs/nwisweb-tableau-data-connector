@@ -1,5 +1,7 @@
 import { get } from "./utils.js";
 import { locationMode } from "./enums.js";
+import { notify } from "./notifications.js";
+
 /*global  tableau:true*/
 
 /*
@@ -246,7 +248,7 @@ const getSchema = schemaCallback => {
         schemaCallback(generateSchemaTablesFromData(value));
       }
     })
-    .catch(err => alert(err));
+    .catch(err => notify(err));
 };
 
 /*
