@@ -35,11 +35,23 @@ const validDataJSON = {
             value: [
               {
                 value: "10800",
+                qualifiers: ["P", "A"],
                 dateTime: "2019-07-05T10:45:00.000-04:00"
               },
               {
                 value: "10800",
+                qualifiers: ["P"],
                 dateTime: "2019-07-05T10:45:00.000-04:00"
+              }
+            ],
+            qualifier: [
+              {
+                qualifierCode: "P",
+                qualifierDescription: "Provisional data subject to revision."
+              },
+              {
+                qualifierCode: "A",
+                qualifierDescription: "Approved"
               }
             ]
           }
@@ -67,10 +79,12 @@ const validDataJSON = {
             value: [
               {
                 value: "343",
+                qualifiers: ["P"],
                 dateTime: "2019-07-05T10:45:00.000-04:00"
               },
               {
                 value: "5465",
+                qualifiers: ["P"],
                 dateTime: "2019-07-05T10:45:00.000-04:00"
               }
             ]
@@ -89,14 +103,16 @@ test("converting a fully-populated data JSON to table", () => {
       dateTime: "2019-07-05 10:45:00.000",
       latitude: "0.000000",
       longitude: "0.000000",
-      units: "ft3/s"
+      units: "ft3/s",
+      qualifier: "P:Provisional data subject to revision.,A:Approved"
     },
     {
       flow_01646500: "10800",
       dateTime: "2019-07-05 10:45:00.000",
       latitude: "0.000000",
       longitude: "0.000000",
-      units: "ft3/s"
+      units: "ft3/s",
+      qualifier: "P:Provisional data subject to revision."
     }
   ];
 
@@ -207,6 +223,7 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "units", alias: "units", dataType: "__STRING" },
+        { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
         { id: "flow_01646500", alias: "flow_01646500", dataType: "__STRING" }
       ]
     },
@@ -218,6 +235,7 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "units", alias: "units", dataType: "__STRING" },
+        { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
         {
           id: "height_01646501",
           alias: "height_01646501",
