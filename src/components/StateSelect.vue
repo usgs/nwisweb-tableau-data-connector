@@ -6,7 +6,7 @@
         >State or Territory</label
       >
       <ToolTip
-        hint="This field takes one US State or territory name, with the first letter capitalized. The list of allowed states and territories mirrors the list of allowed states and territories in the tool linked here. "
+        hint="This field takes one US State or territory name, with the first letter of each word capitalized. The list of allowed states and territories mirrors the list of allowed states and territories in the tool linked here. "
         url="https://waterservices.usgs.gov/rest/IV-Test-Tool.html"
       ></ToolTip>
     </span>

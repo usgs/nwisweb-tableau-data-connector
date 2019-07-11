@@ -3,7 +3,7 @@
     <form class="usa-form" style="margin: auto;">
       <span>
         <label class="use-input" style="display: inline-block;"
-          >Hydrologic unit Code</label
+          >Hydrologic Unit Code</label
         >
         <ToolTip
           hint="The complete list of hydrologic unit codes is available here."
