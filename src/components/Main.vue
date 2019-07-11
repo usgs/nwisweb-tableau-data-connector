@@ -33,7 +33,6 @@
               <br />
             </div>
             <SiteTypeList></SiteTypeList>
-
             <br />
             <button
               type="button"
@@ -213,5 +212,9 @@ a {
   display: table;
   clear: both;
   width: 100%;
+}
+.usa-button {
+  position: relative;
+  right: 70px;
 }
 </style>

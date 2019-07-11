@@ -13,14 +13,15 @@
     <button
       class="usa-button"
       v-on:click="addSiteTypeToSiteTypeList"
-      style="margin-top: 30px"
     >
       Add SiteType
     </button>
 
-    <h6>Selected SiteTypes</h6>
+    <h6 class="selected-tags">Selected SiteTypes</h6>
 
-    <input-tags v-model="siteTypeNames" style="max-width: 375px; margin: auto;">
+    <input-tags 
+      v-model="siteTypeNames"
+      class="input-tags-element" >
       <div class="tags-input">
         <span
           v-for="(tag, key) in siteTypeNames"
@@ -109,3 +110,7 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  @import "../style/leftJustified.css";
+</style>

@@ -1,0 +1,30 @@
+@charset "UTF-8";
+/* CSS Document */
+
+.usa-radio {
+    text-align: left;
+}
+.usa-button {
+    text-align: left;
+    margin-left: 0 auto;
+    margin-top: 30px;
+
+}
+.autocomplete-dropdown {
+    text-align: center;
+}
+.input-tags-element {
+    display: inline-block;
+    max-width: 300px;
+    margin: auto;
+    text-align: left;
+}
+.tags-input {
+    display: block;
+}
+.tags-input-remove {
+    margin-right: 5px;
+}
+.selected-tags {
+    display:block;
+}

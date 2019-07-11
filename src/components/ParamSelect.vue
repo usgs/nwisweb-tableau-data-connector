@@ -25,26 +25,25 @@
     <button class="usa-button" v-on:click="addParam" style="margin-top: 30px">
       Add Parameter
     </button>
-    <h6>Selected parameters</h6>
-
+    <h6 class="selected-tags">Selected parameters</h6>
     <input-tags
       v-model="selectedParams"
-      style="max-width: 300px; margin: auto;"
+      class="input-tags-element"
     >
       <div class="tags-input">
         <span
           v-for="(tag, key) in selectedParams"
           class="tags-input-tag"
           :key="key"
-        >
-          <span>{{ tag }}</span>
-          <button
-            type="button"
-            class="tags-input-remove"
-            v-on:click="removeElement(key)"
-          >
-            &times;
-          </button>
+        > 
+            <span>{{ tag }}</span>
+            <button
+              type="button"
+              class="tags-input-remove"
+              v-on:click="removeElement(key)"
+            >
+              &times;
+            </button>          
         </span>
       </div>
     </input-tags>
@@ -145,3 +144,7 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  @import "../style/leftJustified.css";
+</style>
