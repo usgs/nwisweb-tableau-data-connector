@@ -1,6 +1,6 @@
 <template>
   <div v-show="!disabled">
-    <form class="usa-form" style="margin: auto;">
+    <form class="usa-form">
       <label class="usa-label input-label" for="input-type-text"
         >Hydrologic Unit Code</label
       >

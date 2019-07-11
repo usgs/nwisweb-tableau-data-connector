@@ -8,7 +8,6 @@
       class="usa-input"
       type="text"
       list="states"
-      style="width: 300px; margin: auto;"
     />
     <datalist id="states"> </datalist>
   </div>

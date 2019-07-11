@@ -18,7 +18,6 @@
               <label class="input-label"> Site or Sites </label>
               <input
                 class="usa-input"
-                style="width: 300px; margin: auto;"
                 v-model="sites"
                 :disabled="disabled"
               />
@@ -195,7 +194,6 @@ ul {
 
 li {
   display: inline-block;
-  margin: 0 10px;
 }
 a {
   color: #42b983;
@@ -203,15 +201,15 @@ a {
 .leftcolumn {
   float: left;
   padding: 10px;
-  width: 30%;
+  width: 38%;
   margin-left: 10%;
-  margin-right: 10%;
+  margin-right: 2%;
 }
 .rightcolumn {
   float: right;
   padding: 10px;
-  width: 30%;
-  margin-left: 10%;
+  width: 38%;
+  margin-left: 2%;
   margin-right: 10%;
 }
 .row {

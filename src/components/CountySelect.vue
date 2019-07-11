@@ -8,7 +8,6 @@
       class="usa-input"
       list="csstates"
       type="text"
-      style="width: 300px; margin: auto;"
     />
     <datalist id="csstates"> </datalist>
     <br />
@@ -19,7 +18,6 @@
       class="usa-input"
       list="cscounties"
       type="text"
-      style="width: 300px; margin: auto;"
     />
     <datalist id="cscounties"> </datalist>
     <button
@@ -30,7 +28,9 @@
 
     <h6 class="selected-tags">Selected Counties</h6>
 
-    <input-tags v-model="countyNames" style="max-width: 375px; margin: auto;">
+    <input-tags  
+      v-model="countyNames" 
+      class="input-tags-element">
       <div class="tags-input">
         <span
           v-for="(tag, key) in countyNames"

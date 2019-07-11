@@ -10,7 +10,7 @@
     margin-bottom: 10px;
 }
 .request-data {
-    margin-bottom: 30px; 
+    margin: 10px 0px 30px 0px; 
 }
 .input-tags-element {
     display: block;
@@ -29,7 +29,7 @@
     clear: both;
 }
 .usa-input {
-    width: 300px; 
+    max-width: 300px; 
     display: block;
     clear: both;
 }
