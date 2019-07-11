@@ -9,11 +9,13 @@ export default new Vuex.Store({
     state: "",
     siteTypeListActive: false,
     agencyActive: false,
+    durationCodeActive: false,
     agencyCode: "",
     siteType: [],
     hydroCode: "",
     countyCode: [],
     paramCodes: [],
+    durationCode: "",
     locationMode: locationMode.SITE,
     coordinates: {}
   },
@@ -47,6 +49,12 @@ export default new Vuex.Store({
     },
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
+    },
+    changeDurationCodeActive: (state, newDurationCodeActivationState) => {
+      state.durationCodeActive = newDurationCodeActivationState;
+    },
+    changeDurationCode: (state, newDurationCode) => {
+      state.durationCode = newDurationCode;
     }
   },
   actions: {},
@@ -80,6 +88,12 @@ export default new Vuex.Store({
     },
     agencyActive: state => {
       return state.agencyActive;
+    },
+    durationCodeActive: state => {
+      return state.durationCodeActive;
+    },
+    durationCode: state => {
+      return state.durationCode;
     }
   }
 });

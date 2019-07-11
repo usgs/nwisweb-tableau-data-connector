@@ -106,6 +106,18 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
   return true;
 };
 
+const validateISO_8601Duration = (duration, instance) => {
+  if (!instance.$store.getters.durationCodeActive) {
+    return true;
+  }
+  let regex = /^P((\d)+Y)?((\d)+M)?((\d)+W)?((\d)+D)?((T(\d)+H((\d)+M)?((\d)+S)?|T(\d)+M((\d)+S)?|T(\d)+S))?$/;
+  if (!duration.replace(/\s/g, "").match(regex)) {
+    return "duration code formatting invalid; please refer to link provided in the tooltip";
+  }
+
+  return true;
+};
+
 /*
 warns the user if they entered an invalid site-type code
 
@@ -224,6 +236,15 @@ const validateFormInputs = instance => {
   );
   if (!(agencyStatus === true)) {
     notify(agencyStatus);
+    return false;
+  }
+
+  let durationCodeStatus = validateISO_8601Duration(
+    instance.$store.getters.durationCode,
+    instance
+  );
+  if (!(durationCodeStatus === true)) {
+    notify(durationCodeStatus);
     return false;
   }
 
