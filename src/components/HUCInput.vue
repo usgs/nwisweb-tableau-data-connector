@@ -5,7 +5,10 @@
         <label class="use-input" style="display: inline-block;"
           >Hydrologic unit Code</label
         >
-        <ToolTip hint="todo" url="https://www.google.com"></ToolTip>
+        <ToolTip
+          hint="The complete list of hydrologic unit codes is available here."
+          url="https://water.usgs.gov/GIS/huc_name.html"
+        ></ToolTip>
       </span>
       <input
         class="usa-input"

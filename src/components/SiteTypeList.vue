@@ -1,7 +1,15 @@
 <template>
   <div>
     <br />
-    <label class="autocomplete-dropdown">Site Type</label>
+    <span>
+      <label class="use-input" style="display: inline-block;"
+        >Site Type Code</label
+      >
+      <ToolTip
+        hint="The complete list of site type codes is available here."
+        url="https://help.waterdata.usgs.gov/code/site_tp_query?fmt=html?display=inline"
+      ></ToolTip>
+    </span>
     <input
       v-model="siteType"
       class="usa-input"
@@ -15,10 +23,10 @@
       v-on:click="addSiteTypeToSiteTypeList"
       style="margin-top: 30px"
     >
-      Add SiteType
+      Add Site Type
     </button>
 
-    <h6>Selected SiteTypes</h6>
+    <h6>Selected Site Types</h6>
 
     <input-tags v-model="siteTypeNames" style="max-width: 375px; margin: auto;">
       <div class="tags-input">
@@ -46,11 +54,15 @@ import siteTypes from "../fetchedValues/siteTypes.json";
 import VueTags from "vue-tags";
 import Vue from "vue";
 import { notify } from "../notifications.js";
+import ToolTip from "../components/ToolTip";
 
 Vue.component("input-tags", VueTags);
 
 export default {
   name: "SiteTypeList",
+  components: {
+    ToolTip
+  },
   data: function() {
     return {
       tags: [],

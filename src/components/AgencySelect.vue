@@ -1,7 +1,15 @@
 <template>
   <div>
     <br />
-    <label class="autocomplete-dropdown">Agency Code</label>
+    <span>
+      <label class="use-input" style="display: inline-block;"
+        >Agency Code</label
+      >
+      <ToolTip
+        hint="The complete list of agency codes is available here."
+        url="https://help.waterdata.usgs.gov/code/agency_cd_query?fmt=html?display=inline"
+      ></ToolTip>
+    </span>
     <input
       v-model="agency"
       class="usa-input"
@@ -15,6 +23,7 @@
 
 <script>
 import agencies from "../fetchedValues/agency.json";
+import ToolTip from "../components/ToolTip";
 
 export default {
   name: "AgencySelect",
@@ -22,6 +31,9 @@ export default {
     return {
       agency: ""
     };
+  },
+  components: {
+    ToolTip
   },
   methods: {
     populateAgencyList: function() {

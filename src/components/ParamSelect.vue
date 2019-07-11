@@ -3,7 +3,10 @@
     <br />
     <span>
       <label class="use-input" style="display: inline-block;">Parameters</label>
-      <ToolTip hint="todo" url="https://www.google.com"></ToolTip>
+      <ToolTip
+        hint="The complete list of parameter codes is available here."
+        url="https://help.waterdata.usgs.gov/codes-and-parameters/parameters"
+      ></ToolTip>
     </span>
     <br />
     <span>
