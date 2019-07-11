@@ -1,17 +1,17 @@
 <template>
   <div>
     <br />
-    <span class="label-span">
+    <span class="input-desc">
       <label>Site Type Code</label>
       <ToolTip
         hint="The complete list of site type codes is available here."
         url="https://help.waterdata.usgs.gov/code/site_tp_query?fmt=html?display=inline"
       ></ToolTip>
     </span>
-    <input v-model="siteType" class="usa-input" list="siteTypeDL" type="text" />
+    <input v-model="siteType" class="usa-input usa-input-custom" list="siteTypeDL" type="text" />
     <datalist id="siteTypeDL"> </datalist>
     <button
-      class="usa-button add-button"
+      class="usa-button usa-button-custom"
       v-on:click="addSiteTypeToSiteTypeList"
     >
       Add Site Type
@@ -115,7 +115,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-@import "../style/leftJustified.css";
-</style>

@@ -11,14 +11,14 @@
           <div class="text-center col-md-4 col-md-offset-4">
             <br />
             <div v-show="!disabled">
-              <span class="label-span">
+              <span class="input-desc">
                 <label>Site or Sites</label>
                 <ToolTip
                   hint="This field takes comma-separated 8-15 digit site codes. Open this link in a new tab to use the NWISWeb location finder, remember to limit your search to time-series sites."
                   url="http://maps.waterdata.usgs.gov/mapper/"
                 ></ToolTip>
               </span>
-              <input class="usa-input" v-model="sites" :disabled="disabled" />
+              <input class="usa-input usa-input-custom" v-model="sites" :disabled="disabled" />
             </div>
 
             <StateSelect></StateSelect>
@@ -203,24 +203,7 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
-@import "../style/leftJustified.css";
-
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: auto;
-}
-
-li {
-  display: inline-block;
-}
-a {
-  color: #42b983;
-}
+<style lang="scss" scoped>
 .leftcolumn {
   float: left;
   padding: 10px;
