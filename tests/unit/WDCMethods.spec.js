@@ -35,7 +35,7 @@ const validDataJSON = {
             value: [
               {
                 value: "10800",
-                qualifiers: ["P","A"],
+                qualifiers: ["P", "A"],
                 dateTime: "2019-07-05T10:45:00.000-04:00"
               },
               {
