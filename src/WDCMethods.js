@@ -209,7 +209,6 @@ const getData = (table, doneCallback) => {
   }
   if (!connectionData.cached) {
     let url = generateURL(connectionData);
-    alert(url);
 
     get(url, "json").then(function(value) {
       if (typeof value === "string") {

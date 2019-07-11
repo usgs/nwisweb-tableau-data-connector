@@ -18,7 +18,15 @@
               <br />
             </div>
             <div v-show="!disabled">
-              <label> Site or Sites </label>
+              <span>
+                <label class="use-input" style="display: inline-block;"
+                  >Site or Sites</label
+                >
+                <ToolTip
+                  hint="This field takes comma-separated 8-15 digit site codes. Open this link in a new tab to use the NWISWeb location finder, remember to limit your search to time-series sites."
+                  url="http://maps.waterdata.usgs.gov/mapper/"
+                ></ToolTip>
+              </span>
               <input
                 class="usa-input"
                 style="width: 300px; margin: auto;"
@@ -65,6 +73,7 @@ import ParamSelect from "../components/ParamSelect";
 import AgencySelect from "../components/AgencySelect";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
+import ToolTip from "../components/ToolTip";
 
 /*global  tableau:true*/
 
@@ -81,7 +90,8 @@ export default {
     HUCInput,
     ParamSelect,
     CountySelect,
-    AgencySelect
+    AgencySelect,
+    ToolTip
   },
   data: function() {
     return {

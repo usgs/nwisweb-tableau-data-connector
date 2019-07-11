@@ -1,9 +1,14 @@
 <template>
   <div v-show="!disabled">
     <form class="usa-form" style="margin: auto;">
-      <label class="usa-label" for="input-type-text"
-        >Northern Boundary Latitude</label
-      >
+      <span>
+        <label class="use-input" style="display: inline-block;"
+          >Northern Boundary Latitude</label
+        >
+        <ToolTip
+          hint="Note: to ensure fair access, the product of the range of latitude and longitude cannot exceed 25 degrees. Use decimal degrees rather than degrees, minutes and seconds. Decimals are not required, but only six decimals of precision will be used. Longitude is in the range of -180 to 180, latitude from -90 to 90. Remember, in the Western hemisphere, longitude is expressed in negative numbers. Note: many sites outside the continental US do not have latitude and longitude referenced to NAD83 and therefore can not be found using these arguments. Certain sites are not associated with latitude and longitude due to homeland security concerns and cannot be found using this filter."
+        ></ToolTip>
+      </span>
       <input
         class="usa-input"
         :disabled="disabled"
@@ -52,9 +57,13 @@
 <script>
 import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
+import ToolTip from "../components/ToolTip";
 
 export default {
   name: "CoordinatesInput",
+  components: {
+    ToolTip
+  },
   data: function() {
     return {
       coordinates: {

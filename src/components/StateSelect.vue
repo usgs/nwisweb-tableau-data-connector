@@ -1,7 +1,15 @@
 <template>
   <div v-show="!disabled">
     <br />
-    <label class="autocomplete-dropdown">State or Territory</label>
+    <span>
+      <label class="use-input" style="display: inline-block;"
+        >State or Territory</label
+      >
+      <ToolTip
+        hint="This field takes one US State or territory name, with the first letter of each word capitalized. The list of allowed states and territories mirrors the list of allowed states and territories in the tool linked here. "
+        url="https://waterservices.usgs.gov/rest/IV-Test-Tool.html"
+      ></ToolTip>
+    </span>
     <input
       v-model="state"
       :disabled="disabled"
@@ -17,10 +25,14 @@
 <script>
 import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
+import ToolTip from "./ToolTip";
 import stateList from "../fetchedValues/states.json";
 
 export default {
   name: "StateSelect",
+  components: {
+    ToolTip
+  },
   data: function() {
     return {
       state: "",

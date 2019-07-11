@@ -1,7 +1,13 @@
 <template>
   <div>
     <br />
-    <label class="autocomplete-dropdown">Parameter</label>
+    <span>
+      <label class="use-input" style="display: inline-block;">Parameters</label>
+      <ToolTip
+        hint="The complete list of parameter codes is available here."
+        url="https://help.waterdata.usgs.gov/codes-and-parameters/parameters"
+      ></ToolTip>
+    </span>
     <br />
     <span>
       <input
@@ -54,11 +60,15 @@
 <script>
 import Vue from "vue";
 import VueTags from "vue-tags";
+import ToolTip from "./ToolTip";
 import { notify } from "../notifications.js";
 Vue.component("input-tags", VueTags);
 
 export default {
   name: "ParamSelect",
+  components: {
+    ToolTip
+  },
   data: function() {
     return {
       loadedParamData: false,
