@@ -1,7 +1,7 @@
 <template>
   <div>
     <br />
-    <label class="autocomplete-dropdown">Parameter</label>
+    <label class="input-label">Parameter</label>
     <br />
     <span>
       <input
@@ -10,7 +10,7 @@
         class="usa-input"
         list="csparams"
         type="text"
-        style="width: 300px; margin: auto; display: inline-block"
+        
       />
       <datalist id="csparams"> </datalist>
       <!-- <button
@@ -22,7 +22,7 @@
       </button> -->
     </span>
     <br />
-    <button class="usa-button" v-on:click="addParam" style="margin-top: 30px">
+    <button class="usa-button add-button" v-on:click="addParam">
       Add Parameter
     </button>
     <h6 class="selected-tags">Selected parameters</h6>

@@ -15,7 +15,7 @@
             <br />
 
             <div v-show="!disabled">
-              <label> Site or Sites </label>
+              <label class="input-label"> Site or Sites </label>
               <input
                 class="usa-input"
                 style="width: 300px; margin: auto;"
@@ -33,21 +33,21 @@
               <br />
             </div>
             <SiteTypeList></SiteTypeList>
-            <br />
-            <button
-              type="button"
-              v-on:click="requestData"
-              id="submitButton"
-              class="usa-button"
-              style="margin: 10px;"
-            >
-              Request Data
-            </button>
           </div>
         </div>
         <div class="rightcolumn">
           <LocationQueryType></LocationQueryType>
         </div>
+      </div>
+      <div>
+            <button
+              type="button"
+              v-on:click="requestData"
+              id="submitButton"
+              class="usa-button request-data"
+            >
+              Request Data
+            </button>
       </div>
     </body>
   </div>
@@ -182,6 +182,8 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+  @import "../style/leftJustified.css";
+
 h3 {
   margin: 40px 0 0;
 }
@@ -190,6 +192,7 @@ ul {
   padding: 0;
   margin: auto;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
@@ -200,21 +203,21 @@ a {
 .leftcolumn {
   float: left;
   padding: 10px;
-  width: 50%;
+  width: 30%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 .rightcolumn {
   float: right;
   padding: 10px;
-  width: 50%;
+  width: 30%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 .row {
-  content: "";
   display: table;
-  clear: both;
   width: 100%;
-}
-.usa-button {
-  position: relative;
-  right: 70px;
+  margin: auto;
+  clear: both;
 }
 </style>

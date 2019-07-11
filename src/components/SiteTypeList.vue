@@ -1,17 +1,16 @@
 <template>
   <div>
     <br />
-    <label class="autocomplete-dropdown">Site Type</label>
+    <label class="input-label">Site Type</label>
     <input
       v-model="siteType"
       class="usa-input"
       list="siteTypeDL"
       type="text"
-      style="width: 300px; margin: auto;"
     />
     <datalist id="siteTypeDL"> </datalist>
     <button
-      class="usa-button"
+      class="usa-button add-button"
       v-on:click="addSiteTypeToSiteTypeList"
     >
       Add SiteType

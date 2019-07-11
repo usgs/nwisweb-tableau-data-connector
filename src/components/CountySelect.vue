@@ -1,7 +1,7 @@
 <template>
   <div v-show="!disabled">
     <br />
-    <label class="autocomplete-dropdown">State or Territory</label>
+    <label class="input-label">State or Territory</label>
     <input
       v-model="state"
       :disabled="disabled"
@@ -12,7 +12,7 @@
     />
     <datalist id="csstates"> </datalist>
     <br />
-    <label class="autocomplete-dropdown">County</label>
+    <label class="input-label">County</label>
     <input
       v-model="county"
       :disabled="disabled"
@@ -23,14 +23,12 @@
     />
     <datalist id="cscounties"> </datalist>
     <button
-      class="usa-button"
-      v-on:click="addCountyToCounties"
-      style="margin-top: 30px"
-    >
+      class="usa-button add-button"
+      v-on:click="addCountyToCounties">
       Add County
     </button>
 
-    <h6>Selected Counties</h6>
+    <h6 class="selected-tags">Selected Counties</h6>
 
     <input-tags v-model="countyNames" style="max-width: 375px; margin: auto;">
       <div class="tags-input">

@@ -1,7 +1,7 @@
 <template>
   <div v-show="!disabled">
     <br />
-    <label class="autocomplete-dropdown">State or Territory</label>
+    <label class="input-label">State or Territory</label>
     <input
       v-model="state"
       :disabled="disabled"

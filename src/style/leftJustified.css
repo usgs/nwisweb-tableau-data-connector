@@ -4,19 +4,17 @@
 .usa-radio {
     text-align: left;
 }
-.usa-button {
-    text-align: left;
-    margin-left: 0 auto;
-    margin-top: 30px;
-
+.add-button {
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
-.autocomplete-dropdown {
-    text-align: center;
+.request-data {
+    margin-bottom: 30px; 
 }
 .input-tags-element {
-    display: inline-block;
+    display: block;
     max-width: 300px;
-    margin: auto;
     text-align: left;
 }
 .tags-input {
@@ -27,4 +25,15 @@
 }
 .selected-tags {
     display:block;
+    text-align:left;
+    clear: both;
+}
+.usa-input {
+    width: 300px; 
+    display: block;
+    clear: both;
+}
+.input-label {
+    text-align: left;
+    display: block;
 }

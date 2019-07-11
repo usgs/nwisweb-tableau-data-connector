@@ -1,7 +1,7 @@
 <template>
   <div v-show="!disabled">
     <form class="usa-form" style="margin: auto;">
-      <label class="usa-label" for="input-type-text"
+      <label class="usa-label input-label" for="input-type-text"
         >Northern Boundary Latitude</label
       >
       <input
@@ -12,7 +12,7 @@
         name="input-type-text"
         type="text"
       />
-      <label class="usa-label" for="input-type-text"
+      <label class="usa-label input-label" for="input-type-text"
         >Southern Boundary Latitude</label
       >
       <input
@@ -23,7 +23,7 @@
         name="input-type-text"
         type="text"
       />
-      <label class="usa-label" for="input-type-text"
+      <label class="usa-label input-label" for="input-type-text"
         >Eastern Boundary Longitude</label
       >
       <input
@@ -34,7 +34,7 @@
         name="input-type-text"
         type="text"
       />
-      <label class="usa-label" for="input-type-text"
+      <label class="usa-label input-label" for="input-type-text"
         >Western Boundary Longitude</label
       >
       <input
