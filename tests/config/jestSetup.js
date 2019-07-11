@@ -40,6 +40,12 @@ let xmlFunctionHolder = {
 };
 global.xmlFunctionHolder = xmlFunctionHolder;
 
+global.stateData = [
+  {
+    state_cd: "Montana"
+  }
+];
+
 //mock of XMLHttpRequest Object
 let mockXMLHttpRequest = function() {
   let req = {};

@@ -33,7 +33,7 @@
             <CountySelect></CountySelect>
             <LocationQueryType></LocationQueryType>
             <SiteTypeList></SiteTypeList>
-
+            <AgencySelect></AgencySelect>
             <br />
             <button
               type="button"
@@ -62,6 +62,7 @@ import SiteTypeList from "../components/SiteTypeList";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import ParamSelect from "../components/ParamSelect";
+import AgencySelect from "../components/AgencySelect";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 
@@ -79,7 +80,8 @@ export default {
     CoordinatesInput,
     HUCInput,
     ParamSelect,
-    CountySelect
+    CountySelect,
+    AgencySelect
   },
   data: function() {
     return {
@@ -139,7 +141,9 @@ export default {
         countyCode: this.$store.getters.countyCode,
         cached: false,
         siteTypeListActive: this.$store.getters.siteTypeListActive,
-        siteTypeList: this.$store.getters.siteType
+        siteTypeList: this.$store.getters.siteType,
+        agencyCodeActive: this.$store.getters.agencyActive,
+        agencyCode: this.$store.getters.agencyCode
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
