@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "CountySelect",
+  name: "ToolTip",
   props: ["hint", "url"]
 };
 </script>
