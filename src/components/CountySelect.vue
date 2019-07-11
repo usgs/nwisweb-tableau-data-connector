@@ -1,8 +1,8 @@
 <template>
   <div v-show="!disabled">
     <br />
-    <span>
-      <label class="input-label" style="display: inline-block;">State or Territory</label>
+    <span class="label-span">
+      <label>State or Territory</label>
       <ToolTip
         hint="This is an optional field; when populated with a valid state name, county or equivalent subdivision suggestions from the current state or territory will be available in the county input field in compatibe browsers. This field takes one US State or territory name, with the first letter capitalized. The list of allowed states and territories mirrors the list of allowed states and territories in the tool linked here. "
         url="https://waterservices.usgs.gov/rest/IV-Test-Tool.html"
@@ -17,8 +17,8 @@
     />
     <datalist id="csstates"> </datalist>
     <br />
-    <span>
-      <label class="input-label" style="display: inline-block;">County</label>
+    <span class="label-span">
+      <label>County</label>
       <ToolTip
         hint="The complete list of county fips cods is available here. If you are entering the codes manually, please format them as follows &ltState Cd&gt&ltCounty Cd&gt. Each code is a 5 digit number."
         url="https://help.waterdata.usgs.gov/code/county_query?fmt=html?display=inline"

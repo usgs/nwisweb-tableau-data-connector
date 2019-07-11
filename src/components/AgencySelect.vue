@@ -1,9 +1,8 @@
 <template>
   <div>
     <br />
-    <span>
-      <label class="use-input" style="display: inline-block;"
-        >Agency Code</label
+    <span class="label-span">
+      <label>Agency Code</label
       >
       <ToolTip
         hint="The complete list of agency codes is available here. This is an optional parameter. Only one agency code may be selected at a time."
@@ -15,7 +14,6 @@
       class="usa-input"
       type="text"
       list="agencylist"
-      style="width: 300px; margin: auto;"
     />
     <datalist id="agencylist"> </datalist>
   </div>

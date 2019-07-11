@@ -1,9 +1,8 @@
 <template>
   <div>
     <br />
-    <span>
-      <label class="usa-input input-label" style="display: inline-block;"
-        >Site Type Code</label
+    <span class="label-span">
+      <label>Site Type Code</label
       >
       <ToolTip
         hint="The complete list of site type codes is available here."

@@ -10,14 +10,11 @@
         <div class="leftcolumn">
           <div
             class="text-center col-md-4 col-md-offset-4"
-            style="text-align:center"
           >
             <br />
-
             <div v-show="!disabled">
-              <span>
-                <label class="usa-input input-label" style="display: inline-block;"
-                  >Site or Sites</label
+              <span class="label-span">
+                <label>Site or Sites</label
                 >
                 <ToolTip
                   hint="This field takes comma-separated 8-15 digit site codes. Open this link in a new tab to use the NWISWeb location finder, remember to limit your search to time-series sites."
@@ -40,6 +37,7 @@
               <br />
             </div>
             <SiteTypeList></SiteTypeList>
+            <AgencySelect></AgencySelect>
           </div>
         </div>
         <div class="rightcolumn">
@@ -47,7 +45,6 @@
         </div>
       </div>
       <div>
-            <AgencySelect></AgencySelect>
             <br />
             <button
               type="button"

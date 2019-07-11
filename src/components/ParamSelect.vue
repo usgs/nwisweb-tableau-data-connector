@@ -1,14 +1,13 @@
 <template>
   <div>
     <br />
-    <span>
-      <label class="usa-input input-label" style="display: inline-block;">Parameters</label>
+    <span class="label-span">
+      <label>Parameters</label>
       <ToolTip
         hint="The complete list of parameter codes is available here."
         url="https://help.waterdata.usgs.gov/codes-and-parameters/parameters"
       ></ToolTip>
     </span>
-    <br />
     <span>
       <input
         id="paraminput"
@@ -16,16 +15,8 @@
         class="usa-input"
         list="csparams"
         type="text"
-        
       />
       <datalist id="csparams"> </datalist>
-      <!-- <button
-        class="usa-button"
-        v-on:click="toggleWideInput"
-        style=" margin-top: 30px display: inline-block"
-      >
-        Expand
-      </button> -->
     </span>
     <br />
     <button class="usa-button add-button" v-on:click="addParam">
@@ -122,23 +113,6 @@ export default {
         }
       } else {
         notify("invalid param code entered");
-      }
-    },
-    toggleWideInput: function() {
-      if (this.wideInput) {
-        this.wideInput = false;
-        let input = document.getElementById("paraminput");
-        input.setAttribute(
-          "style",
-          "width: 300px; margin: auto; display: inline-block"
-        );
-      } else {
-        this.wideInput = true;
-        let input = document.getElementById("paraminput");
-        input.setAttribute(
-          "style",
-          "max-width: 1000px; width: 1000px; margin: auto; display: inline-block"
-        );
       }
     },
     removeElement: function(index) {

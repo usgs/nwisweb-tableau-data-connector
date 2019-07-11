@@ -33,6 +33,10 @@
     display: block;
     clear: both;
 }
+.label-span {
+    text-align: left;
+    display: block;
+}
 .input-label {
     text-align: left;
     display: block;

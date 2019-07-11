@@ -1,10 +1,7 @@
 <template>
   <div v-show="!disabled">
-    <form class="usa-form" style="margin: auto;">
-      <span>
-        <label class="usa-input input-label" style="display: inline-block;"
-          >Hydrologic Unit Code</label
-        >
+      <span class="label-span">
+        <label>Hydrologic Unit Code</label>
         <ToolTip
           hint="The complete list of hydrologic unit codes is available here."
           url="https://water.usgs.gov/GIS/huc_name.html"
@@ -18,7 +15,6 @@
         name="input-type-text"
         type="text"
       />
-    </form>
   </div>
 </template>
 
@@ -62,3 +58,7 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  @import "../style/leftJustified.css";
+</style>
