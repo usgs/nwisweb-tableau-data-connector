@@ -15,7 +15,15 @@
             <br />
 
             <div v-show="!disabled">
-              <label class="input-label"> Site or Sites </label>
+              <span>
+                <label class="usa-input input-label" style="display: inline-block;"
+                  >Site or Sites</label
+                >
+                <ToolTip
+                  hint="This field takes comma-separated 8-15 digit site codes. Open this link in a new tab to use the NWISWeb location finder, remember to limit your search to time-series sites."
+                  url="http://maps.waterdata.usgs.gov/mapper/"
+                ></ToolTip>
+              </span>
               <input
                 class="usa-input"
                 v-model="sites"
@@ -39,6 +47,8 @@
         </div>
       </div>
       <div>
+            <AgencySelect></AgencySelect>
+            <br />
             <button
               type="button"
               v-on:click="requestData"
@@ -63,7 +73,10 @@ import SiteTypeList from "../components/SiteTypeList";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import ParamSelect from "../components/ParamSelect";
+import AgencySelect from "../components/AgencySelect";
 import { mapState } from "vuex";
+import { notify } from "../notifications.js";
+import ToolTip from "../components/ToolTip";
 
 /*global  tableau:true*/
 
@@ -79,7 +92,9 @@ export default {
     CoordinatesInput,
     HUCInput,
     ParamSelect,
-    CountySelect
+    CountySelect,
+    AgencySelect,
+    ToolTip
   },
   data: function() {
     return {
@@ -98,12 +113,23 @@ export default {
   },
   methods: {
     /*
+      Warns users on standalone browsers that they need Tableau to proceed with data collection.
+    */
+    browserWarning: function() {
+      if (tableau.platformVersion == undefined) {
+        notify(
+          "The NWIS Tableau Web Data Connector must be accessed from Tableau desktop or Tableau server!"
+        );
+      }
+    },
+    /*
             This function is triggered when the user presses the button to confirm their query. 
             This closes the Web Data Connector interface.
         */
     requestData: function() {
+      this.browserWarning();
       if (!this.loadedStateData) {
-        alert(
+        notify(
           "The page is still loading: please retry this action in a moment!"
         );
         return;
@@ -128,7 +154,9 @@ export default {
         countyCode: this.$store.getters.countyCode,
         cached: false,
         siteTypeListActive: this.$store.getters.siteTypeListActive,
-        siteTypeList: this.$store.getters.siteType
+        siteTypeList: this.$store.getters.siteType,
+        agencyCodeActive: this.$store.getters.agencyActive,
+        agencyCode: this.$store.getters.agencyCode
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
@@ -162,6 +190,7 @@ export default {
   mounted: function() {
     this.$nextTick(function() {
       this.fetchData();
+      this.browserWarning();
     });
   },
   watch: {

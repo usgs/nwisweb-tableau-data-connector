@@ -1,13 +1,30 @@
 import { locationMode } from "./enums.js";
+import agencyData from "./fetchedValues/agency.json";
+import stateData from "./fetchedValues/states.json";
+import siteTypeData from "./fetchedValues/siteTypes.json";
+import { notify } from "./notifications.js";
+
+/*
+useful helper function to allow searching lists of dictionaries for a value at a specific key.
+*/
+const inObjList = (list, target, key) => {
+  let returnVal = false;
+  list.forEach(element => {
+    if (target == element[key]) {
+      returnVal = true;
+    }
+  });
+  return returnVal;
+};
 
 /*
       Ensures the user has selected a valid state or territory in their query. Always
       returns true if the current vuex locationMode setting is not STATE.
 
     */
-const validateStateInputs = (input, instance) => {
+const validateStateInputs = (input, instance, stateData) => {
   if (instance.$store.getters.locationMode != locationMode.STATE) return true;
-  if (!(input in instance.stateData)) return "invalid state selected";
+  if (!(input in stateData)) return "invalid state selected";
   return true;
 };
 /*
@@ -89,11 +106,16 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
   return true;
 };
 
-const validateSiteTypeInputs = (input, instance) => {
-  if (!(input in instance.stateData)) {
-    return "invalid site type selected";
+/*
+warns the user if they entered an invalid site-type code
+
+*/
+const validateSiteTypeInputs = (input, instance, siteTypeData) => {
+  if (!instance.$store.getters.siteTypeListActive) {
+    return true;
   }
-  return true;
+  let found = inObjList(siteTypeData, input, "site_tp_cd");
+  return found ? found : "invalid site type selected";
 };
 
 /*
@@ -122,6 +144,17 @@ const validateCountyInputs = (countyList, instance) => {
 };
 
 /*
+  Warns the user if they have selected an invalid agency code.
+*/
+const validateAgencyInputs = (agency, instance, agencyData) => {
+  if (!instance.$store.getters.agencyActive) {
+    return true;
+  }
+  let found = inObjList(agencyData, agency, "agency_cd");
+  return found ? found : "invalid agency code";
+};
+
+/*
       function which validates user form inputs and updates vuex values to a query ready format. 
       This function should be run and observed to return true before anything in the body of requestData 
       is run. 
@@ -129,10 +162,11 @@ const validateCountyInputs = (countyList, instance) => {
 const validateFormInputs = instance => {
   let stateStatus = validateStateInputs(
     instance.$store.getters.USStateName,
-    instance
+    instance,
+    stateData
   );
   if (!(stateStatus === true)) {
-    alert(stateStatus);
+    notify(stateStatus);
     return false;
   }
   let coordStatus = validateCoordinateInputs(
@@ -140,13 +174,13 @@ const validateFormInputs = instance => {
     instance
   );
   if (!(coordStatus === true)) {
-    alert(coordStatus);
+    notify(coordStatus);
     return false;
   }
 
   let siteListStatus = validateSiteInputs(instance.sites, instance);
   if (!(siteListStatus === true)) {
-    alert(siteListStatus);
+    notify(siteListStatus);
     return false;
   }
 
@@ -155,12 +189,12 @@ const validateFormInputs = instance => {
     instance
   );
   if (!(HydroCodeStatus === true)) {
-    alert(HydroCodeStatus);
+    notify(HydroCodeStatus);
     return false;
   }
   let paramStatus = validateParamInputs(instance.$store.getters.paramCodes);
-  if (!(paramStatus == true)) {
-    alert(paramStatus);
+  if (!(paramStatus === true)) {
+    notify(paramStatus);
     return false;
   }
 
@@ -168,8 +202,28 @@ const validateFormInputs = instance => {
     instance.$store.getters.countyCode,
     instance
   );
-  if (!(countyStatus == true)) {
-    alert(countyStatus);
+  if (!(countyStatus === true)) {
+    notify(countyStatus);
+    return false;
+  }
+
+  let siteTypeListStatus = validateSiteTypeInputs(
+    instance.$store.getters.siteType,
+    instance,
+    siteTypeData
+  );
+  if (!(siteTypeListStatus === true)) {
+    notify(siteTypeListStatus);
+    return false;
+  }
+
+  let agencyStatus = validateAgencyInputs(
+    instance.$store.getters.agencyCode,
+    instance,
+    agencyData
+  );
+  if (!(agencyStatus === true)) {
+    notify(agencyStatus);
     return false;
   }
 
@@ -189,5 +243,6 @@ export {
   validateHydroCodeInputs,
   validateCountyInputs,
   validateParamInputs,
-  validateSiteTypeInputs
+  validateSiteTypeInputs,
+  validateAgencyInputs
 };

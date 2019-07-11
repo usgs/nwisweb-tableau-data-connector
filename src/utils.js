@@ -1,3 +1,5 @@
+import { notify } from "./notifications.js";
+
 /*
 gets a JSON from specified URL via HTTP request
 
@@ -24,7 +26,7 @@ const get = (url, responseType) => {
         if (window.ga) {
           window.ga("send", "event", "serviceFailure", req.status, url);
         }
-        alert(`Failed with status ${req.status}: ${req.statusText}`);
+        notify(`Failed with status ${req.status}: ${req.statusText}`);
         reject(Error(`Failed with status ${req.status}: ${req.statusText}`));
       }
     };

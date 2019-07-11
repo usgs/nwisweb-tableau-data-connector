@@ -1,5 +1,7 @@
 import { get } from "./utils.js";
 import { locationMode } from "./enums.js";
+import { notify } from "./notifications.js";
+
 /*global  tableau:true*/
 
 /*
@@ -28,6 +30,26 @@ const getTimeSeriesByID = (timeSeries, tableName) => {
 };
 
 /*
+constructs a lookup table for qualifiers to their descriptions
+*/
+
+const constructQualTable = tableSeries => {
+  let qualTable = {};
+  tableSeries.values[0].qualifier.forEach(qualifier => {
+    qualTable[qualifier.qualifierCode] = qualifier.qualifierDescription;
+  });
+  return qualTable;
+};
+
+/*
+given a qualifier-description lookup table and a qualifier code, 
+returns a formatted concatednation of teh qualifier code and its description
+*/
+const generateQualDescription = (qualTable, qualCode) => {
+  return `${qualCode}:${qualTable[qualCode]}`;
+};
+
+/*
   reformats time string from site-provided datetime to tableau compliant format. Time zone is removed, as it can be calculated from the geo-coords if they are provided.
 */
 const reformatTimeString = timeString => {
@@ -50,13 +72,19 @@ const formatJSONAsTable = (data, tableName) => {
   let timeSeries = data.value.timeSeries;
   let tableSeries = getTimeSeriesByID(timeSeries, tableName);
   let paramIndices = Array.from(tableSeries.values[0].value.keys());
+  let qualDescriptionLookup = constructQualTable(tableSeries);
 
   paramIndices.forEach(i => {
+    let qualList = [];
+    tableSeries.values[0].value[i].qualifiers.forEach(qualifier => {
+      qualList.push(generateQualDescription(qualDescriptionLookup, qualifier));
+    });
     let newEntry = {
       dateTime: reformatTimeString(tableSeries.values[0].value[i].dateTime),
       latitude: tableSeries.sourceInfo.geoLocation.geogLocation.latitude,
       longitude: tableSeries.sourceInfo.geoLocation.geogLocation.longitude,
       units: tableSeries.variable.unit.unitCode,
+      qualifier: qualList.join(","),
       [tableName]: tableSeries.values[0].value[i].value
     };
     tableData.push(newEntry);
@@ -73,6 +101,7 @@ const generateURL = connectionData => {
 
   let locationQuery = "";
   let siteTypeQuery = "";
+  let agencyCodeQuery = "";
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -107,7 +136,11 @@ const generateURL = connectionData => {
     siteTypeQuery = `&siteType=${siteType}`;
   }
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}&siteStatus=all`;
+  if (connectionData.agencyCodeActive) {
+    agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
+  }
+
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all`;
 };
 
 /*
@@ -137,7 +170,12 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: "units",
       alias: "units",
-      dataType: tableau.dataTypeEnum.string //placeholder until we develop connectionData more
+      dataType: tableau.dataTypeEnum.string
+    });
+    cols.push({
+      id: "qualifier",
+      alias: "qualifier",
+      dataType: tableau.dataTypeEnum.string
     });
     let column = `${sanitizeVariableName(
       series.variable.variableDescription
@@ -215,7 +253,7 @@ const getSchema = schemaCallback => {
         schemaCallback(generateSchemaTablesFromData(value));
       }
     })
-    .catch(err => alert(err));
+    .catch(err => notify(err));
 };
 
 /*

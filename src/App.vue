@@ -7,6 +7,7 @@
     ></HeaderUSWDSSelections>
     <router-view style="min-height: 500px;"> </router-view>
     <FooterUSGS></FooterUSGS>
+    <notifications group="Error" />
   </div>
 </template>
 

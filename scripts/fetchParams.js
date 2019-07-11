@@ -62,16 +62,19 @@ const rdbToJSON = (rdb) => {
 let siteString = "";
 let countyString = "";
 let paramString = "";
+let agencyString = "";
 
 
 Promise.all(
   [get("https://help.waterdata.usgs.gov/code/site_tp_query?fmt=rdb"),          
   get("https://help.waterdata.usgs.gov/code/county_query?fmt=rdb"),
-  get("https://help.waterdata.usgs.gov/code/parameter_cd_query?fmt=rdb&group_cd=%")]
+  get("https://help.waterdata.usgs.gov/code/parameter_cd_query?fmt=rdb&group_cd=%"),
+get("https://help.waterdata.usgs.gov/code/agency_cd_query?fmt=rdb")]
   ).then((value)=>{
 siteString = value[0];
 countyString = value[1];
 paramString = value[2];
+agencyString = value[3];
  
 paramData = rdbToJSON(paramString)
 abridgedParamData = []
@@ -84,7 +87,7 @@ abridgedParamData.push({id: value["parm_cd"] , name: value["parm_nm"]});
 let abridgedParamJSONString = JSON.stringify(abridgedParamData);
 let siteTypesJSONString = JSON.stringify(rdbToJSON(siteString));
 let countyJSONString = JSON.stringify(rdbToJSON(countyString));
-
+let agencyJSONString = JSON.stringify(rdbToJSON(agencyString));
 
 
 let statesTemplate = 
@@ -248,6 +251,14 @@ fs.writeFile("./src/fetchedValues/fips.json", JSON.stringify(fipsTemplate), func
   }
 
   console.log("./src/fetchedValues/fips.json was saved!");
+}); 
+
+fs.writeFile("./src/fetchedValues/agency.json", agencyJSONString, function(err) {
+  if(err) {
+      return console.log(err);
+  }
+
+  console.log("./src/fetchedValues/agency.json was saved!");
 }); 
 
 

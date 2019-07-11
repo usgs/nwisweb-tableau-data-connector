@@ -1,7 +1,15 @@
 <template>
   <div>
     <br />
-    <label class="input-label">Site Type</label>
+    <span>
+      <label class="usa-input input-label" style="display: inline-block;"
+        >Site Type Code</label
+      >
+      <ToolTip
+        hint="The complete list of site type codes is available here."
+        url="https://help.waterdata.usgs.gov/code/site_tp_query?fmt=html?display=inline"
+      ></ToolTip>
+    </span>
     <input
       v-model="siteType"
       class="usa-input"
@@ -13,7 +21,7 @@
       class="usa-button add-button"
       v-on:click="addSiteTypeToSiteTypeList"
     >
-      Add SiteType
+      Add Site Type
     </button>
 
     <h6 class="selected-tags">Selected SiteTypes</h6>
@@ -45,10 +53,16 @@
 import siteTypes from "../fetchedValues/siteTypes.json";
 import VueTags from "vue-tags";
 import Vue from "vue";
+import { notify } from "../notifications.js";
+import ToolTip from "../components/ToolTip";
+
 Vue.component("input-tags", VueTags);
 
 export default {
   name: "SiteTypeList",
+  components: {
+    ToolTip
+  },
   data: function() {
     return {
       tags: [],
@@ -59,7 +73,8 @@ export default {
   },
   methods: {
     commitSiteTypeSelection: function() {
-      this.$store.commit("changeSiteTypeListActive", true);
+      let siteTypeStatus = this.siteTypeList.length != 0;
+      this.$store.commit("changeSiteTypeListActive", siteTypeStatus);
       this.$store.commit("changeSiteType", this.siteTypeList);
     },
     populateSiteType: function() {
@@ -76,10 +91,10 @@ export default {
         if (!this.siteTypeList.includes(this.siteType)) {
           this.siteTypeList.push(this.siteType);
         } else {
-          alert("Site Type selected already in selection");
+          notify("Site Type selected already in selection");
         }
       } else {
-        alert("invalid site type entered");
+        notify("invalid site type entered");
       }
     },
     removeElement: function(index) {
