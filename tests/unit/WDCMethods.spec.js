@@ -35,10 +35,12 @@ const validDataJSON = {
             value: [
               {
                 value: "10800",
+                qualifiers: ["P","A"],
                 dateTime: "2019-07-05T10:45:00.000-04:00"
               },
               {
                 value: "10800",
+                qualifiers: ["P"],
                 dateTime: "2019-07-05T10:45:00.000-04:00"
               }
             ],
@@ -46,6 +48,10 @@ const validDataJSON = {
               {
                 qualifierCode: "P",
                 qualifierDescription: "Provisional data subject to revision."
+              },
+              {
+                qualifierCode: "A",
+                qualifierDescription: "Approved"
               }
             ]
           }
@@ -73,10 +79,12 @@ const validDataJSON = {
             value: [
               {
                 value: "343",
+                qualifiers: ["P"],
                 dateTime: "2019-07-05T10:45:00.000-04:00"
               },
               {
                 value: "5465",
+                qualifiers: ["P"],
                 dateTime: "2019-07-05T10:45:00.000-04:00"
               }
             ]
@@ -96,7 +104,7 @@ test("converting a fully-populated data JSON to table", () => {
       latitude: "0.000000",
       longitude: "0.000000",
       units: "ft3/s",
-      qualifier: "P:Provisional data subject to revision."
+      qualifier: "P:Provisional data subject to revision.,A:Approved"
     },
     {
       flow_01646500: "10800",
