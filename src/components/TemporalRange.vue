@@ -58,7 +58,7 @@
         url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
       ></ToolTip>
     </span>
-    <input v-model="durationCode" class="usa-input" />
+    <input v-model="modifiedSinceCode" class="usa-input" />
   </div>
 </template>
 
@@ -75,6 +75,7 @@ export default {
       durationCode: "",
       startDate: "",
       endDate: "",
+      modifiedSinceCode: "",
       timeBoundsActive: false
     };
   },
@@ -87,6 +88,14 @@ export default {
       let durationCodeActive = this.durationCode != "";
       this.$store.commit("changeDurationCodeActive", durationCodeActive);
       this.$store.commit("changeDurationCode", newValue);
+    },
+    commitModifiedSinceCode: function(newValue) {
+      let modifiedSinceCodeActive = this.modifiedSinceCode != "";
+      this.$store.commit(
+        "changeModifiedSinceCodeActive",
+        modifiedSinceCodeActive
+      );
+      this.$store.commit("changeModifiedSinceCode", newValue);
     },
     populateTimeZoneList: function(formName) {
       let dropDown = document.getElementById(formName);
@@ -105,6 +114,9 @@ export default {
   watch: {
     durationCode: function(newValue) {
       this.commitDurationCode(newValue);
+    },
+    modifiedSinceCode: function(newValue) {
+      this.commitModifiedSinceCode(newValue);
     }
   },
   computed: {

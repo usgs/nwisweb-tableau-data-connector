@@ -107,11 +107,12 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
 };
 
 /*
- warns the user if they have specified a duration in a format non-compliant with the ISO 8601 duration specification
+ warns the user if they have specified a duration in a format non-compliant with the ISO 8601 duration specification. Takes message
+ as an argument because this is used for more than one form and different messages are needed 
 */
 
-const validateISO_8601Duration = (duration, instance) => {
-  if (!instance.$store.getters.durationCodeActive) {
+const validateISO_8601Duration = (duration, message, active) => {
+  if (!active) {
     return true;
   }
   let regex = /^P((\d)+Y)?((\d)+M)?((\d)+W)?((\d)+D)?((T(\d)+H((\d)+M)?((\d)+S)?|T(\d)+M((\d)+S)?|T(\d)+S))?$/;
@@ -120,7 +121,7 @@ const validateISO_8601Duration = (duration, instance) => {
     !duration.replace(/\s/g, "").match(regex) ||
     duration.replace(/\s/g, "").match(antiregex)
   ) {
-    return "duration code formatting invalid; please refer to link provided in the tooltip";
+    return message;
   }
 
   return true;
@@ -249,10 +250,21 @@ const validateFormInputs = instance => {
 
   let durationCodeStatus = validateISO_8601Duration(
     instance.$store.getters.durationCode,
-    instance
+    "duration code formatting invalid; please refer to link provided in the tooltip",
+    instance.$store.getters.durationCodeActive
   );
   if (!(durationCodeStatus === true)) {
     notify(durationCodeStatus);
+    return false;
+  }
+
+  let modifiedSinceStatus = validateISO_8601Duration(
+    instance.$store.getters.modifiedSinceCode,
+    "modified since duration code formatting invalid; please refer to link provided in the tooltip",
+    instance.$store.getters.modifiedSinceCodeActive
+  );
+  if (!(modifiedSinceStatus === true)) {
+    notify(modifiedSinceStatus);
     return false;
   }
 

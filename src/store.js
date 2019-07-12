@@ -10,6 +10,8 @@ export default new Vuex.Store({
     siteTypeListActive: false,
     agencyActive: false,
     durationCodeActive: false,
+    modifiedSinceCodeActive: false,
+    modifiedSinceCode: "",
     agencyCode: "",
     siteType: [],
     hydroCode: "",
@@ -55,6 +57,15 @@ export default new Vuex.Store({
     },
     changeDurationCode: (state, newDurationCode) => {
       state.durationCode = newDurationCode;
+    },
+    changeModifiedSinceCode: (state, newModifiedSinceCode) => {
+      state.modifiedSinceCode = newModifiedSinceCode;
+    },
+    changeModifiedSinceCodeActive: (
+      state,
+      newModifiedSinceCodeActivationState
+    ) => {
+      state.modifiedSinceCodeActive = newModifiedSinceCodeActivationState;
     }
   },
   actions: {},
@@ -94,6 +105,12 @@ export default new Vuex.Store({
     },
     durationCode: state => {
       return state.durationCode;
+    },
+    modifiedSinceCode: state => {
+      return state.modifiedSinceCode;
+    },
+    modifiedSinceCodeActive: state => {
+      return state.modifiedSinceCodeActive;
     }
   }
 });

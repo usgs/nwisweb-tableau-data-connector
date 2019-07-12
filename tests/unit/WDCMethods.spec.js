@@ -123,7 +123,7 @@ test("correctly generate a URL given a list of sites and parameters with various
   const connectionData = {
     agencyCodeActive: false,
     durationCodeActive: false,
-
+    modifiedSinceCodeActive: false,
     siteTypeListActive: false,
     siteNums: "01646500 ,   05437641",
     paramNums: ["00060", "00065"],
@@ -139,8 +139,8 @@ test("correctly generate a URL given a state", () => {
   const connectionData = {
     agencyCodeActive: false,
     siteTypeListActive: false,
+    modifiedSinceCodeActive: false,
     durationCodeActive: false,
-
     paramNums: ["00060", "00065"],
     state: "ri",
     locationMode: locationMode.STATE
@@ -155,6 +155,7 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     paramNums: ["00060", "00065"],
     agencyCodeActive: false,
     siteTypeListActive: false,
+    modifiedSinceCodeActive: false,
     durationCodeActive: false,
     boundaryCoords: {
       north: "2.000000",
@@ -174,6 +175,7 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010",
     agencyCodeActive: false,
+    modifiedSinceCodeActive: false,
     siteTypeListActive: false,
     durationCodeActive: false,
 
@@ -191,6 +193,7 @@ test("correctly generate a URL given a list of counties", () => {
     agencyCodeActive: false,
     siteTypeListActive: false,
     durationCodeActive: false,
+    modifiedSinceCodeActive: false,
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
@@ -198,20 +201,22 @@ test("correctly generate a URL given a list of counties", () => {
   );
 });
 
-test("correctly generate a URL given a hydrological Unit Code with siteType and Agency Parameters", () => {
+test("correctly generate a URL given a hydrological Unit Code , using  siteType, duration, modifiedSince, and Agency parameters", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010",
     agencyCodeActive: true,
     siteTypeListActive: true,
     durationCodeActive: true,
+    modifiedSinceCodeActive: true,
+    modifiedSinceCode: "P999W3435345DT435453453453453454M4S",
     durationCode: "P1DT96M5S",
     agencyCode: "agencyA",
     siteTypeList: ["siteA", "siteB"],
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&period=P1DT96M5S&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&period=P1DT96M5S&modifiedSince=P999W3435345DT435453453453453454M4S&siteStatus=all"
   );
 });
 
