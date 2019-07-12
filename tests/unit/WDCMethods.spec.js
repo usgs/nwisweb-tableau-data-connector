@@ -131,7 +131,7 @@ test("correctly generate a URL given a list of sites and parameters with various
     locationMode: locationMode.SITE
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500,05437641&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500,05437641&parameterCd=00060,00065&siteStatus=all"
   );
 });
 
@@ -146,7 +146,7 @@ test("correctly generate a URL given a state", () => {
     locationMode: locationMode.STATE
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&stateCd=ri&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&stateCd=ri&parameterCd=00060,00065&siteStatus=all"
   );
 });
 
@@ -165,7 +165,7 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     locationMode: locationMode.COORDS
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&bBox=1.000000,1.000000,2.000000,2.000000&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&bBox=1.000000,1.000000,2.000000,2.000000&parameterCd=00060,00065&siteStatus=all"
   );
 });
 
@@ -180,7 +180,7 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&siteStatus=all"
   );
 });
 
@@ -194,7 +194,7 @@ test("correctly generate a URL given a list of counties", () => {
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&parameterCd=00060,00065&siteStatus=all"
   );
 });
 
@@ -211,7 +211,7 @@ test("correctly generate a URL given a hydrological Unit Code with siteType and 
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&period=P1DT96M5S&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&period=P1DT96M5S&siteStatus=all"
   );
 });
 

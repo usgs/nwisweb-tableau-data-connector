@@ -144,7 +144,7 @@ const generateURL = connectionData => {
     durationCodeQuery = `&period=${connectionData.durationCode}`;
   }
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}&siteStatus=all`;
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}&siteStatus=all`;
 };
 
 /*

@@ -212,6 +212,49 @@ let fipsTemplate = {
   }
 
 
+  let timeZoneOffsets =[
+    "-1200",
+    "-1100",
+    "-1000",
+    "-0930",
+    "-0900",
+    "-0800",
+    "-0700",
+    "-0600",
+    "-0500",
+    "-0430",
+    "-0400",
+    "-0330",
+    "-0300",
+    "-0200",
+    "-0100",
+    "+0000",
+    "+0100",
+    "+0200",
+    "+0300",
+    "+0330",
+    "+0400",
+    "+0430",
+    "+0500",
+    "+0530",
+    "+0545",
+    "+0600",
+    "+0630",
+    "+0700",
+    "+0800",
+    "+0845",
+    "+0900",
+    "+0930",
+    "+1000",
+    "+1030",
+    "+1100",
+    "+1130",
+    "+1200",
+    "+1245",
+    "+1300",
+    "+1400",
+    ];
+
 
 fs.writeFile("./src/fetchedValues/states.json", JSON.stringify(statesTemplate), function(err) {
   if(err) {
@@ -260,6 +303,15 @@ fs.writeFile("./src/fetchedValues/agency.json", agencyJSONString, function(err) 
 
   console.log("./src/fetchedValues/agency.json was saved!");
 }); 
+
+fs.writeFile("./src/fetchedValues/timezones.json", JSON.stringify(timeZoneOffsets), function(err) {
+  if(err) {
+      return console.log(err);
+  }
+
+  console.log("./src/fetchedValues/timezones.json was saved!");
+}); 
+
 
 
 

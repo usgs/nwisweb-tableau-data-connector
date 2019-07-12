@@ -9,34 +9,107 @@
       ></ToolTip>
     </span>
     <input v-model="durationCode" class="usa-input" />
+    <br />
+    <span>
+      <input type="checkbox" v-model="timeBoundsActive" />
+      <label> Set Date Time Boundaries </label>
+    </span>
+    <br />
+    <div v-show="timeboundsenabled">
+      <span class="label-span">
+        <label style="display: inline-block;">Start Time</label>
+        <ToolTip
+          hint="todo"
+          url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
+        ></ToolTip>
+      </span>
+      <br />
+      <span>
+        <Datetime
+          style="display: inline-block;"
+          type="datetime"
+          v-model="startDate"
+        ></Datetime>
+        <select style="display: inline-block;" id="starttzselect"></select>
+      </span>
+      <br />
+      <span class="label-span">
+        <label>End Time</label>
+        <ToolTip
+          hint="todo"
+          url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
+        ></ToolTip>
+      </span>
+      <br />
+      <span>
+        <Datetime
+          style="display: inline-block;"
+          type="datetime"
+          v-model="endDate"
+        ></Datetime>
+        <select id="endtzselect" style="display: inline-block;"></select>
+      </span>
+    </div>
+    <br />
+    <span class="label-span">
+      <label>Modified Since</label>
+      <ToolTip
+        hint="todo"
+        url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
+      ></ToolTip>
+    </span>
+    <input v-model="durationCode" class="usa-input" />
   </div>
 </template>
 
 <script>
 import ToolTip from "../components/ToolTip";
-//import Datepicker from "vuejs-datepicker";
+import { Datetime } from "vue-datetime";
+import "vue-datetime/dist/vue-datetime.css";
+import timezones from "../fetchedValues/timezones.json";
 
 export default {
   name: "TemporalRange",
   data: function() {
     return {
-      durationCode: ""
+      durationCode: "",
+      startDate: "",
+      endDate: "",
+      timeBoundsActive: false
     };
   },
   components: {
-    ToolTip
-    // Datepicker
+    ToolTip,
+    Datetime
   },
   methods: {
     commitDurationCode: function(newValue) {
       let durationCodeActive = this.durationCode != "";
       this.$store.commit("changeDurationCodeActive", durationCodeActive);
       this.$store.commit("changeDurationCode", newValue);
+    },
+    populateTimeZoneList: function(formName) {
+      let dropDown = document.getElementById(formName);
+      timezones.forEach(element => {
+        let option = document.createElement("option");
+        option.text = element;
+        option.value = element;
+        dropDown.appendChild(option);
+      });
     }
+  },
+  mounted() {
+    this.populateTimeZoneList("starttzselect");
+    this.populateTimeZoneList("endtzselect");
   },
   watch: {
     durationCode: function(newValue) {
       this.commitDurationCode(newValue);
+    }
+  },
+  computed: {
+    timeboundsenabled() {
+      return this.timeBoundsActive;
     }
   }
 };
