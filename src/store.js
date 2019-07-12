@@ -11,12 +11,19 @@ export default new Vuex.Store({
     agencyActive: false,
     durationCodeActive: false,
     modifiedSinceCodeActive: false,
+    temporalRangeActive: false,
     modifiedSinceCode: "",
     agencyCode: "",
     siteType: [],
     hydroCode: "",
     countyCode: [],
     paramCodes: [],
+    temporalRangeData: {
+      startDateTime: "",
+      startTimeZone: "",
+      endDateTime: "",
+      endTimeZone: ""
+    },
     durationCode: "",
     locationMode: locationMode.SITE,
     coordinates: {}
@@ -66,6 +73,21 @@ export default new Vuex.Store({
       newModifiedSinceCodeActivationState
     ) => {
       state.modifiedSinceCodeActive = newModifiedSinceCodeActivationState;
+    },
+    changeTemporalRangeActive: (state, newTemporalRangeActivationStatus) => {
+      state.temporalRangeActive = newTemporalRangeActivationStatus;
+    },
+    changeStartDateTime: (state, newStartDateTime) => {
+      state.temporalRangeData.startDateTime = newStartDateTime;
+    },
+    changeStartTimeZone: (state, newStartTimeZone) => {
+      state.temporalRangeData.startTimeZone = newStartTimeZone;
+    },
+    changeEndDateTime: (state, newEndDateTime) => {
+      state.temporalRangeData.endDateTime = newEndDateTime;
+    },
+    changeEndTimeZone: (state, newEndTimeZone) => {
+      state.temporalRangeData.endTimeZone = newEndTimeZone;
     }
   },
   actions: {},
@@ -111,6 +133,12 @@ export default new Vuex.Store({
     },
     modifiedSinceCodeActive: state => {
       return state.modifiedSinceCodeActive;
+    },
+    temporalRangeActive: state => {
+      return state.temporalRangeActive;
+    },
+    temporalRangeData: state => {
+      return state.temporalRangeData;
     }
   }
 });

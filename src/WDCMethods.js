@@ -94,6 +94,13 @@ const formatJSONAsTable = (data, tableName) => {
 };
 
 /*
+generates a query-ready ISO 8601 with timezone date time from a datetime and timezone string.
+*/
+const generateDateTime = (timeZone, dateTime) => {
+  return `${dateTime.substring(0, 16)}${timeZone.replace("+", "%2b")}`;
+};
+
+/*
 generates a URL for query parameters contained in the connectionData object accepted as an argument
 */
 const generateURL = connectionData => {
@@ -104,6 +111,7 @@ const generateURL = connectionData => {
   let agencyCodeQuery = "";
   let durationCodeQuery = "";
   let modifiedSinceCodeQuery = "";
+  let temporalRangeQuery = "";
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -145,11 +153,21 @@ const generateURL = connectionData => {
     durationCodeQuery = `&period=${connectionData.durationCode}`;
   }
 
+  if (connectionData.temporalRangeActive) {
+    temporalRangeQuery = `&startDT=${generateDateTime(
+      connectionData.temporalRangeData.startTimeZone,
+      connectionData.temporalRangeData.startDateTime
+    )}&endDT=${generateDateTime(
+      connectionData.temporalRangeData.endTimeZone,
+      connectionData.temporalRangeData.endDateTime
+    )}`;
+  }
+
   if (connectionData.modifiedSinceCodeActive) {
     modifiedSinceCodeQuery = `&modifiedSince=${connectionData.modifiedSinceCode}`;
   }
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}&siteStatus=all`;
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}&siteStatus=all`;
 };
 
 /*

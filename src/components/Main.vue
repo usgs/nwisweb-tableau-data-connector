@@ -161,9 +161,13 @@ export default {
         durationCodeActive: this.$store.getters.durationCodeActive,
         durationCode: this.$store.getters.durationCode,
         modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,
-        modifiedSinceCode: this.$store.getters.modifiedSinceCode
+        modifiedSinceCode: this.$store.getters.modifiedSinceCode,
+        temporalRangeActive: this.$store.getters.temporalRangeActive,
+        temporalRangeData: this.$store.getters.temporalRangeData
       };
+      alert(JSON.stringify(connectionData.temporalRangeData));
       alert(generateURL(connectionData));
+
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {

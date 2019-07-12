@@ -152,6 +152,29 @@ const validateParamInputs = paramList => {
 };
 
 /*
+in the event that the temporal range query functionality is active, wans the user if the temporal boundaries or incomplete
+or inconsistent. 
+*/
+
+const validateTemporalRange = (temporalRangeData, instance) => {
+  let returnTrueFlag = true;
+  if (!instance.$store.getters.temporalRangeActive) {
+    return true;
+  }
+  if (
+    temporalRangeData.startDateTime == "" ||
+    temporalRangeData.startTimeZone == "" ||
+    temporalRangeData.endDateTime == "" ||
+    temporalRangeData.endTimeZone == ""
+  ) {
+    returnTrueFlag = false;
+  }
+  return returnTrueFlag
+    ? true
+    : "One or more required fields for temporal range has not been specified. Please specify all fields or remove the temporal range from your query by clicking the checkbox again.";
+};
+
+/*
 warns the user if they have no counties selected. This is the only pathological state not protected
  against from within the CountySelect  component, because it is a valid interactive session state.
 */
@@ -265,6 +288,15 @@ const validateFormInputs = instance => {
   );
   if (!(modifiedSinceStatus === true)) {
     notify(modifiedSinceStatus);
+    return false;
+  }
+
+  let temporalRangeStatus = validateTemporalRange(
+    instance.$store.getters.temporalRangeData,
+    instance
+  );
+  if (!(temporalRangeStatus === true)) {
+    notify(temporalRangeStatus);
     return false;
   }
 

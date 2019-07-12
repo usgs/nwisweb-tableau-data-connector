@@ -28,9 +28,13 @@
         <Datetime
           style="display: inline-block;"
           type="datetime"
-          v-model="startDate"
+          v-model="startDateTime"
         ></Datetime>
-        <select style="display: inline-block;" id="starttzselect"></select>
+        <select
+          v-model="startTimeZone"
+          style="display: inline-block;"
+          id="starttzselect"
+        ></select>
       </span>
       <br />
       <span class="label-span">
@@ -45,9 +49,13 @@
         <Datetime
           style="display: inline-block;"
           type="datetime"
-          v-model="endDate"
+          v-model="endDateTime"
         ></Datetime>
-        <select id="endtzselect" style="display: inline-block;"></select>
+        <select
+          v-model="endTimeZone"
+          id="endtzselect"
+          style="display: inline-block;"
+        ></select>
       </span>
     </div>
     <br />
@@ -73,8 +81,10 @@ export default {
   data: function() {
     return {
       durationCode: "",
-      startDate: "",
-      endDate: "",
+      startDateTime: "",
+      startTimeZone: "",
+      endDateTime: "",
+      endTimeZone: "",
       modifiedSinceCode: "",
       timeBoundsActive: false
     };
@@ -88,6 +98,21 @@ export default {
       let durationCodeActive = this.durationCode != "";
       this.$store.commit("changeDurationCodeActive", durationCodeActive);
       this.$store.commit("changeDurationCode", newValue);
+    },
+    commitStartDateTime: function(newValue) {
+      this.$store.commit("changeStartDateTime", newValue);
+    },
+    commitStartTimeZone: function(newValue) {
+      this.$store.commit("changeStartTimeZone", newValue);
+    },
+    commitEndDateTime: function(newValue) {
+      this.$store.commit("changeEndDateTime", newValue);
+    },
+    commitEndTimeZone: function(newValue) {
+      this.$store.commit("changeEndTimeZone", newValue);
+    },
+    commitTemporalRangeActive: function(newValue) {
+      this.$store.commit("changeTemporalRangeActive", newValue);
     },
     commitModifiedSinceCode: function(newValue) {
       let modifiedSinceCodeActive = this.modifiedSinceCode != "";
@@ -117,6 +142,23 @@ export default {
     },
     modifiedSinceCode: function(newValue) {
       this.commitModifiedSinceCode(newValue);
+    },
+    startDateTime: function(newValue) {
+      this.commitStartDateTime(newValue);
+      alert(newValue);
+    },
+    startTimeZone: function(newValue) {
+      this.commitStartTimeZone(newValue);
+    },
+    endDateTime: function(newValue) {
+      this.commitEndDateTime(newValue);
+      alert(newValue);
+    },
+    endTimeZone: function(newValue) {
+      this.commitEndTimeZone(newValue);
+    },
+    timeBoundsActive: function(newValue) {
+      this.commitTemporalRangeActive(newValue);
     }
   },
   computed: {
