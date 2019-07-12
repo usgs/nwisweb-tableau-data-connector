@@ -122,6 +122,8 @@ test("converting a fully-populated data JSON to table", () => {
 test("correctly generate a URL given a list of sites and parameters with various whitespace", () => {
   const connectionData = {
     agencyCodeActive: false,
+    durationCodeActive: false,
+
     siteTypeListActive: false,
     siteNums: "01646500 ,   05437641",
     paramNums: ["00060", "00065"],
@@ -137,6 +139,8 @@ test("correctly generate a URL given a state", () => {
   const connectionData = {
     agencyCodeActive: false,
     siteTypeListActive: false,
+    durationCodeActive: false,
+
     paramNums: ["00060", "00065"],
     state: "ri",
     locationMode: locationMode.STATE
@@ -151,6 +155,7 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     paramNums: ["00060", "00065"],
     agencyCodeActive: false,
     siteTypeListActive: false,
+    durationCodeActive: false,
     boundaryCoords: {
       north: "2.000000",
       south: "1.000000",
@@ -170,6 +175,8 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     hydroCode: "02070010",
     agencyCodeActive: false,
     siteTypeListActive: false,
+    durationCodeActive: false,
+
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
@@ -183,6 +190,7 @@ test("correctly generate a URL given a list of counties", () => {
     countyCode: [11111, 22222],
     agencyCodeActive: false,
     siteTypeListActive: false,
+    durationCodeActive: false,
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
@@ -196,12 +204,14 @@ test("correctly generate a URL given a hydrological Unit Code with siteType and 
     hydroCode: "02070010",
     agencyCodeActive: true,
     siteTypeListActive: true,
+    durationCodeActive: true,
+    durationCode: "P1DT96M5S",
     agencyCode: "agencyA",
     siteTypeList: ["siteA", "siteB"],
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&period=P1DT96M5S&siteStatus=all"
   );
 });
 

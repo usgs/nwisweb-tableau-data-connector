@@ -102,6 +102,7 @@ const generateURL = connectionData => {
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
+  let durationCodeQuery = "";
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -114,7 +115,6 @@ const generateURL = connectionData => {
       break;
     }
     case locationMode.COORDS: {
-      // west south east north
       let bounds = connectionData.boundaryCoords;
       locationQuery = `&bBox=${bounds.west},${bounds.south},${bounds.east},${bounds.north}`;
       break;
@@ -140,7 +140,11 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all`;
+  if (connectionData.durationCodeActive) {
+    durationCodeQuery = `&period=${connectionData.durationCode}`;
+  }
+
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}&siteStatus=all`;
 };
 
 /*

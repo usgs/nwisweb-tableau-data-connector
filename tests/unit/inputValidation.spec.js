@@ -511,7 +511,10 @@ done in ParamSelect.vue
     expect(validateISO_8601Duration("P1Y", wrapper.vm)).toBe(true);
     expect(validateISO_8601Duration("PT1M4534534534S", wrapper.vm)).toBe(true);
     expect(
-      validateISO_8601Duration("P1W34324234234234234324DT435457384H", wrapper.vm)
+      validateISO_8601Duration(
+        "P1W34324234234234234324DT435457384H",
+        wrapper.vm
+      )
     ).toBe(true);
     expect(validateISO_8601Duration("P4444M0000D", wrapper.vm)).toBe(true);
     expect(
@@ -543,11 +546,14 @@ done in ParamSelect.vue
     expect(validateISO_8601Duration("T", wrapper.vm)).not.toBe(true);
     expect(validateISO_8601Duration("T1S", wrapper.vm)).not.toBe(true);
     expect(validateISO_8601Duration("P32432S", wrapper.vm)).not.toBe(true);
-    expect(validateISO_8601Duration("T32432SP45345M", wrapper.vm)).not.toBe(true);
-    expect(validateISO_8601Duration("P234234D43534W", wrapper.vm)).not.toBe(true);
-    expect(validateISO_8601Duration("PT345345S435345M", wrapper.vm)).not.toBe(true);
-   
-
-   
+    expect(validateISO_8601Duration("T32432SP45345M", wrapper.vm)).not.toBe(
+      true
+    );
+    expect(validateISO_8601Duration("P234234D43534W", wrapper.vm)).not.toBe(
+      true
+    );
+    expect(validateISO_8601Duration("PT345345S435345M", wrapper.vm)).not.toBe(
+      true
+    );
   });
 });
