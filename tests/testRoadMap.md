@@ -3,26 +3,25 @@ To improve test coverage of Vue components
 Proposed Tests:
 
     AgencySelect.vue
-    
-    CoordinatesInput.vue
+        populateAgencyList() test that elements can be added
 
     CountySelect.vue
         Test getCounties() by supplying state name and checking that counties are retrieved
         Test getCountyNameFromCode() by providing county code and checking if county name is retrieved
-        Test addCountyToCounties() with valid and invalid cases
-        Test removeElement() by removing from hardcoded list 
-
-    HUCInput.vue
-
-    LocationQueryType.vue
+        populateStateList() is populated properly
+        PopulateCountyList() is populated with the correct counties for the state
 
     Main.vue
-        Test that browserWarning() sets off notification
+        browserWarning() sets off alert
+        fetchData() loads data into state data and param data
+        initializeWebDataConnector() check that myConnector is initialized          properly
     
     ParamSelect.vue
+        fetchParams() loads data into paramList
+        populateParamList() populates properly
 
     SiteTypeList.vue
-        Test that site type list is fully populated
-        Snapshot testing for verifying UI?
+        populateSiteType() populates site types
 
     StateSelect.vue
+        populateStateList populates properly
