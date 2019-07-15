@@ -6,7 +6,7 @@ pipeline {
     }
 
     parameters {
-        choice(choices: ['QA', 'prod'], description: 's3 bucket that the build will target', name: 'BUILD_DEST')
+        choice(choices: ['Test', 'QA', 'Beta', 'Production'], description: 's3 bucket that the build will target', name: 'BUILD_DEST')
         choice(choices: ['Snapshot', 'Release'], description: 'type of release', name: 'RELEASE_TYPE')
         choice(choices: ['minor', 'major', 'patch'], description: 'release version', name: 'RELEASE_VERSION')
         string(defaultValue: "", description: 'Specific Commit to build', name: 'COMMIT')
@@ -93,11 +93,17 @@ pipeline {
         stage('send to S3') {
             steps {
                 script {
-                    if("${params.BUILD_DEST}" == "QA") {
+                    if("${params.BUILD_DEST}" == "Beta") {
                         targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
                     }
-                    else {
+                    else if("${params.BUILD_DEST}" == "Production"){
                         targetDomain = "this would be the production site"
+                    }
+                    else if("${params.BUILD_DEST}" == "QA"){
+                        targetDomain = "s3://nwisweb-tableau-wdc-qa-website"
+                    }
+                    else if("${params.BUILD_DEST}" == "Test"){
+                        targetDomain = "s3://nwisweb-tableau-wdc-test-website"
                     }
                 }
                 sh """
