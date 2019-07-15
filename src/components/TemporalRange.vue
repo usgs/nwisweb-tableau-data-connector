@@ -11,7 +11,12 @@
     <input v-model="durationCode" class="usa-input usa-input-custom" />
     <br />
     <div class="usa-checkbox">
-      <input type="checkbox" v-model="timeBoundsActive" class="usa-checkbox__input" value="timeBoundsActive">
+      <input
+        type="checkbox"
+        v-model="timeBoundsActive"
+        class="usa-checkbox__input"
+        value="timeBoundsActive"
+      />
       <label class="usa-checkbox__label"> Set Date Time Boundaries </label>
     </div>
     <br />
