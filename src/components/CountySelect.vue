@@ -31,10 +31,7 @@
       type="text"
     />
     <datalist id="cscounties"> </datalist>
-    <button
-      class="usa-button usa-button-custom"
-      v-on:click="addCountyToCounties"
-    >
+    <button class="usa-button usa-button-custom" v-on:click="addCounties">
       Add County
     </button>
     <h6 class="selected-tags">Selected Counties</h6>
@@ -145,11 +142,17 @@ export default {
       });
       return result;
     },
-    addCountyToCounties: function() {
-      if (!(this.getCountyNameFromCode(this.county) == "invalid")) {
-        if (!this.counties.includes(this.county)) {
+    addCounties: function() {
+      let counties = this.county.split(",");
+      counties.forEach(county => {
+        this.addCountyToCounties(county);
+      });
+    },
+    addCountyToCounties: function(county) {
+      if (!(this.getCountyNameFromCode(county) == "invalid")) {
+        if (!this.counties.includes(county)) {
           if (this.counties.length < 10) {
-            this.counties.push(this.county);
+            this.counties.push(county);
           } else {
             notify("Maximum number of counties already selected.");
           }
