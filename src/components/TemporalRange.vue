@@ -159,6 +159,12 @@ export default {
     },
     timeBoundsActive: function(newValue) {
       this.commitTemporalRangeActive(newValue);
+      if (!newValue) {
+        this.startDateTime = "";
+        this.startTimeZone = "";
+        this.endDateTime = "";
+        this.endTimeZone = "";
+      }
     }
   },
   computed: {

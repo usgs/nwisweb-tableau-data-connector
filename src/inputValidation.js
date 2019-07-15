@@ -162,6 +162,12 @@ const validateTemporalRange = (temporalRangeData, instance) => {
     return true;
   }
   if (
+    instance.$store.getters.temporalRangeActive &&
+    instance.$store.getters.durationCodeActive
+  ) {
+    return "Explicit temporal range parameters are mutually exclusive with duration code specified timeperiod parameters.";
+  }
+  if (
     temporalRangeData.startDateTime == "" ||
     temporalRangeData.startTimeZone == "" ||
     temporalRangeData.endDateTime == "" ||
