@@ -97,7 +97,7 @@ pipeline {
                         targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
                     }
                     else if("${params.BUILD_DEST}" == "Production"){
-                        targetDomain = "this would be the production site"
+                        targetDomain = "s3://nwisweb-tableau-wdc-prod-website"
                     }
                     else if("${params.BUILD_DEST}" == "QA"){
                         targetDomain = "s3://nwisweb-tableau-wdc-qa-website"
