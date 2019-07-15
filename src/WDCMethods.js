@@ -102,6 +102,7 @@ const generateURL = connectionData => {
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
+  let GWSiteAttrQuery = "";
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -138,6 +139,33 @@ const generateURL = connectionData => {
 
   if (connectionData.agencyCodeActive) {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
+  }
+
+  if (connectionData.GWSiteAttrActive) {
+    let wellMin = "";
+    let wellMax = "";
+    let holeMin = "";
+    let holeMax = "";
+    GWSiteAttrQuery = "";
+    let depths = connectionData.GWSiteAttrDepth;
+    
+    if (depths.wellMin != "") {
+      GWSiteAttrQuery.concat(depths.wellMin);
+    }
+    if (depths.wellMax != "") {
+      GWSiteAttrQuery.concat(depths.wellMax);
+    }
+    if (depths.holeMin != "") {
+      GWSiteAttrQuery.concat(depths.holeMin);
+    }
+    if (depths.holeMax != "") {
+      GWSiteAttrQuery.concat(depths.holeMax);
+    }
+    //TODO add these to the if statement concats
+    `&wellDepthMin=10`
+    `&wellDepthMax=100`
+    `&holeDepthMin=10`
+    `&holeDepthMax=100`
   }
 
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all`;

@@ -15,7 +15,9 @@ export default new Vuex.Store({
     countyCode: [],
     paramCodes: [],
     locationMode: locationMode.SITE,
-    coordinates: {}
+    coordinates: {},
+    GWSiteAttrActive: false,
+    GWSiteAttrDepths: {}
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -47,6 +49,12 @@ export default new Vuex.Store({
     },
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
+    },
+    changeGWSiteAttrActive: (state, newGWSiteAttrActivation) => {
+      state.GWSiteAttrActive = newGWSiteAttrActivation;
+    },
+    changeGWSiteAttrDepths: (state, newGWSiteAttrDepths) => {
+      state.GWSiteAttrDepths = newGWSiteAttrDepths;
     }
   },
   actions: {},
@@ -80,6 +88,12 @@ export default new Vuex.Store({
     },
     agencyActive: state => {
       return state.agencyActive;
+    },
+    GWSiteAttrActive: state => {
+      return state.GWSiteAttrActive;
+    },
+    GWSiteAttrDepths: state => {
+      return state.GWSiteAttrDepths;
     }
   }
 });

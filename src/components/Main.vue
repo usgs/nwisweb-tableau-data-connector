@@ -35,6 +35,8 @@
             </div>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
+            <br />
+            <GroundWaterSiteAttr></GroundWaterSiteAttr>
           </div>
         </div>
         <div class="rightcolumn">
@@ -68,6 +70,7 @@ import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import ParamSelect from "../components/ParamSelect";
 import AgencySelect from "../components/AgencySelect";
+import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import ToolTip from "../components/ToolTip";
@@ -88,6 +91,7 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
+    GroundWaterSiteAttr,
     ToolTip
   },
   data: function() {
@@ -149,7 +153,9 @@ export default {
         siteTypeListActive: this.$store.getters.siteTypeListActive,
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
-        agencyCode: this.$store.getters.agencyCode
+        agencyCode: this.$store.getters.agencyCode,
+        GWSiteAttrActive: this.$store.getters.GWSiteAttrActive,
+        GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths,
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
