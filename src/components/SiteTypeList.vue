@@ -15,10 +15,7 @@
       type="text"
     />
     <datalist id="siteTypeDL"> </datalist>
-    <button
-      class="usa-button usa-button-custom"
-      v-on:click="addSiteTypeToSiteTypeList"
-    >
+    <button class="usa-button usa-button-custom" v-on:click="addSiteTypes">
       Add Site Type
     </button>
 
@@ -82,10 +79,16 @@ export default {
         siteSelect.appendChild(option);
       });
     },
-    addSiteTypeToSiteTypeList: function() {
-      if (!(this.getSiteTypeNameFromCode(this.siteType) == "invalid")) {
-        if (!this.siteTypeList.includes(this.siteType)) {
-          this.siteTypeList.push(this.siteType);
+    addSiteTypes: function() {
+      let siteTypes = this.siteType.split(",");
+      siteTypes.forEach(siteType => {
+        this.addSiteTypeToSiteTypeList(siteType);
+      });
+    },
+    addSiteTypeToSiteTypeList: function(siteType) {
+      if (!(this.getSiteTypeNameFromCode(siteType) == "invalid")) {
+        if (!this.siteTypeList.includes(siteType)) {
+          this.siteTypeList.push(siteType);
         } else {
           notify("Site Type selected already in selection");
         }
