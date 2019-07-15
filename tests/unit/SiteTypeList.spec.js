@@ -4,8 +4,7 @@ import SiteTypeList from "../../src/components/SiteTypeList.vue";
 describe("SiteTypeList", () => {
   test("should fill site type list properly", () => {
     const wrapper = mount(SiteTypeList);
-    expect(wrapper.find("#siteTypeDL]").not.
+    let siteTypeDataList = wrapper.find("#siteTypeDL]");
+    expect(siteTypeDataList).toBeNull();
   });
 });
-
-'[data-test="cool-card-div"]').text()).toEqual
