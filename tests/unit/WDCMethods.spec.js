@@ -250,6 +250,29 @@ test("correctly generate a URL given a hydrological Unit Code, with modifiedSinc
   );
 });
 
+test("correctly generate a URL given a hydrological Unit Code, with modifiedSince, and temporal range parameters and a time period of over 120 days", () => {
+  const connectionData = {
+    paramNums: ["00060", "00065"],
+    hydroCode: "02070010",
+    agencyCodeActive: false,
+    siteTypeListActive: false,
+    durationCodeActive: false,
+    modifiedSinceCodeActive: true,
+    modifiedSinceCode: "P999W3435345DT435453453453453454M4S",
+    temporalRangeActive: true,
+    locationMode: locationMode.HYDRO,
+    temporalRangeData: {
+      startDateTime: "2013-07-08T14:59:00.000Z",
+      startTimeZone: "-0430",
+      endDateTime: "2019-07-08T14:59:00.000Z",
+      endTimeZone: "-0430"
+    }
+  };
+  expect(generateURL(connectionData)).toEqual(
+    "https://nwis.waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&modifiedSince=P999W3435345DT435453453453453454M4S&startDT=2013-07-08T14:59-0430&endDT=2019-07-08T14:59-0430&siteStatus=all"
+  );
+});
+
 test("correctly generates the column schema from sites and parameters", () => {
   const sites = "01646500,05437641";
   const params = ["00060", "00065"];

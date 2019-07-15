@@ -4,62 +4,67 @@
     <span class="input-desc">
       <label>Duration Code</label>
       <ToolTip
-        hint="A link to a detailed explanation of the ISO 8601 duration format specification is available here. The format should look like P&ltdate&gtT&lttime&gt with the caveat that P must always be present and T must only be present if it is not the last character"
+        hint="This parameterizes the query to return data from up to a specified duration in the past. A link to a detailed explanation of the ISO 8601 duration format specification is available here. The format should look like P&ltdate&gtT&lttime&gt with the caveat that P must always be present and T must only be present if it is not the last character"
         url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
       ></ToolTip>
     </span>
     <input v-model="durationCode" class="usa-input usa-input-custom" />
     <br />
-    <div class="usa-checkbox">
-      <input
-        type="checkbox"
-        v-model="timeBoundsActive"
-        class="usa-checkbox__input"
-        value="timeBoundsActive"
-      />
-      <label class="usa-checkbox__label"> Set Date Time Boundaries </label>
+    <div>
+      <form class="input-desc">
+        <fieldset class="usa-fieldset">
+          <span>
+            <input
+              class="usa-checkbox__input"
+              v-model="timeBoundsActive"
+              id="whyIsThisFieldrequired"
+              type="checkbox"
+              name="historical-figures-1"
+              value="whyIsThisFieldrequired"
+            />
+            <label class="usa-checkbox__label" for="whyIsThisFieldrequired">
+              Set Date Time Boundaries
+            </label>
+          </span>
+        </fieldset>
+      </form>
     </div>
-    <br />
-    <div v-show="timeboundsenabled">
+    <div class="left-aligned-span" v-show="timeboundsenabled">
       <span class="input-desc">
         <label style="display: inline-block;">Start Time</label>
         <ToolTip
-          hint="todo"
-          url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
+          hint="This field allows to set a start and end temporal boundary for the timestamps of returned data. If this field is use, both timezone fields and both datetime fields must be filled out. The end datetime cannot come before the start datetime. "
         ></ToolTip>
       </span>
-      <br />
-      <span>
+      <span class="date-time-span">
         <Datetime
           style="display: inline-block;"
           type="datetime"
           v-model="startDateTime"
+          input-class="usa-input"
         ></Datetime>
         <select
           v-model="startTimeZone"
           style="display: inline-block;"
           id="starttzselect"
+          class="usa-select timezone-select"
         ></select>
       </span>
-      <br />
       <span class="input-desc">
         <label>End Time</label>
-        <ToolTip
-          hint="todo"
-          url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
-        ></ToolTip>
       </span>
-      <br />
-      <span>
+      <span class="date-time-span">
         <Datetime
-          style="display: inline-block;"
+          style="display: inline-block; max-width:50;"
           type="datetime"
           v-model="endDateTime"
+          input-class="usa-input"
         ></Datetime>
         <select
           v-model="endTimeZone"
           id="endtzselect"
           style="display: inline-block;"
+          class="usa-select timezone-select"
         ></select>
       </span>
     </div>
@@ -67,7 +72,7 @@
     <span class="input-desc">
       <label>Modified Since</label>
       <ToolTip
-        hint="todo"
+        hint="This parameterizes the query to return data only from sites which updated their values within a specified duration in the past. A link to a detailed explanation of the ISO 8601 duration format specification is available here. The format should look like P&ltdate&gtT&lttime&gt with the caveat that P must always be present and T must only be present if it is not the last character"
         url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
       ></ToolTip>
     </span>
@@ -150,19 +155,16 @@ export default {
     },
     startDateTime: function(newValue) {
       this.commitStartDateTime(newValue);
-      alert(newValue);
+      newValue;
     },
     startTimeZone: function(newValue) {
       this.commitStartTimeZone(newValue);
-      alert(newValue);
     },
     endDateTime: function(newValue) {
       this.commitEndDateTime(newValue);
-      alert(newValue);
     },
     endTimeZone: function(newValue) {
       this.commitEndTimeZone(newValue);
-      alert(newValue);
     },
     timeBoundsActive: function(newValue) {
       this.commitTemporalRangeActive(newValue);

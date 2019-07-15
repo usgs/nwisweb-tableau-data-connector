@@ -34,3 +34,17 @@
     text-align: left;
     display: block;
 }
+
+.timezone-select{
+    display: inline-block;
+    max-width: 120px;
+}
+
+.left-aligned-span{
+    max-width: 300px;
+    text-align: left;
+}
+.date-time-span{
+    min-width: 500px;
+    display:inline-block;
+}
