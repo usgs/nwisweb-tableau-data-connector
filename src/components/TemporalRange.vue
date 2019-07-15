@@ -1,22 +1,22 @@
 <template>
   <div>
     <br />
-    <span class="label-span">
+    <span class="input-desc">
       <label>Duration Code</label>
       <ToolTip
         hint="A link to a detailed explanation of the ISO 8601 duration format specification is available here. The format should look like P&ltdate&gtT&lttime&gt with the caveat that P must always be present and T must only be present if it is not the last character"
         url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
       ></ToolTip>
     </span>
-    <input v-model="durationCode" class="usa-input" />
+    <input v-model="durationCode" class="usa-input usa-input-custom" />
     <br />
-    <span>
-      <input type="checkbox" v-model="timeBoundsActive" />
-      <label> Set Date Time Boundaries </label>
-    </span>
+    <div class="usa-checkbox">
+      <input type="checkbox" v-model="timeBoundsActive" class="usa-checkbox__input" value="timeBoundsActive">
+      <label class="usa-checkbox__label"> Set Date Time Boundaries </label>
+    </div>
     <br />
     <div v-show="timeboundsenabled">
-      <span class="label-span">
+      <span class="input-desc">
         <label style="display: inline-block;">Start Time</label>
         <ToolTip
           hint="todo"
@@ -37,7 +37,7 @@
         ></select>
       </span>
       <br />
-      <span class="label-span">
+      <span class="input-desc">
         <label>End Time</label>
         <ToolTip
           hint="todo"
@@ -59,14 +59,14 @@
       </span>
     </div>
     <br />
-    <span class="label-span">
+    <span class="input-desc">
       <label>Modified Since</label>
       <ToolTip
         hint="todo"
         url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
       ></ToolTip>
     </span>
-    <input v-model="modifiedSinceCode" class="usa-input" />
+    <input v-model="modifiedSinceCode" class="usa-input usa-input-custom" />
   </div>
 </template>
 
