@@ -97,6 +97,9 @@ const formatJSONAsTable = (data, tableName) => {
 generates a query-ready ISO 8601 with timezone date time from a datetime and timezone string.
 */
 const generateDateTime = (timeZone, dateTime) => {
+  alert(timeZone);
+  alert(dateTime);
+  alert(`${dateTime.substring(0, 16)}${timeZone.replace("+", "%2b")}`);
   return `${dateTime.substring(0, 16)}${timeZone.replace("+", "%2b")}`;
 };
 
@@ -307,5 +310,6 @@ export {
   generateSchemaTablesFromData,
   getTimeSeriesByID,
   reformatTimeString,
-  sanitizeVariableName
+  sanitizeVariableName,
+  generateDateTime
 };

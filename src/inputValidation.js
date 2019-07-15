@@ -3,6 +3,7 @@ import agencyData from "./fetchedValues/agency.json";
 import stateData from "./fetchedValues/states.json";
 import siteTypeData from "./fetchedValues/siteTypes.json";
 import { notify } from "./notifications.js";
+import { generateDateTime } from "./WDCMethods.js";
 
 /*
 useful helper function to allow searching lists of dictionaries for a value at a specific key.
@@ -152,12 +153,11 @@ const validateParamInputs = paramList => {
 };
 
 /*
-in the event that the temporal range query functionality is active, wans the user if the temporal boundaries or incomplete
+in the event that the temporal range query functionality is active, warns the user if the temporal boundaries or incomplete
 or inconsistent. 
 */
 
 const validateTemporalRange = (temporalRangeData, instance) => {
-  let returnTrueFlag = true;
   if (!instance.$store.getters.temporalRangeActive) {
     return true;
   }
@@ -173,11 +173,29 @@ const validateTemporalRange = (temporalRangeData, instance) => {
     temporalRangeData.endDateTime == "" ||
     temporalRangeData.endTimeZone == ""
   ) {
-    returnTrueFlag = false;
+    return "One or more required fields for temporal range has not been specified. Please specify all fields or remove the temporal range from your query by clicking the checkbox again.";
   }
-  return returnTrueFlag
-    ? true
-    : "One or more required fields for temporal range has not been specified. Please specify all fields or remove the temporal range from your query by clicking the checkbox again.";
+
+  let startDate = new Date(
+    generateDateTime(
+      temporalRangeData.startTimeZone,
+      temporalRangeData.startDateTime
+    )
+  );
+  let endDate = new Date(
+    generateDateTime(
+      temporalRangeData.endTimeZone,
+      temporalRangeData.endDateTime
+    )
+  );
+  let offset = endDate - startDate;
+  if (offset < 0) {
+    return "end date before start date.";
+  } else if (offset == 0) {
+    return "end date equal to start date; temporal range has zero length";
+  }
+
+  return true;
 };
 
 /*
@@ -324,5 +342,6 @@ export {
   validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
-  validateISO_8601Duration
+  validateISO_8601Duration,
+  validateTemporalRange
 };
