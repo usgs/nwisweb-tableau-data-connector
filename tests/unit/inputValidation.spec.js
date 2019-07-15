@@ -549,9 +549,9 @@ done in ParamSelect.vue
             startTimeZone: "-0430",
             endDateTime: "2019-07-10T15:04:00.000Z",
             endTimeZone: "-0430"
-          }
+          };
         },
-        temporalRangeActive: () =>{
+        temporalRangeActive: () => {
           return true;
         },
         modifiedSinceCodeActive: () => {
@@ -564,7 +564,12 @@ done in ParamSelect.vue
       actions: {}
     });
     let wrapper = shallowMount(Main, { store, localVue });
-    expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).toBe(true);
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
     store = new Vuex.Store({
       state: {},
       modules: {},
@@ -575,9 +580,9 @@ done in ParamSelect.vue
             startTimeZone: "",
             endDateTime: "",
             endTimeZone: ""
-          }
+          };
         },
-        temporalRangeActive: () =>{
+        temporalRangeActive: () => {
           return false;
         },
         modifiedSinceCodeActive: () => {
@@ -589,63 +594,13 @@ done in ParamSelect.vue
       },
       actions: {}
     });
-     wrapper = shallowMount(Main, { store, localVue });
-    expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).toBe(true);
-    store = new Vuex.Store({
-      state: {},
-      modules: {},
-      getters: {
-        temporalRangeData: () => {
-          return {
-            startDateTime: "2019-07-09T15:01:00.000Z",
-            startTimeZone: "-0430",
-            endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0500"
-          }
-        },
-        temporalRangeActive: () =>{
-          return true;
-        },
-        modifiedSinceCodeActive: () => {
-          return false;
-        },
-        durationCodeActive: () => {
-          return false;
-        }
-      },
-      actions: {}
-    });
-     wrapper = shallowMount(Main, { store, localVue });
-    expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).toBe(true);
-    store = new Vuex.Store({
-      state: {},
-      modules: {},
-      getters: {
-        temporalRangeData: () => {
-          return {
-            startDateTime: "2019-07-09T15:01:00.000Z",
-            startTimeZone: "-0430",
-            endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0500"
-          }
-        },
-        temporalRangeActive: () =>{
-          return true;
-        },
-        modifiedSinceCodeActive: () => {
-          return true;
-        },
-        durationCodeActive: () => {
-          return false;
-        }
-      },
-      actions: {}
-    });
-     wrapper = shallowMount(Main, { store, localVue });
-    expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).toBe(true);
-   
     wrapper = shallowMount(Main, { store, localVue });
-    expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).toBe(true);
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
     store = new Vuex.Store({
       state: {},
       modules: {},
@@ -656,9 +611,79 @@ done in ParamSelect.vue
             startTimeZone: "-0430",
             endDateTime: "2019-07-09T15:00:00.000Z",
             endTimeZone: "-0500"
-          }
+          };
         },
-        temporalRangeActive: () =>{
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            startTimeZone: "-0430",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            endTimeZone: "-0500"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return true;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
+
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            startTimeZone: "-0430",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            endTimeZone: "-0500"
+          };
+        },
+        temporalRangeActive: () => {
           return false;
         },
         modifiedSinceCodeActive: () => {
@@ -670,13 +695,16 @@ done in ParamSelect.vue
       },
       actions: {}
     });
-     wrapper = shallowMount(Main, { store, localVue });
-    expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).toBe(true);
-   
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
   });
 
   test("validateTemporalRange rejects invalid temporal query configurations", () => {
-
     let store = new Vuex.Store({
       state: {},
       modules: {},
@@ -687,9 +715,9 @@ done in ParamSelect.vue
             startTimeZone: "-0430",
             endDateTime: "2019-07-09T15:00:00.000Z",
             endTimeZone: "-0500"
-          }
+          };
         },
-        temporalRangeActive: () =>{
+        temporalRangeActive: () => {
           return true;
         },
         modifiedSinceCodeActive: () => {
@@ -701,150 +729,172 @@ done in ParamSelect.vue
       },
       actions: {}
     });
-    let  wrapper = shallowMount(Main, { store, localVue });
-    expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).not.toBe(true);
-   
+    let wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
 
-   store = new Vuex.Store({
-    state: {},
-    modules: {},
-    getters: {
-      temporalRangeData: () => {
-        return {
-          startDateTime: "2019-07-09T15:01:00.000Z",
-          startTimeZone: "-0500",
-          endDateTime: "2019-07-09T15:00:00.000Z",
-          endTimeZone: "-0430"
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            startTimeZone: "-0500",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            endTimeZone: "-0430"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
         }
       },
-      temporalRangeActive: () =>{
-        return true;
-      },
-      modifiedSinceCodeActive: () => {
-        return false;
-      },
-      durationCodeActive: () => {
-        return false;
-      }
-    },
-    actions: {}
-  });
+      actions: {}
+    });
     wrapper = shallowMount(Main, { store, localVue });
-  expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).not.toBe(true);
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
 
-  store = new Vuex.Store({
-    state: {},
-    modules: {},
-    getters: {
-      temporalRangeData: () => {
-        return {
-          startDateTime: "",
-          startTimeZone: "-0430",
-          endDateTime: "2019-07-09T15:00:00.000Z",
-          endTimeZone: "-0500"
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "",
+            startTimeZone: "-0430",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            endTimeZone: "-0500"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
         }
       },
-      temporalRangeActive: () =>{
-        return true;
-      },
-      modifiedSinceCodeActive: () => {
-        return false;
-      },
-      durationCodeActive: () => {
-        return false;
-      }
-    },
-    actions: {}
-  });
+      actions: {}
+    });
     wrapper = shallowMount(Main, { store, localVue });
-  expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).not.toBe(true);
- 
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
 
-store = new Vuex.Store({
-  state: {},
-  modules: {},
-  getters: {
-    temporalRangeData: () => {
-      return {
-        startDateTime: "2019-07-09T15:01:00.000Z",
-        startTimeZone: "",
-        endDateTime: "2019-07-09T15:00:00.000Z",
-        endTimeZone: "-0500"
-      }
-    },
-    temporalRangeActive: () =>{
-      return true;
-    },
-    modifiedSinceCodeActive: () => {
-      return false;
-    },
-    durationCodeActive: () => {
-      return false;
-    }
-  },
-  actions: {}
-});
-  wrapper = shallowMount(Main, { store, localVue });
-expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).not.toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            startTimeZone: "",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            endTimeZone: "-0500"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
 
-store = new Vuex.Store({
-  state: {},
-  modules: {},
-  getters: {
-    temporalRangeData: () => {
-      return {
-        startDateTime: "2019-07-09T15:01:00.000Z",
-        startTimeZone: "-0430",
-        endDateTime: "",
-        endTimeZone: "-0500"
-      }
-    },
-    temporalRangeActive: () =>{
-      return true;
-    },
-    modifiedSinceCodeActive: () => {
-      return false;
-    },
-    durationCodeActive: () => {
-      return false;
-    }
-  },
-  actions: {}
-});
-  wrapper = shallowMount(Main, { store, localVue });
-expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).not.toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            startTimeZone: "-0430",
+            endDateTime: "",
+            endTimeZone: "-0500"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
 
-
-store = new Vuex.Store({
-  state: {},
-  modules: {},
-  getters: {
-    temporalRangeData: () => {
-      return {
-        startDateTime: "2019-07-09T15:01:00.000Z",
-        startTimeZone: "-0430",
-        endDateTime: "2019-07-09T15:00:00.000Z",
-        endTimeZone: ""
-      }
-    },
-    temporalRangeActive: () =>{
-      return true;
-    },
-    modifiedSinceCodeActive: () => {
-      return false;
-    },
-    durationCodeActive: () => {
-      return false;
-    }
-  },
-  actions: {}
-});
-  wrapper = shallowMount(Main, { store, localVue });
-expect(validateTemporalRange(wrapper.vm.$store.getters.temporalRangeData, wrapper.vm )).not.toBe(true);
-
-
-
-});
-
-
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            startTimeZone: "-0430",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            endTimeZone: ""
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
+  });
 });
