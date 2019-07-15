@@ -149,6 +149,7 @@ export default {
     },
     startTimeZone: function(newValue) {
       this.commitStartTimeZone(newValue);
+      alert(newValue);
     },
     endDateTime: function(newValue) {
       this.commitEndDateTime(newValue);
@@ -156,6 +157,7 @@ export default {
     },
     endTimeZone: function(newValue) {
       this.commitEndTimeZone(newValue);
+      alert(newValue);
     },
     timeBoundsActive: function(newValue) {
       this.commitTemporalRangeActive(newValue);
