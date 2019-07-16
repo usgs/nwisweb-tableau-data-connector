@@ -10,21 +10,8 @@
         <div class="leftcolumn">
           <div class="text-center col-md-4 col-md-offset-4">
             <br />
-            <div v-show="!disabled">
-              <span class="input-desc">
-                <label>Site or Sites</label>
-                <ToolTip
-                  hint="This field takes comma-separated 8-15 digit site codes. Open this link in a new tab to use the NWISWeb location finder, remember to limit your search to time-series sites."
-                  url="http://maps.waterdata.usgs.gov/mapper/"
-                ></ToolTip>
-              </span>
-              <input
-                class="usa-input usa-input-custom"
-                v-model="sites"
-                :disabled="disabled"
-              />
-            </div>
 
+            <SiteSelect> </SiteSelect>
             <StateSelect></StateSelect>
             <CoordinatesInput></CoordinatesInput>
             <HUCInput></HUCInput>
@@ -66,11 +53,11 @@ import { locationMode } from "../enums.js";
 import SiteTypeList from "../components/SiteTypeList";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
+import SiteSelect from "../components/SiteSelect";
 import ParamSelect from "../components/ParamSelect";
 import AgencySelect from "../components/AgencySelect";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
-import ToolTip from "../components/ToolTip";
 
 /*global  tableau:true*/
 
@@ -88,7 +75,7 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
-    ToolTip
+    SiteSelect
   },
   data: function() {
     return {
@@ -138,7 +125,7 @@ export default {
       );
       let connectionData = {
         columnList: this.columnList,
-        siteNums: this.sites,
+        siteNums: this.$store.getters.sites,
         paramNums: this.$store.getters.paramCodes,
         state: this.stateData[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,

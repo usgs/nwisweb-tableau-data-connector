@@ -9,6 +9,7 @@ export default new Vuex.Store({
     state: "",
     siteTypeListActive: false,
     agencyActive: false,
+    sites: "",
     agencyCode: "",
     siteType: [],
     hydroCode: "",
@@ -47,6 +48,9 @@ export default new Vuex.Store({
     },
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
+    },
+    changeSites: (state, newSites) => {
+      state.sites = newSites;
     }
   },
   actions: {},
@@ -80,6 +84,9 @@ export default new Vuex.Store({
     },
     agencyActive: state => {
       return state.agencyActive;
+    },
+    sites: state => {
+      return state.sites;
     }
   }
 });

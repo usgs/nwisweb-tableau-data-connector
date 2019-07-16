@@ -178,7 +178,10 @@ const validateFormInputs = instance => {
     return false;
   }
 
-  let siteListStatus = validateSiteInputs(instance.sites, instance);
+  let siteListStatus = validateSiteInputs(
+    instance.$store.getters.sites,
+    instance
+  );
   if (!(siteListStatus === true)) {
     notify(siteListStatus);
     return false;
