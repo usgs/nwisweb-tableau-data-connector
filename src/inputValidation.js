@@ -85,11 +85,22 @@ const roundCoordinateInputs = coordinates => {
   */
 const validateSiteInputs = (sites, instance) => {
   if (instance.$store.getters.locationMode != locationMode.SITE) return true;
-  let regex = /^((\d+),)*(\d+)$/; // 1 or more comma-separated 8 digit numbers
-  if (!sites.replace(/\s/g, "").match(regex)) {
-    return "site list in invalid format";
-  }
-  return true;
+
+  let toReturn = true;
+  let siteString = sites.split(",");
+  siteString.forEach(element => {
+    let regex = /^\d*$/; // digits only
+    let cleanedStrLen = element.replace(/\s/g, "").length;
+
+    if (
+      !element.replace(/\s/g, "").match(regex) ||
+      cleanedStrLen < 8 ||
+      cleanedStrLen > 12
+    ) {
+      toReturn = "site list in invalid format";
+    }
+  });
+  return toReturn;
 };
 /*
     "You can specify one major Hydrologic Unit code and up to 10 minor Hydrologic Unit codes. 

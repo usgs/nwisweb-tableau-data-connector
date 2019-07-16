@@ -248,7 +248,7 @@ describe("Main", () => {
       actions: {}
     });
     const wrapper = shallowMount(Main, { store, localVue });
-    let siteList = "11111111, 11111111  , 11112222";
+    let siteList = "1111441111, 44444444,11111134511  , 111123454222";
     expect(validateSiteInputs(siteList, wrapper.vm)).toBe(true);
     siteList = "11111111  , 11112222";
     expect(validateSiteInputs(siteList, wrapper.vm)).toBe(true);
