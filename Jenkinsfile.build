@@ -26,7 +26,7 @@ pipeline {
           stage('checkout'){
             steps {
                 script {
-                    buildSource = "refs/heads/dev-jenkins"
+                    buildSource = "refs/heads/master"
                     if ("${TAG}" != "") {
                         buildSource = "refs/tags/${TAG}"
                     }
