@@ -122,6 +122,7 @@ test("correctly generate a URL given a list of sites and parameters with various
   const connectionData = {
     agencyCodeActive: false,
     siteTypeListActive: false,
+    watershedAreaBoundsActive: false,
     siteNums: "01646500 ,   05437641",
     paramNums: ["00060", "00065"],
     state: "Rhode Island",
@@ -136,6 +137,7 @@ test("correctly generate a URL given a state", () => {
   const connectionData = {
     agencyCodeActive: false,
     siteTypeListActive: false,
+    watershedAreaBoundsActive: false,
     paramNums: ["00060", "00065"],
     state: "ri",
     locationMode: locationMode.STATE
@@ -150,6 +152,7 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     paramNums: ["00060", "00065"],
     agencyCodeActive: false,
     siteTypeListActive: false,
+    watershedAreaBoundsActive: false,
     boundaryCoords: {
       north: "2.000000",
       south: "1.000000",
@@ -168,6 +171,7 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010",
     agencyCodeActive: false,
+    watershedAreaBoundsActive: false,
     siteTypeListActive: false,
     locationMode: locationMode.HYDRO
   };
@@ -200,6 +204,7 @@ test("correctly generate a URL given a hydrological Unit Code with siteType and 
     hydroCode: "02070010",
     agencyCodeActive: true,
     siteTypeListActive: true,
+    watershedAreaBoundsActive: false,
     agencyCode: "agencyA",
     siteTypeList: ["siteA", "siteB"],
     locationMode: locationMode.HYDRO
