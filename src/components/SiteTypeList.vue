@@ -82,7 +82,7 @@ export default {
     addSiteTypes: function() {
       let siteTypes = this.siteType.split(",");
       siteTypes.forEach(siteType => {
-        this.addSiteTypeToSiteTypeList(siteType);
+        this.addSiteTypeToSiteTypeList(siteType.replace(/\s/g, ""));
       });
     },
     addSiteTypeToSiteTypeList: function(siteType) {
@@ -90,10 +90,10 @@ export default {
         if (!this.siteTypeList.includes(siteType)) {
           this.siteTypeList.push(siteType);
         } else {
-          notify("Site Type selected already in selection");
+          notify(`${siteType}: site type selected already in selection`);
         }
       } else {
-        notify("invalid site type entered");
+        notify(`${siteType}: invalid site type entered`);
       }
     },
     removeElement: function(index) {

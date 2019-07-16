@@ -106,7 +106,7 @@ export default {
     addParams: function() {
       let params = this.param.split(",");
       params.forEach(param => {
-        this.addParam(param);
+        this.addParam(param.replace(/\s/g, ""));
       });
     },
     addParam: function(param) {
@@ -119,13 +119,13 @@ export default {
           if (this.selectedParams.length < 100) {
             this.selectedParams.push(param);
           } else {
-            notify("Maximum number of parameters already selected.");
+            notify(`${param}: Maximum number of parameters already selected.`);
           }
         } else {
-          notify("parameter selected already in selection.");
+          notify(`${param}: parameter selected already in selection.`);
         }
       } else {
-        notify("invalid param code entered");
+        notify(`${param}: invalid param code entered`);
       }
     },
     removeElement: function(index) {

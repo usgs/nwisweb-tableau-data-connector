@@ -145,7 +145,7 @@ export default {
     addCounties: function() {
       let counties = this.county.split(",");
       counties.forEach(county => {
-        this.addCountyToCounties(county);
+        this.addCountyToCounties(county.replace(/\s/g, ""));
       });
     },
     addCountyToCounties: function(county) {
@@ -154,13 +154,13 @@ export default {
           if (this.counties.length < 10) {
             this.counties.push(county);
           } else {
-            notify("Maximum number of counties already selected.");
+            notify(`${county}: Maximum number of counties already selected.`);
           }
         } else {
-          notify("County selected already in selection.");
+          notify(`${county}: County selected already in selection.`);
         }
       } else {
-        notify("invalid county code entered");
+        notify(`${county}: invalid county code entered`);
       }
     },
     removeElement: function(index) {
