@@ -9,9 +9,7 @@
     </span>
     <input
       class="usa-input usa-input-custom"
-      v-model="hydroUnitCode"
-      id="input-type-text"
-      name="input-type-text"
+      v-model="natAquiferCode"
       type="text"
     />
     <span class="input-desc">
@@ -23,17 +21,13 @@
     </span>
     <input
       class="usa-input usa-input-custom"
-      v-model="hydroUnitCode"
-      id="input-type-text"
-      name="input-type-text"
+      v-model="locAquiferCode"
       type="text"
     />
   </div>
 </template>
 
 <script>
-import { locationMode } from "../enums.js";
-import { mapState } from "vuex";
 import ToolTip from "../components/ToolTip";
 
 export default {
@@ -43,30 +37,24 @@ export default {
   },
   data: function() {
     return {
-      hydroUnitCode: "",
-      activeLocationMode: locationMode.SITE
+      natAquifer: "",
+      locAquifer: ""
     };
   },
   methods: {
-    commitHydroCodes: function() {
-      this.$store.commit("changeHydroCode", this.hydroUnitCode);
+    commitNatAquifer: function(newValue) {
+      this.$store.commit("changeNatAquiferCode", newValue);
+    },
+    commitLocAquifer: function(newValue) {
+      this.$store.commit("changeLocAquiferCode", newValue);
     }
   },
   watch: {
-    hydroUnitCode: function(newValue) {
-      this.commitHydroCodes(newValue);
+    natAquifer: function(newValue) {
+      this.commitNatAquifer(newValue);
     },
-    locationMode: function(newLocationMode) {
-      if (newLocationMode != locationMode.HYDRO) {
-        this.hydroUnitCode = "";
-      }
-      this.activeLocationMode = newLocationMode;
-    }
-  },
-  computed: {
-    ...mapState(["locationMode"]),
-    disabled() {
-      return this.activeLocationMode != locationMode.HYDRO;
+    locAquifer: function(newValue) {
+      this.commitLocAquifer(newValue);
     }
   }
 };

@@ -103,6 +103,8 @@ const generateURL = connectionData => {
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
   let GWSiteAttrQuery = "";
+  let natAquiferCodeQuery = "";
+  let locAquiferCodeQuery = "";
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -141,6 +143,14 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
+  if (connectionData.natAquiferActive) {
+    natAquiferCodeQuery = `&aquiferCd=${connectionData.natAquifer}`;
+  }
+
+  if (connectionData.locAquiferActive) {
+    locAquiferCodeQuery = `&localAquiferCd=${connectionData.locAquifer}`;
+  }
+
   if (connectionData.GWSiteAttrActive) {
     GWSiteAttrQuery = "";
     let depths = connectionData.GWSiteAttrDepths;
@@ -166,7 +176,7 @@ const generateURL = connectionData => {
     }
   }
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${GWSiteAttrQuery}`;
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}${natAquiferCodeQuery}${locAquiferCodeQuery}&siteStatus=all${GWSiteAttrQuery}`;
 };
 
 /*

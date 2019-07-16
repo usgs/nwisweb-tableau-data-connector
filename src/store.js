@@ -17,7 +17,11 @@ export default new Vuex.Store({
     locationMode: locationMode.SITE,
     coordinates: {},
     GWSiteAttrActive: false,
-    GWSiteAttrDepths: {}
+    GWSiteAttrDepths: {},
+    natAquiferActive: false,
+    natAquifer: "",
+    locAquiferActive: false,
+    locAquifer: ""
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -55,6 +59,18 @@ export default new Vuex.Store({
     },
     changeGWSiteAttrDepths: (state, newGWSiteAttrDepths) => {
       state.GWSiteAttrDepths = newGWSiteAttrDepths;
+    },
+    changeLocAquiferActive: (state, newLocAquiferActivation) => {
+      state.locAquiferActive = newLocAquiferActivation;
+    },
+    changeLocAquifer: (state, newLocAquifer) => {
+      state.locAquifer = newLocAquifer;
+    },
+    changeNatAquiferActive: (state, newNatAquiferActivation) => {
+      state.natAquiferActive = newNatAquiferActivation;
+    },
+    changeNatAquifer: (state, newNatAquifer) => {
+      state.natAquifer = newNatAquifer;
     }
   },
   actions: {},
@@ -94,6 +110,18 @@ export default new Vuex.Store({
     },
     GWSiteAttrDepths: state => {
       return state.GWSiteAttrDepths;
+    },
+    locAquiferActive: state => {
+      return state.locAquiferActive;
+    },
+    locAquifer: state => {
+      return state.locAquifer;
+    },
+    natAquiferActive: state => {
+      return state.natAquiferActive;
+    },
+    natAquifer: state => {
+      return state.natAquifer;
     }
   }
 });
