@@ -158,14 +158,17 @@ const validateAgencyInputs = (agency, instance, agencyData) => {
       Ensures that if both min and max values are present, the min value is less than the max value.
       Checks both hole and well depths.
     */
-const validateGroundWaterSiteInputs = GWSiteAttrDepths => {
-  if (!isNumOrBlank(GWSiteAttrDepths.wellMin))
+const validateGroundWaterSiteInputs = (GWSiteAttrDepths, instance) => {
+  if (!instance.$store.getters.GWSiteAttrActive) {
+    return true;
+  }
+  if (!isNaN(GWSiteAttrDepths.wellMin))
     return "non-numeric well minimum depth";
-  if (!isNumOrBlank(GWSiteAttrDepths.wellMax))
+  if (!isNaN(GWSiteAttrDepths.wellMax))
     return "non-numeric well maximum depth";
-  if (!isNumOrBlank(GWSiteAttrDepths.holeMin))
+  if (!isNaN(GWSiteAttrDepths.holeMin))
     return "non-numeric hole minimum depth";
-  if (!isNumOrBlank(GWSiteAttrDepths.holeMax))
+  if (!isNaN(GWSiteAttrDepths.holeMax))
     return "non-numeric hole maximum depth";
   if (
     parseFloat(GWSiteAttrDepths.wellMin) > parseFloat(GWSiteAttrDepths.wellMax)
@@ -176,10 +179,6 @@ const validateGroundWaterSiteInputs = GWSiteAttrDepths => {
   )
     return "hole minimum depth is greater than hole maximum depth";
   return true;
-};
-
-const isNumOrBlank = value => {
-  return !isNaN(value);
 };
 
 /*
