@@ -35,6 +35,8 @@
             </div>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
+            <br />
+            <SiteStatusSelect></SiteStatusSelect>
           </div>
         </div>
         <div class="rightcolumn">
@@ -67,6 +69,7 @@ import SiteTypeList from "../components/SiteTypeList";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import ParamSelect from "../components/ParamSelect";
+import SiteStatusSelect from "../components/SiteStatusSelect";
 import AgencySelect from "../components/AgencySelect";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
@@ -88,6 +91,7 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
+    SiteStatusSelect,
     ToolTip
   },
   data: function() {
@@ -149,7 +153,8 @@ export default {
         siteTypeListActive: this.$store.getters.siteTypeListActive,
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
-        agencyCode: this.$store.getters.agencyCode
+        agencyCode: this.$store.getters.agencyCode,
+        siteStatus: this.$store.getters.siteStatus
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);

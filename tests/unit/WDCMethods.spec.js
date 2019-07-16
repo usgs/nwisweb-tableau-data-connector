@@ -123,6 +123,7 @@ test("correctly generate a URL given a list of sites and parameters with various
   const connectionData = {
     agencyCodeActive: false,
     siteTypeListActive: false,
+    siteStatus: "all",
     siteNums: "01646500 ,   05437641",
     paramNums: ["00060", "00065"],
     state: "Rhode Island",
@@ -137,6 +138,7 @@ test("correctly generate a URL given a state", () => {
   const connectionData = {
     agencyCodeActive: false,
     siteTypeListActive: false,
+    siteStatus: "all",
     paramNums: ["00060", "00065"],
     state: "ri",
     locationMode: locationMode.STATE
@@ -150,6 +152,7 @@ test("correctly generate a URL given a coordinate bounding box", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     agencyCodeActive: false,
+    siteStatus: "inactive",
     siteTypeListActive: false,
     boundaryCoords: {
       north: "2.000000",
@@ -160,7 +163,7 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     locationMode: locationMode.COORDS
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&bBox=1.000000,1.000000,2.000000,2.000000&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&bBox=1.000000,1.000000,2.000000,2.000000&period=P1D&parameterCd=00060,00065&siteStatus=inactive"
   );
 });
 
@@ -168,6 +171,7 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010",
+    siteStatus: "all",
     agencyCodeActive: false,
     siteTypeListActive: false,
     locationMode: locationMode.HYDRO
@@ -180,19 +184,21 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
 test("correctly generate a URL given a list of counties", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
+    siteStatus: "active",
     countyCode: [11111, 22222],
     agencyCodeActive: false,
     siteTypeListActive: false,
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=active"
   );
 });
 
 test("correctly generate a URL given a hydrological Unit Code with siteType and Agency Parameters", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
+    siteStatus: "all",
     hydroCode: "02070010",
     agencyCodeActive: true,
     siteTypeListActive: true,

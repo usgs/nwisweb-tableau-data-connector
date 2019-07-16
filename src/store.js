@@ -15,7 +15,8 @@ export default new Vuex.Store({
     countyCode: [],
     paramCodes: [],
     locationMode: locationMode.SITE,
-    coordinates: {}
+    coordinates: {},
+    siteStatus: "all"
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -47,6 +48,9 @@ export default new Vuex.Store({
     },
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
+    },
+    changeSiteStatus: (state, newSiteStatus) => {
+      state.siteStatus = newSiteStatus;
     }
   },
   actions: {},
@@ -80,6 +84,9 @@ export default new Vuex.Store({
     },
     agencyActive: state => {
       return state.agencyActive;
+    },
+    siteStatus: state => {
+      return state.siteStatus;
     }
   }
 });
