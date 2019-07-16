@@ -35,6 +35,7 @@
             </div>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
+            <WatershedInput></WatershedInput>
           </div>
         </div>
         <div class="rightcolumn">
@@ -57,7 +58,7 @@
 </template>
 
 <script>
-import { getData, getSchema, generateColList } from "../WDCMethods.js";
+import { getData, getSchema } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
@@ -71,6 +72,7 @@ import AgencySelect from "../components/AgencySelect";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import ToolTip from "../components/ToolTip";
+import WatershedInput from "../components/WatershedInput";
 
 /*global  tableau:true*/
 
@@ -88,7 +90,8 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
-    ToolTip
+    ToolTip,
+    WatershedInput
   },
   data: function() {
     return {
@@ -132,12 +135,7 @@ export default {
         return;
       }
 
-      this.columnList = generateColList(
-        this.sites,
-        this.$store.getters.paramCodes
-      );
       let connectionData = {
-        columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.$store.getters.paramCodes,
         state: this.stateData[this.$store.getters.USStateName],
@@ -149,7 +147,9 @@ export default {
         siteTypeListActive: this.$store.getters.siteTypeListActive,
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
-        agencyCode: this.$store.getters.agencyCode
+        agencyCode: this.$store.getters.agencyCode,
+        watershedAreaBounds: this.$store.getters.watershedAreaBounds,
+        watershedAreaBoundsActive: this.$store.getters.watershedAreaBoundsActive
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);

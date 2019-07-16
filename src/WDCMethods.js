@@ -102,6 +102,7 @@ const generateURL = connectionData => {
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
+  let drainAreaQuery = "";
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -140,7 +141,11 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all`;
+  if (connectionData.watershedAreaBoundsActive) {
+    drainAreaQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound}&drainAreaMax=${connectionData.watershedAreaBounds.upperAreaBound}`;
+  }
+
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${drainAreaQuery}`;
 };
 
 /*
@@ -256,27 +261,11 @@ const getSchema = schemaCallback => {
     .catch(err => notify(err));
 };
 
-/*
-    Generates the list of possible columns (set product of all sites, and all parameters)
-*/
-const generateColList = (sites, paramList) => {
-  let siteList = sites.replace(/\s/g, "").split(",");
-  let columnList = [];
-  siteList.forEach(function(site) {
-    paramList.forEach(function(param) {
-      // we are creating a column for each property of each site
-      columnList.push(`${site}_${param}`);
-    });
-  });
-  return columnList;
-};
-
 export {
   getData,
   getSchema,
   formatJSONAsTable,
   generateURL,
-  generateColList,
   generateSchemaTablesFromData,
   getTimeSeriesByID,
   reformatTimeString,

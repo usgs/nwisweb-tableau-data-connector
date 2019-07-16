@@ -1,7 +1,6 @@
 import {
   formatJSONAsTable,
   generateURL,
-  generateColList,
   generateSchemaTablesFromData,
   getTimeSeriesByID,
   reformatTimeString,
@@ -177,16 +176,21 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
   );
 });
 
-test("correctly generate a URL given a list of counties", () => {
+test("correctly generate a URL given a list of counties and drainage area params", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     countyCode: [11111, 22222],
     agencyCodeActive: false,
+    watershedAreaBoundsActive: true,
+    watershedAreaBounds: {
+      upperAreaBound: 1000,
+      lowerAreaBound: 0
+    },
     siteTypeListActive: false,
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=all&drainAreaMin=0&drainAreaMax=1000"
   );
 });
 
@@ -203,19 +207,6 @@ test("correctly generate a URL given a hydrological Unit Code with siteType and 
   expect(generateURL(connectionData)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&siteStatus=all"
   );
-});
-
-test("correctly generates the column schema from sites and parameters", () => {
-  const sites = "01646500,05437641";
-  const params = ["00060", "00065"];
-
-  const targetResult = [
-    "01646500_00060",
-    "01646500_00065",
-    "05437641_00060",
-    "05437641_00065"
-  ];
-  expect(generateColList(sites, params)).toEqual(targetResult);
 });
 
 test("error on call to formatJSONAsTable with non-existent table name", () => {

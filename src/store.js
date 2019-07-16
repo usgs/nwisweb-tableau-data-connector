@@ -9,13 +9,15 @@ export default new Vuex.Store({
     state: "",
     siteTypeListActive: false,
     agencyActive: false,
+    watershedAreaBoundsActive: false,
     agencyCode: "",
     siteType: [],
     hydroCode: "",
     countyCode: [],
     paramCodes: [],
     locationMode: locationMode.SITE,
-    coordinates: {}
+    coordinates: {},
+    watershedAreaBounds: {}
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -47,6 +49,12 @@ export default new Vuex.Store({
     },
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
+    },
+    changeWatershedAreaBounds: (state, newAreaBounds) => {
+      state.watershedAreaBounds = newAreaBounds;
+    },
+    changeWatershedAreaBoundsActive: (state, newActivityState) => {
+      state.watershedAreaBoundsActive = newActivityState;
     }
   },
   actions: {},
@@ -80,6 +88,12 @@ export default new Vuex.Store({
     },
     agencyActive: state => {
       return state.agencyActive;
+    },
+    watershedAreaBounds: state => {
+      return state.watershedAreaBounds;
+    },
+    watershedAreaBoundsActive: state => {
+      return state.watershedAreaBoundsActive;
     }
   }
 });

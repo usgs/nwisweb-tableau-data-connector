@@ -144,6 +144,32 @@ const validateCountyInputs = (countyList, instance) => {
 };
 
 /*
+Warns the user if they have input invalid watershed area boundaries
+*/
+
+const validateWatershedAreaBoundaries = (boundaries, instance) => {
+  if (!instance.$store.getters.watershedAreaBoundsActive) {
+    return true;
+  }
+  let regex = /^\d(\d)*$/;
+
+  if (!boundaries.upperAreaBound.replace(/\s/g, "").match(regex)) {
+    return "upper area bound is not a positive integer";
+  }
+  if (!boundaries.lowerAreaBound.replace(/\s/g, "").match(regex)) {
+    return "lower area bound is not a positive integer";
+  }
+
+  if (
+    parseInt(boundaries.upperAreaBound) < parseInt(boundaries.lowerAreaBound)
+  ) {
+    return "invalid boundaries: lower watershed area bound exceeds upper watershed area bound.";
+  }
+
+  return true;
+};
+
+/*
   Warns the user if they have selected an invalid agency code.
 */
 const validateAgencyInputs = (agency, instance, agencyData) => {
@@ -227,6 +253,15 @@ const validateFormInputs = instance => {
     return false;
   }
 
+  let watershedStatus = validateWatershedAreaBoundaries(
+    instance.$store.getters.watershedAreaBounds,
+    instance
+  );
+  if (!(watershedStatus === true)) {
+    notify(watershedStatus);
+    return false;
+  }
+
   instance.$store.commit(
     "changeCoordinates",
     roundCoordinateInputs(instance.$store.getters.coordinates)
@@ -244,5 +279,6 @@ export {
   validateCountyInputs,
   validateParamInputs,
   validateSiteTypeInputs,
-  validateAgencyInputs
+  validateAgencyInputs,
+  validateWatershedAreaBoundaries
 };
