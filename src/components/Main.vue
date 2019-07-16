@@ -35,6 +35,7 @@
             </div>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
+            <AquiferInputs></AquiferInputs>
             <br />
             <GroundWaterSiteAttr></GroundWaterSiteAttr>
           </div>
@@ -70,6 +71,7 @@ import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import ParamSelect from "../components/ParamSelect";
 import AgencySelect from "../components/AgencySelect";
+import AquiferInputs from "../components/AquiferInputs"
 import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
@@ -91,6 +93,7 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
+    AquiferInputs,
     GroundWaterSiteAttr,
     ToolTip
   },
@@ -154,6 +157,7 @@ export default {
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
+        aquiferActive: this.$store.getters.aquiferActive,
         GWSiteAttrActive: this.$store.getters.GWSiteAttrActive,
         GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths
       };
