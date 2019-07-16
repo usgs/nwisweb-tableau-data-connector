@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import ToolTip from "../components/ToolTip";
 
 export default {
@@ -63,7 +62,6 @@ export default {
   },
   methods: {
     commitGroundWaterSiteAttr: function() {
-      console.log(this.GWSiteAttrDepths);
       let GWSiteAttrActive = true;
       this.$store.commit("changeGWSiteAttrActive", GWSiteAttrActive);
       this.$store.commit("changeGWSiteAttrDepths", this.GWSiteAttrDepths);

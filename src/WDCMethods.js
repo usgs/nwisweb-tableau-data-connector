@@ -165,9 +165,6 @@ const generateURL = connectionData => {
       );
     }
   }
-  console.log(
-    `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${GWSiteAttrQuery}`
-  );
 
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${GWSiteAttrQuery}`;
 };
