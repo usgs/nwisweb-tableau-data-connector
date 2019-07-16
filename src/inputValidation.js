@@ -123,10 +123,10 @@ warns the user if they have no query parameters selected. This is the only patho
  against from within the  ParamSelect component, because it is a valid interactive session state.
 */
 const validateParamInputs = paramList => {
-  if (paramList.length != 0) {
+  if (paramList.length <= 100) {
     return true;
   } else {
-    return "parameter query requires between 1 and 100 parameters";
+    return "parameter query cannot exceed 100 parameters";
   }
 };
 

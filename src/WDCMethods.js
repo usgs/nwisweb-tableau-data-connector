@@ -97,8 +97,10 @@ const formatJSONAsTable = (data, tableName) => {
 generates a URL for query parameters contained in the connectionData object accepted as an argument
 */
 const generateURL = connectionData => {
-  let paramQuery = `&parameterCd=${connectionData.paramNums.join()}`;
-
+  let paramQuery = "";
+  if (connectionData.paramNums.length != 0) {
+    paramQuery = `&parameterCd=${connectionData.paramNums.join()}`;
+  }
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";

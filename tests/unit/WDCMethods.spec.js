@@ -124,12 +124,12 @@ test("correctly generate a URL given a list of sites and parameters with various
     agencyCodeActive: false,
     siteTypeListActive: false,
     siteNums: "01646500 ,   05437641",
-    paramNums: ["00060", "00065"],
+    paramNums: [],
     state: "Rhode Island",
     locationMode: locationMode.SITE
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500,05437641&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500,05437641&period=P1D&siteStatus=all"
   );
 });
 
