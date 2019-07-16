@@ -142,33 +142,34 @@ const generateURL = connectionData => {
   }
 
   if (connectionData.GWSiteAttrActive) {
-    let wellMin = "";
-    let wellMax = "";
-    let holeMin = "";
-    let holeMax = "";
     GWSiteAttrQuery = "";
-    let depths = connectionData.GWSiteAttrDepth;
-    
+    let depths = connectionData.GWSiteAttrDepths;
     if (depths.wellMin != "") {
-      GWSiteAttrQuery.concat(depths.wellMin);
+      GWSiteAttrQuery = GWSiteAttrQuery.concat(
+        `&wellDepthMin=${depths.wellMin}`
+      );
     }
     if (depths.wellMax != "") {
-      GWSiteAttrQuery.concat(depths.wellMax);
+      GWSiteAttrQuery = GWSiteAttrQuery.concat(
+        `&wellDepthMax=${depths.wellMax}`
+      );
     }
     if (depths.holeMin != "") {
-      GWSiteAttrQuery.concat(depths.holeMin);
+      GWSiteAttrQuery = GWSiteAttrQuery.concat(
+        `&holeDepthMin=${depths.holeMin}`
+      );
     }
     if (depths.holeMax != "") {
-      GWSiteAttrQuery.concat(depths.holeMax);
+      GWSiteAttrQuery = GWSiteAttrQuery.concat(
+        `&holeDepthMax=${depths.holeMax}`
+      );
     }
-    //TODO add these to the if statement concats
-    `&wellDepthMin=10`
-    `&wellDepthMax=100`
-    `&holeDepthMin=10`
-    `&holeDepthMax=100`
   }
+  console.log(
+    `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${GWSiteAttrQuery}`
+  );
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all`;
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${GWSiteAttrQuery}`;
 };
 
 /*

@@ -9,7 +9,8 @@ import {
   validateCountyInputs,
   validateParamInputs,
   validateSiteTypeInputs,
-  validateAgencyInputs
+  validateAgencyInputs,
+  validateGroundWaterSiteInputs,
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
 import Notifications from "vue-notification";

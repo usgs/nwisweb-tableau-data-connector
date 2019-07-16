@@ -8,9 +8,7 @@
     </span>
     <input
       class="usa-input usa-input-custom"
-      v-model="hydroUnitCode"
-      id="input-type-text"
-      name="input-type-text"
+      v-model="GWSiteAttrDepths.wellMin"
       type="text"
     />
     <span class="input-desc">
@@ -18,9 +16,7 @@
     </span>
     <input
       class="usa-input usa-input-custom"
-      v-model="hydroUnitCode"
-      id="input-type-text"
-      name="input-type-text"
+      v-model="GWSiteAttrDepths.wellMax"
       type="text"
     />
 
@@ -32,20 +28,15 @@
     </span>
     <input
       class="usa-input usa-input-custom"
-      v-model="hydroUnitCode"
-      id="input-type-text"
-      name="input-type-text"
+      v-model="GWSiteAttrDepths.holeMin"
       type="text"
     />
-
     <span class="input-desc">
       <label>Hole maximum depth in feet</label>
     </span>
     <input
       class="usa-input usa-input-custom"
-      v-model="hydroUnitCode"
-      id="input-type-text"
-      name="input-type-text"
+      v-model="GWSiteAttrDepths.holeMax"
       type="text"
     />
   </div>
@@ -62,23 +53,28 @@ export default {
   },
   data: function() {
     return {
-      wellMin: "",
-      wellMax: "",
-      holeMin: "",
-      holeMax: "",
-      GWSiteAttrDepths: {}, //TODO make into object
+      GWSiteAttrDepths: {
+        wellMin: "",
+        wellMax: "",
+        holeMin: "",
+        holeMax: ""
+      }
     };
   },
   methods: {
     commitGroundWaterSiteAttr: function() {
+      console.log(this.GWSiteAttrDepths);
       let GWSiteAttrActive = true;
-      this.$store.commit("changeGWSiteAttrActive" GWSiteAttrActive)
-      this.$store.commit("changeGWSiteAttr", this.GWSiteAttrDepths);
+      this.$store.commit("changeGWSiteAttrActive", GWSiteAttrActive);
+      this.$store.commit("changeGWSiteAttrDepths", this.GWSiteAttrDepths);
     }
   },
   watch: {
-    updateWellMin: function(newValue) {
-      this.commitGroundWaterSiteAttr(newValue);
+    GWSiteAttrDepths: {
+      handler: function() {
+        this.commitGroundWaterSiteAttr();
+      },
+      deep: true
     }
   }
 };

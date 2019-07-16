@@ -155,7 +155,7 @@ export default {
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
         GWSiteAttrActive: this.$store.getters.GWSiteAttrActive,
-        GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths,
+        GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
