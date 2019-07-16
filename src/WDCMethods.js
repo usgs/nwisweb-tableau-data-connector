@@ -102,7 +102,8 @@ const generateURL = connectionData => {
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
-  let drainAreaQuery = "";
+  let drainAreaUpperQuery = "";
+  let drainAreaLowerQuery = "";
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -141,10 +142,13 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
-  if (connectionData.watershedAreaBoundsActive) {
-    drainAreaQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound}&drainAreaMax=${connectionData.watershedAreaBounds.upperAreaBound}`;
+  if (connectionData.watershedLowerAreaBoundsActive) {
+    drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound}`;
   }
-
+  if (connectionData.watershedUpperAreaBoundsActive) {
+    drainAreaUpperQuery = `&drainAreaMax=${connectionData.watershedAreaBounds.upperAreaBound}`;
+  }
+  let drainAreaQuery = `${drainAreaLowerQuery}${drainAreaUpperQuery}`;
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${drainAreaQuery}`;
 };
 

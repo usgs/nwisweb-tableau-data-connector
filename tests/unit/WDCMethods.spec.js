@@ -122,7 +122,8 @@ test("correctly generate a URL given a list of sites and parameters with various
   const connectionData = {
     agencyCodeActive: false,
     siteTypeListActive: false,
-    watershedAreaBoundsActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     siteNums: "01646500 ,   05437641",
     paramNums: ["00060", "00065"],
     state: "Rhode Island",
@@ -137,7 +138,8 @@ test("correctly generate a URL given a state", () => {
   const connectionData = {
     agencyCodeActive: false,
     siteTypeListActive: false,
-    watershedAreaBoundsActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     paramNums: ["00060", "00065"],
     state: "ri",
     locationMode: locationMode.STATE
@@ -152,7 +154,8 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     paramNums: ["00060", "00065"],
     agencyCodeActive: false,
     siteTypeListActive: false,
-    watershedAreaBoundsActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     boundaryCoords: {
       north: "2.000000",
       south: "1.000000",
@@ -171,7 +174,8 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010",
     agencyCodeActive: false,
-    watershedAreaBoundsActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     siteTypeListActive: false,
     locationMode: locationMode.HYDRO
   };
@@ -185,7 +189,8 @@ test("correctly generate a URL given a list of counties and drainage area params
     paramNums: ["00060", "00065"],
     countyCode: [11111, 22222],
     agencyCodeActive: false,
-    watershedAreaBoundsActive: true,
+    watershedUpperAreaBoundsActive: true,
+    watershedLowerAreaBoundsActive: true,
     watershedAreaBounds: {
       upperAreaBound: 1000,
       lowerAreaBound: 0
@@ -204,7 +209,8 @@ test("correctly generate a URL given a hydrological Unit Code with siteType and 
     hydroCode: "02070010",
     agencyCodeActive: true,
     siteTypeListActive: true,
-    watershedAreaBoundsActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     agencyCode: "agencyA",
     siteTypeList: ["siteA", "siteB"],
     locationMode: locationMode.HYDRO

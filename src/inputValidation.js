@@ -148,20 +148,29 @@ Warns the user if they have input invalid watershed area boundaries
 */
 
 const validateWatershedAreaBoundaries = (boundaries, instance) => {
-  if (!instance.$store.getters.watershedAreaBoundsActive) {
+  let upperActive = instance.$store.getters.watershedUpperAreaBoundsActive;
+  let lowerActive = instance.$store.getters.watershedLowerAreaBoundsActive;
+
+  if (!upperActive && !lowerActive) {
     return true;
   }
   let regex = /^\d(\d)*$/;
 
-  if (!boundaries.upperAreaBound.replace(/\s/g, "").match(regex)) {
-    return "upper area bound is not a positive integer";
+  if (upperActive) {
+    if (!boundaries.upperAreaBound.replace(/\s/g, "").match(regex)) {
+      return "upper area bound is not a positive integer";
+    }
   }
-  if (!boundaries.lowerAreaBound.replace(/\s/g, "").match(regex)) {
-    return "lower area bound is not a positive integer";
+  if (lowerActive) {
+    if (!boundaries.lowerAreaBound.replace(/\s/g, "").match(regex)) {
+      return "lower area bound is not a positive integer";
+    }
   }
 
   if (
-    parseInt(boundaries.upperAreaBound) < parseInt(boundaries.lowerAreaBound)
+    parseInt(boundaries.upperAreaBound) < parseInt(boundaries.lowerAreaBound) &&
+    lowerActive &&
+    upperActive
   ) {
     return "invalid boundaries: lower watershed area bound exceeds upper watershed area bound.";
   }

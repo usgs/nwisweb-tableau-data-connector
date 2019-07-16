@@ -499,7 +499,10 @@ done in ParamSelect.vue
       state: {},
       modules: {},
       getters: {
-        watershedAreaBoundsActive: () => {
+        watershedUpperAreaBoundsActive: () => {
+          return true;
+        },
+        watershedLowerAreaBoundsActive: () => {
           return true;
         }
       },
@@ -538,7 +541,10 @@ done in ParamSelect.vue
       state: {},
       modules: {},
       getters: {
-        watershedAreaBoundsActive: () => {
+        watershedUpperAreaBoundsActive: () => {
+          return false;
+        },
+        watershedLowerAreaBoundsActive: () => {
           return false;
         }
       },
@@ -554,21 +560,24 @@ done in ParamSelect.vue
       state: {},
       modules: {},
       getters: {
-        watershedAreaBoundsActive: () => {
+        watershedUpperAreaBoundsActive: () => {
           return true;
+        },
+        watershedLowerAreaBoundsActive: () => {
+          return false;
         }
       },
       actions: {}
     });
     wrapper = shallowMount(Main, { store, localVue });
     bounds = {
-      upperAreaBound: "45",
-      lowerAreaBound: "29"
+      upperAreaBound: "23",
+      lowerAreaBound: "gsdfgsdfg"
     };
     expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).toBe(true);
     bounds = {
-      upperAreaBound: "432453453432",
-      lowerAreaBound: "0"
+      upperAreaBound: "1",
+      lowerAreaBound: "2"
     };
     expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).toBe(true);
   });

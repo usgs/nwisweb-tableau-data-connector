@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { getData, getSchema } from "../WDCMethods.js";
+import { getData, getSchema, generateURL } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
@@ -149,13 +149,18 @@ export default {
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
         watershedAreaBounds: this.$store.getters.watershedAreaBounds,
-        watershedAreaBoundsActive: this.$store.getters.watershedAreaBoundsActive
+        watershedUpperAreaBoundsActive: this.$store.getters
+          .watershedUpperAreaBoundsActive,
+        watershedLowerAreaBoundsActive: this.$store.getters
+          .watershedLowerAreaBoundsActive
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {
         tableau.connectionData = connectionData;
       }
+
+      alert(generateURL(connectionData));
 
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();

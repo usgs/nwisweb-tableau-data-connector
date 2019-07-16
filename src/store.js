@@ -9,7 +9,8 @@ export default new Vuex.Store({
     state: "",
     siteTypeListActive: false,
     agencyActive: false,
-    watershedAreaBoundsActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     agencyCode: "",
     siteType: [],
     hydroCode: "",
@@ -53,8 +54,11 @@ export default new Vuex.Store({
     changeWatershedAreaBounds: (state, newAreaBounds) => {
       state.watershedAreaBounds = newAreaBounds;
     },
-    changeWatershedAreaBoundsActive: (state, newActivityState) => {
-      state.watershedAreaBoundsActive = newActivityState;
+    changeUpperWatershedAreaBoundsActive: (state, newActivityState) => {
+      state.watershedUpperAreaBoundsActive = newActivityState;
+    },
+    changeLowerWatershedAreaBoundsActive: (state, newActivityState) => {
+      state.watershedLowerAreaBoundsActive = newActivityState;
     }
   },
   actions: {},
@@ -92,8 +96,11 @@ export default new Vuex.Store({
     watershedAreaBounds: state => {
       return state.watershedAreaBounds;
     },
-    watershedAreaBoundsActive: state => {
-      return state.watershedAreaBoundsActive;
+    watershedUpperAreaBoundsActive: state => {
+      return state.watershedUpperAreaBoundsActive;
+    },
+    watershedLowerAreaBoundsActive: state => {
+      return state.watershedLowerAreaBoundsActive;
     }
   }
 });

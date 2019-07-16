@@ -41,24 +41,30 @@ export default {
         upperAreaBound: "",
         lowerAreaBound: ""
       },
-      areaBoundsActive: false
+      upperWatershedAreaBoundsActive: false,
+      lowerWatershedAreaBoundsActive: false
     };
   },
   methods: {
     commitWatershedAreabounds: function(newValue) {
       this.$store.commit("changeWatershedAreaBounds", newValue);
     },
-    commitAreaBoundsActive: function(newValue) {
-      this.$store.commit("changeWatershedAreaBoundsActive", newValue);
+    commitUpperAreaBoundsActive: function(newValue) {
+      this.$store.commit("changeUpperWatershedAreaBoundsActive", newValue);
+    },
+    commitLowerAreaBoundsActive: function(newValue) {
+      this.$store.commit("changeLowerWatershedAreaBoundsActive", newValue);
     }
   },
   watch: {
     areaBounds: {
       handler: function(newValue) {
         this.commitWatershedAreabounds(newValue);
-        this.areaBoundsActive =
-          newValue.upperAreaBound != "" || newValue.lowerAreaBound != "";
-        this.commitAreaBoundsActive(this.areaBoundsActive);
+        this.upperWatershedAreaBoundsActive = newValue.upperAreaBound != "";
+        this.lowerWatershedAreaBoundsActive = newValue.lowerAreaBound != "";
+
+        this.commitUpperAreaBoundsActive(this.upperWatershedAreaBoundsActive);
+        this.commitLowerAreaBoundsActive(this.lowerWatershedAreaBoundsActive);
       },
       deep: true
     }
