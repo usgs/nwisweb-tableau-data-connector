@@ -16,12 +16,15 @@ export default new Vuex.Store({
     paramCodes: [],
     locationMode: locationMode.SITE,
     coordinates: {},
-    GWSiteAttrActive: false,
-    GWSiteAttrDepths: {},
     natAquiferActive: false,
     natAquifer: "",
     locAquiferActive: false,
-    locAquifer: ""
+    locAquifer: "",
+    wellMinActive: false,
+    wellMaxActive: false,
+    holeMinActive: false,
+    holeMaxActive: false,
+    GWSiteAttrDepths: {}
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -54,8 +57,17 @@ export default new Vuex.Store({
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
     },
-    changeGWSiteAttrActive: (state, newGWSiteAttrActivation) => {
-      state.GWSiteAttrActive = newGWSiteAttrActivation;
+    changeWellMinActive: (state, newWellMinActivation) => {
+      state.wellMinActive = newWellMinActivation;
+    },
+    changeWellMaxActive: (state, newWellMaxActivation) => {
+      state.wellMaxActive = newWellMaxActivation;
+    },
+    changeHoleMinActive: (state, newHoleMinActivation) => {
+      state.holeMinActive = newHoleMinActivation;
+    },
+    changeHoleMaxActive: (state, newHoleMaxActivation) => {
+      state.holeMaxActive = newHoleMaxActivation;
     },
     changeGWSiteAttrDepths: (state, newGWSiteAttrDepths) => {
       state.GWSiteAttrDepths = newGWSiteAttrDepths;
@@ -105,8 +117,17 @@ export default new Vuex.Store({
     agencyActive: state => {
       return state.agencyActive;
     },
-    GWSiteAttrActive: state => {
-      return state.GWSiteAttrActive;
+    wellMinActive: state => {
+      return state.wellMinActive;
+    },
+    wellMaxActive: state => {
+      return state.wellMaxActive;
+    },
+    holeMinActive: state => {
+      return state.holeMinActive;
+    },
+    holeMaxActive: state => {
+      return state.holeMaxActive;
     },
     GWSiteAttrDepths: state => {
       return state.GWSiteAttrDepths;

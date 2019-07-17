@@ -495,13 +495,26 @@ done in ParamSelect.vue
   });
 
   test("validateGroundWaterSiteInputs successfully rejects non-numeric parameters", () => {
-    store = new Vuex.Store({
+    let store = new Vuex.Store({
       state: {},
       modules: {},
-      getters: {},
+      getters: {
+        wellMinActive: () => {
+          return true;
+        },
+        wellMaxActive: () => {
+          return true;
+        },
+        holeMinActive: () => {
+          return true;
+        },
+        holeMaxActive: () => {
+          return true;
+        }
+      },
       actions: {}
     });
-    const wrapper = shallowMount(Main, { store, localVue });
+    let wrapper = shallowMount(Main, { store, localVue });
     let GWSiteAttrDepths = {
       wellMin: "these",
       wellMax: "100",
@@ -540,60 +553,86 @@ done in ParamSelect.vue
     ).not.toBe(true);
   });
 
-  test("validateGroundWaterSiteInputs accepts blank parameters", () => {
-    store = new Vuex.Store({
+  test("validateGroundWaterSiteInputs rejects blank parameters", () => {
+    let store = new Vuex.Store({
       state: {},
       modules: {},
-      getters: {},
+      getters: {
+        wellMinActive: () => {
+          return true;
+        },
+        wellMaxActive: () => {
+          return true;
+        },
+        holeMinActive: () => {
+          return true;
+        },
+        holeMaxActive: () => {
+          return true;
+        }
+      },
       actions: {}
     });
-    const wrapper = shallowMount(Main, { store, localVue });
+    let wrapper = shallowMount(Main, { store, localVue });
     let GWSiteAttrDepths = {
       wellMin: "",
       wellMax: "100",
       holeMin: "10",
       holeMax: "100"
     };
-    expect(validateGroundWaterSiteInputs(GWSiteAttrDepths, wrapper.vm)).toBe(
-      true
-    );
+    expect(
+      validateGroundWaterSiteInputs(GWSiteAttrDepths, wrapper.vm)
+    ).not.toBe(true);
     GWSiteAttrDepths = {
       wellMin: "10",
       wellMax: "",
       holeMin: "10",
       holeMax: "100"
     };
-    expect(validateGroundWaterSiteInputs(GWSiteAttrDepths, wrapper.vm)).toBe(
-      true
-    );
+    expect(
+      validateGroundWaterSiteInputs(GWSiteAttrDepths, wrapper.vm)
+    ).not.toBe(true);
     GWSiteAttrDepths = {
       wellMin: "10",
       wellMax: "100",
       holeMin: "",
       holeMax: "100"
     };
-    expect(validateGroundWaterSiteInputs(GWSiteAttrDepths, wrapper.vm)).toBe(
-      true
-    );
+    expect(
+      validateGroundWaterSiteInputs(GWSiteAttrDepths, wrapper.vm)
+    ).not.toBe(true);
     GWSiteAttrDepths = {
       wellMin: "10",
       wellMax: "100",
       holeMin: "10",
       holeMax: ""
     };
-    expect(validateGroundWaterSiteInputs(GWSiteAttrDepths, wrapper.vm)).toBe(
-      true
-    );
+    expect(
+      validateGroundWaterSiteInputs(GWSiteAttrDepths, wrapper.vm)
+    ).not.toBe(true);
   });
 
   test("validateGroundWaterSiteInputs rejects minimum depth that is larger than a maximum depth", () => {
-    store = new Vuex.Store({
+    let store = new Vuex.Store({
       state: {},
       modules: {},
-      getters: {},
+      getters: {
+        wellMinActive: () => {
+          return true;
+        },
+        wellMaxActive: () => {
+          return true;
+        },
+        holeMinActive: () => {
+          return true;
+        },
+        holeMaxActive: () => {
+          return true;
+        }
+      },
       actions: {}
     });
-    const wrapper = shallowMount(Main, { store, localVue });
+    let wrapper = shallowMount(Main, { store, localVue });
     let GWSiteAttrDepths = {
       wellMin: "100",
       wellMax: "10",

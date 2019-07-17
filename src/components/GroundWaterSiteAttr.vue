@@ -57,28 +57,44 @@ export default {
         wellMax: "",
         holeMin: "",
         holeMax: ""
-      }
+      },
+      wellMinActive: false,
+      wellMaxActive: false,
+      holeMinActive: false,
+      holeMaxActive: false
     };
   },
   methods: {
-    commitGroundWaterSiteAttr: function() {
-      if (
-        this.GWSiteAttrDepths.wellMin != "" ||
-        this.GWSiteAttrDepths.wellMax != "" ||
-        this.GWSiteAttrDepths.holeMin != "" ||
-        this.GWSiteAttrDepths.holeMax != ""
-      ) {
-        this.$store.commit("changeGWSiteAttrActive", true);
-      } else {
-        this.$store.commit("changeGWSiteAttrActive", false);
-      }
-      this.$store.commit("changeGWSiteAttrDepths", this.GWSiteAttrDepths);
+    commitWellMinActive: function(newValue) {
+      this.$store.commit("changeWellMinActive", newValue);
+    },
+    commitWellMaxActive: function(newValue) {
+      this.$store.commit("changeWellMaxActive", newValue);
+    },
+    commitHoleMinActive: function(newValue) {
+      this.$store.commit("changeHoleMinActive", newValue);
+    },
+    commitHoleMaxActive: function(newValue) {
+      this.$store.commit("changeHoleMaxActive", newValue);
+    },
+    commitGWSiteAttrDepths: function(newValue) {
+      this.$store.commit("changeGWSiteAttrDepths", newValue);
     }
   },
   watch: {
     GWSiteAttrDepths: {
-      handler: function() {
-        this.commitGroundWaterSiteAttr();
+      handler: function(newValue) {
+        this.commitGWSiteAttrDepths(newValue);
+
+        this.wellMinActive = newValue.wellMin != "";
+        this.wellMaxActive = newValue.wellMax != "";
+        this.holeMinActive = newValue.holeMin != "";
+        this.holeMaxActive = newValue.holeMax != "";
+
+        this.commitWellMinActive(this.wellMinActive);
+        this.commitWellMaxActive(this.wellMaxActive);
+        this.commitHoleMinActive(this.holeMinActive);
+        this.commitHoleMaxActive(this.holeMaxActive);
       },
       deep: true
     }
