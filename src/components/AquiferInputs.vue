@@ -3,13 +3,13 @@
     <span class="input-desc">
       <label>Sites Contained within these National Aquifer Codes</label>
       <ToolTip
-        hint="Enter up to 1000 national aquifer codes, separated by commas. A complete list of national aquifer codes is linked here."
+        hint="Enter up to 1000 national aquifer codes, separated by commas. Each National Aquifer Code is 10 digits. A complete list of national aquifer codes is linked here."
         url="https://water.usgs.gov/ogw/NatlAqCode-reflist.html"
       ></ToolTip>
     </span>
     <input
       class="usa-input usa-input-custom"
-      v-model="natAquiferCode"
+      v-model="natAquifer"
       type="text"
     />
     <span class="input-desc">
@@ -21,7 +21,7 @@
     </span>
     <input
       class="usa-input usa-input-custom"
-      v-model="locAquiferCode"
+      v-model="locAquifer"
       type="text"
     />
   </div>
@@ -38,23 +38,35 @@ export default {
   data: function() {
     return {
       natAquifer: "",
-      locAquifer: ""
+      natAquiferActive: "",
+      locAquifer: "",
+      locAquiferActive: "",
     };
   },
   methods: {
     commitNatAquifer: function(newValue) {
-      this.$store.commit("changeNatAquiferCode", newValue);
+      this.$store.commit("changeNatAquifer", newValue);
+    },
+    commitNatAquiferActive: function(newValue) {
+      this.$store.commit("changeNatAquiferActive", newValue);
     },
     commitLocAquifer: function(newValue) {
-      this.$store.commit("changeLocAquiferCode", newValue);
-    }
+      this.$store.commit("changeLocAquifer", newValue);
+    },
+    commitLocAquiferActive: function(newValue) {
+      this.$store.commit("changeLocAquiferActive", newValue);
+    },
   },
   watch: {
     natAquifer: function(newValue) {
+      this.natAquiferActive = newValue != "";
       this.commitNatAquifer(newValue);
+      this.commitNatAquiferActive(this.natAquiferActive);
     },
     locAquifer: function(newValue) {
+      this.locAquiferActive = newValue != "";
       this.commitLocAquifer(newValue);
+      this.commitLocAquiferActive(this.locAquiferActive);
     }
   }
 };

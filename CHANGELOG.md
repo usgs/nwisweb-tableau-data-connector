@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Tableau Desktop Compatible alerts
 - Added Tooltips to support usability when datalist is not supported
 - Added support for Ground Water Site Attributes
+- Added support for National and Local Aquifer codes
 ### Changed
 - Changed styling so all elements are left justified
 

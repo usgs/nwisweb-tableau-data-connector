@@ -158,18 +158,14 @@ export default {
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
-<<<<<<< HEAD
         natAquiferActive: this.$store.getters.natAquiferActive,
         natAquifer: this.$store.getters.natAquifer,
         locAquiferActive: this.$store.getters.locAquiferActive,
         locAquifer: this.$store.getters.locAquifer,
-        GWSiteAttrActive: this.$store.getters.GWSiteAttrActive,
-=======
         wellMinActive: this.$store.getters.wellMinActive,
         wellMaxActive: this.$store.getters.wellMaxActive,
         holeMinActive: this.$store.getters.holeMinActive,
         holeMaxActive: this.$store.getters.holeMaxActive,
->>>>>>> a348cbc7e4833cbd63be9ceae52c444d05305a1d
         GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths
       };
       if (typeof tableau.connectionData === "string") {
