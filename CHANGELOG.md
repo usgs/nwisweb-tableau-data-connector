@@ -29,4 +29,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Changed styling so all elements are left justified
 - Added watershed area query
-
+- Added Altitude query params
