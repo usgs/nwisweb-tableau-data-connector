@@ -154,7 +154,10 @@ export default {
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
-        GWSiteAttrActive: this.$store.getters.GWSiteAttrActive,
+        wellMinActive: this.$store.getters.wellMinActive,
+        wellMaxActive: this.$store.getters.wellMaxActive,
+        holeMinActive: this.$store.getters.holeMinActive,
+        holeMaxActive: this.$store.getters.holeMaxActive,
         GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths
       };
       if (typeof tableau.connectionData === "string") {
