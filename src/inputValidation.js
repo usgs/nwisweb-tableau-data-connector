@@ -158,7 +158,7 @@ const validateAgencyInputs = (agency, instance, agencyData) => {
       Warns user if National Aquifer Code is not 10 characters long. 
       Prevents users from exceeding 1000 aquifer codes.
     */
-const validateNatAquiferInputs = (natAquifer, instance) => {
+const validateNatAquiferInput = (natAquifer, instance) => {
   let regex = /^(((\w){10}),)*((\w){10})$/;
 
   if (instance.$store.getters.natAquiferActive) {
@@ -174,8 +174,8 @@ const validateNatAquiferInputs = (natAquifer, instance) => {
       Warns user if National Aquifer Code is not 10 characters long. 
       Prevents users from exceeding 1000 aquifer codes.
     */
-const validateLocAquiferInputs = (locAquifer, instance) => {
-  let regex = /^(((\w){10}),)*((\w){10})$/;
+const validateLocAquiferInput = (locAquifer, instance) => {
+  let regex = /^((((\w){2}):(\w){7}),)*((((\w){2}):(\w){7}))$/;
 
   if (instance.$store.getters.locAquiferActive) {
     if (!locAquifer.replace(/\s/g, "").match(regex)) {
@@ -317,7 +317,7 @@ const validateFormInputs = instance => {
     return false;
   }
 
-  let natAquiferSiteStatus = validateNatAquiferInputs(
+  let natAquiferSiteStatus = validateNatAquiferInput(
     instance.$store.getters.natAquifer,
     instance
   );
@@ -326,7 +326,7 @@ const validateFormInputs = instance => {
     return false;
   }
 
-  let locAquiferSiteStatus = validateLocAquiferInputs(
+  let locAquiferSiteStatus = validateLocAquiferInput(
     instance.$store.getters.locAquifer,
     instance
   );
@@ -362,5 +362,7 @@ export {
   validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
+  validateNatAquiferInput,
+  validateLocAquiferInput,
   validateGroundWaterSiteInputs
 };

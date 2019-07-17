@@ -10,7 +10,9 @@ import {
   validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
-  validateGroundWaterSiteInputs
+  validateGroundWaterSiteInputs,
+  validateNatAquiferInput,
+  validateLocAquiferInput
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
 import Notifications from "vue-notification";
@@ -492,6 +494,38 @@ done in ParamSelect.vue
     expect(
       validateAgencyInputs(siteType, wrapper.vm, [{ agency_cd: "agencyA" }])
     ).toBe(true);
+  });
+
+  test("validateNatAquiferInput successfully rejects invalid National Aquifer Codes", () => {
+    let store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        natAquiferActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let aquifer = "12345";
+    expect(validateNatAquiferInput(aquifer, wrapper.vm)).not.toBe(true);
+  });
+
+  test("validateLocAquiferInput successfully rejects invalid Local Aquifer Codes", () => {
+    let store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        locAquiferActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let aquifer = "12345";
+    expect(validateLocAquiferInput(aquifer, wrapper.vm)).not.toBe(true);
   });
 
   test("validateGroundWaterSiteInputs successfully rejects non-numeric parameters", () => {
