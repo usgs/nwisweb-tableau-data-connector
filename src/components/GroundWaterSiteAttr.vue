@@ -62,8 +62,16 @@ export default {
   },
   methods: {
     commitGroundWaterSiteAttr: function() {
-      let GWSiteAttrActive = true;
-      this.$store.commit("changeGWSiteAttrActive", GWSiteAttrActive);
+      if (
+        this.GWSiteAttrDepths.wellMin != "" ||
+        this.GWSiteAttrDepths.wellMax != "" ||
+        this.GWSiteAttrDepths.holeMin != "" ||
+        this.GWSiteAttrDepths.holeMax != ""
+      ) {
+        this.$store.commit("changeGWSiteAttrActive", true);
+      } else {
+        this.$store.commit("changeGWSiteAttrActive", false);
+      }
       this.$store.commit("changeGWSiteAttrDepths", this.GWSiteAttrDepths);
     }
   },
