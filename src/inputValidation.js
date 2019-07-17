@@ -158,18 +158,11 @@ const validateAgencyInputs = (agency, instance, agencyData) => {
       Ensures that if both min and max values are present, the min value is less than the max value.
       Checks both hole and well depths.
     */
-const validateGroundWaterSiteInputs = (GWSiteAttrDepths, instance) => {
-  if (!instance.$store.getters.GWSiteAttrActive) {
-    return true;
-  }
-  if (!isNaN(GWSiteAttrDepths.wellMin))
-    return "non-numeric well minimum depth";
-  if (!isNaN(GWSiteAttrDepths.wellMax))
-    return "non-numeric well maximum depth";
-  if (!isNaN(GWSiteAttrDepths.holeMin))
-    return "non-numeric hole minimum depth";
-  if (!isNaN(GWSiteAttrDepths.holeMax))
-    return "non-numeric hole maximum depth";
+const validateGroundWaterSiteInputs = GWSiteAttrDepths => {
+  if (isNaN(GWSiteAttrDepths.wellMin)) return "non-numeric well minimum depth";
+  if (isNaN(GWSiteAttrDepths.wellMax)) return "non-numeric well maximum depth";
+  if (isNaN(GWSiteAttrDepths.holeMin)) return "non-numeric hole minimum depth";
+  if (isNaN(GWSiteAttrDepths.holeMax)) return "non-numeric hole maximum depth";
   if (
     parseFloat(GWSiteAttrDepths.wellMin) > parseFloat(GWSiteAttrDepths.wellMax)
   )
@@ -255,8 +248,7 @@ const validateFormInputs = instance => {
   }
 
   let GroundWaterSiteStatus = validateGroundWaterSiteInputs(
-    instance.$store.getters.GWSiteAttrDepths,
-    instance
+    instance.$store.getters.GWSiteAttrDepths
   );
   if (!(GroundWaterSiteStatus === true)) {
     notify(GroundWaterSiteStatus);
