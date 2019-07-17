@@ -59,7 +59,8 @@ const validateCoordinateInputs = (coordinates, instance) => {
 };
 
 const isNumeric = value => {
-  return !isNaN(value) && value != "";
+  let regex = /^(-)?((\d)+\.)?(\d)+$/;
+  return value.match(regex);
 };
 
 const isWithinLatitudeBounds = latitude => {
@@ -74,10 +75,18 @@ const isWithinLongitudeBounds = longitude => {
       rounds coordinate inputs to 6 decimal places. Called in validateFormInputs()
     */
 const roundCoordinateInputs = coordinates => {
-  coordinates.north = parseFloat(coordinates.north).toFixed(6);
-  coordinates.south = parseFloat(coordinates.south).toFixed(6);
-  coordinates.east = parseFloat(coordinates.east).toFixed(6);
-  coordinates.west = parseFloat(coordinates.west).toFixed(6);
+  coordinates.north = parseFloat(coordinates.north)
+    .toFixed(6)
+    .toString();
+  coordinates.south = parseFloat(coordinates.south)
+    .toFixed(6)
+    .toString();
+  coordinates.east = parseFloat(coordinates.east)
+    .toFixed(6)
+    .toString();
+  coordinates.west = parseFloat(coordinates.west)
+    .toFixed(6)
+    .toString();
   return coordinates;
 };
 /*
