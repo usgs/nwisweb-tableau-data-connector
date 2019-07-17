@@ -36,6 +36,7 @@
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
             <WatershedInput></WatershedInput>
+            <AltitudeInput></AltitudeInput>
           </div>
         </div>
         <div class="rightcolumn">
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-import { getData, getSchema, generateURL } from "../WDCMethods.js";
+import { getData, getSchema } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
@@ -69,6 +70,7 @@ import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import ParamSelect from "../components/ParamSelect";
 import AgencySelect from "../components/AgencySelect";
+import AltitudeInput from "../components/AltitudeInput";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import ToolTip from "../components/ToolTip";
@@ -91,7 +93,8 @@ export default {
     CountySelect,
     AgencySelect,
     ToolTip,
-    WatershedInput
+    WatershedInput,
+    AltitudeInput
   },
   data: function() {
     return {
@@ -152,16 +155,16 @@ export default {
         watershedUpperAreaBoundsActive: this.$store.getters
           .watershedUpperAreaBoundsActive,
         watershedLowerAreaBoundsActive: this.$store.getters
-          .watershedLowerAreaBoundsActive
+          .watershedLowerAreaBoundsActive,
+        altitudeBounds: this.$store.getters.altitudeBounds,
+        upperAltitudeBoundActive: this.$store.getters.upperAltitudeBoundActive,
+        lowerAltitudeBoundActive: this.$store.getters.lowerAltitudeBoundActive
       };
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {
         tableau.connectionData = connectionData;
       }
-
-      alert(generateURL(connectionData));
-
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
     },

@@ -104,6 +104,8 @@ const generateURL = connectionData => {
   let agencyCodeQuery = "";
   let drainAreaUpperQuery = "";
   let drainAreaLowerQuery = "";
+  let altitudeLowerQuery = "";
+  let altitudeUpperQuery = "";
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -118,11 +120,17 @@ const generateURL = connectionData => {
     case locationMode.COORDS: {
       // west south east north
       let bounds = connectionData.boundaryCoords;
-      locationQuery = `&bBox=${bounds.west},${bounds.south},${bounds.east},${bounds.north}`;
+      locationQuery = `&bBox=${bounds.west.replace(
+        /\s/g,
+        ""
+      )},${bounds.south.replace(/\s/g, "")},${bounds.east.replace(
+        /\s/g,
+        ""
+      )},${bounds.north.replace(/\s/g, "")}`;
       break;
     }
     case locationMode.HYDRO: {
-      let hydroCode = connectionData.hydroCode;
+      let hydroCode = connectionData.hydroCode.replace(/\s/g, "");
       locationQuery = `&huc=${hydroCode}`;
       break;
     }
@@ -143,13 +151,34 @@ const generateURL = connectionData => {
   }
 
   if (connectionData.watershedLowerAreaBoundsActive) {
-    drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound}`;
+    drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound.replace(
+      /\s/g,
+      ""
+    )}`;
   }
   if (connectionData.watershedUpperAreaBoundsActive) {
-    drainAreaUpperQuery = `&drainAreaMax=${connectionData.watershedAreaBounds.upperAreaBound}`;
+    drainAreaUpperQuery = `&drainAreaMax=${connectionData.watershedAreaBounds.upperAreaBound.replace(
+      /\s/g,
+      ""
+    )}`;
   }
   let drainAreaQuery = `${drainAreaLowerQuery}${drainAreaUpperQuery}`;
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${drainAreaQuery}`;
+
+  if (connectionData.lowerAltitudeBoundActive) {
+    altitudeLowerQuery = `&altMin=${connectionData.altitudeBounds.lowerAltitudeBound.replace(
+      /\s/g,
+      ""
+    )}`;
+  }
+  if (connectionData.upperAltitudeBoundActive) {
+    altitudeUpperQuery = `&altMax=${connectionData.altitudeBounds.upperAltitudeBound.replace(
+      /\s/g,
+      ""
+    )}`;
+  }
+  let altitudeQuery = `${altitudeLowerQuery}${altitudeUpperQuery}`;
+
+  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${drainAreaQuery}${altitudeQuery}`;
 };
 
 /*

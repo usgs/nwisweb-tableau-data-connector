@@ -179,6 +179,42 @@ const validateWatershedAreaBoundaries = (boundaries, instance) => {
 };
 
 /*
+Warns the user if they have input invalid altitude area boundaries
+*/
+
+const validateAltitudeBoundaries = (boundaries, instance) => {
+  let upperActive = instance.$store.getters.upperAltitudeBoundActive;
+  let lowerActive = instance.$store.getters.lowerAltitudeBoundActive;
+
+  if (!upperActive && !lowerActive) {
+    return true;
+  }
+  let regex = /^(-)?(\d)+(\.\d)?(\d)*$/;
+
+  if (upperActive) {
+    if (!boundaries.upperAltitudeBound.replace(/\s/g, "").match(regex)) {
+      return "upper altitude bound is not a valid float. format: #.# ";
+    }
+  }
+  if (lowerActive) {
+    if (!boundaries.lowerAltitudeBound.replace(/\s/g, "").match(regex)) {
+      return "lower altitude bound is not a valid float. format: #.# ";
+    }
+  }
+
+  if (
+    parseFloat(boundaries.upperAltitudeBound) <
+      parseFloat(boundaries.lowerAltitudeBound) &&
+    lowerActive &&
+    upperActive
+  ) {
+    return "invalid boundaries: lower altitude bound exceeds upper altitude bound.";
+  }
+
+  return true;
+};
+
+/*
   Warns the user if they have selected an invalid agency code.
 */
 const validateAgencyInputs = (agency, instance, agencyData) => {
@@ -271,6 +307,15 @@ const validateFormInputs = instance => {
     return false;
   }
 
+  let altitudeStatus = validateAltitudeBoundaries(
+    instance.$store.getters.altitudeBounds,
+    instance
+  );
+  if (!(altitudeStatus === true)) {
+    notify(altitudeStatus);
+    return false;
+  }
+
   instance.$store.commit(
     "changeCoordinates",
     roundCoordinateInputs(instance.$store.getters.coordinates)
@@ -289,5 +334,6 @@ export {
   validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
-  validateWatershedAreaBoundaries
+  validateWatershedAreaBoundaries,
+  validateAltitudeBoundaries
 };

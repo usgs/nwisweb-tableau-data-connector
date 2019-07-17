@@ -11,6 +11,9 @@ export default new Vuex.Store({
     agencyActive: false,
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    altitudeBounds: {},
+    upperAltitudeBoundActive: false,
+    lowerAltitudeBoundActive: false,
     agencyCode: "",
     siteType: [],
     hydroCode: "",
@@ -59,6 +62,15 @@ export default new Vuex.Store({
     },
     changeLowerWatershedAreaBoundsActive: (state, newActivityState) => {
       state.watershedLowerAreaBoundsActive = newActivityState;
+    },
+    changeAltitudeBounds: (state, newAltitudebounds) => {
+      state.altitudeBounds = newAltitudebounds;
+    },
+    changeUpperAltitudeBoundActive: (state, newUpperAltitudeBoundActive) => {
+      state.upperAltitudeBoundActive = newUpperAltitudeBoundActive;
+    },
+    changeLowerAltitudeBoundActive: (state, newLowerAltitudeBoundsActive) => {
+      state.lowerAltitudeBoundActive = newLowerAltitudeBoundsActive;
     }
   },
   actions: {},
@@ -101,6 +113,15 @@ export default new Vuex.Store({
     },
     watershedLowerAreaBoundsActive: state => {
       return state.watershedLowerAreaBoundsActive;
+    },
+    altitudeBounds: state => {
+      return state.altitudeBounds;
+    },
+    upperAltitudeBoundActive: state => {
+      return state.upperAltitudeBoundActive;
+    },
+    lowerAltitudeBoundActive: state => {
+      return state.lowerAltitudeBoundActive;
     }
   }
 });

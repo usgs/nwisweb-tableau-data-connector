@@ -4,7 +4,7 @@
     <span class="input-desc">
       <label>Upper Altitude Boundary</label>
       <ToolTip
-        hint="Use these fields to specify upper and lower bounds for desired watershed draiage areas of included results. Each number must be a positive integer. If nothing is entered in this field, it will be ignored."
+        hint="Use these fields to specify upper and lower bounds for site altitude. If these fields are left empty, sites will not be filtered by altitude. negative values for altitude are allowed."
       ></ToolTip>
     </span>
     <input
@@ -50,21 +50,21 @@ export default {
       this.$store.commit("changeAltitudeBounds", newValue);
     },
     commitLowerAltitudeBoundActive: function(newValue) {
-      this.$store.commit("changeLowerAltitudeBound", newValue);
+      this.$store.commit("changeLowerAltitudeBoundActive", newValue);
     },
     commitUpperAltitudeBoundActive: function(newValue) {
-      this.$store.commit("changeUpperAltitudeBound", newValue);
+      this.$store.commit("changeUpperAltitudeBoundActive", newValue);
     }
   },
   watch: {
-    areaBounds: {
+    altitudeBounds: {
       handler: function(newValue) {
         this.commitAltitudeBounds(newValue);
         this.upperAltitudeBoundActive = newValue.upperAltitudeBound != "";
         this.lowerAltitudeBoundActive = newValue.lowerAltitudeBound != "";
 
-        this.commitLowerAltitudeBound(this.upperWatershedAreaBoundsActive);
-        this.commitLowerAreaBoundsActive(this.lowerWatershedAreaBoundsActive);
+        this.commitUpperAltitudeBoundActive(this.upperAltitudeBoundActive);
+        this.commitLowerAltitudeBoundActive(this.lowerAltitudeBoundActive);
       },
       deep: true
     }
