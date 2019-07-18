@@ -36,37 +36,37 @@
           hint="This field allows to set a start and end temporal boundary for the timestamps of returned data. If this field is use, both timezone fields and both datetime fields must be filled out. The end datetime cannot come before the start datetime. "
         ></ToolTip>
       </span>
-      <VueCtkDateTimePicker
-        style="display:inline-block;"
-        format="YYYY-MM-DDThh:mmZ"
-        v-model="startDateTime"
-        ><input class="usa-input usa-input-custom"
-      /></VueCtkDateTimePicker>
-      <label>Start Time Zone</label>
+        <VueCtkDateTimePicker
+          style="display:inline-block;"
+          format="YYYY-MM-DDThh:mmZ"
+          v-model="startDateTime"
+          ><input class="usa-input usa-input-custom"
+        /></VueCtkDateTimePicker>
+              <label >Start Time Zone</label>
 
-      <select
-        v-model="startTimeZone"
-        id="starttzselect"
-        class="usa-select timezone-select"
-      ></select>
-
+        <select
+          v-model="startTimeZone"
+          id="starttzselect"
+          class="usa-select timezone-select"
+        ></select>
+      
       <span class="input-desc">
         <label>End Time</label>
       </span>
+      
+        <VueCtkDateTimePicker
+          style="display: inline-block;"
+          format="YYYY-MM-DDThh:mmZ"
+          v-model="endDateTime"
+          ><input class="usa-input usa-input-custom"
+        /></VueCtkDateTimePicker>
+              <label >End Time Zone</label>
 
-      <VueCtkDateTimePicker
-        style="display: inline-block;"
-        format="YYYY-MM-DDThh:mmZ"
-        v-model="endDateTime"
-        ><input class="usa-input usa-input-custom"
-      /></VueCtkDateTimePicker>
-      <label>End Time Zone</label>
-
-      <select
-        v-model="endTimeZone"
-        id="endtzselect"
-        class="usa-select timezone-select"
-      ></select>
+        <select
+          v-model="endTimeZone"
+          id="endtzselect"
+          class="usa-select timezone-select"
+        ></select>
     </div>
     <br />
     <span class="input-desc">
@@ -154,7 +154,6 @@ export default {
       this.commitModifiedSinceCode(newValue);
     },
     startDateTime: function(newValue) {
-      alert(newValue);
       this.commitStartDateTime(newValue);
       newValue;
     },
