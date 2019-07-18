@@ -182,12 +182,12 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     modifiedSinceCodeActive: false,
     siteTypeListActive: false,
     temporalRangeActive: false,
-    durationCodeActive: false,
-
+    durationCodeActive: true,
+    durationCode: "P119D",
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&period=P119D&siteStatus=all"
   );
 });
 
@@ -216,14 +216,14 @@ test("correctly generate a URL given a hydrological Unit Code , using  siteType,
     durationCodeActive: true,
     modifiedSinceCodeActive: true,
     modifiedSinceCode: "P999W3435345DT435453453453453454M4S",
-    durationCode: "P1DT96M5S",
+    durationCode: "P121DT96M5S",
     temporalRangeActive: false,
     agencyCode: "agencyA",
     siteTypeList: ["siteA", "siteB"],
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&period=P1DT96M5S&modifiedSince=P999W3435345DT435453453453453454M4S&siteStatus=all"
+    "https://nwis.waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&period=P121DT96M5S&modifiedSince=P999W3435345DT435453453453453454M4S&siteStatus=all"
   );
 });
 
@@ -243,7 +243,8 @@ test("correctly generate a URL given a hydrological Unit Code, with modifiedSinc
       startTimeZone: "-0430",
       endDateTime: "2019-07-08T14:59:00.000Z",
       endTimeZone: "-0430"
-    }
+    },
+    currentDateTime: new Date("2019-08-08T14:59:00.000Z")
   };
   expect(generateURL(connectionData)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&modifiedSince=P999W3435345DT435453453453453454M4S&startDT=2019-07-08T14:59-0430&endDT=2019-07-08T14:59-0430&siteStatus=all"
@@ -262,14 +263,15 @@ test("correctly generate a URL given a hydrological Unit Code, with modifiedSinc
     temporalRangeActive: true,
     locationMode: locationMode.HYDRO,
     temporalRangeData: {
-      startDateTime: "2013-07-08T14:59:00.000Z",
+      startDateTime: "2018-07-08T14:59:00.000Z",
       startTimeZone: "-0430",
-      endDateTime: "2019-07-08T14:59:00.000Z",
+      endDateTime: "2018-07-09T14:59:00.000Z",
       endTimeZone: "-0430"
-    }
+    },
+    currentDateTime: new Date("2019-08-04T14:59:00.000Z")
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://nwis.waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&modifiedSince=P999W3435345DT435453453453453454M4S&startDT=2013-07-08T14:59-0430&endDT=2019-07-08T14:59-0430&siteStatus=all"
+    "https://nwis.waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&modifiedSince=P999W3435345DT435453453453453454M4S&startDT=2018-07-08T14:59-0430&endDT=2018-07-09T14:59-0430&siteStatus=all"
   );
 });
 

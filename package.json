@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "iso8601-duration": "^1.2.0",
     "luxon": "^1.17.1",
     "v-tooltip": "^2.0.2",
     "vue": "^2.6.10",

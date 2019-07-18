@@ -17,12 +17,12 @@
             <input
               class="usa-checkbox__input"
               v-model="timeBoundsActive"
-              id="whyIsThisFieldrequired"
+              id="durationCodeField"
               type="checkbox"
               name="historical-figures-1"
-              value="whyIsThisFieldrequired"
+              value="durationCodeField"
             />
-            <label class="usa-checkbox__label" for="whyIsThisFieldrequired">
+            <label class="usa-checkbox__label" for="durationCodeField">
               Set Date Time Boundaries
             </label>
           </span>

@@ -1,6 +1,7 @@
 import { get } from "./utils.js";
 import { locationMode } from "./enums.js";
 import { notify } from "./notifications.js";
+import { parse, toSeconds } from "iso8601-duration";
 
 /*global  tableau:true*/
 
@@ -152,6 +153,12 @@ const generateURL = connectionData => {
 
   if (connectionData.durationCodeActive) {
     durationCodeQuery = `&period=${connectionData.durationCode}`;
+
+    let periodHistorical =
+      parseInt(toSeconds(parse(connectionData.durationCode))) >= 10368000; //approximate 120 days in seconds
+    if (periodHistorical) {
+      historical = "nwis.";
+    }
   }
 
   if (connectionData.temporalRangeActive) {
@@ -164,9 +171,22 @@ const generateURL = connectionData => {
       connectionData.temporalRangeData.endDateTime
     );
     temporalRangeQuery = `&startDT=${startDate}&endDT=${endDate}`;
-    if (new Date(endDate) - new Date(startDate) >= 10368000000) {
-      // 120 days in milliseconds
+
+    if (typeof connectionData.currentDateTime === "string") {
+      // ridiculous that this is necesarry
+      connectionData.currentDateTime = new Date(connectionData.currentDateTime);
+    }
+    if (
+      connectionData.currentDateTime.getTime() -
+        new Date(startDate).getTime() >=
+      10368000000
+    ) {
+      //approximate 120 days in milliseconds
       historical = "nwis.";
+    } else {
+      alert(
+        connectionData.currentDateTime.getTime() - new Date(startDate).getTime()
+      );
     }
   }
 

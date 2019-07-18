@@ -116,7 +116,7 @@ const validateISO_8601Duration = (duration, message, active) => {
   if (!active) {
     return true;
   }
-  let regex = /^P((\d)+Y)?((\d)+M)?((\d)+W)?((\d)+D)?((T(\d)+H((\d)+M)?((\d)+S)?|T(\d)+M((\d)+S)?|T(\d)+S))?$/;
+  let regex = /^P((\d)+W)?((\d)+D)?((T(\d)+H((\d)+M)?((\d)+S)?|T(\d)+M((\d)+S)?|T(\d)+S))?$/;
   let antiregex = /^P$/;
   if (
     !duration.replace(/\s/g, "").match(regex) ||
