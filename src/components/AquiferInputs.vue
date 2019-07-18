@@ -85,7 +85,7 @@ export default {
       locAquifer: "",
       localAquifers: [],
       locAqNames: [],
-      locAquiferActive: "",
+      locAquiferActive: ""
     };
   },
   methods: {
@@ -108,8 +108,9 @@ export default {
       let aquiferList = this.getLocAquifers(this.state);
 
       aquiferList.forEach(element => {
+        let stateAbbrev = stateList[this.state];
         let option = document.createElement("option");
-        option.value = `${element["aqfr_cd"]}`;
+        option.value = `${stateAbbrev}-${element["aqfr_cd"]}`;
         option.text = element["aqfr_nm"];
         dropDown.appendChild(option);
       });
@@ -119,43 +120,35 @@ export default {
         return ["No Local Aquifers for this state"];
       }
       let fipsCode = fipsInfo[stateName];
-      let stateAbbrev = stateList[stateName];
       let result = [];
       for (let key in localAquiferInfo) {
         if (localAquiferInfo[key]["state_cd"] == fipsCode) {
-          result.push(stateAbbrev + "-" + localAquiferInfo[key]);
+          result.push(localAquiferInfo[key]);
         }
       }
       return result;
     },
     getStateNamefromAbbrev: function(stateAbbrev) {
-      console.log(stateAbbrev);
-      for(let key in stateList) {
-        if(stateList[key] == stateAbbrev) {
-          console.log(key);
+      for (let key in stateList) {
+        if (stateList[key] == stateAbbrev) {
           return key;
         }
       }
     },
     getLocAqNameFromCode: function(fullLocAqCode) {
-      console.log(fullLocAqCode);
       if (fullLocAqCode.length != 10) {
         return "invalid";
       }
-      let stateAbbrev = fullLocAqCode.substring(0, 1);
-      let stateName = stateList[stateAbbrev]
+      let stateAbbrev = fullLocAqCode.substring(0, 2);
+      let aqCode = fullLocAqCode.substring(3, 10);
+      let stateName = this.getStateNamefromAbbrev(stateAbbrev);
       let stateCode = fipsInfo[stateName];
       let result = "invalid";
       localAquiferInfo.forEach(element => {
-        if (
-          element["state_cd"] == stateCode &&
-          element["aqfr_cd"] == fullLocAqCode
-        ) {
-          result = stateAbbrev + "-" + fullLocAqCode;
+        if (element["state_cd"] == stateCode && element["aqfr_cd"] == aqCode) {
+          result = stateAbbrev + "-" + aqCode;
         }
       });
-      console.log(stateCode + " " + stateAbbrev);
-      console.log(result);
       return result;
     },
     addLocalAqToSelected: function() {
@@ -182,7 +175,7 @@ export default {
     commitNatAquiferActive: function(newValue) {
       this.$store.commit("changeNatAquiferActive", newValue);
     },
-    commitLocAquifer: function(newValue) {
+    commitLocAquifer: function() {
       this.$store.commit("changeLocAquifer", this.localAquifers);
     },
     commitLocAquiferActive: function(newValue) {

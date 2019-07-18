@@ -19,7 +19,7 @@ export default new Vuex.Store({
     natAquiferActive: false,
     natAquifer: "",
     locAquiferActive: false,
-    locAquifer: "",
+    locAquifer: [],
     wellMinActive: false,
     wellMaxActive: false,
     holeMinActive: false,

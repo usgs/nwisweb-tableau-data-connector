@@ -148,7 +148,8 @@ const generateURL = connectionData => {
   }
 
   if (connectionData.locAquiferActive) {
-    locAquiferCodeQuery = `&localAquiferCd=${connectionData.locAquifer}`;
+    let locAquifer = connectionData.locAquifer.join(",");
+    locAquiferCodeQuery = `&localAquiferCd=${locAquifer}`;
   }
 
   if (connectionData.GWSiteAttrActive) {
@@ -175,7 +176,9 @@ const generateURL = connectionData => {
       );
     }
   }
-
+  alert(
+    `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}${natAquiferCodeQuery}${locAquiferCodeQuery}&siteStatus=all${GWSiteAttrQuery}`
+  );
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}${natAquiferCodeQuery}${locAquiferCodeQuery}&siteStatus=all${GWSiteAttrQuery}`;
 };
 
