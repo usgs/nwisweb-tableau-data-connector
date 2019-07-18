@@ -37,12 +37,7 @@
         ></ToolTip>
       </span>
       <span class="date-time-span">
-        <Datetime
-          style="display: inline-block;"
-          type="datetime"
-          v-model="startDateTime"
-          input-class="usa-input"
-        ></Datetime>
+        <VueCtkDateTimePicker v-model="startDateTime"></VueCtkDateTimePicker>
         <select
           v-model="startTimeZone"
           style="display: inline-block;"
@@ -54,12 +49,7 @@
         <label>End Time</label>
       </span>
       <span class="date-time-span">
-        <Datetime
-          style="display: inline-block; max-width:50;"
-          type="datetime"
-          v-model="endDateTime"
-          input-class="usa-input"
-        ></Datetime>
+        <VueCtkDateTimePicker v-model="endDateTime"></VueCtkDateTimePicker>
         <select
           v-model="endTimeZone"
           id="endtzselect"
@@ -82,8 +72,8 @@
 
 <script>
 import ToolTip from "../components/ToolTip";
-import { Datetime } from "vue-datetime";
-import "vue-datetime/dist/vue-datetime.css";
+import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
+import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import timezones from "../fetchedValues/timezones.json";
 
 export default {
@@ -101,7 +91,7 @@ export default {
   },
   components: {
     ToolTip,
-    Datetime
+    VueCtkDateTimePicker
   },
   methods: {
     commitDurationCode: function(newValue) {

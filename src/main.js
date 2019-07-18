@@ -5,12 +5,14 @@ import uswds from "uswds";
 import router from "./router";
 import VTooltip from "v-tooltip";
 import Datetime from "vue-datetime";
+import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 
 Vue.config.productionTip = false;
 Vue.config.productionTip = false;
 Vue.use(uswds);
 Vue.use(VTooltip);
 Vue.use(Datetime);
+Vue.use(VueCtkDateTimePicker);
 
 new Vue({
   store,
