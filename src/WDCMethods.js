@@ -2,6 +2,7 @@ import { get } from "./utils.js";
 import { locationMode } from "./enums.js";
 import { notify } from "./notifications.js";
 import { parse, toSeconds } from "iso8601-duration";
+var format = require("date-format");
 
 /*global  tableau:true*/
 
@@ -102,7 +103,7 @@ const generateDateTime = (timeZone, dateTime, queryMode) => {
     // whether or not we need to escape '+'
     return `${dateTime.substring(0, 16)}${timeZone.replace("+", "%2b")}`;
   } else {
-    return `${dateTime.substring(0, 16)}${timeZone}`;
+    return `${dateTime.substring(0, 16)}:00.000${timeZone}`;
   }
 };
 
@@ -180,10 +181,20 @@ const generateURL = connectionData => {
     temporalRangeQuery = `&startDT=${startDateString}&endDT=${endDateString}`;
 
     if (typeof connectionData.currentDateTime === "string") {
-      // this is necesarry because JSON.stingify/JSON.parse are not symmetrical with respect to Date objects
-      connectionData.currentDateTime = new Date(connectionData.currentDateTime);
+      // this is necessary because JSON.stingify/JSON.parse are not symmetrical with respect to Date objects
+      connectionData.currentDateTime = format.parse(
+        format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+        connectionData.currentDateTime
+      );
     }
-    let startDate = new Date(startDateString);
+    let startDate = format.parse(
+      format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+      generateDateTime(
+        connectionData.temporalRangeData.startTimeZone,
+        connectionData.temporalRangeData.startDateTime,
+        false
+      )
+    );
     if (
       connectionData.currentDateTime.getTime() - startDate.getTime() >=
       10368000000

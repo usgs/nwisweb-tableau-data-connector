@@ -611,7 +611,7 @@ done in ParamSelect.vue
             startDateTime: "2019-07-09T15:01:00.000Z",
             startTimeZone: "-0430",
             endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0500"
+            endTimeZone: "-0400"
           };
         },
         temporalRangeActive: () => {
@@ -642,7 +642,7 @@ done in ParamSelect.vue
             startDateTime: "2019-07-09T15:01:00.000Z",
             startTimeZone: "-0430",
             endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0500"
+            endTimeZone: "-0400"
           };
         },
         temporalRangeActive: () => {
@@ -681,7 +681,7 @@ done in ParamSelect.vue
             startDateTime: "2019-07-09T15:01:00.000Z",
             startTimeZone: "-0430",
             endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0500"
+            endTimeZone: "-0400"
           };
         },
         temporalRangeActive: () => {
@@ -747,7 +747,7 @@ done in ParamSelect.vue
             startDateTime: "2019-07-09T15:01:00.000Z",
             startTimeZone: "-0500",
             endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0430"
+            endTimeZone: "-0530"
           };
         },
         temporalRangeActive: () => {
@@ -779,7 +779,7 @@ done in ParamSelect.vue
             startDateTime: "",
             startTimeZone: "-0430",
             endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0500"
+            endTimeZone: "-0400"
           };
         },
         temporalRangeActive: () => {
