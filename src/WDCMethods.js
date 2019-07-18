@@ -141,31 +141,19 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
-  if (connectionData.GWSiteAttrActive) {
-    GWSiteAttrQuery = "";
-    let depths = connectionData.GWSiteAttrDepths;
-    if (depths.wellMin != "") {
-      GWSiteAttrQuery = GWSiteAttrQuery.concat(
-        `&wellDepthMin=${depths.wellMin}`
-      );
-    }
-    if (depths.wellMax != "") {
-      GWSiteAttrQuery = GWSiteAttrQuery.concat(
-        `&wellDepthMax=${depths.wellMax}`
-      );
-    }
-    if (depths.holeMin != "") {
-      GWSiteAttrQuery = GWSiteAttrQuery.concat(
-        `&holeDepthMin=${depths.holeMin}`
-      );
-    }
-    if (depths.holeMax != "") {
-      GWSiteAttrQuery = GWSiteAttrQuery.concat(
-        `&holeDepthMax=${depths.holeMax}`
-      );
-    }
+  let depths = connectionData.GWSiteAttrDepths;
+  if (connectionData.wellMinActive) {
+    GWSiteAttrQuery += `&wellDepthMin=${depths.wellMin}`;
   }
-
+  if (connectionData.wellMaxActive) {
+    GWSiteAttrQuery += `&wellDepthMax=${depths.wellMax}`;
+  }
+  if (connectionData.holeMinActive) {
+    GWSiteAttrQuery += `&holeDepthMin=${depths.holeMin}`;
+  }
+  if (connectionData.holeMaxActive) {
+    GWSiteAttrQuery += `&holeDepthMax=${depths.holeMax}`;
+  }
   return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${GWSiteAttrQuery}`;
 };
 

@@ -205,6 +205,43 @@ test("correctly generate a URL given a hydrological Unit Code with siteType and 
   );
 });
 
+test("correctly generate a URL given Ground Water Site Attribute Depths", () => {
+  let connectionData = {
+    paramNums: ["00060", "00065"],
+    countyCode: [11111, 22222],
+    wellMinActive: true,
+    wellMaxActive: true,
+    holeMinActive: true,
+    holeMaxActive: true,
+    GWSiteAttrDepths: {
+      wellMin: "10",
+      wellMax: "100",
+      holeMin: "10",
+      holeMax: "100"
+    },
+    locationMode: locationMode.COUNTY
+  };
+  expect(generateURL(connectionData)).toEqual(
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=all&wellDepthMin=10&wellDepthMax=100&holeDepthMin=10&holeDepthMax=100"
+  );
+  connectionData = {
+    paramNums: ["00060", "00065"],
+    countyCode: [11111, 22222],
+    wellMinActive: true,
+    holeMaxActive: true,
+    GWSiteAttrDepths: {
+      wellMin: "10",
+      wellMax: "",
+      holeMin: "",
+      holeMax: "100"
+    },
+    locationMode: locationMode.COUNTY
+  };
+  expect(generateURL(connectionData)).toEqual(
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=all&wellDepthMin=10&holeDepthMax=100"
+  );
+});
+
 test("correctly generates the column schema from sites and parameters", () => {
   const sites = "01646500,05437641";
   const params = ["00060", "00065"];
