@@ -205,6 +205,58 @@ test("correctly generate a URL given a hydrological Unit Code with siteType and 
   );
 });
 
+test("correctly generate a URL given a national aquifer code", () => {
+  const connectionData = {
+    paramNums: ["00060", "00065"],
+    hydroCode: "02070010",
+    locationMode: locationMode.HYDRO,
+    natAquiferActive: true,
+    natAquifer: "N600NECRSN"
+  };
+  expect(generateURL(connectionData)).toEqual(
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&aquiferCd=N600NECRSN&siteStatus=all"
+  );
+});
+
+test("correctly generate a URL given multiple poorly formatted national aquifer code", () => {
+  const connectionData = {
+    paramNums: ["00060", "00065"],
+    hydroCode: "02070010",
+    locationMode: locationMode.HYDRO,
+    natAquiferActive: true,
+    natAquifer: "N600NECRSN, S100C NRLVL ,  S100PGTSND"
+  };
+  expect(generateURL(connectionData)).toEqual(
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&aquiferCd=N600NECRSN,S100CNRLVL,S100PGTSND&siteStatus=all"
+  );
+});
+
+test("correctly generate a URL given a local aquifer code", () => {
+  const connectionData = {
+    paramNums: ["00060", "00065"],
+    hydroCode: "02070010",
+    locationMode: locationMode.HYDRO,
+    locAquiferActive: true,
+    locAquifer: ["AL:124MDBC"]
+  };
+  expect(generateURL(connectionData)).toEqual(
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&localAquiferCd=AL:124MDBC&siteStatus=all"
+  );
+});
+
+test("correctly generate a URL given multiple poorly formatted local aquifer code", () => {
+  const connectionData = {
+    paramNums: ["00060", "00065"],
+    hydroCode: "02070010",
+    locationMode: locationMode.HYDRO,
+    locAquiferActive: true,
+    locAquifer: ["AL:124MDBC, WI:10 0SDGV , CO:100CZMZ"]
+  };
+  expect(generateURL(connectionData)).toEqual(
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&localAquiferCd=AL:124MDBC,WI:100SDGV,CO:100CZMZ&siteStatus=all"
+  );
+});
+
 test("correctly generates the column schema from sites and parameters", () => {
   const sites = "01646500,05437641";
   const params = ["00060", "00065"];

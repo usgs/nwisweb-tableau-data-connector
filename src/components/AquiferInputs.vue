@@ -1,7 +1,7 @@
 <template>
   <div>
     <span class="input-desc">
-      <label>Sites Contained within these National Aquifer Codes</label>
+      <label>National Aquifer Code</label>
       <ToolTip
         hint="Enter up to 1000 national aquifer codes, separated by commas. Each National Aquifer Code is 10 digits. A complete list of national aquifer codes is linked here."
         url="https://water.usgs.gov/ogw/NatlAqCode-reflist.html"
@@ -13,7 +13,7 @@
       type="text"
     />
     <span class="input-desc">
-      <label>Sites Contained within these Local Aquifer Codes</label>
+      <label>Local Aquifer Code</label>
       <ToolTip
         hint="Enter up to 1000 local aquifer codes, separated by commas. A complete list of local aquifer codes is linked here."
         url="https://help.waterdata.usgs.gov/code/aqfr_cd_query?fmt=html"
@@ -27,8 +27,8 @@
     />
     <datalist id="aqstates"></datalist>
     <input
-      class="usa-input usa-input-custom"
       v-model="locAquifer"
+      class="usa-input usa-input-custom"
       list="localAquifers"
       type="text"
     />
@@ -110,7 +110,7 @@ export default {
       aquiferList.forEach(element => {
         let stateAbbrev = stateList[this.state];
         let option = document.createElement("option");
-        option.value = `${stateAbbrev}-${element["aqfr_cd"]}`;
+        option.value = `${stateAbbrev}:${element["aqfr_cd"]}`;
         option.text = element["aqfr_nm"];
         dropDown.appendChild(option);
       });
@@ -146,7 +146,7 @@ export default {
       let result = "invalid";
       localAquiferInfo.forEach(element => {
         if (element["state_cd"] == stateCode && element["aqfr_cd"] == aqCode) {
-          result = stateAbbrev + "-" + aqCode;
+          result = stateAbbrev + ":" + aqCode;
         }
       });
       return result;

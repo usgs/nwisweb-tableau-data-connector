@@ -144,12 +144,15 @@ const generateURL = connectionData => {
   }
 
   if (connectionData.natAquiferActive) {
-    natAquiferCodeQuery = `&aquiferCd=${connectionData.natAquifer}`;
+    let natAquiferList = connectionData.natAquifer
+      .replace(/\s/g, "")
+      .split(",");
+    natAquiferCodeQuery = `&aquiferCd=${natAquiferList.join()}`;
   }
 
   if (connectionData.locAquiferActive) {
     let locAquifer = connectionData.locAquifer.join(",");
-    locAquiferCodeQuery = `&localAquiferCd=${locAquifer}`;
+    locAquiferCodeQuery = `&localAquiferCd=${locAquifer.replace(/\s/g, "")}`;
   }
 
   if (connectionData.GWSiteAttrActive) {
