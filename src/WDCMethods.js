@@ -97,8 +97,13 @@ const formatJSONAsTable = (data, tableName) => {
 /*
 generates a query-ready ISO 8601 with timezone date time from a datetime and timezone string.
 */
-const generateDateTime = (timeZone, dateTime) => {
-  return `${dateTime.substring(0, 16)}${timeZone.replace("+", "%2b")}`;
+const generateDateTime = (timeZone, dateTime, queryMode) => {
+  if (queryMode) {
+    // whether or not we need to escape '+'
+    return `${dateTime.substring(0, 16)}${timeZone.replace("+", "%2b")}`;
+  } else {
+    return `${dateTime.substring(0, 16)}${timeZone}`;
+  }
 };
 
 /*
@@ -162,31 +167,29 @@ const generateURL = connectionData => {
   }
 
   if (connectionData.temporalRangeActive) {
-    let startDate = generateDateTime(
+    let startDateString = generateDateTime(
       connectionData.temporalRangeData.startTimeZone,
-      connectionData.temporalRangeData.startDateTime
+      connectionData.temporalRangeData.startDateTime,
+      true
     );
-    let endDate = generateDateTime(
+    let endDateString = generateDateTime(
       connectionData.temporalRangeData.endTimeZone,
-      connectionData.temporalRangeData.endDateTime
+      connectionData.temporalRangeData.endDateTime,
+      true
     );
-    temporalRangeQuery = `&startDT=${startDate}&endDT=${endDate}`;
+    temporalRangeQuery = `&startDT=${startDateString}&endDT=${endDateString}`;
 
     if (typeof connectionData.currentDateTime === "string") {
-      // ridiculous that this is necesarry
+      // this is necesarry because JSON.stingify/JSON.parse are not symmetrical with respect to Date objects
       connectionData.currentDateTime = new Date(connectionData.currentDateTime);
     }
+    let startDate = new Date(startDateString);
     if (
-      connectionData.currentDateTime.getTime() -
-        new Date(startDate).getTime() >=
+      connectionData.currentDateTime.getTime() - startDate.getTime() >=
       10368000000
     ) {
       //approximate 120 days in milliseconds
       historical = "nwis.";
-    } else {
-      alert(
-        connectionData.currentDateTime.getTime() - new Date(startDate).getTime()
-      );
     }
   }
 

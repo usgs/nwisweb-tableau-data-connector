@@ -11,7 +11,8 @@ import {
   validateSiteTypeInputs,
   validateAgencyInputs,
   validateISO_8601Duration,
-  validateTemporalRange
+  validateTemporalRange,
+  validateTimeCodes
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
 import Notifications from "vue-notification";
@@ -895,6 +896,65 @@ done in ParamSelect.vue
         wrapper.vm.$store.getters.temporalRangeData,
         wrapper.vm
       )
+    ).not.toBe(true);
+  });
+
+  test("validateTimeCodes accepts compliant codes and non-compliant codes when field is inactive", () => {
+    expect(
+      validateTimeCodes(
+        {
+          startDateTime: "1111-34-45T45:45Z",
+          endDateTime: "3213-34-45T45:45Z"
+        },
+        true
+      )
+    ).toBe(true);
+    expect(
+      validateTimeCodes(
+        {
+          startDateTime: "5555-44-33T22:11Z",
+          endDateTime: "5443-34-45T65:45Z"
+        },
+        true
+      )
+    ).toBe(true);
+    expect(
+      validateTimeCodes(
+        { startDateTime: "not valid", endDateTime: "not valid" },
+        false
+      )
+    ).toBe(true);
+  });
+  test("validateISO_8601Duration rejects non-compliant codes", () => {
+    expect(
+      validateTimeCodes(
+        {
+          startDateTime: "111d1-34-45T45:45Z",
+          endDateTime: "3213-34-45T45:45Z"
+        },
+        true
+      )
+    ).not.toBe(true);
+    expect(
+      validateTimeCodes(
+        {
+          startDateTime: "11141-34-45T45:45Z",
+          endDateTime: "3213-34-45G45:45Z"
+        },
+        true
+      )
+    ).not.toBe(true);
+    expect(
+      validateTimeCodes(
+        {
+          startDateTime: "1111-34-45T45:45Z",
+          endDateTime: "32143-34-45T45:45Z"
+        },
+        true
+      )
+    ).not.toBe(true);
+    expect(
+      validateTimeCodes({ startDateTime: "", endDateTime: "" }, true)
     ).not.toBe(true);
   });
 });

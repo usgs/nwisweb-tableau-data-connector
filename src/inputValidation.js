@@ -129,6 +129,26 @@ const validateISO_8601Duration = (duration, message, active) => {
 };
 
 /*
+warns the user if they have entered incorrectly formatted time codes
+*/
+const validateTimeCodes = (temporalRangeData, active) => {
+  if (!active) {
+    return true;
+  }
+
+  let regex = /^(\d){4}-(\d){2}-(\d){2}T(\d){2}:(\d){2}$/;
+
+  if (!temporalRangeData.startDateTime.substring(0, 16).match(regex)) {
+    return "start date time in invalid format";
+  }
+  if (!temporalRangeData.endDateTime.substring(0, 16).match(regex)) {
+    return "end date time in invalid format";
+  }
+
+  return true;
+};
+
+/*
 warns the user if they entered an invalid site-type code
 
 */
@@ -179,13 +199,15 @@ const validateTemporalRange = (temporalRangeData, instance) => {
   let startDate = new Date(
     generateDateTime(
       temporalRangeData.startTimeZone,
-      temporalRangeData.startDateTime
+      temporalRangeData.startDateTime,
+      false
     )
   );
   let endDate = new Date(
     generateDateTime(
       temporalRangeData.endTimeZone,
-      temporalRangeData.endDateTime
+      temporalRangeData.endDateTime,
+      false
     )
   );
   let offset = endDate - startDate;
@@ -315,6 +337,15 @@ const validateFormInputs = instance => {
     return false;
   }
 
+  let timeCodeStatus = validateTimeCodes(
+    instance.$store.getters.temporalRangeData,
+    instance.$store.getters.temporalRangeActive
+  );
+  if (!(timeCodeStatus === true)) {
+    notify(timeCodeStatus);
+    return false;
+  }
+
   let temporalRangeStatus = validateTemporalRange(
     instance.$store.getters.temporalRangeData,
     instance
@@ -343,5 +374,6 @@ export {
   validateSiteTypeInputs,
   validateAgencyInputs,
   validateISO_8601Duration,
-  validateTemporalRange
+  validateTemporalRange,
+  validateTimeCodes
 };
