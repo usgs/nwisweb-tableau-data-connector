@@ -10,21 +10,7 @@
         <div class="leftcolumn">
           <div class="text-center col-md-4 col-md-offset-4">
             <br />
-            <div v-show="!disabled">
-              <span class="input-desc">
-                <label>Site or Sites</label>
-                <ToolTip
-                  hint="This field takes comma-separated 8-15 digit site codes. Open this link in a new tab to use the NWISWeb location finder, remember to limit your search to time-series sites."
-                  url="http://maps.waterdata.usgs.gov/mapper/"
-                ></ToolTip>
-              </span>
-              <input
-                class="usa-input usa-input-custom"
-                v-model="sites"
-                :disabled="disabled"
-              />
-            </div>
-
+            <SiteSelect> </SiteSelect>
             <StateSelect></StateSelect>
             <CoordinatesInput></CoordinatesInput>
             <HUCInput></HUCInput>
@@ -35,8 +21,12 @@
             </div>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
+            <br />
+            <GroundWaterSiteAttr></GroundWaterSiteAttr>
             <WatershedInput></WatershedInput>
             <AltitudeInput></AltitudeInput>
+            <TemporalRange></TemporalRange>
+            <SiteStatusSelect></SiteStatusSelect>
           </div>
         </div>
         <div class="rightcolumn">
@@ -68,13 +58,16 @@ import { locationMode } from "../enums.js";
 import SiteTypeList from "../components/SiteTypeList";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
+import SiteSelect from "../components/SiteSelect";
 import ParamSelect from "../components/ParamSelect";
+import SiteStatusSelect from "../components/SiteStatusSelect";
 import AgencySelect from "../components/AgencySelect";
 import AltitudeInput from "../components/AltitudeInput";
+import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
-import ToolTip from "../components/ToolTip";
 import WatershedInput from "../components/WatershedInput";
+import TemporalRange from "../components/TemporalRange";
 
 /*global  tableau:true*/
 
@@ -92,9 +85,12 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
-    ToolTip,
     WatershedInput,
-    AltitudeInput
+    AltitudeInput,
+    SiteSelect,
+    GroundWaterSiteAttr,
+    TemporalRange,
+    SiteStatusSelect
   },
   data: function() {
     return {
@@ -139,7 +135,8 @@ export default {
       }
 
       let connectionData = {
-        siteNums: this.sites,
+        columnList: this.columnList,
+        siteNums: this.$store.getters.sites,
         paramNums: this.$store.getters.paramCodes,
         state: this.stateData[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,
@@ -151,6 +148,12 @@ export default {
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
+        wellMinActive: this.$store.getters.wellMinActive,
+        wellMaxActive: this.$store.getters.wellMaxActive,
+        holeMinActive: this.$store.getters.holeMinActive,
+        holeMaxActive: this.$store.getters.holeMaxActive,
+        GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths,
+        siteStatus: this.$store.getters.siteStatus,
         watershedAreaBounds: this.$store.getters.watershedAreaBounds,
         watershedUpperAreaBoundsActive: this.$store.getters
           .watershedUpperAreaBoundsActive,
@@ -158,13 +161,22 @@ export default {
           .watershedLowerAreaBoundsActive,
         altitudeBounds: this.$store.getters.altitudeBounds,
         upperAltitudeBoundActive: this.$store.getters.upperAltitudeBoundActive,
-        lowerAltitudeBoundActive: this.$store.getters.lowerAltitudeBoundActive
+        lowerAltitudeBoundActive: this.$store.getters.lowerAltitudeBoundActive,
+        durationCodeActive: this.$store.getters.durationCodeActive,
+        durationCode: this.$store.getters.durationCode,
+        modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,
+        modifiedSinceCode: this.$store.getters.modifiedSinceCode,
+        temporalRangeActive: this.$store.getters.temporalRangeActive,
+        temporalRangeData: this.$store.getters.temporalRangeData,
+        currentDateTime: new Date()
       };
+
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {
         tableau.connectionData = connectionData;
       }
+
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
     },

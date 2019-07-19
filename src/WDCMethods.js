@@ -1,6 +1,8 @@
 import { get } from "./utils.js";
 import { locationMode } from "./enums.js";
 import { notify } from "./notifications.js";
+import { parse, toSeconds } from "iso8601-duration";
+var format = require("date-format");
 
 /*global  tableau:true*/
 
@@ -94,18 +96,39 @@ const formatJSONAsTable = (data, tableName) => {
 };
 
 /*
+generates a query-ready ISO 8601 with timezone date time from a datetime and timezone string.
+*/
+const generateDateTime = (timeZone, dateTime, queryMode) => {
+  if (queryMode) {
+    // whether or not we need to escape '+'
+    return `${dateTime.substring(0, 16)}${timeZone.replace("+", "%2b")}`;
+  } else {
+    return `${dateTime.substring(0, 16)}:00.000${timeZone}`;
+  }
+};
+
+/*
 generates a URL for query parameters contained in the connectionData object accepted as an argument
 */
 const generateURL = connectionData => {
-  let paramQuery = `&parameterCd=${connectionData.paramNums.join()}`;
-
+  let paramQuery = "";
+  if (connectionData.paramNums.length != 0) {
+    paramQuery = `&parameterCd=${connectionData.paramNums.join()}`;
+  }
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
+  let GWSiteAttrQuery = "";
   let drainAreaUpperQuery = "";
   let drainAreaLowerQuery = "";
   let altitudeLowerQuery = "";
   let altitudeUpperQuery = "";
+  let durationCodeQuery = "";
+  let modifiedSinceCodeQuery = "";
+  let temporalRangeQuery = "";
+  let historical = "";
+
+  let siteStatusQuery = `&siteStatus=${connectionData.siteStatus}`;
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -118,7 +141,6 @@ const generateURL = connectionData => {
       break;
     }
     case locationMode.COORDS: {
-      // west south east north
       let bounds = connectionData.boundaryCoords;
       locationQuery = `&bBox=${bounds.west.replace(
         /\s/g,
@@ -150,6 +172,19 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
+  let depths = connectionData.GWSiteAttrDepths;
+  if (connectionData.wellMinActive) {
+    GWSiteAttrQuery += `&wellDepthMin=${depths.wellMin}`;
+  }
+  if (connectionData.wellMaxActive) {
+    GWSiteAttrQuery += `&wellDepthMax=${depths.wellMax}`;
+  }
+  if (connectionData.holeMinActive) {
+    GWSiteAttrQuery += `&holeDepthMin=${depths.holeMin}`;
+  }
+  if (connectionData.holeMaxActive) {
+    GWSiteAttrQuery += `&holeDepthMax=${depths.holeMax}`;
+  }
   if (connectionData.watershedLowerAreaBoundsActive) {
     drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound.replace(
       /\s/g,
@@ -178,7 +213,60 @@ const generateURL = connectionData => {
   }
   let altitudeQuery = `${altitudeLowerQuery}${altitudeUpperQuery}`;
 
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${drainAreaQuery}${altitudeQuery}`;
+  if (connectionData.durationCodeActive) {
+    durationCodeQuery = `&period=${connectionData.durationCode}`;
+
+    let periodHistorical =
+      parseInt(toSeconds(parse(connectionData.durationCode))) >= 10368000; //approximate 120 days in seconds
+    if (periodHistorical) {
+      historical = "nwis.";
+    }
+  }
+
+  if (connectionData.temporalRangeActive) {
+    let startDateString = generateDateTime(
+      connectionData.temporalRangeData.timeZone,
+      connectionData.temporalRangeData.startDateTime,
+      true
+    );
+    let endDateString = generateDateTime(
+      connectionData.temporalRangeData.timeZone,
+      connectionData.temporalRangeData.endDateTime,
+      true
+    );
+    temporalRangeQuery = `&startDT=${startDateString}&endDT=${endDateString}`;
+
+    if (typeof connectionData.currentDateTime === "string") {
+      // this is necessary because JSON.stringify/JSON.parse are not symmetrical with respect to Date objects
+      // JSON.stringify converts date objects to strings, so they must be manually reconstructed as Date objects
+      // we do this with a formatting library, as behavior of Date() for parsing format strings is not standardized in older browsers.
+      connectionData.currentDateTime = format.parse(
+        format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+        connectionData.currentDateTime
+      );
+    }
+    let startDate = format.parse(
+      format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+      generateDateTime(
+        connectionData.temporalRangeData.timeZone,
+        connectionData.temporalRangeData.startDateTime,
+        false
+      )
+    );
+    if (
+      connectionData.currentDateTime.getTime() - startDate.getTime() >=
+      10368000000
+    ) {
+      //approximate 120 days in milliseconds
+      historical = "nwis.";
+    }
+  }
+
+  if (connectionData.modifiedSinceCodeActive) {
+    modifiedSinceCodeQuery = `&modifiedSince=${connectionData.modifiedSinceCode}`;
+  }
+
+  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}${drainAreaQuery}${altitudeQuery}${siteStatusQuery}${GWSiteAttrQuery}`;
 };
 
 /*
@@ -302,5 +390,6 @@ export {
   generateSchemaTablesFromData,
   getTimeSeriesByID,
   reformatTimeString,
-  sanitizeVariableName
+  sanitizeVariableName,
+  generateDateTime
 };
