@@ -28,6 +28,11 @@ export default new Vuex.Store({
     durationCode: "",
     locationMode: locationMode.SITE,
     coordinates: {},
+    wellMinActive: false,
+    wellMaxActive: false,
+    holeMinActive: false,
+    holeMaxActive: false,
+    GWSiteAttrDepths: {},
     siteStatus: "all",
     watershedAreaBounds: {}
   },
@@ -61,6 +66,21 @@ export default new Vuex.Store({
     },
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
+    },
+    changeWellMinActive: (state, newWellMinActivation) => {
+      state.wellMinActive = newWellMinActivation;
+    },
+    changeWellMaxActive: (state, newWellMaxActivation) => {
+      state.wellMaxActive = newWellMaxActivation;
+    },
+    changeHoleMinActive: (state, newHoleMinActivation) => {
+      state.holeMinActive = newHoleMinActivation;
+    },
+    changeHoleMaxActive: (state, newHoleMaxActivation) => {
+      state.holeMaxActive = newHoleMaxActivation;
+    },
+    changeGWSiteAttrDepths: (state, newGWSiteAttrDepths) => {
+      state.GWSiteAttrDepths = newGWSiteAttrDepths;
     },
     changeSiteStatus: (state, newSiteStatus) => {
       state.siteStatus = newSiteStatus;
@@ -133,6 +153,21 @@ export default new Vuex.Store({
     },
     agencyActive: state => {
       return state.agencyActive;
+    },
+    wellMinActive: state => {
+      return state.wellMinActive;
+    },
+    wellMaxActive: state => {
+      return state.wellMaxActive;
+    },
+    holeMinActive: state => {
+      return state.holeMinActive;
+    },
+    holeMaxActive: state => {
+      return state.holeMaxActive;
+    },
+    GWSiteAttrDepths: state => {
+      return state.GWSiteAttrDepths;
     },
     siteStatus: state => {
       return state.siteStatus;

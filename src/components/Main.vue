@@ -33,9 +33,11 @@
               <ParamSelect></ParamSelect>
               <br />
             </div>
+            <TemporalRange></TemporalRange>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
             <br />
+            <GroundWaterSiteAttr></GroundWaterSiteAttr>
             <WatershedInput></WatershedInput>
             <TemporalRange></TemporalRange>
             <SiteStatusSelect></SiteStatusSelect>
@@ -73,6 +75,7 @@ import HUCInput from "../components/HUCInput";
 import ParamSelect from "../components/ParamSelect";
 import SiteStatusSelect from "../components/SiteStatusSelect";
 import AgencySelect from "../components/AgencySelect";
+import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import ToolTip from "../components/ToolTip";
@@ -95,10 +98,11 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
+    GroundWaterSiteAttr,
+    TemporalRange,
     SiteStatusSelect,
     ToolTip,
-    WatershedInput,
-    TemporalRange
+    WatershedInput
   },
   data: function() {
     return {
@@ -155,6 +159,11 @@ export default {
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
+        wellMinActive: this.$store.getters.wellMinActive,
+        wellMaxActive: this.$store.getters.wellMaxActive,
+        holeMinActive: this.$store.getters.holeMinActive,
+        holeMaxActive: this.$store.getters.holeMaxActive,
+        GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths,
         siteStatus: this.$store.getters.siteStatus,
         watershedAreaBounds: this.$store.getters.watershedAreaBounds,
         watershedUpperAreaBoundsActive: this.$store.getters

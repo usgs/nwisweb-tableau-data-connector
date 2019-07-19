@@ -116,6 +116,7 @@ const generateURL = connectionData => {
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
+  let GWSiteAttrQuery = "";
   let drainAreaUpperQuery = "";
   let drainAreaLowerQuery = "";
   let durationCodeQuery = "";
@@ -161,6 +162,19 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
+  let depths = connectionData.GWSiteAttrDepths;
+  if (connectionData.wellMinActive) {
+    GWSiteAttrQuery += `&wellDepthMin=${depths.wellMin}`;
+  }
+  if (connectionData.wellMaxActive) {
+    GWSiteAttrQuery += `&wellDepthMax=${depths.wellMax}`;
+  }
+  if (connectionData.holeMinActive) {
+    GWSiteAttrQuery += `&holeDepthMin=${depths.holeMin}`;
+  }
+  if (connectionData.holeMaxActive) {
+    GWSiteAttrQuery += `&holeDepthMax=${depths.holeMax}`;
+  }
   if (connectionData.watershedLowerAreaBoundsActive) {
     drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound}`;
   }
@@ -222,7 +236,7 @@ const generateURL = connectionData => {
     modifiedSinceCodeQuery = `&modifiedSince=${connectionData.modifiedSinceCode}`;
   }
 
-  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}${drainAreaQuery}${siteStatusQuery}`;
+  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}${drainAreaQuery}${siteStatusQuery}${GWSiteAttrQuery}`;
 };
 
 /*

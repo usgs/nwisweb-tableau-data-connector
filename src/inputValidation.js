@@ -282,6 +282,64 @@ const validateAgencyInputs = (agency, instance, agencyData) => {
 };
 
 /*
+      Ensures that if both min and max values are present, the min value is less than the max value.
+      Checks both hole and well depths.
+    */
+const validateGroundWaterSiteInputs = (GWSiteAttrDepths, instance) => {
+  let wellMinActive = instance.$store.getters.wellMinActive;
+  let wellMaxActive = instance.$store.getters.wellMaxActive;
+  let holeMinActive = instance.$store.getters.holeMinActive;
+  let holeMaxActive = instance.$store.getters.holeMaxActive;
+
+  if (!wellMinActive && !wellMaxActive && !holeMinActive && !holeMaxActive) {
+    return true;
+  }
+
+  let regex = /^(-)?(\d)+(\.\d)?(\d)*$/;
+
+  if (wellMinActive) {
+    if (!GWSiteAttrDepths.wellMin.replace(/\s/g, "").match(regex)) {
+      return "non-numeric well minimum depth";
+    }
+  }
+
+  if (wellMaxActive) {
+    if (!GWSiteAttrDepths.wellMax.replace(/\s/g, "").match(regex)) {
+      return "non-numeric well maximum depth";
+    }
+  }
+
+  if (holeMinActive) {
+    if (!GWSiteAttrDepths.holeMin.replace(/\s/g, "").match(regex)) {
+      return "non-numeric hole minimum depth";
+    }
+  }
+
+  if (holeMaxActive) {
+    if (!GWSiteAttrDepths.holeMax.replace(/\s/g, "").match(regex)) {
+      return "non-numeric hole maximum depth";
+    }
+  }
+
+  if (
+    wellMinActive &&
+    wellMaxActive &&
+    parseFloat(GWSiteAttrDepths.wellMin) > parseFloat(GWSiteAttrDepths.wellMax)
+  ) {
+    return "well minimum depth is greater than well maximum depth";
+  }
+
+  if (
+    holeMinActive &&
+    holeMaxActive &&
+    parseFloat(GWSiteAttrDepths.holeMin) > parseFloat(GWSiteAttrDepths.holeMax)
+  ) {
+    return "hole minimum depth is greater than hole maximum depth";
+  }
+  return true;
+};
+
+/*
       function which validates user form inputs and updates vuex values to a query ready format. 
       This function should be run and observed to return true before anything in the body of requestData 
       is run. 
@@ -354,6 +412,15 @@ const validateFormInputs = instance => {
     return false;
   }
 
+  let groundWaterSiteStatus = validateGroundWaterSiteInputs(
+    instance.$store.getters.GWSiteAttrDepths,
+    instance
+  );
+  if (!(groundWaterSiteStatus === true)) {
+    notify(groundWaterSiteStatus);
+    return false;
+  }
+
   let watershedStatus = validateWatershedAreaBoundaries(
     instance.$store.getters.watershedAreaBounds,
     instance
@@ -420,6 +487,7 @@ export {
   validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
+  validateGroundWaterSiteInputs,
   validateWatershedAreaBoundaries,
   validateISO_8601Duration,
   validateTemporalRange,

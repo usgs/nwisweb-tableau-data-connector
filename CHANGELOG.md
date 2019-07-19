@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Tableau Desktop Compatible alerts
 - Added Tooltips to support usability when datalist is not supported
 - Added options for Test and QA buckets as targets for Jenkins builds
+- Added support for Ground Water Site Attributes
 ### Changed
 - Changed styling so all elements are left justified
 - Added site status parameter
