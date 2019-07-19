@@ -33,7 +33,6 @@
               <ParamSelect></ParamSelect>
               <br />
             </div>
-            <TemporalRange></TemporalRange>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
             <br />
