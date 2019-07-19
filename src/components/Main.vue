@@ -36,6 +36,8 @@
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
             <br />
+            <WatershedInput></WatershedInput>
+            <TemporalRange></TemporalRange>
             <SiteStatusSelect></SiteStatusSelect>
           </div>
         </div>
@@ -59,7 +61,7 @@
 </template>
 
 <script>
-import { getData, getSchema, generateColList } from "../WDCMethods.js";
+import { getData, getSchema } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
@@ -74,6 +76,8 @@ import AgencySelect from "../components/AgencySelect";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import ToolTip from "../components/ToolTip";
+import WatershedInput from "../components/WatershedInput";
+import TemporalRange from "../components/TemporalRange";
 
 /*global  tableau:true*/
 
@@ -92,7 +96,9 @@ export default {
     CountySelect,
     AgencySelect,
     SiteStatusSelect,
-    ToolTip
+    ToolTip,
+    WatershedInput,
+    TemporalRange
   },
   data: function() {
     return {
@@ -136,12 +142,7 @@ export default {
         return;
       }
 
-      this.columnList = generateColList(
-        this.sites,
-        this.$store.getters.paramCodes
-      );
       let connectionData = {
-        columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.$store.getters.paramCodes,
         state: this.stateData[this.$store.getters.USStateName],
@@ -154,8 +155,21 @@ export default {
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
-        siteStatus: this.$store.getters.siteStatus
+        siteStatus: this.$store.getters.siteStatus,
+        watershedAreaBounds: this.$store.getters.watershedAreaBounds,
+        watershedUpperAreaBoundsActive: this.$store.getters
+          .watershedUpperAreaBoundsActive,
+        watershedLowerAreaBoundsActive: this.$store.getters
+          .watershedLowerAreaBoundsActive,
+        durationCodeActive: this.$store.getters.durationCodeActive,
+        durationCode: this.$store.getters.durationCode,
+        modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,
+        modifiedSinceCode: this.$store.getters.modifiedSinceCode,
+        temporalRangeActive: this.$store.getters.temporalRangeActive,
+        temporalRangeData: this.$store.getters.temporalRangeData,
+        currentDateTime: new Date()
       };
+
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {
