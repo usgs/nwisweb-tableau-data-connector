@@ -26,6 +26,7 @@ pipeline {
           stage('checkout'){
             steps {
                 script {
+                    print "${GIT_BRANCH}"
                     buildSource = "refs/heads/master"
                     if ("${TAG}" != "") {
                         buildSource = "refs/tags/${TAG}"
