@@ -2,7 +2,7 @@ import { get } from "./utils.js";
 import { locationMode } from "./enums.js";
 import { notify } from "./notifications.js";
 import { parse, toSeconds } from "iso8601-duration";
-var format = require("date-format");
+var moment = require("moment");
 
 /*global  tableau:true*/
 
@@ -240,23 +240,16 @@ const generateURL = connectionData => {
       // this is necessary because JSON.stringify/JSON.parse are not symmetrical with respect to Date objects
       // JSON.stringify converts date objects to strings, so they must be manually reconstructed as Date objects
       // we do this with a formatting library, as behavior of Date() for parsing format strings is not standardized in older browsers.
-      connectionData.currentDateTime = format.parse(
-        format.ISO8601_WITH_TZ_OFFSET_FORMAT,
-        connectionData.currentDateTime
-      );
+      connectionData.currentDateTime = moment(connectionData.currentDateTime);
     }
-    let startDate = format.parse(
-      format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+    let startDate = moment(
       generateDateTime(
         connectionData.temporalRangeData.timeZone,
         connectionData.temporalRangeData.startDateTime,
         false
       )
     );
-    if (
-      connectionData.currentDateTime.getTime() - startDate.getTime() >=
-      10368000000
-    ) {
+    if (connectionData.currentDateTime.diff(startDate) >= 10368000000) {
       //approximate 120 days in milliseconds
       historical = "nwis.";
     }

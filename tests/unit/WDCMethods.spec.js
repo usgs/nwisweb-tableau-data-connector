@@ -8,7 +8,7 @@ import {
   generateDateTime
 } from "../../src/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
-var format = require("date-format");
+let moment = require("moment");
 
 const validDataJSON = {
   value: {
@@ -288,10 +288,7 @@ test("correctly generate a URL given a hydrological Unit Code, with modifiedSinc
       endDateTime: "2019-07-08T14:59:00.000Z",
       timeZone: "-0430"
     },
-    currentDateTime: format.parse(
-      format.ISO8601_WITH_TZ_OFFSET_FORMAT,
-      "2019-08-08T14:59:00.000Z"
-    )
+    currentDateTime: moment("2019-08-08T14:59:00.000Z")
   };
   expect(generateURL(connectionData)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&modifiedSince=P999W3435345DT435453453453453454M4S&startDT=2019-07-08T14:59-0430&endDT=2019-07-08T14:59-0430&siteStatus=all"
@@ -315,10 +312,7 @@ test("correctly generate a URL given a hydrological Unit Code, with modifiedSinc
       endDateTime: "2018-07-09T14:59:00.000Z",
       timeZone: "-0430"
     },
-    currentDateTime: format.parse(
-      format.ISO8601_WITH_TZ_OFFSET_FORMAT,
-      "2019-08-04T14:59:00.000Z"
-    )
+    currentDateTime: moment("2019-08-04T14:59:00.000Z")
   };
   expect(generateURL(connectionData)).toEqual(
     "https://nwis.waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&modifiedSince=P999W3435345DT435453453453453454M4S&startDT=2018-07-08T14:59-0430&endDT=2018-07-09T14:59-0430&siteStatus=all"
