@@ -4,7 +4,7 @@ import stateData from "./fetchedValues/states.json";
 import siteTypeData from "./fetchedValues/siteTypes.json";
 import { notify } from "./notifications.js";
 import { generateDateTime } from "./WDCMethods.js";
-var format = require("date-format");
+var moment = require("moment");
 
 /*
 useful helper function to allow searching lists of dictionaries for a value at a specific key.
@@ -207,23 +207,21 @@ const validateTemporalRange = (temporalRangeData, instance) => {
     return "One or more required fields for temporal range has not been specified. Please specify all fields or remove the temporal range from your query by clicking the checkbox again.";
   }
 
-  let startDate = format.parse(
-    format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+  let startDate = moment(
     generateDateTime(
       temporalRangeData.timeZone,
       temporalRangeData.startDateTime,
       false
     )
   );
-  let endDate = format.parse(
-    format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+  let endDate = moment(
     generateDateTime(
       temporalRangeData.timeZone,
       temporalRangeData.endDateTime,
       false
     )
   );
-  let offset = endDate - startDate;
+  let offset = endDate.diff(startDate);
   if (offset < 0) {
     return "end date before start date.";
   } else if (offset == 0) {
