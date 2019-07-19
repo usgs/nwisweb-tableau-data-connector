@@ -35,6 +35,7 @@
             </div>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
+            <WatershedInput></WatershedInput>
             <TemporalRange></TemporalRange>
           </div>
         </div>
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-import { getData, getSchema, generateColList } from "../WDCMethods.js";
+import { getData, getSchema } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
@@ -72,6 +73,7 @@ import AgencySelect from "../components/AgencySelect";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import ToolTip from "../components/ToolTip";
+import WatershedInput from "../components/WatershedInput";
 import TemporalRange from "../components/TemporalRange";
 
 /*global  tableau:true*/
@@ -90,8 +92,9 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
-    TemporalRange,
-    ToolTip
+    ToolTip,
+    WatershedInput,
+    TemporalRange
   },
   data: function() {
     return {
@@ -135,12 +138,7 @@ export default {
         return;
       }
 
-      this.columnList = generateColList(
-        this.sites,
-        this.$store.getters.paramCodes
-      );
       let connectionData = {
-        columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.$store.getters.paramCodes,
         state: this.stateData[this.$store.getters.USStateName],
@@ -153,6 +151,11 @@ export default {
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
+        watershedAreaBounds: this.$store.getters.watershedAreaBounds,
+        watershedUpperAreaBoundsActive: this.$store.getters
+          .watershedUpperAreaBoundsActive,
+        watershedLowerAreaBoundsActive: this.$store.getters
+          .watershedLowerAreaBoundsActive,
         durationCodeActive: this.$store.getters.durationCodeActive,
         durationCode: this.$store.getters.durationCode,
         modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,

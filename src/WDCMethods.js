@@ -116,6 +116,8 @@ const generateURL = connectionData => {
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
+  let drainAreaUpperQuery = "";
+  let drainAreaLowerQuery = "";
   let durationCodeQuery = "";
   let modifiedSinceCodeQuery = "";
   let temporalRangeQuery = "";
@@ -156,6 +158,14 @@ const generateURL = connectionData => {
   if (connectionData.agencyCodeActive) {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
+
+  if (connectionData.watershedLowerAreaBoundsActive) {
+    drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound}`;
+  }
+  if (connectionData.watershedUpperAreaBoundsActive) {
+    drainAreaUpperQuery = `&drainAreaMax=${connectionData.watershedAreaBounds.upperAreaBound}`;
+  }
+  let drainAreaQuery = `${drainAreaLowerQuery}${drainAreaUpperQuery}`;
 
   if (connectionData.durationCodeActive) {
     durationCodeQuery = `&period=${connectionData.durationCode}`;
@@ -210,7 +220,7 @@ const generateURL = connectionData => {
     modifiedSinceCodeQuery = `&modifiedSince=${connectionData.modifiedSinceCode}`;
   }
 
-  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}&siteStatus=all`;
+  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}&siteStatus=all${drainAreaQuery}`;
 };
 
 /*
@@ -326,27 +336,11 @@ const getSchema = schemaCallback => {
     .catch(err => notify(err));
 };
 
-/*
-    Generates the list of possible columns (set product of all sites, and all parameters)
-*/
-const generateColList = (sites, paramList) => {
-  let siteList = sites.replace(/\s/g, "").split(",");
-  let columnList = [];
-  siteList.forEach(function(site) {
-    paramList.forEach(function(param) {
-      // we are creating a column for each property of each site
-      columnList.push(`${site}_${param}`);
-    });
-  });
-  return columnList;
-};
-
 export {
   getData,
   getSchema,
   formatJSONAsTable,
   generateURL,
-  generateColList,
   generateSchemaTablesFromData,
   getTimeSeriesByID,
   reformatTimeString,

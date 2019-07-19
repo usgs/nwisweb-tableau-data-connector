@@ -10,6 +10,7 @@ import {
   validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
+  validateWatershedAreaBoundaries,
   validateISO_8601Duration,
   validateTemporalRange,
   validateTimeCodes
@@ -915,5 +916,93 @@ done in ParamSelect.vue
     expect(
       validateTimeCodes({ startDateTime: "", endDateTime: "" }, true)
     ).not.toBe(true);
+  });
+
+  test("validateWatershedAreaBoundaries rejects invalid inputs", () => {
+    const store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        watershedUpperAreaBoundsActive: () => {
+          return true;
+        },
+        watershedLowerAreaBoundsActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let bounds = {
+      upperAreaBound: "22",
+      lowerAreaBound: "29"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAreaBound: "",
+      lowerAreaBound: "29"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAreaBound: "432432",
+      lowerAreaBound: "-3453434"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAreaBound: "432432",
+      lowerAreaBound: "-3453434"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAreaBound: "撿ꪐ릸蹐幱쮼�鵣⚫쑚䣘",
+      lowerAreaBound: "豼繖䝶ꕄ捂᪛�ᙋ筪�ᨆ绽寜닅ᘴ侧턃Ｉ鱐뺸�ꗯ齧夼궾꧛କ"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).not.toBe(true);
+  });
+
+  test("validateWatershedAreaBoundaries accepts valid inputs", () => {
+    let store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        watershedUpperAreaBoundsActive: () => {
+          return false;
+        },
+        watershedLowerAreaBoundsActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    let wrapper = shallowMount(Main, { store, localVue });
+    let bounds = {
+      upperAreaBound: "asdfdsfa",
+      lowerAreaBound: "asdfsdf"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        watershedUpperAreaBoundsActive: () => {
+          return true;
+        },
+        watershedLowerAreaBoundsActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    bounds = {
+      upperAreaBound: "23",
+      lowerAreaBound: "gsdfgsdfg"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).toBe(true);
+    bounds = {
+      upperAreaBound: "1",
+      lowerAreaBound: "2"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).toBe(true);
   });
 });
