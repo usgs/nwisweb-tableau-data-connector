@@ -12,13 +12,16 @@
       v-model="natAquifer"
       type="text"
     />
+    <br />
     <span class="input-desc">
-      <label>Local Aquifer Code</label>
+      <label>Local Aquifer</label>
       <ToolTip
         hint="Enter up to 1000 local aquifer codes, separated by commas. A complete list of local aquifer codes is linked here."
         url="https://help.waterdata.usgs.gov/code/aqfr_cd_query?fmt=html"
       ></ToolTip>
     </span>
+    <span class="input-desc">
+    <label>Select State to Search</label>
     <input
       v-model="state"
       class="usa-input usa-input-custom"
@@ -26,6 +29,8 @@
       type="text"
     />
     <datalist id="aqstates"></datalist>
+    </span>
+    <label class="input-desc">Local Aquifer Code</label>
     <input
       v-model="locAquifer"
       class="usa-input usa-input-custom"
