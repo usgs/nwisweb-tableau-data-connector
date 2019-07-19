@@ -11,6 +11,7 @@ pipeline {
         choice(choices: ['minor', 'major', 'patch'], description: 'release version', name: 'RELEASE_VERSION')
         string(defaultValue: "", description: 'Specific Commit to build', name: 'COMMIT')
         string(defaultValue: "", description: 'Specific Tag to Build', name: 'TAG')
+        string(defaultValue: "master", description: 'Source Branch', name: 'SOURCE')
     }
 
     triggers {
@@ -26,7 +27,7 @@ pipeline {
           stage('checkout'){
             steps {
                 script {
-                    buildSource = "refs/heads/master"
+                    buildSource = "refs/heads/${SOURCE}"
                     if ("${TAG}" != "") {
                         buildSource = "refs/tags/${TAG}"
                     }
@@ -55,10 +56,6 @@ pipeline {
         stage('build') {
             steps {
                 script {
-
-                    print "${GIT_BRANCH}"
-                    print env.BRANCH_NAME
-
                     versionChange = ""
                     if("${params.RELEASE_TYPE}" == "Release") {
                         versionChange = "${params.RELEASE_VERSION}"
@@ -83,9 +80,9 @@ pipeline {
                             sh """
                                 git add .
                                 git commit -m "automatic version number increment"
-                                git pull origin autoversion-test
+                                git pull origin ${params.SOURCE}
                                 git tag `cat newVerNum.txt`
-                                git push -u origin HEAD:autoversion-test
+                                git push -u origin HEAD:${params.SOURCE}
                                 git push origin --tag
                             """
                         }                    
