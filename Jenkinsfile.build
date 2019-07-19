@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     print "${GIT_BRANCH}"
-                    print env.BRANCH_NAME
+                    print "env.BRANCH_NAME"
 
                     buildSource = "refs/heads/master"
                     if ("${TAG}" != "") {
