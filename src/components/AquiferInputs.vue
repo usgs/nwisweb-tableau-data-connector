@@ -71,6 +71,7 @@ import ToolTip from "../components/ToolTip";
 import stateList from "../fetchedValues/states.json";
 import fipsInfo from "../fetchedValues/fips.json";
 import localAquiferInfo from "../fetchedValues/locAquifer.json";
+import aquiferAreas from "../fetchedValues/aquiferAreas.json";
 import Vue from "vue";
 import VueTags from "vue-tags";
 import { notify } from "../notifications.js";
@@ -97,6 +98,12 @@ export default {
     populateStateList: function() {
       let dropDown = document.getElementById("aqstates");
       Object.keys(stateList).forEach(element => {
+        let option = document.createElement("option");
+        option.text = element;
+        option.value = element;
+        dropDown.appendChild(option);
+      });
+      Object.keys(aquiferAreas).forEach(element => {
         let option = document.createElement("option");
         option.text = element;
         option.value = element;
