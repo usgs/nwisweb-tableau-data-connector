@@ -11,7 +11,11 @@ import {
   validateSiteTypeInputs,
   validateAgencyInputs,
   validateGroundWaterSiteInputs,
-  validateNatAquiferInput
+  validateNatAquiferInput,
+  validateWatershedAreaBoundaries,
+  validateISO_8601Duration,
+  validateTemporalRange,
+  validateTimeCodes
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
 import Notifications from "vue-notification";
@@ -405,7 +409,7 @@ done in ParamSelect.vue
       actions: {}
     });
     const wrapper = shallowMount(Main, { store, localVue });
-    let paramCode = [];
+    let paramCode = new Array(150);
     expect(validateParamInputs(paramCode, wrapper.vm)).not.toBe(true);
   });
   test("validateParamInputs successfully accepts valid params", () => {
@@ -489,10 +493,431 @@ done in ParamSelect.vue
       actions: {}
     });
     const wrapper = shallowMount(Main, { store, localVue });
-    let siteType = "agencyA";
+    let agency = "agencyA";
     expect(
-      validateAgencyInputs(siteType, wrapper.vm, [{ agency_cd: "agencyA" }])
+      validateAgencyInputs(agency, wrapper.vm, [{ agency_cd: "agencyA" }])
     ).toBe(true);
+  });
+
+  test("validateISO_8601Duration accepts compliant codes and non-compliant codes when field is inactive", () => {
+    expect(validateISO_8601Duration("P1D", "", true)).toBe(true);
+    expect(validateISO_8601Duration("PT1M4534534534S", "", true)).toBe(true);
+    expect(
+      validateISO_8601Duration("P1W34324234234234234324DT435457384H", "", true)
+    ).toBe(true);
+    expect(validateISO_8601Duration("P44440000D", "", true)).toBe(true);
+    expect(
+      validateISO_8601Duration(
+        "P358973459874887539875374WT3453454345435M587934598S",
+        "",
+        true
+      )
+    ).toBe(true);
+    expect(
+      validateISO_8601Duration(
+        "P345734753475375347574777774753849348239482309483248320948329DT349850934850934S",
+        "",
+        true
+      )
+    ).toBe(true);
+    expect(
+      validateISO_8601Duration(
+        "THIS IS CERTAINLY NOT COMPLIANT WITH ISO-8601",
+        "",
+        false
+      )
+    ).toBe(true);
+  });
+  test("validateISO_8601Duration rejects non-compliant codes", () => {
+    expect(validateISO_8601Duration("P", "", true)).not.toBe(true);
+    expect(validateISO_8601Duration("T", "", true)).not.toBe(true);
+    expect(validateISO_8601Duration("T1S", "", true)).not.toBe(true);
+    expect(validateISO_8601Duration("P32432S", "", true)).not.toBe(true);
+    expect(validateISO_8601Duration("P1Y", "", true)).not.toBe(true);
+    expect(validateISO_8601Duration("P1M", "", true)).not.toBe(true);
+    expect(validateISO_8601Duration("T32432SP45345M", "", true)).not.toBe(true);
+    expect(validateISO_8601Duration("P234234D43534W", "", true)).not.toBe(true);
+    expect(validateISO_8601Duration("PT345345S435345M", "", true)).not.toBe(
+      true
+    );
+  });
+
+  test("validateTemporalRange accepts valid temporal query configurations", () => {
+    let store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T14:59:00.000Z",
+            endDateTime: "2019-07-10T15:04:00.000Z",
+            timeZone: "-0430"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    let wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "",
+            endDateTime: "",
+            timeZone: ""
+          };
+        },
+        temporalRangeActive: () => {
+          return false;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:00:00.000Z",
+            endDateTime: "2019-07-09T15:01:00.000Z",
+            timeZone: "-0400"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:00:00.000Z",
+            endDateTime: "2019-07-10T15:00:00.000Z",
+            timeZone: "+1000"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return true;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
+
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).toBe(true);
+  });
+
+  test("validateTemporalRange rejects invalid temporal query configurations", () => {
+    let store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            timeZone: "-0500"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    let wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
+
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            timeZone: "-0530"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
+
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            timeZone: "-0400"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
+
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            timeZone: "-0500"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
+
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            endDateTime: "",
+            timeZone: "-0500"
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
+
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        temporalRangeData: () => {
+          return {
+            startDateTime: "2019-07-09T15:01:00.000Z",
+            endDateTime: "2019-07-09T15:00:00.000Z",
+            timeZone: ""
+          };
+        },
+        temporalRangeActive: () => {
+          return true;
+        },
+        modifiedSinceCodeActive: () => {
+          return false;
+        },
+        durationCodeActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    expect(
+      validateTemporalRange(
+        wrapper.vm.$store.getters.temporalRangeData,
+        wrapper.vm
+      )
+    ).not.toBe(true);
+  });
+
+  test("validateTimeCodes accepts compliant codes and non-compliant codes when field is inactive", () => {
+    expect(
+      validateTimeCodes(
+        {
+          startDateTime: "1111-34-45T45:45Z",
+          endDateTime: "3213-34-45T45:45Z"
+        },
+        true
+      )
+    ).toBe(true);
+    expect(
+      validateTimeCodes(
+        {
+          startDateTime: "5555-44-33T22:11Z",
+          endDateTime: "5443-34-45T65:45Z"
+        },
+        true
+      )
+    ).toBe(true);
+    expect(
+      validateTimeCodes(
+        { startDateTime: "not valid", endDateTime: "not valid" },
+        false
+      )
+    ).toBe(true);
+  });
+  test("validateISO_8601Duration rejects non-compliant codes", () => {
+    expect(
+      validateTimeCodes(
+        {
+          startDateTime: "111d1-34-45T45:45Z",
+          endDateTime: "3213-34-45T45:45Z"
+        },
+        true
+      )
+    ).not.toBe(true);
+    expect(
+      validateTimeCodes(
+        {
+          startDateTime: "11141-34-45T45:45Z",
+          endDateTime: "3213-34-45G45:45Z"
+        },
+        true
+      )
+    ).not.toBe(true);
+    expect(
+      validateTimeCodes(
+        {
+          startDateTime: "1111-34-45T45:45Z",
+          endDateTime: "32143-34-45T45:45Z"
+        },
+        true
+      )
+    ).not.toBe(true);
+    expect(
+      validateTimeCodes({ startDateTime: "", endDateTime: "" }, true)
+    ).not.toBe(true);
   });
 
   test("validateNatAquiferInput successfully rejects invalid National Aquifer Codes", () => {
@@ -688,5 +1113,93 @@ done in ParamSelect.vue
     expect(
       validateGroundWaterSiteInputs(GWSiteAttrDepths, wrapper.vm)
     ).not.toBe(true);
+  });
+
+  test("validateWatershedAreaBoundaries rejects invalid inputs", () => {
+    const store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        watershedUpperAreaBoundsActive: () => {
+          return true;
+        },
+        watershedLowerAreaBoundsActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let bounds = {
+      upperAreaBound: "22",
+      lowerAreaBound: "29"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAreaBound: "",
+      lowerAreaBound: "29"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAreaBound: "432432",
+      lowerAreaBound: "-3453434"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAreaBound: "432432",
+      lowerAreaBound: "-3453434"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAreaBound: "撿ꪐ릸蹐幱쮼�鵣⚫쑚䣘",
+      lowerAreaBound: "豼繖䝶ꕄ捂᪛�ᙋ筪�ᨆ绽寜닅ᘴ侧턃Ｉ鱐뺸�ꗯ齧夼궾꧛କ"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).not.toBe(true);
+  });
+
+  test("validateWatershedAreaBoundaries accepts valid inputs", () => {
+    let store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        watershedUpperAreaBoundsActive: () => {
+          return false;
+        },
+        watershedLowerAreaBoundsActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    let wrapper = shallowMount(Main, { store, localVue });
+    let bounds = {
+      upperAreaBound: "asdfdsfa",
+      lowerAreaBound: "asdfsdf"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        watershedUpperAreaBoundsActive: () => {
+          return true;
+        },
+        watershedLowerAreaBoundsActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    bounds = {
+      upperAreaBound: "23",
+      lowerAreaBound: "gsdfgsdfg"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).toBe(true);
+    bounds = {
+      upperAreaBound: "1",
+      lowerAreaBound: "2"
+    };
+    expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).toBe(true);
   });
 });
