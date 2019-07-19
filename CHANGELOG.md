@@ -34,4 +34,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added watershed area query
 - Added csv processing for quickly adding a lot codes in fields which accept and verify multiple codes
 - Added various temporal query parameters
-
+- sepearted sitelist from main.vue

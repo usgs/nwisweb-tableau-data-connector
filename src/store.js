@@ -9,6 +9,7 @@ export default new Vuex.Store({
     state: "",
     siteTypeListActive: false,
     agencyActive: false,
+    sites: "",
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
     durationCodeActive: false,
@@ -66,6 +67,9 @@ export default new Vuex.Store({
     },
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
+    },
+    changeSites: (state, newSites) => {
+      state.sites = newSites;
     },
     changeWellMinActive: (state, newWellMinActivation) => {
       state.wellMinActive = newWellMinActivation;
@@ -153,6 +157,9 @@ export default new Vuex.Store({
     },
     agencyActive: state => {
       return state.agencyActive;
+    },
+    sites: state => {
+      return state.sites;
     },
     wellMinActive: state => {
       return state.wellMinActive;
