@@ -297,7 +297,7 @@ test("correctly generate a URL given Ground Water Site Attribute Depths", () => 
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=all&wellDepthMin=10&wellDepthMax=100&holeDepthMin=10&holeDepthMax=100"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&parameterCd=00060,00065&siteStatus=all&wellDepthMin=10&wellDepthMax=100&holeDepthMin=10&holeDepthMax=100"
   );
   connectionData = {
     paramNums: ["00060", "00065"],
@@ -313,7 +313,7 @@ test("correctly generate a URL given Ground Water Site Attribute Depths", () => 
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=all&wellDepthMin=10&holeDepthMax=100"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&parameterCd=00060,00065&siteStatus=all&wellDepthMin=10&holeDepthMax=100"
   );
 });
 

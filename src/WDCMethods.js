@@ -116,14 +116,11 @@ const generateURL = connectionData => {
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
-<<<<<<< HEAD
   let GWSiteAttrQuery = "";
-=======
   let durationCodeQuery = "";
   let modifiedSinceCodeQuery = "";
   let temporalRangeQuery = "";
   let historical = "";
->>>>>>> cbb0904bfcd087a6ad5cece1e61631b70d6d9a8d
 
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
@@ -161,7 +158,6 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
-<<<<<<< HEAD
   let depths = connectionData.GWSiteAttrDepths;
   if (connectionData.wellMinActive) {
     GWSiteAttrQuery += `&wellDepthMin=${depths.wellMin}`;
@@ -175,8 +171,7 @@ const generateURL = connectionData => {
   if (connectionData.holeMaxActive) {
     GWSiteAttrQuery += `&holeDepthMax=${depths.holeMax}`;
   }
-  return `https://waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}&period=P1D${paramQuery}${siteTypeQuery}${agencyCodeQuery}&siteStatus=all${GWSiteAttrQuery}`;
-=======
+
   if (connectionData.durationCodeActive) {
     durationCodeQuery = `&period=${connectionData.durationCode}`;
 
@@ -229,9 +224,7 @@ const generateURL = connectionData => {
   if (connectionData.modifiedSinceCodeActive) {
     modifiedSinceCodeQuery = `&modifiedSince=${connectionData.modifiedSinceCode}`;
   }
-
-  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}&siteStatus=all`;
->>>>>>> cbb0904bfcd087a6ad5cece1e61631b70d6d9a8d
+  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}&siteStatus=all${GWSiteAttrQuery}`;
 };
 
 /*

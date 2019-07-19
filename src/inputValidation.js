@@ -385,7 +385,7 @@ const validateFormInputs = instance => {
     notify(groundWaterSiteStatus);
     return false;
   }
-  
+
   let durationCodeStatus = validateISO_8601Duration(
     instance.$store.getters.durationCode,
     "duration code formatting invalid; please refer to link provided in the tooltip",
