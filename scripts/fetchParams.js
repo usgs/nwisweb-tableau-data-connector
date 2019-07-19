@@ -213,7 +213,7 @@ let fipsTemplate = {
   "Connecticut": "09"
 }
 
-let locAquiferStates = {
+let aquiferAreasTemplate = {
   "United States of America": "00",
   "Marshall Islands": "68",
   "Midway Islands": "71",
@@ -222,14 +222,20 @@ let locAquiferStates = {
   "Lake Erie": "96"
 }
 
-
-
 fs.writeFile("./src/fetchedValues/states.json", JSON.stringify(statesTemplate), function(err) {
   if(err) {
       return console.log(err);
   }
 
   console.log("./src/fetchedValues/states.json was saved!");
+}); 
+
+fs.writeFile("./src/fetchedValues/aquiferAreas.json", JSON.stringify(aquiferAreasTemplate), function(err) {
+  if(err) {
+      return console.log(err);
+  }
+
+  console.log("./src/fetchedValues/aquiferAreas.json was saved!");
 }); 
 
 

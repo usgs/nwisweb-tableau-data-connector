@@ -70,7 +70,7 @@
 import ToolTip from "../components/ToolTip";
 import stateList from "../fetchedValues/states.json";
 import fipsInfo from "../fetchedValues/fips.json";
-import localAquiferInfo from "../fetchedValues/aquifer.json";
+import localAquiferInfo from "../fetchedValues/locAquifer.json";
 import Vue from "vue";
 import VueTags from "vue-tags";
 import { notify } from "../notifications.js";
