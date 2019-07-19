@@ -9,6 +9,8 @@ export default new Vuex.Store({
     state: "",
     siteTypeListActive: false,
     agencyActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     durationCodeActive: false,
     modifiedSinceCodeActive: false,
     temporalRangeActive: false,
@@ -30,7 +32,8 @@ export default new Vuex.Store({
     wellMaxActive: false,
     holeMinActive: false,
     holeMaxActive: false,
-    GWSiteAttrDepths: {}
+    GWSiteAttrDepths: {},
+    watershedAreaBounds: {}
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -77,6 +80,15 @@ export default new Vuex.Store({
     },
     changeGWSiteAttrDepths: (state, newGWSiteAttrDepths) => {
       state.GWSiteAttrDepths = newGWSiteAttrDepths;
+    },
+    changeWatershedAreaBounds: (state, newAreaBounds) => {
+      state.watershedAreaBounds = newAreaBounds;
+    },
+    changeUpperWatershedAreaBoundsActive: (state, newActivityState) => {
+      state.watershedUpperAreaBoundsActive = newActivityState;
+    },
+    changeLowerWatershedAreaBoundsActive: (state, newActivityState) => {
+      state.watershedLowerAreaBoundsActive = newActivityState;
     },
     changeDurationCodeActive: (state, newDurationCodeActivationState) => {
       state.durationCodeActive = newDurationCodeActivationState;
@@ -152,6 +164,15 @@ export default new Vuex.Store({
     },
     GWSiteAttrDepths: state => {
       return state.GWSiteAttrDepths;
+    },
+    watershedAreaBounds: state => {
+      return state.watershedAreaBounds;
+    },
+    watershedUpperAreaBoundsActive: state => {
+      return state.watershedUpperAreaBoundsActive;
+    },
+    watershedLowerAreaBoundsActive: state => {
+      return state.watershedLowerAreaBoundsActive;
     },
     durationCodeActive: state => {
       return state.durationCodeActive;

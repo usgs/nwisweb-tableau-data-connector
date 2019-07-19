@@ -236,6 +236,41 @@ const validateCountyInputs = (countyList, instance) => {
 };
 
 /*
+Warns the user if they have input invalid watershed area boundaries
+*/
+
+const validateWatershedAreaBoundaries = (boundaries, instance) => {
+  let upperActive = instance.$store.getters.watershedUpperAreaBoundsActive;
+  let lowerActive = instance.$store.getters.watershedLowerAreaBoundsActive;
+
+  if (!upperActive && !lowerActive) {
+    return true;
+  }
+  let regex = /^\d(\d)*$/;
+
+  if (upperActive) {
+    if (!boundaries.upperAreaBound.replace(/\s/g, "").match(regex)) {
+      return "upper area bound is not a positive integer";
+    }
+  }
+  if (lowerActive) {
+    if (!boundaries.lowerAreaBound.replace(/\s/g, "").match(regex)) {
+      return "lower area bound is not a positive integer";
+    }
+  }
+
+  if (
+    parseInt(boundaries.upperAreaBound) < parseInt(boundaries.lowerAreaBound) &&
+    lowerActive &&
+    upperActive
+  ) {
+    return "invalid boundaries: lower watershed area bound exceeds upper watershed area bound.";
+  }
+
+  return true;
+};
+
+/*
   Warns the user if they have selected an invalid agency code.
 */
 const validateAgencyInputs = (agency, instance, agencyData) => {
@@ -386,11 +421,21 @@ const validateFormInputs = instance => {
     return false;
   }
 
+  let watershedStatus = validateWatershedAreaBoundaries(
+    instance.$store.getters.watershedAreaBounds,
+    instance
+  );
+  if (!(watershedStatus === true)) {
+    notify(watershedStatus);
+    return false;
+  }
+
   let durationCodeStatus = validateISO_8601Duration(
     instance.$store.getters.durationCode,
     "duration code formatting invalid; please refer to link provided in the tooltip",
     instance.$store.getters.durationCodeActive
   );
+
   if (!(durationCodeStatus === true)) {
     notify(durationCodeStatus);
     return false;
@@ -443,6 +488,7 @@ export {
   validateSiteTypeInputs,
   validateAgencyInputs,
   validateGroundWaterSiteInputs,
+  validateWatershedAreaBoundaries,
   validateISO_8601Duration,
   validateTemporalRange,
   validateTimeCodes

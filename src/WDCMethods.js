@@ -116,7 +116,12 @@ const generateURL = connectionData => {
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
+<<<<<<< HEAD
   let GWSiteAttrQuery = "";
+=======
+  let drainAreaUpperQuery = "";
+  let drainAreaLowerQuery = "";
+>>>>>>> 860da1bacc541cc8dfd7937850a50bc93bac004a
   let durationCodeQuery = "";
   let modifiedSinceCodeQuery = "";
   let temporalRangeQuery = "";
@@ -158,6 +163,7 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
+<<<<<<< HEAD
   let depths = connectionData.GWSiteAttrDepths;
   if (connectionData.wellMinActive) {
     GWSiteAttrQuery += `&wellDepthMin=${depths.wellMin}`;
@@ -171,6 +177,15 @@ const generateURL = connectionData => {
   if (connectionData.holeMaxActive) {
     GWSiteAttrQuery += `&holeDepthMax=${depths.holeMax}`;
   }
+=======
+  if (connectionData.watershedLowerAreaBoundsActive) {
+    drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound}`;
+  }
+  if (connectionData.watershedUpperAreaBoundsActive) {
+    drainAreaUpperQuery = `&drainAreaMax=${connectionData.watershedAreaBounds.upperAreaBound}`;
+  }
+  let drainAreaQuery = `${drainAreaLowerQuery}${drainAreaUpperQuery}`;
+>>>>>>> 860da1bacc541cc8dfd7937850a50bc93bac004a
 
   if (connectionData.durationCodeActive) {
     durationCodeQuery = `&period=${connectionData.durationCode}`;
@@ -224,7 +239,8 @@ const generateURL = connectionData => {
   if (connectionData.modifiedSinceCodeActive) {
     modifiedSinceCodeQuery = `&modifiedSince=${connectionData.modifiedSinceCode}`;
   }
-  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}&siteStatus=all${GWSiteAttrQuery}`;
+  
+  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}&siteStatus=all${drainAreaQuery}${GWSiteAttrQuery}`;
 };
 
 /*
@@ -340,27 +356,11 @@ const getSchema = schemaCallback => {
     .catch(err => notify(err));
 };
 
-/*
-    Generates the list of possible columns (set product of all sites, and all parameters)
-*/
-const generateColList = (sites, paramList) => {
-  let siteList = sites.replace(/\s/g, "").split(",");
-  let columnList = [];
-  siteList.forEach(function(site) {
-    paramList.forEach(function(param) {
-      // we are creating a column for each property of each site
-      columnList.push(`${site}_${param}`);
-    });
-  });
-  return columnList;
-};
-
 export {
   getData,
   getSchema,
   formatJSONAsTable,
   generateURL,
-  generateColList,
   generateSchemaTablesFromData,
   getTimeSeriesByID,
   reformatTimeString,

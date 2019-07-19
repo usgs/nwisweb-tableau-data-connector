@@ -38,6 +38,8 @@
             <AgencySelect></AgencySelect>
             <br />
             <GroundWaterSiteAttr></GroundWaterSiteAttr>
+            <WatershedInput></WatershedInput>
+            <TemporalRange></TemporalRange>
           </div>
         </div>
         <div class="rightcolumn">
@@ -60,7 +62,7 @@
 </template>
 
 <script>
-import { getData, getSchema, generateColList } from "../WDCMethods.js";
+import { getData, getSchema } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
@@ -75,6 +77,7 @@ import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import ToolTip from "../components/ToolTip";
+import WatershedInput from "../components/WatershedInput";
 import TemporalRange from "../components/TemporalRange";
 
 /*global  tableau:true*/
@@ -93,9 +96,15 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
+<<<<<<< HEAD
     GroundWaterSiteAttr,
     TemporalRange,
     ToolTip
+=======
+    ToolTip,
+    WatershedInput,
+    TemporalRange
+>>>>>>> 860da1bacc541cc8dfd7937850a50bc93bac004a
   },
   data: function() {
     return {
@@ -139,12 +148,7 @@ export default {
         return;
       }
 
-      this.columnList = generateColList(
-        this.sites,
-        this.$store.getters.paramCodes
-      );
       let connectionData = {
-        columnList: this.columnList,
         siteNums: this.sites,
         paramNums: this.$store.getters.paramCodes,
         state: this.stateData[this.$store.getters.USStateName],
@@ -157,11 +161,19 @@ export default {
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
+<<<<<<< HEAD
         wellMinActive: this.$store.getters.wellMinActive,
         wellMaxActive: this.$store.getters.wellMaxActive,
         holeMinActive: this.$store.getters.holeMinActive,
         holeMaxActive: this.$store.getters.holeMaxActive,
         GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths,
+=======
+        watershedAreaBounds: this.$store.getters.watershedAreaBounds,
+        watershedUpperAreaBoundsActive: this.$store.getters
+          .watershedUpperAreaBoundsActive,
+        watershedLowerAreaBoundsActive: this.$store.getters
+          .watershedLowerAreaBoundsActive,
+>>>>>>> 860da1bacc541cc8dfd7937850a50bc93bac004a
         durationCodeActive: this.$store.getters.durationCodeActive,
         durationCode: this.$store.getters.durationCode,
         modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,

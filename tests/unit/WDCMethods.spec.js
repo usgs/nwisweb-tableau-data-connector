@@ -1,7 +1,6 @@
 import {
   formatJSONAsTable,
   generateURL,
-  generateColList,
   generateSchemaTablesFromData,
   getTimeSeriesByID,
   reformatTimeString,
@@ -127,6 +126,8 @@ test("correctly generate a URL given a list of sites and parameters with various
     durationCodeActive: false,
     modifiedSinceCodeActive: false,
     siteTypeListActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     temporalRangeActive: false,
     siteNums: "01646500 ,   05437641",
     paramNums: ["00060", "00065"],
@@ -142,6 +143,8 @@ test("correctly generate a URL given a state", () => {
   const connectionData = {
     agencyCodeActive: false,
     siteTypeListActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     modifiedSinceCodeActive: false,
     temporalRangeActive: false,
     durationCodeActive: false,
@@ -159,6 +162,8 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     paramNums: ["00060", "00065"],
     agencyCodeActive: false,
     siteTypeListActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     temporalRangeActive: false,
     modifiedSinceCodeActive: false,
     durationCodeActive: false,
@@ -180,6 +185,8 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010",
     agencyCodeActive: false,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     modifiedSinceCodeActive: false,
     siteTypeListActive: false,
     temporalRangeActive: false,
@@ -192,11 +199,17 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
   );
 });
 
-test("correctly generate a URL given a list of counties", () => {
+test("correctly generate a URL given a list of counties and drainage area params", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     countyCode: [11111, 22222],
     agencyCodeActive: false,
+    watershedUpperAreaBoundsActive: true,
+    watershedLowerAreaBoundsActive: true,
+    watershedAreaBounds: {
+      upperAreaBound: 1000,
+      lowerAreaBound: 0
+    },
     siteTypeListActive: false,
     temporalRangeActive: false,
     durationCodeActive: false,
@@ -204,7 +217,7 @@ test("correctly generate a URL given a list of counties", () => {
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&parameterCd=00060,00065&siteStatus=all&drainAreaMin=0&drainAreaMax=1000"
   );
 });
 
@@ -214,6 +227,8 @@ test("correctly generate a URL given a hydrological Unit Code , using  siteType,
     hydroCode: "02070010",
     agencyCodeActive: true,
     siteTypeListActive: true,
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
     durationCodeActive: true,
     modifiedSinceCodeActive: true,
     modifiedSinceCode: "P999W3435345DT435453453453453454M4S",
