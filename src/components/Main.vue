@@ -40,6 +40,7 @@
             <GroundWaterSiteAttr></GroundWaterSiteAttr>
             <WatershedInput></WatershedInput>
             <TemporalRange></TemporalRange>
+            <SiteStatusSelect></SiteStatusSelect>
           </div>
         </div>
         <div class="rightcolumn">
@@ -72,6 +73,7 @@ import SiteTypeList from "../components/SiteTypeList";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import ParamSelect from "../components/ParamSelect";
+import SiteStatusSelect from "../components/SiteStatusSelect";
 import AgencySelect from "../components/AgencySelect";
 import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
@@ -98,6 +100,7 @@ export default {
     AgencySelect,
     GroundWaterSiteAttr,
     TemporalRange,
+    SiteStatusSelect,
     ToolTip,
     WatershedInput
   },
@@ -161,6 +164,7 @@ export default {
         holeMinActive: this.$store.getters.holeMinActive,
         holeMaxActive: this.$store.getters.holeMaxActive,
         GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths,
+        siteStatus: this.$store.getters.siteStatus,
         watershedAreaBounds: this.$store.getters.watershedAreaBounds,
         watershedUpperAreaBoundsActive: this.$store.getters
           .watershedUpperAreaBoundsActive,

@@ -33,6 +33,7 @@ export default new Vuex.Store({
     holeMinActive: false,
     holeMaxActive: false,
     GWSiteAttrDepths: {},
+    siteStatus: "all",
     watershedAreaBounds: {}
   },
   mutations: {
@@ -80,6 +81,9 @@ export default new Vuex.Store({
     },
     changeGWSiteAttrDepths: (state, newGWSiteAttrDepths) => {
       state.GWSiteAttrDepths = newGWSiteAttrDepths;
+    },
+    changeSiteStatus: (state, newSiteStatus) => {
+      state.siteStatus = newSiteStatus;
     },
     changeWatershedAreaBounds: (state, newAreaBounds) => {
       state.watershedAreaBounds = newAreaBounds;
@@ -164,6 +168,9 @@ export default new Vuex.Store({
     },
     GWSiteAttrDepths: state => {
       return state.GWSiteAttrDepths;
+    },
+    siteStatus: state => {
+      return state.siteStatus;
     },
     watershedAreaBounds: state => {
       return state.watershedAreaBounds;
