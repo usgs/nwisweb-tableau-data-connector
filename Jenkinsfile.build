@@ -26,9 +26,6 @@ pipeline {
           stage('checkout'){
             steps {
                 script {
-                    print "${GIT_BRANCH}"
-                    print "env.BRANCH_NAME"
-
                     buildSource = "refs/heads/master"
                     if ("${TAG}" != "") {
                         buildSource = "refs/tags/${TAG}"
@@ -58,6 +55,10 @@ pipeline {
         stage('build') {
             steps {
                 script {
+
+                    print "${GIT_BRANCH}"
+                    print env.BRANCH_NAME
+
                     versionChange = ""
                     if("${params.RELEASE_TYPE}" == "Release") {
                         versionChange = "${params.RELEASE_VERSION}"
