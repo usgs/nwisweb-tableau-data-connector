@@ -214,12 +214,12 @@ let fipsTemplate = {
 }
 
 let aquiferAreasTemplate = {
-  "United States of America": "00",
-  "Marshall Islands": "68",
-  "Midway Islands": "71",
   "Atlantic Coast": "75",
   "Gulf of Mexico": "77",
-  "Lake Erie": "96"
+  "Lake Erie": "96",
+  "Marshall Islands": "MH",
+  "Midway Islands": "MQ",
+  "United States of America": "00"
 }
 
 let timeZoneOffsets =[

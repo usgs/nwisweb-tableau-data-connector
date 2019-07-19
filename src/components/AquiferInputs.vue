@@ -147,6 +147,11 @@ export default {
         }
       }
     },
+/*
+You do not need to give nwisweb the state abbreviation, 
+you only need to give fipsCode:locAqNumber
+*/
+
     getLocAqNameFromCode: function(fullLocAqCode) {
       if (fullLocAqCode.length > 11) {
         return "invalid";
