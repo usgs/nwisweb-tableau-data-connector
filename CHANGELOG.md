@@ -32,6 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed styling so all elements are left justified
 - Added site status parameter
 - Added watershed area query
+<<<<<<< HEAD
+- Added Altitude query params
+=======
 - Added csv processing for quickly adding a lot codes in fields which accept and verify multiple codes
 - Added various temporal query parameters
 - sepearted sitelist from main.vue
+>>>>>>> master

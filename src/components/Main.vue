@@ -24,6 +24,7 @@
             <br />
             <GroundWaterSiteAttr></GroundWaterSiteAttr>
             <WatershedInput></WatershedInput>
+            <AltitudeInput></AltitudeInput>
             <TemporalRange></TemporalRange>
             <SiteStatusSelect></SiteStatusSelect>
           </div>
@@ -61,6 +62,7 @@ import SiteSelect from "../components/SiteSelect";
 import ParamSelect from "../components/ParamSelect";
 import SiteStatusSelect from "../components/SiteStatusSelect";
 import AgencySelect from "../components/AgencySelect";
+import AltitudeInput from "../components/AltitudeInput";
 import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
@@ -83,11 +85,12 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
+    WatershedInput,
+    AltitudeInput,
     SiteSelect,
     GroundWaterSiteAttr,
     TemporalRange,
-    SiteStatusSelect,
-    WatershedInput
+    SiteStatusSelect
   },
   data: function() {
     return {
@@ -156,6 +159,9 @@ export default {
           .watershedUpperAreaBoundsActive,
         watershedLowerAreaBoundsActive: this.$store.getters
           .watershedLowerAreaBoundsActive,
+        altitudeBounds: this.$store.getters.altitudeBounds,
+        upperAltitudeBoundActive: this.$store.getters.upperAltitudeBoundActive,
+        lowerAltitudeBoundActive: this.$store.getters.lowerAltitudeBoundActive,
         durationCodeActive: this.$store.getters.durationCodeActive,
         durationCode: this.$store.getters.durationCode,
         modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,

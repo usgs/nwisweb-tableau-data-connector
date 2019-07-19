@@ -121,6 +121,8 @@ const generateURL = connectionData => {
   let GWSiteAttrQuery = "";
   let drainAreaUpperQuery = "";
   let drainAreaLowerQuery = "";
+  let altitudeLowerQuery = "";
+  let altitudeUpperQuery = "";
   let durationCodeQuery = "";
   let modifiedSinceCodeQuery = "";
   let temporalRangeQuery = "";
@@ -140,11 +142,17 @@ const generateURL = connectionData => {
     }
     case locationMode.COORDS: {
       let bounds = connectionData.boundaryCoords;
-      locationQuery = `&bBox=${bounds.west},${bounds.south},${bounds.east},${bounds.north}`;
+      locationQuery = `&bBox=${bounds.west.replace(
+        /\s/g,
+        ""
+      )},${bounds.south.replace(/\s/g, "")},${bounds.east.replace(
+        /\s/g,
+        ""
+      )},${bounds.north.replace(/\s/g, "")}`;
       break;
     }
     case locationMode.HYDRO: {
-      let hydroCode = connectionData.hydroCode;
+      let hydroCode = connectionData.hydroCode.replace(/\s/g, "");
       locationQuery = `&huc=${hydroCode}`;
       break;
     }
@@ -178,12 +186,32 @@ const generateURL = connectionData => {
     GWSiteAttrQuery += `&holeDepthMax=${depths.holeMax}`;
   }
   if (connectionData.watershedLowerAreaBoundsActive) {
-    drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound}`;
+    drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound.replace(
+      /\s/g,
+      ""
+    )}`;
   }
   if (connectionData.watershedUpperAreaBoundsActive) {
-    drainAreaUpperQuery = `&drainAreaMax=${connectionData.watershedAreaBounds.upperAreaBound}`;
+    drainAreaUpperQuery = `&drainAreaMax=${connectionData.watershedAreaBounds.upperAreaBound.replace(
+      /\s/g,
+      ""
+    )}`;
   }
   let drainAreaQuery = `${drainAreaLowerQuery}${drainAreaUpperQuery}`;
+
+  if (connectionData.lowerAltitudeBoundActive) {
+    altitudeLowerQuery = `&altMin=${connectionData.altitudeBounds.lowerAltitudeBound.replace(
+      /\s/g,
+      ""
+    )}`;
+  }
+  if (connectionData.upperAltitudeBoundActive) {
+    altitudeUpperQuery = `&altMax=${connectionData.altitudeBounds.upperAltitudeBound.replace(
+      /\s/g,
+      ""
+    )}`;
+  }
+  let altitudeQuery = `${altitudeLowerQuery}${altitudeUpperQuery}`;
 
   if (connectionData.durationCodeActive) {
     durationCodeQuery = `&period=${connectionData.durationCode}`;
@@ -238,7 +266,7 @@ const generateURL = connectionData => {
     modifiedSinceCodeQuery = `&modifiedSince=${connectionData.modifiedSinceCode}`;
   }
 
-  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}${drainAreaQuery}${siteStatusQuery}${GWSiteAttrQuery}`;
+  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}${drainAreaQuery}${altitudeQuery}${siteStatusQuery}${GWSiteAttrQuery}`;
 };
 
 /*

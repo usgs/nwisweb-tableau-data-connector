@@ -12,6 +12,9 @@ export default new Vuex.Store({
     sites: "",
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    altitudeBounds: {},
+    upperAltitudeBoundActive: false,
+    lowerAltitudeBoundActive: false,
     durationCodeActive: false,
     modifiedSinceCodeActive: false,
     temporalRangeActive: false,
@@ -98,6 +101,16 @@ export default new Vuex.Store({
     changeLowerWatershedAreaBoundsActive: (state, newActivityState) => {
       state.watershedLowerAreaBoundsActive = newActivityState;
     },
+    changeAltitudeBounds: (state, newAltitudebounds) => {
+      state.altitudeBounds = newAltitudebounds;
+    },
+    changeUpperAltitudeBoundActive: (state, newUpperAltitudeBoundActive) => {
+      state.upperAltitudeBoundActive = newUpperAltitudeBoundActive;
+    },
+    changeLowerAltitudeBoundActive: (state, newLowerAltitudeBoundsActive) => {
+      state.lowerAltitudeBoundActive = newLowerAltitudeBoundsActive;
+    },
+
     changeDurationCodeActive: (state, newDurationCodeActivationState) => {
       state.durationCodeActive = newDurationCodeActivationState;
     },
@@ -187,6 +200,15 @@ export default new Vuex.Store({
     },
     watershedLowerAreaBoundsActive: state => {
       return state.watershedLowerAreaBoundsActive;
+    },
+    altitudeBounds: state => {
+      return state.altitudeBounds;
+    },
+    upperAltitudeBoundActive: state => {
+      return state.upperAltitudeBoundActive;
+    },
+    lowerAltitudeBoundActive: state => {
+      return state.lowerAltitudeBoundActive;
     },
     durationCodeActive: state => {
       return state.durationCodeActive;

@@ -10,8 +10,9 @@ import {
   validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
-  validateGroundWaterSiteInputs,
   validateWatershedAreaBoundaries,
+  validateAltitudeBoundaries,
+  validateGroundWaterSiteInputs,
   validateISO_8601Duration,
   validateTemporalRange,
   validateTimeCodes
@@ -1155,7 +1156,7 @@ done in ParamSelect.vue
     });
     wrapper = shallowMount(Main, { store, localVue });
     bounds = {
-      upperAreaBound: "23",
+      upperAreaBound: "23 ",
       lowerAreaBound: "gsdfgsdfg"
     };
     expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).toBe(true);
@@ -1164,5 +1165,131 @@ done in ParamSelect.vue
       lowerAreaBound: "2"
     };
     expect(validateWatershedAreaBoundaries(bounds, wrapper.vm)).toBe(true);
+  });
+
+  test("validateAltitudeBoundaries rejects invalid inputs", () => {
+    const store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        lowerAltitudeBoundActive: () => {
+          return true;
+        },
+        upperAltitudeBoundActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let bounds = {
+      upperAltitudeBound: "22",
+      lowerAltitudeBound: "29"
+    };
+    expect(validateAltitudeBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAltitudeBound: "5.46.5",
+      lowerAltitudeBound: "29"
+    };
+    expect(validateAltitudeBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAltitudeBound: "432432.",
+      lowerAltitudeBound: "-3453434"
+    };
+    expect(validateAltitudeBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAltitudeBound: "432432",
+      lowerAltitudeBound: "-.3453434"
+    };
+    expect(validateAltitudeBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAltitudeBound: "-1.432432",
+      lowerAltitudeBound: "-1.3453434"
+    };
+    expect(validateAltitudeBoundaries(bounds, wrapper.vm)).not.toBe(true);
+    bounds = {
+      upperAltitudeBound: "撿ꪐ릸蹐幱쮼�鵣⚫쑚䣘",
+      lowerAltitudeBound: "豼繖䝶ꕄ捂᪛�ᙋ筪�ᨆ绽寜닅ᘴ侧턃Ｉ鱐뺸�ꗯ齧夼궾꧛କ"
+    };
+    expect(validateAltitudeBoundaries(bounds, wrapper.vm)).not.toBe(true);
+  });
+
+  test("validateAltitudeBoundaries accepts valid inputs", () => {
+    let store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        lowerAltitudeBoundActive: () => {
+          return false;
+        },
+        upperAltitudeBoundActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    let wrapper = shallowMount(Main, { store, localVue });
+    let bounds = {
+      upperAltitudeBound: "asdfdsfa",
+      lowerAltitudeBound: "asdfsdf"
+    };
+    expect(validateAltitudeBoundaries(bounds, wrapper.vm)).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        lowerAltitudeBoundActive: () => {
+          return false;
+        },
+        upperAltitudeBoundActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    bounds = {
+      upperAltitudeBound: " -1.0",
+      lowerAltitudeBound: "asdfsdf"
+    };
+    expect(validateAltitudeBoundaries(bounds, wrapper.vm)).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        lowerAltitudeBoundActive: () => {
+          return true;
+        },
+        upperAltitudeBoundActive: () => {
+          return false;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    bounds = {
+      upperAltitudeBound: "asdfasdfa",
+      lowerAltitudeBound: "-15345345.345345345 "
+    };
+    expect(validateAltitudeBoundaries(bounds, wrapper.vm)).toBe(true);
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        lowerAltitudeBoundActive: () => {
+          return true;
+        },
+        upperAltitudeBoundActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    wrapper = shallowMount(Main, { store, localVue });
+    bounds = {
+      upperAltitudeBound: "   8293752945.45827498235      ",
+      lowerAltitudeBound: "   -42534523452345.000000000000"
+    };
+    expect(validateAltitudeBoundaries(bounds, wrapper.vm)).toBe(true);
   });
 });
