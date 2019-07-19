@@ -33,11 +33,11 @@
               <ParamSelect></ParamSelect>
               <br />
             </div>
+            <TemporalRange></TemporalRange>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
             <br />
             <GroundWaterSiteAttr></GroundWaterSiteAttr>
-            <TemporalRange></TemporalRange>
           </div>
         </div>
         <div class="rightcolumn">
