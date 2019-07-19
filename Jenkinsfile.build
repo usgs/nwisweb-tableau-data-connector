@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     print "${GIT_BRANCH}"
-                    buildSource = "refs/heads/master"
+                    buildSource = "refs/heads/${GIT_BRANCH}"
                     if ("${TAG}" != "") {
                         buildSource = "refs/tags/${TAG}"
                     }
