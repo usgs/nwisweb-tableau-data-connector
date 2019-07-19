@@ -37,6 +37,7 @@
             <AgencySelect></AgencySelect>
             <br />
             <GroundWaterSiteAttr></GroundWaterSiteAttr>
+            <TemporalRange></TemporalRange>
           </div>
         </div>
         <div class="rightcolumn">
@@ -74,6 +75,7 @@ import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import ToolTip from "../components/ToolTip";
+import TemporalRange from "../components/TemporalRange";
 
 /*global  tableau:true*/
 
@@ -92,6 +94,7 @@ export default {
     CountySelect,
     AgencySelect,
     GroundWaterSiteAttr,
+    TemporalRange,
     ToolTip
   },
   data: function() {
@@ -158,8 +161,16 @@ export default {
         wellMaxActive: this.$store.getters.wellMaxActive,
         holeMinActive: this.$store.getters.holeMinActive,
         holeMaxActive: this.$store.getters.holeMaxActive,
-        GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths
+        GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths,
+        durationCodeActive: this.$store.getters.durationCodeActive,
+        durationCode: this.$store.getters.durationCode,
+        modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,
+        modifiedSinceCode: this.$store.getters.modifiedSinceCode,
+        temporalRangeActive: this.$store.getters.temporalRangeActive,
+        temporalRangeData: this.$store.getters.temporalRangeData,
+        currentDateTime: new Date()
       };
+
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {

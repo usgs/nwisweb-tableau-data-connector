@@ -9,11 +9,21 @@ export default new Vuex.Store({
     state: "",
     siteTypeListActive: false,
     agencyActive: false,
+    durationCodeActive: false,
+    modifiedSinceCodeActive: false,
+    temporalRangeActive: false,
+    modifiedSinceCode: "",
     agencyCode: "",
     siteType: [],
     hydroCode: "",
     countyCode: [],
     paramCodes: [],
+    temporalRangeData: {
+      startDateTime: "",
+      endDateTime: "",
+      timeZone: ""
+    },
+    durationCode: "",
     locationMode: locationMode.SITE,
     coordinates: {},
     wellMinActive: false,
@@ -67,6 +77,33 @@ export default new Vuex.Store({
     },
     changeGWSiteAttrDepths: (state, newGWSiteAttrDepths) => {
       state.GWSiteAttrDepths = newGWSiteAttrDepths;
+    },
+    changeDurationCodeActive: (state, newDurationCodeActivationState) => {
+      state.durationCodeActive = newDurationCodeActivationState;
+    },
+    changeDurationCode: (state, newDurationCode) => {
+      state.durationCode = newDurationCode;
+    },
+    changeModifiedSinceCode: (state, newModifiedSinceCode) => {
+      state.modifiedSinceCode = newModifiedSinceCode;
+    },
+    changeModifiedSinceCodeActive: (
+      state,
+      newModifiedSinceCodeActivationState
+    ) => {
+      state.modifiedSinceCodeActive = newModifiedSinceCodeActivationState;
+    },
+    changeTemporalRangeActive: (state, newTemporalRangeActivationStatus) => {
+      state.temporalRangeActive = newTemporalRangeActivationStatus;
+    },
+    changeStartDateTime: (state, newStartDateTime) => {
+      state.temporalRangeData.startDateTime = newStartDateTime;
+    },
+    changeEndDateTime: (state, newEndDateTime) => {
+      state.temporalRangeData.endDateTime = newEndDateTime;
+    },
+    changeTimeZone: (state, newTimeZone) => {
+      state.temporalRangeData.timeZone = newTimeZone;
     }
   },
   actions: {},
@@ -115,6 +152,24 @@ export default new Vuex.Store({
     },
     GWSiteAttrDepths: state => {
       return state.GWSiteAttrDepths;
+    },
+    durationCodeActive: state => {
+      return state.durationCodeActive;
+    },
+    durationCode: state => {
+      return state.durationCode;
+    },
+    modifiedSinceCode: state => {
+      return state.modifiedSinceCode;
+    },
+    modifiedSinceCodeActive: state => {
+      return state.modifiedSinceCodeActive;
+    },
+    temporalRangeActive: state => {
+      return state.temporalRangeActive;
+    },
+    temporalRangeData: state => {
+      return state.temporalRangeData;
     }
   }
 });

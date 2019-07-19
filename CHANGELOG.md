@@ -30,5 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added support for Ground Water Site Attributes
 ### Changed
 - Changed styling so all elements are left justified
-
+- Added csv processing for quickly adding a lot codes in fields which accept and verify multiple codes
+- Added various temporal query parameters
 
