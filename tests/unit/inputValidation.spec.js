@@ -408,7 +408,7 @@ done in ParamSelect.vue
       actions: {}
     });
     const wrapper = shallowMount(Main, { store, localVue });
-    let paramCode = [];
+    let paramCode = new Array(150);
     expect(validateParamInputs(paramCode, wrapper.vm)).not.toBe(true);
   });
   test("validateParamInputs successfully accepts valid params", () => {
