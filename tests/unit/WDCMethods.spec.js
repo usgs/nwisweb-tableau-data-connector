@@ -332,19 +332,6 @@ test("correctly generate a URL given Ground Water Site Attribute Depths", () => 
   );
 });
 
-test("correctly generates the column schema from sites and parameters", () => {
-  const sites = "01646500,05437641";
-  const params = ["00060", "00065"];
-
-  const targetResult = [
-    "01646500_00060",
-    "01646500_00065",
-    "05437641_00060",
-    "05437641_00065"
-  ];
-  expect(generateColList(sites, params)).toEqual(targetResult);
-});
-
 test("error on call to formatJSONAsTable with non-existent table name", () => {
   const input = validDataJSON;
 

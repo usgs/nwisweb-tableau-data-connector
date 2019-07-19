@@ -116,12 +116,9 @@ const generateURL = connectionData => {
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
-<<<<<<< HEAD
   let GWSiteAttrQuery = "";
-=======
   let drainAreaUpperQuery = "";
   let drainAreaLowerQuery = "";
->>>>>>> 860da1bacc541cc8dfd7937850a50bc93bac004a
   let durationCodeQuery = "";
   let modifiedSinceCodeQuery = "";
   let temporalRangeQuery = "";
@@ -163,7 +160,6 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
-<<<<<<< HEAD
   let depths = connectionData.GWSiteAttrDepths;
   if (connectionData.wellMinActive) {
     GWSiteAttrQuery += `&wellDepthMin=${depths.wellMin}`;
@@ -177,7 +173,6 @@ const generateURL = connectionData => {
   if (connectionData.holeMaxActive) {
     GWSiteAttrQuery += `&holeDepthMax=${depths.holeMax}`;
   }
-=======
   if (connectionData.watershedLowerAreaBoundsActive) {
     drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound}`;
   }
@@ -185,7 +180,6 @@ const generateURL = connectionData => {
     drainAreaUpperQuery = `&drainAreaMax=${connectionData.watershedAreaBounds.upperAreaBound}`;
   }
   let drainAreaQuery = `${drainAreaLowerQuery}${drainAreaUpperQuery}`;
->>>>>>> 860da1bacc541cc8dfd7937850a50bc93bac004a
 
   if (connectionData.durationCodeActive) {
     durationCodeQuery = `&period=${connectionData.durationCode}`;
@@ -239,7 +233,7 @@ const generateURL = connectionData => {
   if (connectionData.modifiedSinceCodeActive) {
     modifiedSinceCodeQuery = `&modifiedSince=${connectionData.modifiedSinceCode}`;
   }
-  
+
   return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}&siteStatus=all${drainAreaQuery}${GWSiteAttrQuery}`;
 };
 

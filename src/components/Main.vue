@@ -96,15 +96,10 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
-<<<<<<< HEAD
     GroundWaterSiteAttr,
     TemporalRange,
-    ToolTip
-=======
     ToolTip,
-    WatershedInput,
-    TemporalRange
->>>>>>> 860da1bacc541cc8dfd7937850a50bc93bac004a
+    WatershedInput
   },
   data: function() {
     return {
@@ -161,19 +156,16 @@ export default {
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
-<<<<<<< HEAD
         wellMinActive: this.$store.getters.wellMinActive,
         wellMaxActive: this.$store.getters.wellMaxActive,
         holeMinActive: this.$store.getters.holeMinActive,
         holeMaxActive: this.$store.getters.holeMaxActive,
         GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths,
-=======
         watershedAreaBounds: this.$store.getters.watershedAreaBounds,
         watershedUpperAreaBoundsActive: this.$store.getters
           .watershedUpperAreaBoundsActive,
         watershedLowerAreaBoundsActive: this.$store.getters
           .watershedLowerAreaBoundsActive,
->>>>>>> 860da1bacc541cc8dfd7937850a50bc93bac004a
         durationCodeActive: this.$store.getters.durationCodeActive,
         durationCode: this.$store.getters.durationCode,
         modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,
