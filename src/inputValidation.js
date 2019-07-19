@@ -3,6 +3,8 @@ import agencyData from "./fetchedValues/agency.json";
 import stateData from "./fetchedValues/states.json";
 import siteTypeData from "./fetchedValues/siteTypes.json";
 import { notify } from "./notifications.js";
+import { generateDateTime } from "./WDCMethods.js";
+var format = require("date-format");
 
 /*
 useful helper function to allow searching lists of dictionaries for a value at a specific key.
@@ -107,6 +109,47 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
 };
 
 /*
+ warns the user if they have specified a duration in a format non-compliant with the ISO 8601 duration specification. Takes message
+ as an argument because this is used for more than one form and different messages are needed 
+*/
+
+const validateISO_8601Duration = (duration, message, active) => {
+  if (!active) {
+    return true;
+  }
+  let regex = /^P((\d)+W)?((\d)+D)?((T(\d)+H((\d)+M)?((\d)+S)?|T(\d)+M((\d)+S)?|T(\d)+S))?$/;
+  let antiregex = /^P$/;
+  if (
+    !duration.replace(/\s/g, "").match(regex) ||
+    duration.replace(/\s/g, "").match(antiregex)
+  ) {
+    return message;
+  }
+
+  return true;
+};
+
+/*
+warns the user if they have entered incorrectly formatted time codes
+*/
+const validateTimeCodes = (temporalRangeData, active) => {
+  if (!active) {
+    return true;
+  }
+
+  let regex = /^(\d){4}-(\d){2}-(\d){2}T(\d){2}:(\d){2}$/;
+
+  if (!temporalRangeData.startDateTime.substring(0, 16).match(regex)) {
+    return "start date time in invalid format";
+  }
+  if (!temporalRangeData.endDateTime.substring(0, 16).match(regex)) {
+    return "end date time in invalid format";
+  }
+
+  return true;
+};
+
+/*
 warns the user if they entered an invalid site-type code
 
 */
@@ -128,6 +171,55 @@ const validateParamInputs = paramList => {
   } else {
     return "parameter query requires between 1 and 100 parameters";
   }
+};
+
+/*
+in the event that the temporal range query functionality is active, warns the user if the temporal boundaries or incomplete
+or inconsistent. 
+*/
+
+const validateTemporalRange = (temporalRangeData, instance) => {
+  if (!instance.$store.getters.temporalRangeActive) {
+    return true;
+  }
+  if (
+    instance.$store.getters.temporalRangeActive &&
+    instance.$store.getters.durationCodeActive
+  ) {
+    return "Explicit temporal range parameters are mutually exclusive with duration code specified timeperiod parameters.";
+  }
+  if (
+    temporalRangeData.startDateTime == "" ||
+    temporalRangeData.endDateTime == "" ||
+    temporalRangeData.timeZone == ""
+  ) {
+    return "One or more required fields for temporal range has not been specified. Please specify all fields or remove the temporal range from your query by clicking the checkbox again.";
+  }
+
+  let startDate = format.parse(
+    format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+    generateDateTime(
+      temporalRangeData.timeZone,
+      temporalRangeData.startDateTime,
+      false
+    )
+  );
+  let endDate = format.parse(
+    format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+    generateDateTime(
+      temporalRangeData.timeZone,
+      temporalRangeData.endDateTime,
+      false
+    )
+  );
+  let offset = endDate - startDate;
+  if (offset < 0) {
+    return "end date before start date.";
+  } else if (offset == 0) {
+    return "end date equal to start date; temporal range has zero length";
+  }
+
+  return true;
 };
 
 /*
@@ -271,6 +363,45 @@ const validateFormInputs = instance => {
     return false;
   }
 
+  let durationCodeStatus = validateISO_8601Duration(
+    instance.$store.getters.durationCode,
+    "duration code formatting invalid; please refer to link provided in the tooltip",
+    instance.$store.getters.durationCodeActive
+  );
+
+  if (!(durationCodeStatus === true)) {
+    notify(durationCodeStatus);
+    return false;
+  }
+
+  let modifiedSinceStatus = validateISO_8601Duration(
+    instance.$store.getters.modifiedSinceCode,
+    "modified since duration code formatting invalid; please refer to link provided in the tooltip",
+    instance.$store.getters.modifiedSinceCodeActive
+  );
+  if (!(modifiedSinceStatus === true)) {
+    notify(modifiedSinceStatus);
+    return false;
+  }
+
+  let timeCodeStatus = validateTimeCodes(
+    instance.$store.getters.temporalRangeData,
+    instance.$store.getters.temporalRangeActive
+  );
+  if (!(timeCodeStatus === true)) {
+    notify(timeCodeStatus);
+    return false;
+  }
+
+  let temporalRangeStatus = validateTemporalRange(
+    instance.$store.getters.temporalRangeData,
+    instance
+  );
+  if (!(temporalRangeStatus === true)) {
+    notify(temporalRangeStatus);
+    return false;
+  }
+
   instance.$store.commit(
     "changeCoordinates",
     roundCoordinateInputs(instance.$store.getters.coordinates)
@@ -289,5 +420,8 @@ export {
   validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
-  validateWatershedAreaBoundaries
+  validateWatershedAreaBoundaries,
+  validateISO_8601Duration,
+  validateTemporalRange,
+  validateTimeCodes
 };

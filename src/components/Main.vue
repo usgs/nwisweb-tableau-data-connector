@@ -36,6 +36,7 @@
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
             <WatershedInput></WatershedInput>
+            <TemporalRange></TemporalRange>
           </div>
         </div>
         <div class="rightcolumn">
@@ -73,6 +74,7 @@ import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import ToolTip from "../components/ToolTip";
 import WatershedInput from "../components/WatershedInput";
+import TemporalRange from "../components/TemporalRange";
 
 /*global  tableau:true*/
 
@@ -91,7 +93,8 @@ export default {
     CountySelect,
     AgencySelect,
     ToolTip,
-    WatershedInput
+    WatershedInput,
+    TemporalRange
   },
   data: function() {
     return {
@@ -152,8 +155,16 @@ export default {
         watershedUpperAreaBoundsActive: this.$store.getters
           .watershedUpperAreaBoundsActive,
         watershedLowerAreaBoundsActive: this.$store.getters
-          .watershedLowerAreaBoundsActive
+          .watershedLowerAreaBoundsActive,
+        durationCodeActive: this.$store.getters.durationCodeActive,
+        durationCode: this.$store.getters.durationCode,
+        modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,
+        modifiedSinceCode: this.$store.getters.modifiedSinceCode,
+        temporalRangeActive: this.$store.getters.temporalRangeActive,
+        temporalRangeData: this.$store.getters.temporalRangeData,
+        currentDateTime: new Date()
       };
+
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {

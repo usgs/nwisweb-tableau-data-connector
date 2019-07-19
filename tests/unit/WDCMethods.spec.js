@@ -4,9 +4,11 @@ import {
   generateSchemaTablesFromData,
   getTimeSeriesByID,
   reformatTimeString,
-  sanitizeVariableName
+  sanitizeVariableName,
+  generateDateTime
 } from "../../src/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
+var format = require("date-format");
 
 const validDataJSON = {
   value: {
@@ -121,16 +123,19 @@ test("converting a fully-populated data JSON to table", () => {
 test("correctly generate a URL given a list of sites and parameters with various whitespace", () => {
   const connectionData = {
     agencyCodeActive: false,
+    durationCodeActive: false,
+    modifiedSinceCodeActive: false,
     siteTypeListActive: false,
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    temporalRangeActive: false,
     siteNums: "01646500 ,   05437641",
     paramNums: ["00060", "00065"],
     state: "Rhode Island",
     locationMode: locationMode.SITE
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500,05437641&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500,05437641&parameterCd=00060,00065&siteStatus=all"
   );
 });
 
@@ -140,12 +145,15 @@ test("correctly generate a URL given a state", () => {
     siteTypeListActive: false,
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    modifiedSinceCodeActive: false,
+    temporalRangeActive: false,
+    durationCodeActive: false,
     paramNums: ["00060", "00065"],
     state: "ri",
     locationMode: locationMode.STATE
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&stateCd=ri&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&stateCd=ri&parameterCd=00060,00065&siteStatus=all"
   );
 });
 
@@ -156,6 +164,9 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     siteTypeListActive: false,
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    temporalRangeActive: false,
+    modifiedSinceCodeActive: false,
+    durationCodeActive: false,
     boundaryCoords: {
       north: "2.000000",
       south: "1.000000",
@@ -165,7 +176,7 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     locationMode: locationMode.COORDS
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&bBox=1.000000,1.000000,2.000000,2.000000&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&bBox=1.000000,1.000000,2.000000,2.000000&parameterCd=00060,00065&siteStatus=all"
   );
 });
 
@@ -176,11 +187,15 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     agencyCodeActive: false,
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    modifiedSinceCodeActive: false,
     siteTypeListActive: false,
+    temporalRangeActive: false,
+    durationCodeActive: true,
+    durationCode: "P119D",
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&period=P119D&siteStatus=all"
   );
 });
 
@@ -196,14 +211,17 @@ test("correctly generate a URL given a list of counties and drainage area params
       lowerAreaBound: 0
     },
     siteTypeListActive: false,
+    temporalRangeActive: false,
+    durationCodeActive: false,
+    modifiedSinceCodeActive: false,
     locationMode: locationMode.COUNTY
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&period=P1D&parameterCd=00060,00065&siteStatus=all&drainAreaMin=0&drainAreaMax=1000"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&parameterCd=00060,00065&siteStatus=all&drainAreaMin=0&drainAreaMax=1000"
   );
 });
 
-test("correctly generate a URL given a hydrological Unit Code with siteType and Agency Parameters", () => {
+test("correctly generate a URL given a hydrological Unit Code , using  siteType, duration, modifiedSince, and Agency parameters", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010",
@@ -211,12 +229,69 @@ test("correctly generate a URL given a hydrological Unit Code with siteType and 
     siteTypeListActive: true,
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    durationCodeActive: true,
+    modifiedSinceCodeActive: true,
+    modifiedSinceCode: "P999W3435345DT435453453453453454M4S",
+    durationCode: "P121DT96M5S",
+    temporalRangeActive: false,
     agencyCode: "agencyA",
     siteTypeList: ["siteA", "siteB"],
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&period=P1D&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&siteStatus=all"
+    "https://nwis.waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&period=P121DT96M5S&modifiedSince=P999W3435345DT435453453453453454M4S&siteStatus=all"
+  );
+});
+
+test("correctly generate a URL given a hydrological Unit Code, with modifiedSince, and temporal range parameters", () => {
+  const connectionData = {
+    paramNums: ["00060", "00065"],
+    hydroCode: "02070010",
+    agencyCodeActive: false,
+    siteTypeListActive: false,
+    durationCodeActive: false,
+    modifiedSinceCodeActive: true,
+    modifiedSinceCode: "P999W3435345DT435453453453453454M4S",
+    temporalRangeActive: true,
+    locationMode: locationMode.HYDRO,
+    temporalRangeData: {
+      startDateTime: "2019-07-08T14:59:00.000Z",
+      endDateTime: "2019-07-08T14:59:00.000Z",
+      timeZone: "-0430"
+    },
+    currentDateTime: format.parse(
+      format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+      "2019-08-08T14:59:00.000Z"
+    )
+  };
+  expect(generateURL(connectionData)).toEqual(
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&modifiedSince=P999W3435345DT435453453453453454M4S&startDT=2019-07-08T14:59-0430&endDT=2019-07-08T14:59-0430&siteStatus=all"
+  );
+});
+
+test("correctly generate a URL given a hydrological Unit Code, with modifiedSince, and temporal range parameters and a time period of over 120 days", () => {
+  const connectionData = {
+    paramNums: ["00060", "00065"],
+    hydroCode: "02070010",
+    agencyCodeActive: false,
+    siteTypeListActive: false,
+    durationCodeActive: false,
+    modifiedSinceCodeActive: true,
+    modifiedSinceCode: "P999W3435345DT435453453453453454M4S",
+    temporalRangeActive: true,
+    locationMode: locationMode.HYDRO,
+    temporalRangeData: {
+      startDateTime: "2018-07-08T14:59:00.000Z",
+      endDateTime: "2018-07-09T14:59:00.000Z",
+      timeZone: "-0430"
+    },
+    currentDateTime: format.parse(
+      format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+      "2019-08-04T14:59:00.000Z"
+    )
+  };
+  expect(generateURL(connectionData)).toEqual(
+    "https://nwis.waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&modifiedSince=P999W3435345DT435453453453453454M4S&startDT=2018-07-08T14:59-0430&endDT=2018-07-09T14:59-0430&siteStatus=all"
   );
 });
 
@@ -299,4 +374,13 @@ test("sanitizeVariableName correctly santitizes variable name", () => {
     "埨ᳫ聘퐮ꄎ㮥鉺綯᜽⬝\n븵䦜鲹㳰竊뱒沓畀ꥍ墡ᝋຨ኿淭⠜㙗৅�填즪皝�땬쩾嵥̮䂌闂榿ᕰ浻죙쓖ꦴ묇⤞꟤ᕌ⤺暞䴟㕡�ᇥ⨕䙴ᣔ拟旃寨获⢋饞뺽幹킎턊㢀㉁⏎藮꓾둵य▎�蕻줗요뱠‮Ꮉ鏨靨蘇㕦聃歚鋉㛤졔慰䠣뿽鏧楫餤飅杖�果곛⻱ﾐ᭵烪敍ⶼ曺�㴫ꎡ䌘ᨙ烽獨湬㹦輂헕㴼Ტ咨ﰂ꤂趇韙ט턐蚈惯ा毴诧叔ꖞ滶翉��枷䄘葆묃䳫뀙鑏᳃Ოᝪ位᎙ﯾ㤉凂民牯洌�빟釉쬜ᰉ苞䦱䳏䮍릭셦䶸灬瑞ꂌ᫪뷑쇆ゆ㌛챚䞫࣠뷒渤䚗䦧⒢᪂꒓䀣㐘ꮍ냘綔ꡖꙉ΃偡뽑뭖뿵ᅋ紥㽠倢貐ጹ⺲暺푚艠੨䄊覑甎垒Ⳏ㛧㟬蔹ৠ牿鄆裋麽鮶궄䉠嘿ꍔ߄鯅巤ꛜ졲�⸸䶰쭵ḵ灵볖뷚⟤ඔ丁墜뷟缫믆禙婪�灠ྮ㐦痻ዼ娈붇鱰햒퀞充뜧蓮㒁곶蟰⽕혺종ꓮ玀ꥌ資槞ॐৄ徒�慢ჴ縀砃ห뼸줆喢밼硏⺎罦玘凊揮寉�츁鈣⚃唅냛⚼�ᗀ濗侴퓭渱먯晘鋡⼪〉︅嵜₂맛揽⟳辩햠�镞ൿᔅబ೾鉚䋆儗쁽⾤誗抇奁렎厇Ȁ㾉尋�ࣞ↊춵瑗髃䛦駙䩥鶌䧸䔶橵㲯㱂易誉鴉樂ձ﷧噄య핍笍녜ᓼ잊ዏ뱊殏鲨�韊呿睘鐽㖕ꓬ崿虞禲댫硱齂䵙烣뷎᭙扩앯⛻흱涹�治팕鯩ီ殿卨⾋弳⓫恗㉷㠎뼄旟脔⟽Ｙ瑝饜㰛죛띑羅나w뢽蠇땞哃ᘏᛤᄔ捻�츅髋�⯆唢἟뤺愲᤹媻熙༆ꕁꅁ";
   expected = "_w";
   expect(sanitizeVariableName(input)).toEqual(expected);
+});
+
+test("generateDate time correctly generates datetimes with timezones when given datetime and timezone", () => {
+  expect(generateDateTime("-0300", "2019-07-09T14:42:00.000Z", false)).toEqual(
+    "2019-07-09T14:42:00.000-0300"
+  );
+  expect(generateDateTime("-0300", "2019-07-09T14:42:00.000Z", true)).toEqual(
+    "2019-07-09T14:42-0300"
+  );
 });
