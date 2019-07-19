@@ -181,7 +181,9 @@ const generateURL = connectionData => {
     temporalRangeQuery = `&startDT=${startDateString}&endDT=${endDateString}`;
 
     if (typeof connectionData.currentDateTime === "string") {
-      // this is necessary because JSON.stingify/JSON.parse are not symmetrical with respect to Date objects
+      // this is necessary because JSON.stringify/JSON.parse are not symmetrical with respect to Date objects
+      // JSON.stringify converts date objects to strings, so they must be manually reconstructed as Date objects
+      // we do this with a formatting library, as behavior of Date() for parsing format strings is not standardized in older browsers.
       connectionData.currentDateTime = format.parse(
         format.ISO8601_WITH_TZ_OFFSET_FORMAT,
         connectionData.currentDateTime
