@@ -10,13 +10,32 @@ export default new Vuex.Store({
     siteTypeListActive: false,
     agencyActive: false,
     sites: "",
+    watershedUpperAreaBoundsActive: false,
+    watershedLowerAreaBoundsActive: false,
+    durationCodeActive: false,
+    modifiedSinceCodeActive: false,
+    temporalRangeActive: false,
+    modifiedSinceCode: "",
     agencyCode: "",
     siteType: [],
     hydroCode: "",
     countyCode: [],
     paramCodes: [],
+    temporalRangeData: {
+      startDateTime: "",
+      endDateTime: "",
+      timeZone: ""
+    },
+    durationCode: "",
     locationMode: locationMode.SITE,
-    coordinates: {}
+    coordinates: {},
+    wellMinActive: false,
+    wellMaxActive: false,
+    holeMinActive: false,
+    holeMaxActive: false,
+    GWSiteAttrDepths: {},
+    siteStatus: "all",
+    watershedAreaBounds: {}
   },
   mutations: {
     changeUSStateName: (state, USStateName) => {
@@ -51,6 +70,60 @@ export default new Vuex.Store({
     },
     changeSites: (state, newSites) => {
       state.sites = newSites;
+    },
+    changeWellMinActive: (state, newWellMinActivation) => {
+      state.wellMinActive = newWellMinActivation;
+    },
+    changeWellMaxActive: (state, newWellMaxActivation) => {
+      state.wellMaxActive = newWellMaxActivation;
+    },
+    changeHoleMinActive: (state, newHoleMinActivation) => {
+      state.holeMinActive = newHoleMinActivation;
+    },
+    changeHoleMaxActive: (state, newHoleMaxActivation) => {
+      state.holeMaxActive = newHoleMaxActivation;
+    },
+    changeGWSiteAttrDepths: (state, newGWSiteAttrDepths) => {
+      state.GWSiteAttrDepths = newGWSiteAttrDepths;
+    },
+    changeSiteStatus: (state, newSiteStatus) => {
+      state.siteStatus = newSiteStatus;
+    },
+    changeWatershedAreaBounds: (state, newAreaBounds) => {
+      state.watershedAreaBounds = newAreaBounds;
+    },
+    changeUpperWatershedAreaBoundsActive: (state, newActivityState) => {
+      state.watershedUpperAreaBoundsActive = newActivityState;
+    },
+    changeLowerWatershedAreaBoundsActive: (state, newActivityState) => {
+      state.watershedLowerAreaBoundsActive = newActivityState;
+    },
+    changeDurationCodeActive: (state, newDurationCodeActivationState) => {
+      state.durationCodeActive = newDurationCodeActivationState;
+    },
+    changeDurationCode: (state, newDurationCode) => {
+      state.durationCode = newDurationCode;
+    },
+    changeModifiedSinceCode: (state, newModifiedSinceCode) => {
+      state.modifiedSinceCode = newModifiedSinceCode;
+    },
+    changeModifiedSinceCodeActive: (
+      state,
+      newModifiedSinceCodeActivationState
+    ) => {
+      state.modifiedSinceCodeActive = newModifiedSinceCodeActivationState;
+    },
+    changeTemporalRangeActive: (state, newTemporalRangeActivationStatus) => {
+      state.temporalRangeActive = newTemporalRangeActivationStatus;
+    },
+    changeStartDateTime: (state, newStartDateTime) => {
+      state.temporalRangeData.startDateTime = newStartDateTime;
+    },
+    changeEndDateTime: (state, newEndDateTime) => {
+      state.temporalRangeData.endDateTime = newEndDateTime;
+    },
+    changeTimeZone: (state, newTimeZone) => {
+      state.temporalRangeData.timeZone = newTimeZone;
     }
   },
   actions: {},
@@ -87,6 +160,51 @@ export default new Vuex.Store({
     },
     sites: state => {
       return state.sites;
+    },
+    wellMinActive: state => {
+      return state.wellMinActive;
+    },
+    wellMaxActive: state => {
+      return state.wellMaxActive;
+    },
+    holeMinActive: state => {
+      return state.holeMinActive;
+    },
+    holeMaxActive: state => {
+      return state.holeMaxActive;
+    },
+    GWSiteAttrDepths: state => {
+      return state.GWSiteAttrDepths;
+    },
+    siteStatus: state => {
+      return state.siteStatus;
+    },
+    watershedAreaBounds: state => {
+      return state.watershedAreaBounds;
+    },
+    watershedUpperAreaBoundsActive: state => {
+      return state.watershedUpperAreaBoundsActive;
+    },
+    watershedLowerAreaBoundsActive: state => {
+      return state.watershedLowerAreaBoundsActive;
+    },
+    durationCodeActive: state => {
+      return state.durationCodeActive;
+    },
+    durationCode: state => {
+      return state.durationCode;
+    },
+    modifiedSinceCode: state => {
+      return state.modifiedSinceCode;
+    },
+    modifiedSinceCodeActive: state => {
+      return state.modifiedSinceCodeActive;
+    },
+    temporalRangeActive: state => {
+      return state.temporalRangeActive;
+    },
+    temporalRangeData: state => {
+      return state.temporalRangeData;
     }
   }
 });

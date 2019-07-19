@@ -10,7 +10,6 @@
         <div class="leftcolumn">
           <div class="text-center col-md-4 col-md-offset-4">
             <br />
-
             <SiteSelect> </SiteSelect>
             <StateSelect></StateSelect>
             <CoordinatesInput></CoordinatesInput>
@@ -22,6 +21,11 @@
             </div>
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
+            <br />
+            <GroundWaterSiteAttr></GroundWaterSiteAttr>
+            <WatershedInput></WatershedInput>
+            <TemporalRange></TemporalRange>
+            <SiteStatusSelect></SiteStatusSelect>
           </div>
         </div>
         <div class="rightcolumn">
@@ -44,7 +48,7 @@
 </template>
 
 <script>
-import { getData, getSchema, generateColList } from "../WDCMethods.js";
+import { getData, getSchema } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
@@ -55,9 +59,13 @@ import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
 import SiteSelect from "../components/SiteSelect";
 import ParamSelect from "../components/ParamSelect";
+import SiteStatusSelect from "../components/SiteStatusSelect";
 import AgencySelect from "../components/AgencySelect";
+import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
+import WatershedInput from "../components/WatershedInput";
+import TemporalRange from "../components/TemporalRange";
 
 /*global  tableau:true*/
 
@@ -75,7 +83,11 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
-    SiteSelect
+    SiteSelect,
+    GroundWaterSiteAttr,
+    TemporalRange,
+    SiteStatusSelect,
+    WatershedInput
   },
   data: function() {
     return {
@@ -119,10 +131,6 @@ export default {
         return;
       }
 
-      this.columnList = generateColList(
-        this.sites,
-        this.$store.getters.paramCodes
-      );
       let connectionData = {
         columnList: this.columnList,
         siteNums: this.$store.getters.sites,
@@ -136,8 +144,27 @@ export default {
         siteTypeListActive: this.$store.getters.siteTypeListActive,
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
-        agencyCode: this.$store.getters.agencyCode
+        agencyCode: this.$store.getters.agencyCode,
+        wellMinActive: this.$store.getters.wellMinActive,
+        wellMaxActive: this.$store.getters.wellMaxActive,
+        holeMinActive: this.$store.getters.holeMinActive,
+        holeMaxActive: this.$store.getters.holeMaxActive,
+        GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths,
+        siteStatus: this.$store.getters.siteStatus,
+        watershedAreaBounds: this.$store.getters.watershedAreaBounds,
+        watershedUpperAreaBoundsActive: this.$store.getters
+          .watershedUpperAreaBoundsActive,
+        watershedLowerAreaBoundsActive: this.$store.getters
+          .watershedLowerAreaBoundsActive,
+        durationCodeActive: this.$store.getters.durationCodeActive,
+        durationCode: this.$store.getters.durationCode,
+        modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,
+        modifiedSinceCode: this.$store.getters.modifiedSinceCode,
+        temporalRangeActive: this.$store.getters.temporalRangeActive,
+        temporalRangeData: this.$store.getters.temporalRangeData,
+        currentDateTime: new Date()
       };
+
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {

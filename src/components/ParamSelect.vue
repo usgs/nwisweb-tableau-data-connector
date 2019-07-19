@@ -19,7 +19,7 @@
       <datalist id="csparams"> </datalist>
     </span>
     <br />
-    <button class="usa-button usa-button-custom" v-on:click="addParam">
+    <button class="usa-button usa-button-custom" v-on:click="addParams">
       Add Parameter
     </button>
     <h6 class="selected-tags">Selected parameters</h6>
@@ -67,6 +67,11 @@ export default {
     };
   },
   methods: {
+    /*
+      an async function to fetch paramData after the page has loaded so the
+       long loading time for the params json doesn't slow dont UI loading
+
+    */
     fetchparams: async function() {
       let localParamData = await import("../fetchedValues/paramTypes.json");
       let paramList = [];
@@ -93,23 +98,34 @@ export default {
     commitParamList: function(value) {
       this.$store.commit("changeParamCodes", value);
     },
-    addParam: function() {
+    /*
+      Iterates over the comma separated input parameters and adds each
+       parameter to the list of selected parameters if it's a valid selection
+
+    */
+    addParams: function() {
+      let params = this.param.split(",");
+      params.forEach(param => {
+        this.addParam(param.replace(/\s/g, ""));
+      });
+    },
+    addParam: function(param) {
       if (!this.loadedParamData) {
         notify("Please wait for param data to load");
         return;
       }
-      if (this.paramList.includes(this.param)) {
-        if (!this.selectedParams.includes(this.param)) {
+      if (this.paramList.includes(param)) {
+        if (!this.selectedParams.includes(param)) {
           if (this.selectedParams.length < 100) {
-            this.selectedParams.push(this.param);
+            this.selectedParams.push(param);
           } else {
-            notify("Maximum number of parameters already selected.");
+            notify(`${param}: Maximum number of parameters already selected.`);
           }
         } else {
-          notify("parameter selected already in selection.");
+          notify(`${param}: parameter selected already in selection.`);
         }
       } else {
-        notify("invalid param code entered");
+        notify(`${param}: invalid param code entered`);
       }
     },
     removeElement: function(index) {
