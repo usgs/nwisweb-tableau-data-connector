@@ -58,12 +58,7 @@
 </template>
 
 <script>
-import {
-  getData,
-  getSchema,
-  generateColList,
-  generateURL
-} from "../WDCMethods.js";
+import { getData, getSchema, generateColList } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
@@ -172,8 +167,6 @@ export default {
       } else {
         tableau.connectionData = connectionData;
       }
-
-      alert(generateURL(connectionData));
 
       tableau.connectionName = "USGS Instantaneous Values Query";
       tableau.submit();
