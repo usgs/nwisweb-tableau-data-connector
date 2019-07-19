@@ -42,13 +42,6 @@
         v-model="startDateTime"
         ><input class="usa-input usa-input-custom"
       /></VueCtkDateTimePicker>
-      <label>Start Time Zone</label>
-
-      <select
-        v-model="startTimeZone"
-        id="starttzselect"
-        class="usa-select timezone-select"
-      ></select>
 
       <span class="input-desc">
         <label>End Time</label>
@@ -60,11 +53,11 @@
         v-model="endDateTime"
         ><input class="usa-input usa-input-custom"
       /></VueCtkDateTimePicker>
-      <label>End Time Zone</label>
+      <label>Time Zone</label>
 
       <select
-        v-model="endTimeZone"
-        id="endtzselect"
+        v-model="timeZone"
+        id="tzselect"
         class="usa-select timezone-select"
       ></select>
     </div>
@@ -92,9 +85,8 @@ export default {
     return {
       durationCode: "",
       startDateTime: "",
-      startTimeZone: "",
+      timeZone: "",
       endDateTime: "",
-      endTimeZone: "",
       modifiedSinceCode: "",
       timeBoundsActive: false
     };
@@ -112,14 +104,11 @@ export default {
     commitStartDateTime: function(newValue) {
       this.$store.commit("changeStartDateTime", newValue);
     },
-    commitStartTimeZone: function(newValue) {
-      this.$store.commit("changeStartTimeZone", newValue);
-    },
     commitEndDateTime: function(newValue) {
       this.$store.commit("changeEndDateTime", newValue);
     },
-    commitEndTimeZone: function(newValue) {
-      this.$store.commit("changeEndTimeZone", newValue);
+    commitTimeZone: function(newValue) {
+      this.$store.commit("changeTimeZone", newValue);
     },
     commitTemporalRangeActive: function(newValue) {
       this.$store.commit("changeTemporalRangeActive", newValue);
@@ -143,8 +132,7 @@ export default {
     }
   },
   mounted() {
-    this.populateTimeZoneList("starttzselect");
-    this.populateTimeZoneList("endtzselect");
+    this.populateTimeZoneList("tzselect");
   },
   watch: {
     durationCode: function(newValue) {
@@ -157,22 +145,18 @@ export default {
       this.commitStartDateTime(newValue);
       newValue;
     },
-    startTimeZone: function(newValue) {
-      this.commitStartTimeZone(newValue);
-    },
     endDateTime: function(newValue) {
       this.commitEndDateTime(newValue);
     },
-    endTimeZone: function(newValue) {
-      this.commitEndTimeZone(newValue);
+    timeZone: function(newValue) {
+      this.commitTimeZone(newValue);
     },
     timeBoundsActive: function(newValue) {
       this.commitTemporalRangeActive(newValue);
       if (!newValue) {
         this.startDateTime = "";
-        this.startTimeZone = "";
         this.endDateTime = "";
-        this.endTimeZone = "";
+        this.timeZone = "";
       }
     }
   },

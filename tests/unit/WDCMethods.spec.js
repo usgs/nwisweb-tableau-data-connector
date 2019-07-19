@@ -241,9 +241,8 @@ test("correctly generate a URL given a hydrological Unit Code, with modifiedSinc
     locationMode: locationMode.HYDRO,
     temporalRangeData: {
       startDateTime: "2019-07-08T14:59:00.000Z",
-      startTimeZone: "-0430",
       endDateTime: "2019-07-08T14:59:00.000Z",
-      endTimeZone: "-0430"
+      timeZone: "-0430"
     },
     currentDateTime: format.parse(
       format.ISO8601_WITH_TZ_OFFSET_FORMAT,
@@ -268,9 +267,8 @@ test("correctly generate a URL given a hydrological Unit Code, with modifiedSinc
     locationMode: locationMode.HYDRO,
     temporalRangeData: {
       startDateTime: "2018-07-08T14:59:00.000Z",
-      startTimeZone: "-0430",
       endDateTime: "2018-07-09T14:59:00.000Z",
-      endTimeZone: "-0430"
+      timeZone: "-0430"
     },
     currentDateTime: format.parse(
       format.ISO8601_WITH_TZ_OFFSET_FORMAT,

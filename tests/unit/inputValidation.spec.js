@@ -547,9 +547,8 @@ done in ParamSelect.vue
         temporalRangeData: () => {
           return {
             startDateTime: "2019-07-09T14:59:00.000Z",
-            startTimeZone: "-0430",
             endDateTime: "2019-07-10T15:04:00.000Z",
-            endTimeZone: "-0430"
+            timeZone: "-0430"
           };
         },
         temporalRangeActive: () => {
@@ -578,9 +577,8 @@ done in ParamSelect.vue
         temporalRangeData: () => {
           return {
             startDateTime: "",
-            startTimeZone: "",
             endDateTime: "",
-            endTimeZone: ""
+            timeZone: ""
           };
         },
         temporalRangeActive: () => {
@@ -608,10 +606,9 @@ done in ParamSelect.vue
       getters: {
         temporalRangeData: () => {
           return {
-            startDateTime: "2019-07-09T15:01:00.000Z",
-            startTimeZone: "-0430",
-            endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0400"
+            startDateTime: "2019-07-09T15:00:00.000Z",
+            endDateTime: "2019-07-09T15:01:00.000Z",
+            timeZone: "-0400"
           };
         },
         temporalRangeActive: () => {
@@ -639,10 +636,9 @@ done in ParamSelect.vue
       getters: {
         temporalRangeData: () => {
           return {
-            startDateTime: "2019-07-09T15:01:00.000Z",
-            startTimeZone: "-0430",
-            endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0400"
+            startDateTime: "2019-07-09T15:00:00.000Z",
+            endDateTime: "2019-07-10T15:00:00.000Z",
+            timeZone: "+1000"
           };
         },
         temporalRangeActive: () => {
@@ -665,37 +661,6 @@ done in ParamSelect.vue
       )
     ).toBe(true);
 
-    wrapper = shallowMount(Main, { store, localVue });
-    expect(
-      validateTemporalRange(
-        wrapper.vm.$store.getters.temporalRangeData,
-        wrapper.vm
-      )
-    ).toBe(true);
-    store = new Vuex.Store({
-      state: {},
-      modules: {},
-      getters: {
-        temporalRangeData: () => {
-          return {
-            startDateTime: "2019-07-09T15:01:00.000Z",
-            startTimeZone: "-0430",
-            endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0400"
-          };
-        },
-        temporalRangeActive: () => {
-          return false;
-        },
-        modifiedSinceCodeActive: () => {
-          return true;
-        },
-        durationCodeActive: () => {
-          return true;
-        }
-      },
-      actions: {}
-    });
     wrapper = shallowMount(Main, { store, localVue });
     expect(
       validateTemporalRange(
@@ -713,9 +678,8 @@ done in ParamSelect.vue
         temporalRangeData: () => {
           return {
             startDateTime: "2019-07-09T15:01:00.000Z",
-            startTimeZone: "-0430",
             endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0500"
+            timeZone: "-0500"
           };
         },
         temporalRangeActive: () => {
@@ -745,9 +709,8 @@ done in ParamSelect.vue
         temporalRangeData: () => {
           return {
             startDateTime: "2019-07-09T15:01:00.000Z",
-            startTimeZone: "-0500",
             endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0530"
+            timeZone: "-0530"
           };
         },
         temporalRangeActive: () => {
@@ -777,9 +740,8 @@ done in ParamSelect.vue
         temporalRangeData: () => {
           return {
             startDateTime: "",
-            startTimeZone: "-0430",
             endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0400"
+            timeZone: "-0400"
           };
         },
         temporalRangeActive: () => {
@@ -809,9 +771,8 @@ done in ParamSelect.vue
         temporalRangeData: () => {
           return {
             startDateTime: "2019-07-09T15:01:00.000Z",
-            startTimeZone: "",
             endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: "-0500"
+            timeZone: "-0500"
           };
         },
         temporalRangeActive: () => {
@@ -841,9 +802,8 @@ done in ParamSelect.vue
         temporalRangeData: () => {
           return {
             startDateTime: "2019-07-09T15:01:00.000Z",
-            startTimeZone: "-0430",
             endDateTime: "",
-            endTimeZone: "-0500"
+            timeZone: "-0500"
           };
         },
         temporalRangeActive: () => {
@@ -873,9 +833,8 @@ done in ParamSelect.vue
         temporalRangeData: () => {
           return {
             startDateTime: "2019-07-09T15:01:00.000Z",
-            startTimeZone: "-0430",
             endDateTime: "2019-07-09T15:00:00.000Z",
-            endTimeZone: ""
+            timeZone: ""
           };
         },
         temporalRangeActive: () => {

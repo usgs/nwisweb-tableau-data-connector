@@ -169,12 +169,12 @@ const generateURL = connectionData => {
 
   if (connectionData.temporalRangeActive) {
     let startDateString = generateDateTime(
-      connectionData.temporalRangeData.startTimeZone,
+      connectionData.temporalRangeData.timeZone,
       connectionData.temporalRangeData.startDateTime,
       true
     );
     let endDateString = generateDateTime(
-      connectionData.temporalRangeData.endTimeZone,
+      connectionData.temporalRangeData.timeZone,
       connectionData.temporalRangeData.endDateTime,
       true
     );
@@ -192,7 +192,7 @@ const generateURL = connectionData => {
     let startDate = format.parse(
       format.ISO8601_WITH_TZ_OFFSET_FORMAT,
       generateDateTime(
-        connectionData.temporalRangeData.startTimeZone,
+        connectionData.temporalRangeData.timeZone,
         connectionData.temporalRangeData.startDateTime,
         false
       )

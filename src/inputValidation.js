@@ -190,9 +190,8 @@ const validateTemporalRange = (temporalRangeData, instance) => {
   }
   if (
     temporalRangeData.startDateTime == "" ||
-    temporalRangeData.startTimeZone == "" ||
     temporalRangeData.endDateTime == "" ||
-    temporalRangeData.endTimeZone == ""
+    temporalRangeData.timeZone == ""
   ) {
     return "One or more required fields for temporal range has not been specified. Please specify all fields or remove the temporal range from your query by clicking the checkbox again.";
   }
@@ -200,7 +199,7 @@ const validateTemporalRange = (temporalRangeData, instance) => {
   let startDate = format.parse(
     format.ISO8601_WITH_TZ_OFFSET_FORMAT,
     generateDateTime(
-      temporalRangeData.startTimeZone,
+      temporalRangeData.timeZone,
       temporalRangeData.startDateTime,
       false
     )
@@ -208,7 +207,7 @@ const validateTemporalRange = (temporalRangeData, instance) => {
   let endDate = format.parse(
     format.ISO8601_WITH_TZ_OFFSET_FORMAT,
     generateDateTime(
-      temporalRangeData.endTimeZone,
+      temporalRangeData.timeZone,
       temporalRangeData.endDateTime,
       false
     )

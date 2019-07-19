@@ -20,9 +20,8 @@ export default new Vuex.Store({
     paramCodes: [],
     temporalRangeData: {
       startDateTime: "",
-      startTimeZone: "",
       endDateTime: "",
-      endTimeZone: ""
+      timeZone: ""
     },
     durationCode: "",
     locationMode: locationMode.SITE,
@@ -80,14 +79,11 @@ export default new Vuex.Store({
     changeStartDateTime: (state, newStartDateTime) => {
       state.temporalRangeData.startDateTime = newStartDateTime;
     },
-    changeStartTimeZone: (state, newStartTimeZone) => {
-      state.temporalRangeData.startTimeZone = newStartTimeZone;
-    },
     changeEndDateTime: (state, newEndDateTime) => {
       state.temporalRangeData.endDateTime = newEndDateTime;
     },
-    changeEndTimeZone: (state, newEndTimeZone) => {
-      state.temporalRangeData.endTimeZone = newEndTimeZone;
+    changeTimeZone: (state, newTimeZone) => {
+      state.temporalRangeData.timeZone = newTimeZone;
     }
   },
   actions: {},
