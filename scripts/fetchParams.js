@@ -63,7 +63,7 @@ let siteString = "";
 let countyString = "";
 let paramString = "";
 let agencyString = "";
-let aquiferString = "";
+let locAquiferString = "";
 
 
 Promise.all(
@@ -77,7 +77,7 @@ siteString = value[0];
 countyString = value[1];
 paramString = value[2];
 agencyString = value[3];
-aquiferString = value[4];
+locAquiferString = value[4];
  
 paramData = rdbToJSON(paramString)
 abridgedParamData = []
@@ -91,7 +91,7 @@ let abridgedParamJSONString = JSON.stringify(abridgedParamData);
 let siteTypesJSONString = JSON.stringify(rdbToJSON(siteString));
 let countyJSONString = JSON.stringify(rdbToJSON(countyString));
 let agencyJSONString = JSON.stringify(rdbToJSON(agencyString));
-let aquiferJSONString = JSON.stringify(rdbToJSON(aquiferString));
+let locAquiferJSONString = JSON.stringify(rdbToJSON(locAquiferString));
 
 let statesTemplate = 
 {
@@ -155,64 +155,72 @@ let statesTemplate =
 
 
 let fipsTemplate = {
-    "Northern Mariana Islands": "69",
-    "Delaware": "10",
-    "District of Columbia": "11",
-    "Florida": "12",
-    "Georgia": "13",
-    "Hawaii": "15",
-    "Idaho": "16",
-    "Illinois": "17",
-    "Indiana": "18",
-    "Iowa": "19",
-    "Kansas": "20",
-    "Kentucky": "21",
-    "Louisiana": "22",
-    "Maine": "23",
-    "Maryland": "24",
-    "Massachusetts": "25",
-    "Michigan": "26",
-    "Minnesota": "27",
-    "Mississippi": "28",
-    "Missouri": "29",
-    "Montana": "30",
-    "Nebraska": "31",
-    "Nevada": "32",
-    "New Hampshire": "33",
-    "New Jersey": "34",
-    "New Mexico": "35",
-    "New York": "36",
-    "North Carolina": "37",
-    "North Dakota": "38",
-    "Ohio": "39",
-    "Oklahoma": "40",
-    "Oregon": "41",
-    "Pennsylvania": "42",
-    "Rhode Island": "44",
-    "South Carolina": "45",
-    "South Dakota": "46",
-    "Tennessee": "47",
-    "Texas": "48",
-    "Utah": "49",
-    "Vermont": "50",
-    "Virginia": "51",
-    "Washington": "53",
-    "West Virginia": "54",
-    "Wisconsin": "55",
-    "Wyoming": "56",
-    "American Samoa": "60",
-    "Guam": "66",
-    "Puerto Rico": "72",
-    "Virgin Islands": "78",
-    "Alabama": "01",
-    "Alaska": "02",
-    "Arizona": "04",
-    "Arkansas": "05",
-    "California": "06",
-    "Colorado": "08",
-    "Connecticut": "09"
-  
-  }
+  "Northern Mariana Islands": "69",
+  "Delaware": "10",
+  "District of Columbia": "11",
+  "Florida": "12",
+  "Georgia": "13",
+  "Hawaii": "15",
+  "Idaho": "16",
+  "Illinois": "17",
+  "Indiana": "18",
+  "Iowa": "19",
+  "Kansas": "20",
+  "Kentucky": "21",
+  "Louisiana": "22",
+  "Maine": "23",
+  "Maryland": "24",
+  "Massachusetts": "25",
+  "Michigan": "26",
+  "Minnesota": "27",
+  "Mississippi": "28",
+  "Missouri": "29",
+  "Montana": "30",
+  "Nebraska": "31",
+  "Nevada": "32",
+  "New Hampshire": "33",
+  "New Jersey": "34",
+  "New Mexico": "35",
+  "New York": "36",
+  "North Carolina": "37",
+  "North Dakota": "38",
+  "Ohio": "39",
+  "Oklahoma": "40",
+  "Oregon": "41",
+  "Pennsylvania": "42",
+  "Rhode Island": "44",
+  "South Carolina": "45",
+  "South Dakota": "46",
+  "Tennessee": "47",
+  "Texas": "48",
+  "Utah": "49",
+  "Vermont": "50",
+  "Virginia": "51",
+  "Washington": "53",
+  "West Virginia": "54",
+  "Wisconsin": "55",
+  "Wyoming": "56",
+  "American Samoa": "60",
+  "Guam": "66",
+  "Puerto Rico": "72",
+  "Virgin Islands": "78",
+  "Alabama": "01",
+  "Alaska": "02",
+  "Arizona": "04",
+  "Arkansas": "05",
+  "California": "06",
+  "Colorado": "08",
+  "Connecticut": "09"
+}
+
+let locAquiferStates = {
+  "United States of America": "00",
+  "Marshall Islands": "68",
+  "Midway Islands": "71",
+  "Atlantic Coast": "75",
+  "Gulf of Mexico": "77",
+  "Lake Erie": "96"
+}
 
 
 
@@ -265,12 +273,12 @@ fs.writeFile("./src/fetchedValues/agency.json", agencyJSONString, function(err) 
 }); 
 
 
-fs.writeFile("./src/fetchedValues/aquifer.json", aquiferJSONString, function(err) {
+fs.writeFile("./src/fetchedValues/locAquifer.json", locAquiferJSONString, function(err) {
   if(err) {
       return console.log(err);
   }
 
-  console.log("./src/fetchedValues/aquifer.json was saved!");
+  console.log("./src/fetchedValues/locAquifer.json was saved!");
 }); 
 
 

@@ -14,23 +14,23 @@
     />
     <br />
     <span class="input-desc">
-      <label>Local Aquifer</label>
+      <label>Local Aquifer Code</label>
       <ToolTip
-        hint="Enter up to 1000 local aquifer codes, separated by commas. A complete list of local aquifer codes is linked here."
+        hint="Select a state to search a list of local aquifers. A complete list of local aquifer codes is linked here."
         url="https://help.waterdata.usgs.gov/code/aqfr_cd_query?fmt=html"
       ></ToolTip>
     </span>
     <span class="input-desc">
-    <label>Select State to Search</label>
-    <input
-      v-model="state"
-      class="usa-input usa-input-custom"
-      list="aqstates"
-      type="text"
-    />
-    <datalist id="aqstates"></datalist>
+      <label>Select State</label>
+      <input
+        v-model="state"
+        class="usa-input usa-input-custom"
+        list="aqstates"
+        type="text"
+      />
+      <datalist id="aqstates"></datalist>
     </span>
-    <label class="input-desc">Local Aquifer Code</label>
+    <label class="input-desc">Local Aquifer Codes</label>
     <input
       v-model="locAquifer"
       class="usa-input usa-input-custom"
@@ -122,7 +122,7 @@ export default {
     },
     getLocAquifers: function(stateName) {
       if (!(stateName in fipsInfo)) {
-        return ["No Local Aquifers for this state"];
+        return [];
       }
       let fipsCode = fipsInfo[stateName];
       let result = [];
@@ -141,11 +141,11 @@ export default {
       }
     },
     getLocAqNameFromCode: function(fullLocAqCode) {
-      if (fullLocAqCode.length != 10) {
+      if (fullLocAqCode.length > 11) {
         return "invalid";
       }
       let stateAbbrev = fullLocAqCode.substring(0, 2);
-      let aqCode = fullLocAqCode.substring(3, 10);
+      let aqCode = fullLocAqCode.substring(3, 11);
       let stateName = this.getStateNamefromAbbrev(stateAbbrev);
       let stateCode = fipsInfo[stateName];
       let result = "invalid";
