@@ -123,6 +123,8 @@ const generateURL = connectionData => {
   let temporalRangeQuery = "";
   let historical = "";
 
+  let siteStatusQuery = `&siteStatus=${connectionData.siteStatus}`;
+
   switch (connectionData.locationMode) {
     case locationMode.SITE: {
       let siteList = connectionData.siteNums.replace(/\s/g, "").split(",");
@@ -220,7 +222,7 @@ const generateURL = connectionData => {
     modifiedSinceCodeQuery = `&modifiedSince=${connectionData.modifiedSinceCode}`;
   }
 
-  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}&siteStatus=all${drainAreaQuery}`;
+  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}${drainAreaQuery}${siteStatusQuery}`;
 };
 
 /*

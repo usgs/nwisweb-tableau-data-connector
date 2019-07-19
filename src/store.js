@@ -28,6 +28,7 @@ export default new Vuex.Store({
     durationCode: "",
     locationMode: locationMode.SITE,
     coordinates: {},
+    siteStatus: "all",
     watershedAreaBounds: {}
   },
   mutations: {
@@ -60,6 +61,9 @@ export default new Vuex.Store({
     },
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
+    },
+    changeSiteStatus: (state, newSiteStatus) => {
+      state.siteStatus = newSiteStatus;
     },
     changeWatershedAreaBounds: (state, newAreaBounds) => {
       state.watershedAreaBounds = newAreaBounds;
@@ -129,6 +133,9 @@ export default new Vuex.Store({
     },
     agencyActive: state => {
       return state.agencyActive;
+    },
+    siteStatus: state => {
+      return state.siteStatus;
     },
     watershedAreaBounds: state => {
       return state.watershedAreaBounds;
