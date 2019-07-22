@@ -61,7 +61,8 @@ const validateCoordinateInputs = (coordinates, instance) => {
 };
 
 const isNumeric = value => {
-  return !isNaN(value) && value != "";
+  let regex = /^(-)?((\d)+\.)?(\d)+$/;
+  return value.match(regex);
 };
 
 const isWithinLatitudeBounds = latitude => {
@@ -76,10 +77,18 @@ const isWithinLongitudeBounds = longitude => {
       rounds coordinate inputs to 6 decimal places. Called in validateFormInputs()
     */
 const roundCoordinateInputs = coordinates => {
-  coordinates.north = parseFloat(coordinates.north).toFixed(6);
-  coordinates.south = parseFloat(coordinates.south).toFixed(6);
-  coordinates.east = parseFloat(coordinates.east).toFixed(6);
-  coordinates.west = parseFloat(coordinates.west).toFixed(6);
+  coordinates.north = parseFloat(coordinates.north)
+    .toFixed(6)
+    .toString();
+  coordinates.south = parseFloat(coordinates.south)
+    .toFixed(6)
+    .toString();
+  coordinates.east = parseFloat(coordinates.east)
+    .toFixed(6)
+    .toString();
+  coordinates.west = parseFloat(coordinates.west)
+    .toFixed(6)
+    .toString();
   return coordinates;
 };
 /*
@@ -87,9 +96,11 @@ const roundCoordinateInputs = coordinates => {
   */
 const validateSiteInputs = (sites, instance) => {
   if (instance.$store.getters.locationMode != locationMode.SITE) return true;
-  let regex = /^((\d+),)*(\d+)$/; // 1 or more comma-separated 8 digit numbers
+
+  let regex = /^(((\d){8}(\d?){4}),)*((\d){8}(\d?){4})$/;
+
   if (!sites.replace(/\s/g, "").match(regex)) {
-    return "site list in invalid format";
+    return "site list in invalid format"; // 1 or more 8-12 digit site codes
   }
   return true;
 };
@@ -271,6 +282,42 @@ const validateWatershedAreaBoundaries = (boundaries, instance) => {
 };
 
 /*
+Warns the user if they have input invalid altitude area boundaries
+*/
+
+const validateAltitudeBoundaries = (boundaries, instance) => {
+  let upperActive = instance.$store.getters.upperAltitudeBoundActive;
+  let lowerActive = instance.$store.getters.lowerAltitudeBoundActive;
+
+  if (!upperActive && !lowerActive) {
+    return true;
+  }
+  let regex = /^(-)?(\d)+(\.\d)?(\d)*$/;
+
+  if (upperActive) {
+    if (!boundaries.upperAltitudeBound.replace(/\s/g, "").match(regex)) {
+      return "upper altitude bound is not a valid float. format: #.# ";
+    }
+  }
+  if (lowerActive) {
+    if (!boundaries.lowerAltitudeBound.replace(/\s/g, "").match(regex)) {
+      return "lower altitude bound is not a valid float. format: #.# ";
+    }
+  }
+
+  if (
+    parseFloat(boundaries.upperAltitudeBound) <
+      parseFloat(boundaries.lowerAltitudeBound) &&
+    lowerActive &&
+    upperActive
+  ) {
+    return "invalid boundaries: lower altitude bound exceeds upper altitude bound.";
+  }
+
+  return true;
+};
+
+/*
   Warns the user if they have selected an invalid agency code.
 */
 const validateAgencyInputs = (agency, instance, agencyData) => {
@@ -379,7 +426,10 @@ const validateFormInputs = instance => {
     return false;
   }
 
-  let siteListStatus = validateSiteInputs(instance.sites, instance);
+  let siteListStatus = validateSiteInputs(
+    instance.$store.getters.sites,
+    instance
+  );
   if (!(siteListStatus === true)) {
     notify(siteListStatus);
     return false;
@@ -455,6 +505,16 @@ const validateFormInputs = instance => {
     return false;
   }
 
+  let altitudeStatus = validateAltitudeBoundaries(
+    instance.$store.getters.altitudeBounds,
+    instance
+  );
+  if (!(altitudeStatus === true)) {
+    notify(altitudeStatus);
+
+    return false;
+  }
+
   let durationCodeStatus = validateISO_8601Duration(
     instance.$store.getters.durationCode,
     "duration code formatting invalid; please refer to link provided in the tooltip",
@@ -491,9 +551,7 @@ const validateFormInputs = instance => {
   );
   if (!(temporalRangeStatus === true)) {
     notify(temporalRangeStatus);
-    return false;
   }
-
   instance.$store.commit(
     "changeCoordinates",
     roundCoordinateInputs(instance.$store.getters.coordinates)
@@ -513,8 +571,9 @@ export {
   validateSiteTypeInputs,
   validateAgencyInputs,
   validateNatAquiferInput,
-  validateGroundWaterSiteInputs,
   validateWatershedAreaBoundaries,
+  validateAltitudeBoundaries,
+  validateGroundWaterSiteInputs,
   validateISO_8601Duration,
   validateTemporalRange,
   validateTimeCodes

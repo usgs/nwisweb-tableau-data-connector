@@ -129,6 +129,8 @@ test("correctly generate a URL given a list of sites and parameters with various
     siteStatus: "all",
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    upperAltitudeBoundActive: false,
+    lowerAltitudeBoundActive: false,
     temporalRangeActive: false,
     siteNums: "01646500 ,   05437641",
     paramNums: [],
@@ -147,15 +149,21 @@ test("correctly generate a URL given a state", () => {
     siteStatus: "all",
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    upperAltitudeBoundActive: false,
+    lowerAltitudeBoundActive: true,
     modifiedSinceCodeActive: false,
     temporalRangeActive: false,
     durationCodeActive: false,
     paramNums: ["00060", "00065"],
     state: "ri",
-    locationMode: locationMode.STATE
+    locationMode: locationMode.STATE,
+    altitudeBounds: {
+      upperAltitudeBound: "",
+      lowerAltitudeBound: "-0.000045345     "
+    }
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&stateCd=ri&parameterCd=00060,00065&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&stateCd=ri&parameterCd=00060,00065&altMin=-0.000045345&siteStatus=all"
   );
 });
 
@@ -167,30 +175,42 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     siteTypeListActive: false,
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    upperAltitudeBoundActive: true,
+    lowerAltitudeBoundActive: false,
     temporalRangeActive: false,
     modifiedSinceCodeActive: false,
     durationCodeActive: false,
     boundaryCoords: {
-      north: "2.000000",
-      south: "1.000000",
-      east: "2.000000",
-      west: "1.000000"
+      north: "2.000000  ",
+      south: "1.000000  ",
+      east: "  2.000000",
+      west: "  1.000000"
+    },
+    altitudeBounds: {
+      upperAltitudeBound: "23432.4234324",
+      lowerAltitudeBound: ""
     },
     locationMode: locationMode.COORDS
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&bBox=1.000000,1.000000,2.000000,2.000000&parameterCd=00060,00065&siteStatus=inactive"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&bBox=1.000000,1.000000,2.000000,2.000000&parameterCd=00060,00065&altMax=23432.4234324&siteStatus=inactive"
   );
 });
 
 test("correctly generate a URL given a hydrological Unit Code", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
-    hydroCode: "02070010",
-    siteStatus: "all",
+    hydroCode: "   02070010",
     agencyCodeActive: false,
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    altitudeBounds: {
+      upperAltitudeBound: "56456456456.4564564564564   ",
+      lowerAltitudeBound: "-867867867.834532453452345  "
+    },
+    upperAltitudeBoundActive: true,
+    lowerAltitudeBoundActive: true,
+    siteStatus: "all",
     modifiedSinceCodeActive: false,
     siteTypeListActive: false,
     temporalRangeActive: false,
@@ -199,7 +219,7 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&period=P119D&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&period=P119D&altMin=-867867867.834532453452345&altMax=56456456456.4564564564564&siteStatus=all"
   );
 });
 
@@ -211,9 +231,11 @@ test("correctly generate a URL given a list of counties and drainage area params
     agencyCodeActive: false,
     watershedUpperAreaBoundsActive: true,
     watershedLowerAreaBoundsActive: true,
+    upperAltitudeBoundActive: false,
+    lowerAltitudeBoundActive: false,
     watershedAreaBounds: {
-      upperAreaBound: 1000,
-      lowerAreaBound: 0
+      upperAreaBound: "   1000",
+      lowerAreaBound: "0  "
     },
     siteTypeListActive: false,
     temporalRangeActive: false,
@@ -229,8 +251,8 @@ test("correctly generate a URL given a list of counties and drainage area params
 test("correctly generate a URL given a hydrological Unit Code , using  siteType, duration, modifiedSince, and Agency parameters", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
+    hydroCode: "02070010  ",
     siteStatus: "all",
-    hydroCode: "02070010",
     agencyCodeActive: true,
     siteTypeListActive: true,
     watershedUpperAreaBoundsActive: false,

@@ -147,7 +147,7 @@ export default {
         }
       }
     },
-/*
+    /*
 You do not need to give nwisweb the state abbreviation, 
 you only need to give fipsCode:locAqNumber
 */

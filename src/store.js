@@ -9,8 +9,12 @@ export default new Vuex.Store({
     state: "",
     siteTypeListActive: false,
     agencyActive: false,
+    sites: "",
     watershedUpperAreaBoundsActive: false,
     watershedLowerAreaBoundsActive: false,
+    altitudeBounds: {},
+    upperAltitudeBoundActive: false,
+    lowerAltitudeBoundActive: false,
     durationCodeActive: false,
     modifiedSinceCodeActive: false,
     temporalRangeActive: false,
@@ -71,6 +75,9 @@ export default new Vuex.Store({
     changeAgencyActive: (state, newAgencyActivationState) => {
       state.agencyActive = newAgencyActivationState;
     },
+    changeSites: (state, newSites) => {
+      state.sites = newSites;
+    },
     changeWellMinActive: (state, newWellMinActivation) => {
       state.wellMinActive = newWellMinActivation;
     },
@@ -110,6 +117,16 @@ export default new Vuex.Store({
     changeLowerWatershedAreaBoundsActive: (state, newActivityState) => {
       state.watershedLowerAreaBoundsActive = newActivityState;
     },
+    changeAltitudeBounds: (state, newAltitudebounds) => {
+      state.altitudeBounds = newAltitudebounds;
+    },
+    changeUpperAltitudeBoundActive: (state, newUpperAltitudeBoundActive) => {
+      state.upperAltitudeBoundActive = newUpperAltitudeBoundActive;
+    },
+    changeLowerAltitudeBoundActive: (state, newLowerAltitudeBoundsActive) => {
+      state.lowerAltitudeBoundActive = newLowerAltitudeBoundsActive;
+    },
+
     changeDurationCodeActive: (state, newDurationCodeActivationState) => {
       state.durationCodeActive = newDurationCodeActivationState;
     },
@@ -170,6 +187,9 @@ export default new Vuex.Store({
     agencyActive: state => {
       return state.agencyActive;
     },
+    sites: state => {
+      return state.sites;
+    },
     wellMinActive: state => {
       return state.wellMinActive;
     },
@@ -208,6 +228,15 @@ export default new Vuex.Store({
     },
     watershedLowerAreaBoundsActive: state => {
       return state.watershedLowerAreaBoundsActive;
+    },
+    altitudeBounds: state => {
+      return state.altitudeBounds;
+    },
+    upperAltitudeBoundActive: state => {
+      return state.upperAltitudeBoundActive;
+    },
+    lowerAltitudeBoundActive: state => {
+      return state.lowerAltitudeBoundActive;
     },
     durationCodeActive: state => {
       return state.durationCodeActive;
