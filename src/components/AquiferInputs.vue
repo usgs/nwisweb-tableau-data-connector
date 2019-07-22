@@ -121,20 +121,31 @@ export default {
 
       aquiferList.forEach(element => {
         let stateAbbrev = stateList[this.state];
+        let stateCode = aquiferAreas[this.state];
         let option = document.createElement("option");
-        option.value = `${stateAbbrev}:${element["aqfr_cd"]}`;
+        if (stateCode != undefined) {
+          option.value = `${element["state_cd"]}:${element["aqfr_cd"]}`;
+        } else {
+          option.value = `${stateAbbrev}:${element["aqfr_cd"]}`;
+        }
         option.text = element["aqfr_nm"];
         dropDown.appendChild(option);
       });
     },
     getLocAquifers: function(stateName) {
-      if (!(stateName in fipsInfo)) {
+      if (!(stateName in fipsInfo) && !(stateName in aquiferAreas)) {
         return [];
       }
       let fipsCode = fipsInfo[stateName];
       let result = [];
       for (let key in localAquiferInfo) {
         if (localAquiferInfo[key]["state_cd"] == fipsCode) {
+          result.push(localAquiferInfo[key]);
+        }
+      }
+      let stateCode = aquiferAreas[stateName];
+      for (let key in localAquiferInfo) {
+        if (localAquiferInfo[key]["state_cd"] == stateCode) {
           result.push(localAquiferInfo[key]);
         }
       }
@@ -146,12 +157,12 @@ export default {
           return key;
         }
       }
+      for (let key in aquiferAreas) {
+        if (aquiferAreas[key] == stateAbbrev) {
+          return key;
+        }
+      }
     },
-    /*
-You do not need to give nwisweb the state abbreviation, 
-you only need to give fipsCode:locAqNumber
-*/
-
     getLocAqNameFromCode: function(fullLocAqCode) {
       if (fullLocAqCode.length > 11) {
         return "invalid";
@@ -163,6 +174,12 @@ you only need to give fipsCode:locAqNumber
       let result = "invalid";
       localAquiferInfo.forEach(element => {
         if (element["state_cd"] == stateCode && element["aqfr_cd"] == aqCode) {
+          result = stateAbbrev + ":" + aqCode;
+        }
+        if (
+          element["state_cd"] == stateAbbrev &&
+          element["aqfr_cd"] == aqCode
+        ) {
           result = stateAbbrev + ":" + aqCode;
         }
       });
