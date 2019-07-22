@@ -4,7 +4,7 @@ import stateData from "./fetchedValues/states.json";
 import siteTypeData from "./fetchedValues/siteTypes.json";
 import { notify } from "./notifications.js";
 import { generateDateTime } from "./WDCMethods.js";
-var moment = require("moment");
+const moment = require("moment");
 
 /*
 useful helper function to allow searching lists of dictionaries for a value at a specific key.

@@ -2,7 +2,7 @@ import { get } from "./utils.js";
 import { locationMode } from "./enums.js";
 import { notify } from "./notifications.js";
 import { parse, toSeconds } from "iso8601-duration";
-var moment = require("moment");
+const moment = require("moment");
 
 /*global  tableau:true*/
 
