@@ -215,11 +215,11 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     siteTypeListActive: false,
     temporalRangeActive: false,
     durationCodeActive: true,
-    durationCode: "P119D",
+    durationCode: "P117D",
     locationMode: locationMode.HYDRO
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&period=P119D&altMin=-867867867.834532453452345&altMax=56456456456.4564564564564&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&period=P117D&altMin=-867867867.834532453452345&altMax=56456456456.4564564564564&siteStatus=all"
   );
 });
 

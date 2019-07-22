@@ -217,8 +217,9 @@ const generateURL = connectionData => {
     durationCodeQuery = `&period=${connectionData.durationCode}`;
 
     let periodHistorical =
-      parseInt(toSeconds(parse(connectionData.durationCode))) >= 10368000; //approximate 120 days in seconds
+      parseInt(toSeconds(parse(connectionData.durationCode))) >= 10195200; //approximate 118 days in seconds
     if (periodHistorical) {
+      // this 2-day tolerance is provided to account for variations in temporal length of '120 day' period
       historical = "nwis.";
     }
   }
@@ -249,8 +250,9 @@ const generateURL = connectionData => {
         false
       )
     );
-    if (connectionData.currentDateTime.diff(startDate) >= 10368000000) {
-      //approximate 120 days in milliseconds
+    if (connectionData.currentDateTime.diff(startDate) >= 10195200000) {
+      //approximate 118 days in milliseconds
+      // this 2-day tolerance is provided to account for variations in temporal length of '120 day' period
       historical = "nwis.";
     }
   }
