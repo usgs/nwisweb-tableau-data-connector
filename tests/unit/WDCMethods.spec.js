@@ -320,10 +320,10 @@ test("correctly generate a URL given multiple poorly formatted local aquifer cod
     locationMode: locationMode.HYDRO,
     siteStatus: "all",
     locAquiferActive: true,
-    locAquifer: ["01:124MDBC, WI:10 0SDGV , CO:100CZMZ, 96:112EVRS"]
+    locAquifer: ["01:124MDBC, WI:10 0SDGV , AL:120UTRTR, 96:112EVRS"]
   };
   expect(generateURL(connectionData)).toEqual(
-    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&localAquiferCd=01:124MDBC,WI:100SDGV,CO:100CZMZ,96:112EVRS&siteStatus=all"
+    "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&localAquiferCd=01:124MDBC,WI:100SDGV,AL:120UTRTR,96:112EVRS&siteStatus=all"
   );
 });
 

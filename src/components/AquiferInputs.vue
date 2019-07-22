@@ -123,7 +123,7 @@ export default {
         let stateAbbrev = stateList[this.state];
         let stateCode = aquiferAreas[this.state];
         let option = document.createElement("option");
-        if (stateCode != undefined) {
+        if (stateCode !== undefined) {
           option.value = `${element["state_cd"]}:${element["aqfr_cd"]}`;
         } else {
           option.value = `${stateAbbrev}:${element["aqfr_cd"]}`;
@@ -165,13 +165,13 @@ export default {
     },
     getLocAqNameFromCode: function(fullLocAqCode) {
       if (fullLocAqCode.length > 11) {
-        return "invalid";
+        return "Invalid.";
       }
       let stateAbbrev = fullLocAqCode.substring(0, 2);
       let aqCode = fullLocAqCode.substring(3, 11);
       let stateName = this.getStateNamefromAbbrev(stateAbbrev);
       let stateCode = fipsInfo[stateName];
-      let result = "invalid";
+      let result = "Invalid.";
       localAquiferInfo.forEach(element => {
         if (element["state_cd"] == stateCode && element["aqfr_cd"] == aqCode) {
           result = stateAbbrev + ":" + aqCode;
@@ -186,7 +186,7 @@ export default {
       return result;
     },
     addLocalAqToSelected: function() {
-      if (!(this.getLocAqNameFromCode(this.locAquifer) == "invalid")) {
+      if (!(this.getLocAqNameFromCode(this.locAquifer) == "Invalid.")) {
         if (!this.localAquifers.includes(this.locAquifer)) {
           if (this.localAquifers.length < 1000) {
             this.localAquifers.push(this.locAquifer);
@@ -197,7 +197,7 @@ export default {
           notify("Local Aquifer selected already in selection.");
         }
       } else {
-        notify("invalid Local Aquifer code entered");
+        notify("Invalid Local Aquifer code entered.");
       }
     },
     removeElement: function(index) {
