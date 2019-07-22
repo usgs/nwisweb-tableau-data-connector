@@ -64,7 +64,6 @@ pipeline {
                 
                 sh """
                     echo "${versionChange}" >versionNum.txt
-                    docker rm -v nwisweb_data_connector_docker
                     docker build . --tag="dockerinstance"
                     docker run --name nwisweb_data_connector_docker dockerinstance
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
