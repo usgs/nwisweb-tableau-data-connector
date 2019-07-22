@@ -37,3 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### changed
 - separted sitelist from main.vue
 - switched datetime library to momentjs from date-format
+- separated sitelist from main.vue
+- Users can specify which branch to build on Jenkins build page, the default branch is still master
+- Jenkins builds will now check for an existing docker container and delete it if a previous build has failed to clean up
+

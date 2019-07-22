@@ -11,6 +11,7 @@ pipeline {
         choice(choices: ['minor', 'major', 'patch'], description: 'release version', name: 'RELEASE_VERSION')
         string(defaultValue: "", description: 'Specific Commit to build', name: 'COMMIT')
         string(defaultValue: "", description: 'Specific Tag to Build', name: 'TAG')
+        string(defaultValue: "master", description: 'Source Branch', name: 'BRANCH')
     }
 
     triggers {
@@ -26,7 +27,7 @@ pipeline {
           stage('checkout'){
             steps {
                 script {
-                    buildSource = "refs/heads/master"
+                    buildSource = "refs/heads/${BRANCH}"
                     if ("${TAG}" != "") {
                         buildSource = "refs/tags/${TAG}"
                     }
@@ -63,6 +64,7 @@ pipeline {
                 
                 sh """
                     echo "${versionChange}" >versionNum.txt
+                    docker stop nwisweb_data_connector_docker || true && docker rm nwisweb_data_connector_docker || true
                     docker build . --tag="dockerinstance"
                     docker run --name nwisweb_data_connector_docker dockerinstance
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
@@ -79,9 +81,9 @@ pipeline {
                             sh """
                                 git add .
                                 git commit -m "automatic version number increment"
-                                git pull origin autoversion-test
+                                git pull origin ${params.BRANCH}
                                 git tag `cat newVerNum.txt`
-                                git push -u origin HEAD:autoversion-test
+                                git push -u origin HEAD:${params.BRANCH}
                                 git push origin --tag
                             """
                         }                    
