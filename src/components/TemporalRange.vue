@@ -38,7 +38,7 @@
       </span>
       <VueCtkDateTimePicker
         style="display:inline-block;"
-        format="YYYY-MM-DDThh:mmZ"
+        format="YYYY-MM-DDTHH:mmZ"
         v-model="startDateTime"
         ><input class="usa-input usa-input-custom"
       /></VueCtkDateTimePicker>
@@ -49,7 +49,7 @@
 
       <VueCtkDateTimePicker
         style="display: inline-block;"
-        format="YYYY-MM-DDThh:mmZ"
+        format="YYYY-MM-DDTHH:mmZ"
         v-model="endDateTime"
         ><input class="usa-input usa-input-custom"
       /></VueCtkDateTimePicker>
