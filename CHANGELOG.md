@@ -29,14 +29,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added options for Test and QA buckets as targets for Jenkins builds
 - Added support for Ground Water Site Attributes
 - Added support for National and Local Aquifer codes
-### Changed
-- Changed styling so all elements are left justified
 - Added site status parameter
 - Added watershed area query
 - Added Altitude query params
 - Added csv processing for quickly adding a lot codes in fields which accept and verify multiple codes
 - Added various temporal query parameters
-- sepearted sitelist from main.vue
+### Changed
+- Changed styling so all elements are left justified
+- separted sitelist from main.vue
+- switched datetime library to momentjs from date-format
+- separated sitelist from main.vue
 - Users can specify which branch to build on Jenkins build page, the default branch is still master
 - Jenkins builds will now check for an existing docker container and delete it if a previous build has failed to clean up
 

@@ -2,7 +2,7 @@ import { get } from "./utils.js";
 import { locationMode } from "./enums.js";
 import { notify } from "./notifications.js";
 import { parse, toSeconds } from "iso8601-duration";
-var format = require("date-format");
+const moment = require("moment");
 
 /*global  tableau:true*/
 
@@ -231,8 +231,9 @@ const generateURL = connectionData => {
     durationCodeQuery = `&period=${connectionData.durationCode}`;
 
     let periodHistorical =
-      parseInt(toSeconds(parse(connectionData.durationCode))) >= 10368000; //approximate 120 days in seconds
+      parseInt(toSeconds(parse(connectionData.durationCode))) >= 10195200; //approximate 118 days in seconds
     if (periodHistorical) {
+      // this 2-day tolerance is provided to account for variations in temporal length of '120 day' period
       historical = "nwis.";
     }
   }
@@ -254,24 +255,18 @@ const generateURL = connectionData => {
       // this is necessary because JSON.stringify/JSON.parse are not symmetrical with respect to Date objects
       // JSON.stringify converts date objects to strings, so they must be manually reconstructed as Date objects
       // we do this with a formatting library, as behavior of Date() for parsing format strings is not standardized in older browsers.
-      connectionData.currentDateTime = format.parse(
-        format.ISO8601_WITH_TZ_OFFSET_FORMAT,
-        connectionData.currentDateTime
-      );
+      connectionData.currentDateTime = moment(connectionData.currentDateTime);
     }
-    let startDate = format.parse(
-      format.ISO8601_WITH_TZ_OFFSET_FORMAT,
+    let startDate = moment(
       generateDateTime(
         connectionData.temporalRangeData.timeZone,
         connectionData.temporalRangeData.startDateTime,
         false
       )
     );
-    if (
-      connectionData.currentDateTime.getTime() - startDate.getTime() >=
-      10368000000
-    ) {
-      //approximate 120 days in milliseconds
+    if (connectionData.currentDateTime.diff(startDate) >= 10195200000) {
+      //approximate 118 days in milliseconds
+      // this 2-day tolerance is provided to account for variations in temporal length of '120 day' period
       historical = "nwis.";
     }
   }
