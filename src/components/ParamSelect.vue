@@ -9,13 +9,13 @@
       ></ToolTip>
     </span>
     <span>
-      <input
-        id="paraminput"
-        v-model="param"
-        class="usa-input usa-input-custom"
-        list="csparams"
-        type="text"
-      />
+      <CustomAutoComplete
+        v-bind:maxlength="10"
+        v-on:valueupdate="updateParamInput"
+        v-on:clear="updateParamInput"
+        :source="paramData"
+        input-class="usa-input usa-input-custom"
+      ></CustomAutoComplete>
       <datalist id="csparams"> </datalist>
     </span>
     <br />
@@ -49,21 +49,24 @@ import Vue from "vue";
 import VueTags from "vue-tags";
 import ToolTip from "./ToolTip";
 import { notify } from "../notifications.js";
+import CustomAutoComplete from "../components/CustomAutoComplete";
 Vue.component("input-tags", VueTags);
 
 export default {
   name: "ParamSelect",
   components: {
-    ToolTip
+    ToolTip,
+    CustomAutoComplete
   },
   data: function() {
     return {
       loadedParamData: false,
       wideInput: false,
       param: "",
-      paramData: [],
+      paramData: [{ "name": "abc", "id": "1" }, { "name": "def", "id": "2" }],
       paramList: [],
-      selectedParams: []
+      selectedParams: [],
+      dummysource: [{ "name": "abc", "id": "1" }, { "name": "def", "id": "2" }]
     };
   },
   methods: {
@@ -75,25 +78,19 @@ export default {
     fetchparams: async function() {
       let localParamData = await import("../fetchedValues/paramTypes.json");
       let paramList = [];
+      let paramData = [];
       Object.keys(localParamData).forEach(key => {
-        paramList.push(localParamData[key]);
+        if(("name" in localParamData[key])&&("id") in localParamData[key])
+        {
+        paramList.push({id:localParamData[key]["id"], name:localParamData[key]["name"]});
+        }
       });
       this.paramData = paramList;
+      alert(JSON.stringify(this.paramData));
       this.paramData.forEach(element => {
         this.paramList.push(element["id"]);
       });
-      this.populateParamList();
       this.loadedParamData = true;
-    },
-    populateParamList: function() {
-      let dropDown = document.getElementById("csparams");
-      this.paramData.forEach(element => {
-        let option = document.createElement("option");
-        option.text = element["name"];
-        option.value = element["id"];
-        option.title = element["name"];
-        dropDown.appendChild(option);
-      });
     },
     commitParamList: function(value) {
       this.$store.commit("changeParamCodes", value);
@@ -130,6 +127,10 @@ export default {
     },
     removeElement: function(index) {
       Vue.delete(this.selectedParams, index);
+    },
+    updateParamInput: function(newParamInput) {
+      notify(newParamInput);
+      this.param = newParamInput;
     }
   },
   mounted() {
