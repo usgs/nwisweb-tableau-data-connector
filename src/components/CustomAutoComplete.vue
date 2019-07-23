@@ -60,26 +60,40 @@ export default {
     },
     /*
       This turns out to be pretty imporant; this override is in place to limit the number of results
-      returned by any seach to 10. This allows the system to handle very large searches which would
-      otherwise slow it down beyond an acceptable amount.
+      returned by any search to 10. This allows the system to handle very large searches which would
+      otherwise slow it down beyond an acceptable amount. It also proved necessary to replace array.filter with a custom search function
+      as the Tableau browser did not offer good performance with the filter function as implemented by default.
 
     */
     arrayLikeSearch() {
       this.setEventListener();
+
+      // this is so the search function stays out of the user's way when they are inputting codes
+      let regex = /^(\d){5},.*$/;
+      if (this.display.replace(/\s/g, "").match(regex)) {
+        this.results = [];
+        this.$emit("results", { results: this.results });
+        this.loading = false;
+        return true;
+      }
+
       if (!this.display) {
         this.results = this.source.slice(0, 10);
         this.$emit("results", { results: this.results });
         this.loading = false;
         return true;
       }
-      this.results = this.source.filter(item => {
-        return this.formatDisplay(item)
-          .toLowerCase()
-          .includes(this.display.toLowerCase());
+
+      let results = [];
+      this.source.some(element => {
+        if (
+          element["name"].toLowerCase().includes(this.display.toLowerCase())
+        ) {
+          results.push(element);
+        }
+        return results.length === 10;
       });
-      if (this.results.length > 10) {
-        this.results = this.results.slice(0, 10);
-      }
+      this.results = results;
       this.$emit("results", { results: this.results });
       this.loading = false;
     }
