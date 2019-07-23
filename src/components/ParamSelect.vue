@@ -10,7 +10,6 @@
     </span>
     <span>
       <CustomAutoComplete
-        v-bind:maxlength="10"
         v-on:valueupdate="updateParamInput"
         v-on:clear="updateParamInput"
         :source="paramData"
@@ -63,10 +62,10 @@ export default {
       loadedParamData: false,
       wideInput: false,
       param: "",
-      paramData: [{ "name": "abc", "id": "1" }, { "name": "def", "id": "2" }],
+      paramData: [{ name: "abc", id: "1" }, { name: "def", id: "2" }],
       paramList: [],
       selectedParams: [],
-      dummysource: [{ "name": "abc", "id": "1" }, { "name": "def", "id": "2" }]
+      dummysource: [{ name: "abc", id: "1" }, { name: "def", id: "2" }]
     };
   },
   methods: {
@@ -78,15 +77,15 @@ export default {
     fetchparams: async function() {
       let localParamData = await import("../fetchedValues/paramTypes.json");
       let paramList = [];
-      let paramData = [];
       Object.keys(localParamData).forEach(key => {
-        if(("name" in localParamData[key])&&("id") in localParamData[key])
-        {
-        paramList.push({id:localParamData[key]["id"], name:localParamData[key]["name"]});
+        if ("name" in localParamData[key] && "id" in localParamData[key]) {
+          paramList.push({
+            id: localParamData[key]["id"],
+            name: localParamData[key]["name"]
+          });
         }
       });
       this.paramData = paramList;
-      alert(JSON.stringify(this.paramData));
       this.paramData.forEach(element => {
         this.paramList.push(element["id"]);
       });
@@ -129,7 +128,6 @@ export default {
       Vue.delete(this.selectedParams, index);
     },
     updateParamInput: function(newParamInput) {
-      notify(newParamInput);
       this.param = newParamInput;
     }
   },

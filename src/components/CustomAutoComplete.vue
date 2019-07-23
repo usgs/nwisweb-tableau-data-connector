@@ -58,13 +58,30 @@ export default {
       this.removeEventListener();
       this.$emit("close");
     },
-    formatDisplay: function(result)
-    {
-        if (!('name' in result))
-        {
-        alert(JSON.stringify(result))
-        }
-        return result["name"];
+    /*
+      This turns out to be pretty imporant; this override is in place to limit the number of results
+      returned by any seach to 10. This allows the system to handle very large searches which would
+      otherwise slow it down beyond an acceptable amount.
+
+    */
+    arrayLikeSearch() {
+      this.setEventListener();
+      if (!this.display) {
+        this.results = this.source.slice(0, 10);
+        this.$emit("results", { results: this.results });
+        this.loading = false;
+        return true;
+      }
+      this.results = this.source.filter(item => {
+        return this.formatDisplay(item)
+          .toLowerCase()
+          .includes(this.display.toLowerCase());
+      });
+      if (this.results.length > 10) {
+        this.results = this.results.slice(0, 10);
+      }
+      this.$emit("results", { results: this.results });
+      this.loading = false;
     }
   }
 };
