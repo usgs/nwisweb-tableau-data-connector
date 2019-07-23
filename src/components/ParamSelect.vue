@@ -100,6 +100,14 @@ export default {
 
     */
     addParams: function() {
+      if (
+        this.param === null ||
+        typeof this.param === "undefined" ||
+        this.param === ""
+      ) {
+        notify(`no param code entered`);
+        return;
+      }
       let params = this.param.split(",");
       params.forEach(param => {
         this.addParam(param.replace(/\s/g, ""));

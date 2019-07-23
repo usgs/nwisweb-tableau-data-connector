@@ -68,17 +68,17 @@ export default {
     arrayLikeSearch() {
       this.setEventListener();
 
-      // this is so the search function stays out of the user's way when they are inputting codes
-      let regex = /^(\d){5},.*$/;
-      if (this.display.replace(/\s/g, "").match(regex)) {
-        this.results = [];
+      if (!this.display || this.display === null) {
+        this.results = this.source.slice(0, 10);
         this.$emit("results", { results: this.results });
         this.loading = false;
         return true;
       }
 
-      if (!this.display) {
-        this.results = this.source.slice(0, 10);
+      // this is so the search function stays out of the user's way when they are inputting codes
+      let regex = /^(\d){5},.*$/;
+      if (this.display.replace(/\s/g, "").match(regex)) {
+        this.results = [];
         this.$emit("results", { results: this.results });
         this.loading = false;
         return true;
