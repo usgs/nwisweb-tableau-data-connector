@@ -15,7 +15,6 @@
         :source="paramData"
         input-class="usa-input usa-input-custom"
       ></CustomAutoComplete>
-      <datalist id="csparams"> </datalist>
     </span>
     <br />
     <button class="usa-button usa-button-custom" v-on:click="addParams">
@@ -100,14 +99,11 @@ export default {
 
     */
     addParams: function() {
-      if (
-        this.param === null ||
-        typeof this.param === "undefined" ||
-        this.param === ""
-      ) {
+      if (this.param == "") {
         notify(`no param code entered`);
         return;
       }
+      
       let params = this.param.split(",");
       params.forEach(param => {
         this.addParam(param.replace(/\s/g, ""));
@@ -136,7 +132,11 @@ export default {
       Vue.delete(this.selectedParams, index);
     },
     updateParamInput: function(newParamInput) {
-      this.param = newParamInput;
+      if (newParamInput !== null && (typeof newParamInput) !== 'undefined') {
+        this.param = newParamInput;
+      } else {
+        this.param = "";
+      }
     }
   },
   mounted() {
