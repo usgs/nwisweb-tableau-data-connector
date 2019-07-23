@@ -100,3 +100,16 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+.autocomplete__results__item--error {
+  color: red;
+  text-align: left;
+}
+
+.autocomplete__results__item {
+  padding: 7px 10px;
+  cursor: pointer;
+  text-align: left;
+}
+</style>
