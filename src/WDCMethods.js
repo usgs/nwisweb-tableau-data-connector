@@ -87,7 +87,12 @@ const formatJSONAsTable = (data, tableName) => {
       longitude: tableSeries.sourceInfo.geoLocation.geogLocation.longitude,
       units: tableSeries.variable.unit.unitCode,
       qualifier: qualList.join(","),
-      [tableName]: tableSeries.values[0].value[i].value
+      [tableName]: tableSeries.values[0].value[i].value,
+      siteNum: tableSeries.sourceInfo.siteCode[0].value,
+      paramCode: tableSeries.variable.variableCode[0].value,
+      agencyCode: tableSeries.sourceInfo.siteCode[0].agencyCode,
+      statCode: tableSeries.variable.options.option[0].optionCode,
+      methodCode: tableSeries.values[0].method[0].methodID
     };
     tableData.push(newEntry);
   });
@@ -311,6 +316,31 @@ const generateSchemaTablesFromData = data => {
       id: "qualifier",
       alias: "qualifier",
       dataType: tableau.dataTypeEnum.string
+    });
+    cols.push({
+      id: "siteNum",
+      alias: "siteNum",
+      datatype: tableau.dataTypeEnum.float
+    });
+    cols.push({
+      id: "paramCode",
+      alias: "paramCode",
+      datatype: tableau.dataTypeEnum.float
+    });
+    cols.push({
+      id: "agencyCode",
+      alias: "agencyCode",
+      datatype: tableau.dataTypeEnum.string
+    });
+    cols.push({
+      id: "statCode",
+      alias: "statCode",
+      datatype: tableau.dataTypeEnum.float
+    });
+    cols.push({
+      id: "methodCode",
+      alias: "methodCode",
+      datatype: tableau.dataTypeEnum.float
     });
     let column = `${sanitizeVariableName(
       series.variable.variableDescription
