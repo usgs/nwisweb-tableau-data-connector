@@ -33,6 +33,9 @@ import AutoComplete from "vuejs-auto-complete";
 export default {
   name: "CustomAutoComplete",
   mixins: [AutoComplete],
+  props: {
+    refresh: Boolean //flipping this will cause the Autocomplete to refresh
+  },
   methods: {
     updateToID: function(id) {
       this.display = id;
@@ -96,6 +99,11 @@ export default {
       this.results = results;
       this.$emit("results", { results: this.results });
       this.loading = false;
+    }
+  },
+  watch: {
+    refresh: function() {
+      this.display = "";
     }
   }
 };

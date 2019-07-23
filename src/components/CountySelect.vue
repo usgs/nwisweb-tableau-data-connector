@@ -7,14 +7,13 @@
         url="https://waterservices.usgs.gov/rest/IV-Test-Tool.html"
       ></ToolTip>
     </span>
-    <input
-      v-model="state"
-      :disabled="disabled"
-      class="usa-input usa-input-custom"
-      list="csstates"
-      type="text"
-    />
-    <datalist id="csstates"> </datalist>
+    <CustomAutoComplete
+      v-bind:refresh="stateAutoCompleteRefreshIndicator"
+      v-on:valueupdate="updateStateInput"
+      v-on:clear="updateStateInput"
+      :source="stateSearchList"
+      input-class="usa-input usa-input-custom"
+    ></CustomAutoComplete>
     <br />
     <span class="input-desc">
       <label>County</label>
@@ -23,13 +22,13 @@
         url="https://help.waterdata.usgs.gov/code/county_query?fmt=html?display=inline"
       ></ToolTip>
     </span>
-    <input
-      v-model="county"
-      :disabled="disabled"
-      class="usa-input usa-input-custom"
-      list="cscounties"
-      type="text"
-    />
+    <CustomAutoComplete
+      v-bind:refresh="countyAutoCompleteRefreshIndicator"
+      v-on:valueupdate="updateCountyInput"
+      v-on:clear="updateCountyInput"
+      :source="countySearchList"
+      input-class="usa-input usa-input-custom"
+    ></CustomAutoComplete>
     <datalist id="cscounties"> </datalist>
     <button class="usa-button usa-button-custom" v-on:click="addCounties">
       Add County
@@ -66,6 +65,7 @@ import Vue from "vue";
 import ToolTip from "../components/ToolTip";
 import VueTags from "vue-tags";
 import { notify } from "../notifications.js";
+import CustomAutoComplete from "../components/CustomAutoComplete";
 
 Vue.component("input-tags", VueTags);
 
@@ -74,39 +74,36 @@ export default {
   data: function() {
     return {
       state: "",
+      stateSearchList: [],
+      countySearchList: [],
       county: "",
       counties: [],
+      countyAutoCompleteRefreshIndicator: true,
+      stateAutoCompleteRefreshIndicator: true,
       countyNames: [],
       activeLocationMode: locationMode.SITE
     };
   },
   components: {
-    ToolTip
+    ToolTip,
+    CustomAutoComplete
   },
   methods: {
     populateStateList: function() {
-      let dropDown = document.getElementById("csstates");
       Object.keys(stateList).forEach(element => {
-        let option = document.createElement("option");
-        option.text = element;
-        option.value = element;
-        dropDown.appendChild(option);
+        this.stateSearchList.push({ name: element, id: element });
       });
     },
     populateCountyList: function() {
-      let dropDown = document.getElementById("cscounties");
-      Array.prototype.slice
-        .call(dropDown.getElementsByTagName("option"))
-        .forEach(function(item) {
-          dropDown.removeChild(item);
-        });
       let countyList = this.getCounties(this.state);
 
+      this.countySearchList = [];
+
       countyList.forEach(element => {
-        let option = document.createElement("option");
-        option.value = `${element["state_cd"]}${element["county_cd"]}`;
-        option.text = element["county_nm"];
-        dropDown.appendChild(option);
+        this.countySearchList.push({
+          name: element["county_nm"],
+          id: `${element["state_cd"]}${element["county_cd"]}`
+        });
       });
     },
     commitCountySelection: function() {
@@ -165,6 +162,28 @@ export default {
     },
     removeElement: function(index) {
       Vue.delete(this.counties, index);
+    },
+    updateStateInput: function(result) {
+      if (result !== null && typeof result !== "undefined") {
+        this.state = result;
+      } else {
+        this.state = "";
+      }
+    },
+    updateCountyInput: function(result) {
+      if (result !== null && typeof result !== "undefined") {
+        this.county = result;
+      } else {
+        this.county = "";
+      }
+    },
+    triggerCountyAutoCompleteRefreshIndicator() {
+      this.countyAutoCompleteRefreshIndicator = !this
+        .countyAutoCompleteRefreshIndicator;
+    },
+    triggerStateAutoCompleteRefreshIndicator() {
+      this.stateAutoCompleteRefreshIndicator = !this
+        .stateAutoCompleteRefreshIndicator;
     }
   },
   mounted() {
@@ -176,11 +195,14 @@ export default {
       if (newValue != locationMode.COUNTY) {
         this.state = "";
         this.county = "";
+        this.triggerCountyAutoCompleteRefreshIndicator();
+        this.triggerStateAutoCompleteRefreshIndicator();
         this.counties = [];
       }
     },
     state: function() {
       this.populateCountyList();
+      this.triggerCountyAutoCompleteRefreshIndicator();
       this.county = "";
     },
     counties: function(newValue) {
