@@ -7,14 +7,12 @@
         url="https://waterservices.usgs.gov/rest/IV-Test-Tool.html"
       ></ToolTip>
     </span>
-    <input
-      v-model="state"
-      :disabled="disabled"
-      class="usa-input usa-input-custom"
-      type="text"
-      list="states"
-    />
-    <datalist id="states"> </datalist>
+    <CustomAutoComplete
+      v-on:valueupdate="updateStateInput"
+      v-on:clear="updateStateInput"
+      :source="stateSearchList"
+      input-class="usa-input usa-input-custom"
+    ></CustomAutoComplete>
   </div>
 </template>
 
@@ -23,30 +21,36 @@ import { locationMode } from "../enums.js";
 import { mapState } from "vuex";
 import ToolTip from "./ToolTip";
 import stateList from "../fetchedValues/states.json";
+import CustomAutoComplete from "../components/CustomAutoComplete";
 
 export default {
   name: "StateSelect",
   components: {
-    ToolTip
+    ToolTip,
+    CustomAutoComplete
   },
   data: function() {
     return {
       state: "",
+      stateSearchList: [],
       activeLocationMode: locationMode.SITE
     };
   },
   methods: {
     populateStateList: function() {
-      let dropDown = document.getElementById("states");
       Object.keys(stateList).forEach(element => {
-        let option = document.createElement("option");
-        option.text = element;
-        option.value = element;
-        dropDown.appendChild(option);
+        this.stateSearchList.push({ name: element, id: element });
       });
     },
     commitStateSelection: function(newValue) {
       this.$store.commit("changeUSStateName", newValue);
+    },
+    updateStateInput: function(result) {
+      if (result !== null && typeof result !== "undefined") {
+        this.state = result;
+      } else {
+        this.state = "";
+      }
     }
   },
   mounted() {

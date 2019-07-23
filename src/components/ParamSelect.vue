@@ -103,7 +103,7 @@ export default {
         notify(`no param code entered`);
         return;
       }
-      
+
       let params = this.param.split(",");
       params.forEach(param => {
         this.addParam(param.replace(/\s/g, ""));
@@ -132,7 +132,7 @@ export default {
       Vue.delete(this.selectedParams, index);
     },
     updateParamInput: function(newParamInput) {
-      if (newParamInput !== null && (typeof newParamInput) !== 'undefined') {
+      if (newParamInput !== null && typeof newParamInput !== "undefined") {
         this.param = newParamInput;
       } else {
         this.param = "";

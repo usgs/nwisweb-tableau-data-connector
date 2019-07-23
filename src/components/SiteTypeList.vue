@@ -85,11 +85,10 @@ export default {
       });
     },
     addSiteTypeToSiteTypeList: function(siteType) {
-     if (this.siteType == "") {
+      if (this.siteType == "") {
         notify(`no site type entered`);
         return;
       }
-
 
       if (!(this.getSiteTypeNameFromCode(siteType) == "invalid")) {
         if (!this.siteTypeList.includes(siteType)) {
@@ -114,11 +113,11 @@ export default {
       return result;
     },
     updateSiteTypeInput: function(result) {
-       if (result !== null && (typeof result) !== 'undefined') {
+      if (result !== null && typeof result !== "undefined") {
         this.siteType = result;
       } else {
         this.siteType = "";
-      }    
+      }
     }
   },
   mounted() {

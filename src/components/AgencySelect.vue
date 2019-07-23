@@ -46,12 +46,12 @@ export default {
       this.$store.commit("changeAgencyCode", newValue);
     },
     updateAgencyInput: function(result) {
-      if (result !== null && (typeof result) !== 'undefined') {
+      if (result !== null && typeof result !== "undefined") {
         this.agency = result;
       } else {
         this.agency = "";
-      }    
       }
+    }
   },
   mounted() {
     this.populateAgencyList();
