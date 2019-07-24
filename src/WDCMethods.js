@@ -67,7 +67,7 @@ const sanitizeVariableName = variableName => {
 };
 
 /*
-Takes a JSON and returns a table formatted in accordance with the schema provided to tableau.
+Takes a JSON and returns a table formatted in accordance with the schema provided to Tableau.
 */
 const formatJSONAsTable = (data, tableName) => {
   let tableData = [];
