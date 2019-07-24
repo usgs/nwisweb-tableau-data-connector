@@ -437,6 +437,16 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
   let result = [];
   let targetResult = [
     {
+        id:"metadata",
+        alias:'metadata',
+        columns: [
+          {id: "queryURL",alias: "queryURL",dataType: "__STRING"},
+          {id: "DOINumber",alias: "DOINumber",dataType: "__STRING"},
+          {id: "queryTime",alias: "queryTime",dataType: "__STRING"}
+        ]
+    },
+    
+    {
       id: "flow_01646500",
       alias: "flow_01646500",
       columns: [

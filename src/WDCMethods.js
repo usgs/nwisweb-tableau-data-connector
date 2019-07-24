@@ -70,6 +70,25 @@ const sanitizeVariableName = variableName => {
 Takes a JSON and returns a table formatted in accordance with the schema provided to tableau.
 */
 const formatJSONAsTable = (data, tableName) => {
+  if (tableName == "metadata") {
+    let tableData = [];
+    let DOI = "123456";
+    let queryURL = data.value.queryInfo.queryURL;
+    let queryTime = "query time not returned";
+    data.value.queryInfo.note.some(element => {
+      if (element["title"] === "requestDT") {
+        queryTime = element["value"];
+      }
+      return element["title"] === "requestDT";
+    });
+    tableData.push({
+      DOINumber: DOI,
+      queryURL: queryURL,
+      queryTime: queryTime
+    });
+    return tableData;
+  }
+
   let tableData = [];
   let timeSeries = data.value.timeSeries;
   let tableSeries = getTimeSeriesByID(timeSeries, tableName);
@@ -285,12 +304,12 @@ generates an appropriate tableau schema.
 const generateSchemaTablesFromData = data => {
   let tableList = [];
 
-  //here the entry declaring the metadata table is added to the schema 
+  //here the entry declaring the metadata table is added to the schema
 
   let metaTableCols = [];
   metaTableCols.push({
-    id: "queryUrl",
-    alias: "queryUrl",
+    id: "queryURL",
+    alias: "queryURL",
     dataType: tableau.dataTypeEnum.string
   });
   metaTableCols.push({
@@ -303,7 +322,7 @@ const generateSchemaTablesFromData = data => {
     alias: "queryTime",
     dataType: tableau.dataTypeEnum.string
   });
-  
+
   let metaTableSchema = {
     id: "metadata",
     alias: "metadata",
@@ -366,7 +385,8 @@ reads data from a cache and appropriately populates a table.
 */
 const getData = (table, doneCallback) => {
   let connectionData;
-  if (typeof tableau.connectionData === "string") { // this check may be unnecessary 
+  if (typeof tableau.connectionData === "string") {
+    // this check may be unnecessary
     connectionData = JSON.parse(tableau.connectionData);
   } else {
     connectionData = tableau.connectionData;
@@ -405,7 +425,8 @@ const getSchema = schemaCallback => {
   let connectionData;
   if (typeof tableau.connectionData === "string") {
     connectionData = JSON.parse(tableau.connectionData);
-  } else { // this check may be unnecesarry, and was added to provide compatibility with the tableau web data connector simulator which may or may not require it
+  } else {
+    // this check may be unnecesarry, and was added to provide compatibility with the tableau web data connector simulator which may or may not require it
     connectionData = tableau.connectionData;
   }
   let url = generateURL(connectionData);
