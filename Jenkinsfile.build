@@ -77,11 +77,12 @@ pipeline {
 
 
                 withCredentials([usernamePassword(credentialsId: "NWISWEB-TABLEAU-READ-WRITE-TOKEN", usernameVariable: "GIT_USERNAME", passwordVariable: "GIT_PASSWORD")]) {
-                      export GIT_USERNAME
-                       export GIT_PASSWORD
+                   
                         script {
                         if("${params.RELEASE_TYPE}" == "Release") {
                             sh """
+                                export ${GIT_USERNAME}
+                                export ${GIT_PASSWORD}
                                 git add .
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
