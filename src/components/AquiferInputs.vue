@@ -16,12 +16,12 @@
     <span class="input-desc">
       <label>Local Aquifer Code</label>
       <ToolTip
-        hint="Select a state to search a list of local aquifers. A complete list of local aquifer codes is linked here."
+        hint="Select a state to search a list of local aquifers or enter up to 1000 local aquifer codes seperated by commas. A complete list of local aquifer codes is linked here."
         url="https://help.waterdata.usgs.gov/code/aqfr_cd_query?fmt=html"
       ></ToolTip>
     </span>
     <span class="input-desc">
-      <label>Select State</label>
+      <label>Select State or Territory</label>
       <CustomAutoComplete
         v-on:valueupdate="updateStateInput"
         v-on:clear="updateStateInput"
@@ -37,10 +37,7 @@
       :source="aqCodeSearchList"
       input-class="usa-input usa-input-custom"
     ></CustomAutoComplete>
-    <button
-      class="usa-button usa-button-custom"
-      v-on:click="addLocalAqToSelected"
-    >
+    <button class="usa-button usa-button-custom" v-on:click="addLocalAq">
       Add Local Aquifer
     </button>
     <h6 class="selected-tags">Selected Local Aquifers</h6>
@@ -178,15 +175,21 @@ export default {
       });
       return result;
     },
-    addLocalAqToSelected: function() {
-      if (this.locAquifer == "") {
+    addLocalAq: function() {
+      let aquifers = this.locAquifer.split(",");
+      aquifers.forEach(element => {
+        this.addLocalAqToSelected(element.replace(/\s/g, ""));
+      });
+    },
+    addLocalAqToSelected: function(locAquifer) {
+      if (locAquifer == "") {
         notify("no aquifer code selected");
         return;
       }
-      if (!(this.getLocAqNameFromCode(this.locAquifer) == "Invalid.")) {
-        if (!this.localAquifers.includes(this.locAquifer)) {
+      if (!(this.getLocAqNameFromCode(locAquifer) == "Invalid.")) {
+        if (!this.localAquifers.includes(locAquifer)) {
           if (this.localAquifers.length < 1000) {
-            this.localAquifers.push(this.locAquifer);
+            this.localAquifers.push(locAquifer);
           } else {
             notify("Maximum number of Local Aquifers already selected.");
           }
