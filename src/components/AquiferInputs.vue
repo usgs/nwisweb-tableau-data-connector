@@ -185,17 +185,11 @@ export default {
       });
       return result;
     },
-    addLocalAq: function() {
-      let aquifers = this.locAquifer.split(",");
-      aquifers.forEach(element => {
-        this.addLocalAqToSelected(element.replace(/\s/g, ""));
-      });
-    },
-    addLocalAqToSelected: function(locAquifer) {
-      if (!(this.getLocAqNameFromCode(locAquifer) == "Invalid.")) {
-        if (!this.localAquifers.includes(locAquifer)) {
+    addLocalAqToSelected: function() {
+      if (!(this.getLocAqNameFromCode(this.locAquifer) == "Invalid.")) {
+        if (!this.localAquifers.includes(this.locAquifer)) {
           if (this.localAquifers.length < 1000) {
-            this.localAquifers.push(locAquifer);
+            this.localAquifers.push(this.locAquifer);
           } else {
             notify("Maximum number of Local Aquifers already selected.");
           }

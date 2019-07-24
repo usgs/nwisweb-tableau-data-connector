@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Altitude query params
 - Added csv processing for quickly adding a lot codes in fields which accept and verify multiple codes
 - Added various temporal query parameters
+- Added columns to display site number, parameter code, statistic code, agency code, and method code in every row of a table in Tableau
 ### Changed
 - Changed styling so all elements are left justified
 - separted sitelist from main.vue
@@ -41,4 +42,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - separated sitelist from main.vue
 - Users can specify which branch to build on Jenkins build page, the default branch is still master
 - Jenkins builds will now check for an existing docker container and delete it if a previous build has failed to clean up
-
