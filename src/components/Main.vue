@@ -8,27 +8,32 @@
     <body>
       <div class="row">
         <div class="leftcolumn">
-          <div class="text-center col-md-4 col-md-offset-4">
+          <div class="text-center input-column">
             <br />
             <SiteSelect> </SiteSelect>
             <StateSelect></StateSelect>
             <CoordinatesInput></CoordinatesInput>
             <HUCInput></HUCInput>
             <CountySelect></CountySelect>
-            <div>
-              <ParamSelect></ParamSelect>
-              <br />
+            <div style="float:left;">
+              <fieldset class="optional">
+                <legend>Optional Parameters</legend>
+                <div>
+                  <ParamSelect></ParamSelect>
+                  <br />
+                </div>
+                <SiteTypeList></SiteTypeList>
+                <TemporalRange></TemporalRange>
+                <AgencySelect></AgencySelect>
+                <br />
+                <siteStatusSelect></siteStatusSelect>
+                <AquiferInputs></AquiferInputs>
+                <br />
+                <GroundWaterSiteAttr></GroundWaterSiteAttr>
+                <WatershedInput></WatershedInput>
+                <AltitudeInput></AltitudeInput>
+              </fieldset>
             </div>
-            <SiteTypeList></SiteTypeList>
-            <AgencySelect></AgencySelect>
-            <br />
-            <AquiferInputs></AquiferInputs>
-            <br />
-            <GroundWaterSiteAttr></GroundWaterSiteAttr>
-            <WatershedInput></WatershedInput>
-            <AltitudeInput></AltitudeInput>
-            <TemporalRange></TemporalRange>
-            <SiteStatusSelect></SiteStatusSelect>
           </div>
         </div>
         <div class="rightcolumn">
@@ -71,6 +76,7 @@ import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import WatershedInput from "../components/WatershedInput";
 import TemporalRange from "../components/TemporalRange";
+const moment = require("moment");
 
 /*global  tableau:true*/
 
@@ -176,9 +182,10 @@ export default {
         modifiedSinceCode: this.$store.getters.modifiedSinceCode,
         temporalRangeActive: this.$store.getters.temporalRangeActive,
         temporalRangeData: this.$store.getters.temporalRangeData,
-        currentDateTime: new Date()
+        currentDateTime: moment()
       };
 
+      alert(connectionData.currentDateTime.format());
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {

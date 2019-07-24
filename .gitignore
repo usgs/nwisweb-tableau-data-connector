@@ -2,8 +2,9 @@
 node_modules
 /dist
 /src/fetchedValues
+currVerNum.txt
 newVerNum.txt
-versionNum.txt
+versionType.txt
 
 
 # local env files
