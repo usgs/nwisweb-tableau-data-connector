@@ -63,18 +63,21 @@ let siteString = "";
 let countyString = "";
 let paramString = "";
 let agencyString = "";
+let locAquiferString = "";
 
 
 Promise.all(
   [get("https://help.waterdata.usgs.gov/code/site_tp_query?fmt=rdb"),          
   get("https://help.waterdata.usgs.gov/code/county_query?fmt=rdb"),
   get("https://help.waterdata.usgs.gov/code/parameter_cd_query?fmt=rdb&group_cd=%"),
-get("https://help.waterdata.usgs.gov/code/agency_cd_query?fmt=rdb")]
+get("https://help.waterdata.usgs.gov/code/agency_cd_query?fmt=rdb"),
+get("https://help.waterdata.usgs.gov/code/aqfr_cd_query?fmt=rdb")]
   ).then((value)=>{
 siteString = value[0];
 countyString = value[1];
 paramString = value[2];
 agencyString = value[3];
+locAquiferString = value[4];
  
 paramData = rdbToJSON(paramString)
 abridgedParamData = []
@@ -88,7 +91,7 @@ let abridgedParamJSONString = JSON.stringify(abridgedParamData);
 let siteTypesJSONString = JSON.stringify(rdbToJSON(siteString));
 let countyJSONString = JSON.stringify(rdbToJSON(countyString));
 let agencyJSONString = JSON.stringify(rdbToJSON(agencyString));
-
+let locAquiferJSONString = JSON.stringify(rdbToJSON(locAquiferString));
 
 let statesTemplate = 
 {
@@ -152,109 +155,115 @@ let statesTemplate =
 
 
 let fipsTemplate = {
-    "Northern Mariana Islands": "69",
-    "Delaware": "10",
-    "District of Columbia": "11",
-    "Florida": "12",
-    "Georgia": "13",
-    "Hawaii": "15",
-    "Idaho": "16",
-    "Illinois": "17",
-    "Indiana": "18",
-    "Iowa": "19",
-    "Kansas": "20",
-    "Kentucky": "21",
-    "Louisiana": "22",
-    "Maine": "23",
-    "Maryland": "24",
-    "Massachusetts": "25",
-    "Michigan": "26",
-    "Minnesota": "27",
-    "Mississippi": "28",
-    "Missouri": "29",
-    "Montana": "30",
-    "Nebraska": "31",
-    "Nevada": "32",
-    "New Hampshire": "33",
-    "New Jersey": "34",
-    "New Mexico": "35",
-    "New York": "36",
-    "North Carolina": "37",
-    "North Dakota": "38",
-    "Ohio": "39",
-    "Oklahoma": "40",
-    "Oregon": "41",
-    "Pennsylvania": "42",
-    "Rhode Island": "44",
-    "South Carolina": "45",
-    "South Dakota": "46",
-    "Tennessee": "47",
-    "Texas": "48",
-    "Utah": "49",
-    "Vermont": "50",
-    "Virginia": "51",
-    "Washington": "53",
-    "West Virginia": "54",
-    "Wisconsin": "55",
-    "Wyoming": "56",
-    "American Samoa": "60",
-    "Guam": "66",
-    "Puerto Rico": "72",
-    "Virgin Islands": "78",
-    "Alabama": "01",
-    "Alaska": "02",
-    "Arizona": "04",
-    "Arkansas": "05",
-    "California": "06",
-    "Colorado": "08",
-    "Connecticut": "09"
-  
-  }
+  "Northern Mariana Islands": "69",
+  "Delaware": "10",
+  "District of Columbia": "11",
+  "Florida": "12",
+  "Georgia": "13",
+  "Hawaii": "15",
+  "Idaho": "16",
+  "Illinois": "17",
+  "Indiana": "18",
+  "Iowa": "19",
+  "Kansas": "20",
+  "Kentucky": "21",
+  "Louisiana": "22",
+  "Maine": "23",
+  "Maryland": "24",
+  "Massachusetts": "25",
+  "Michigan": "26",
+  "Minnesota": "27",
+  "Mississippi": "28",
+  "Missouri": "29",
+  "Montana": "30",
+  "Nebraska": "31",
+  "Nevada": "32",
+  "New Hampshire": "33",
+  "New Jersey": "34",
+  "New Mexico": "35",
+  "New York": "36",
+  "North Carolina": "37",
+  "North Dakota": "38",
+  "Ohio": "39",
+  "Oklahoma": "40",
+  "Oregon": "41",
+  "Pennsylvania": "42",
+  "Rhode Island": "44",
+  "South Carolina": "45",
+  "South Dakota": "46",
+  "Tennessee": "47",
+  "Texas": "48",
+  "Utah": "49",
+  "Vermont": "50",
+  "Virginia": "51",
+  "Washington": "53",
+  "West Virginia": "54",
+  "Wisconsin": "55",
+  "Wyoming": "56",
+  "American Samoa": "60",
+  "Guam": "66",
+  "Puerto Rico": "72",
+  "Virgin Islands": "78",
+  "Alabama": "01",
+  "Alaska": "02",
+  "Arizona": "04",
+  "Arkansas": "05",
+  "California": "06",
+  "Colorado": "08",
+  "Connecticut": "09"
+}
 
+let aquiferAreasTemplate = {
+  "Atlantic Coast": "75",
+  "Gulf of Mexico": "77",
+  "Lake Erie": "96",
+  "Marshall Islands": "MH",
+  "Midway Islands": "MQ",
+  "United States of America": "00"
+}
 
-  let timeZoneOffsets =[
-    "-1200",
-    "-1100",
-    "-1000",
-    "-0930",
-    "-0900",
-    "-0800",
-    "-0700",
-    "-0600",
-    "-0500",
-    "-0430",
-    "-0400",
-    "-0330",
-    "-0300",
-    "-0200",
-    "-0100",
-    "+0000",
-    "+0100",
-    "+0200",
-    "+0300",
-    "+0330",
-    "+0400",
-    "+0430",
-    "+0500",
-    "+0530",
-    "+0545",
-    "+0600",
-    "+0630",
-    "+0700",
-    "+0800",
-    "+0845",
-    "+0900",
-    "+0930",
-    "+1000",
-    "+1030",
-    "+1100",
-    "+1130",
-    "+1200",
-    "+1245",
-    "+1300",
-    "+1400",
-    ];
-
+let timeZoneOffsets =[
+  "-1200",
+  "-1100",
+  "-1000",
+  "-0930",
+  "-0900",
+  "-0800",
+  "-0700",
+  "-0600",
+  "-0500",
+  "-0430",
+  "-0400",
+  "-0330",
+  "-0300",
+  "-0200",
+  "-0100",
+  "+0000",
+  "+0100",
+  "+0200",
+  "+0300",
+  "+0330",
+  "+0400",
+  "+0430",
+  "+0500",
+  "+0530",
+  "+0545",
+  "+0600",
+  "+0630",
+  "+0700",
+  "+0800",
+  "+0845",
+  "+0900",
+  "+0930",
+  "+1000",
+  "+1030",
+  "+1100",
+  "+1130",
+  "+1200",
+  "+1245",
+  "+1300",
+  "+1400",
+];
 
 fs.writeFile("./src/fetchedValues/states.json", JSON.stringify(statesTemplate), function(err) {
   if(err) {
@@ -262,6 +271,14 @@ fs.writeFile("./src/fetchedValues/states.json", JSON.stringify(statesTemplate), 
   }
 
   console.log("./src/fetchedValues/states.json was saved!");
+}); 
+
+fs.writeFile("./src/fetchedValues/aquiferAreas.json", JSON.stringify(aquiferAreasTemplate), function(err) {
+  if(err) {
+      return console.log(err);
+  }
+
+  console.log("./src/fetchedValues/aquiferAreas.json was saved!");
 }); 
 
 
@@ -314,6 +331,13 @@ fs.writeFile("./src/fetchedValues/timezones.json", JSON.stringify(timeZoneOffset
 
 
 
+fs.writeFile("./src/fetchedValues/locAquifer.json", locAquiferJSONString, function(err) {
+  if(err) {
+      return console.log(err);
+  }
+
+  console.log("./src/fetchedValues/locAquifer.json was saved!");
+}); 
 
 
 }).catch(err => {console.log(err)});

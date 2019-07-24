@@ -32,6 +32,10 @@ export default new Vuex.Store({
     durationCode: "",
     locationMode: locationMode.SITE,
     coordinates: {},
+    natAquiferActive: false,
+    natAquifer: "",
+    locAquiferActive: false,
+    locAquifer: [],
     wellMinActive: false,
     wellMaxActive: false,
     holeMinActive: false,
@@ -88,6 +92,18 @@ export default new Vuex.Store({
     },
     changeGWSiteAttrDepths: (state, newGWSiteAttrDepths) => {
       state.GWSiteAttrDepths = newGWSiteAttrDepths;
+    },
+    changeLocAquiferActive: (state, newLocAquiferActivation) => {
+      state.locAquiferActive = newLocAquiferActivation;
+    },
+    changeLocAquifer: (state, newLocAquifer) => {
+      state.locAquifer = newLocAquifer;
+    },
+    changeNatAquiferActive: (state, newNatAquiferActivation) => {
+      state.natAquiferActive = newNatAquiferActivation;
+    },
+    changeNatAquifer: (state, newNatAquifer) => {
+      state.natAquifer = newNatAquifer;
     },
     changeSiteStatus: (state, newSiteStatus) => {
       state.siteStatus = newSiteStatus;
@@ -188,6 +204,18 @@ export default new Vuex.Store({
     },
     GWSiteAttrDepths: state => {
       return state.GWSiteAttrDepths;
+    },
+    locAquiferActive: state => {
+      return state.locAquiferActive;
+    },
+    locAquifer: state => {
+      return state.locAquifer;
+    },
+    natAquiferActive: state => {
+      return state.natAquiferActive;
+    },
+    natAquifer: state => {
+      return state.natAquifer;
     },
     siteStatus: state => {
       return state.siteStatus;
