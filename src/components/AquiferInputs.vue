@@ -40,7 +40,7 @@
     <datalist id="localAquifers"></datalist>
     <button
       class="usa-button usa-button-custom"
-      v-on:click="addLocalAq"
+      v-on:click="addLocalAqToSelected"
     >
       Add Local Aquifer
     </button>
