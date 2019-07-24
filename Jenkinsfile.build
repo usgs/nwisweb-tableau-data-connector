@@ -14,9 +14,6 @@ pipeline {
         string(defaultValue: "master", description: 'Source Branch', name: 'BRANCH')
     }
 
-    triggers {
-        pollSCM('H/5 * * * *')
-    }
 
     stages {
         stage('clean workspace'){
