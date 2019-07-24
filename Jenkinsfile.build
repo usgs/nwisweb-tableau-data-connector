@@ -76,7 +76,7 @@ pipeline {
                 """
 
 
-                withCredentials([usernamePassword(credentialsId: NWISWEB-TABLEAU-READ-WRITE-TOKEN, usernameVariable: "GIT_USERNAME", passwordVariable: "GIT_PASSWORD")]) {
+                withCredentials([usernamePassword(credentialsId: "NWISWEB-TABLEAU-READ-WRITE-TOKEN", usernameVariable: "GIT_USERNAME", passwordVariable: "GIT_PASSWORD")]) {
                       export GIT_USERNAME
                        export GIT_PASSWORD
                         script {
