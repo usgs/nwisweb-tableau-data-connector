@@ -22,22 +22,21 @@
     </span>
     <span class="input-desc">
       <label>Select State</label>
-      <input
-        v-model="state"
-        class="usa-input usa-input-custom"
-        list="aqstates"
-        type="text"
-      />
-      <datalist id="aqstates"></datalist>
+      <CustomAutoComplete
+        v-on:valueupdate="updateStateInput"
+        v-on:clear="updateStateInput"
+        :source="stateSearchList"
+        input-class="usa-input usa-input-custom"
+      ></CustomAutoComplete>
     </span>
     <label class="input-desc">Local Aquifer Codes</label>
-    <input
-      v-model="locAquifer"
-      class="usa-input usa-input-custom"
-      list="localAquifers"
-      type="text"
-    />
-    <datalist id="localAquifers"></datalist>
+    <CustomAutoComplete
+      v-bind:refresh="aqCodeRefreshIndicator"
+      v-on:valueupdate="updateAqCode"
+      v-on:clear="updateAqCode"
+      :source="aqCodeSearchList"
+      input-class="usa-input usa-input-custom"
+    ></CustomAutoComplete>
     <button
       class="usa-button usa-button-custom"
       v-on:click="addLocalAqToSelected"
@@ -75,13 +74,15 @@ import aquiferAreas from "../fetchedValues/aquiferAreas.json";
 import Vue from "vue";
 import VueTags from "vue-tags";
 import { notify } from "../notifications.js";
+import CustomAutoComplete from "../components/CustomAutoComplete";
 
 Vue.component("input-tags", VueTags);
 
 export default {
   name: "AquiferInputs",
   components: {
-    ToolTip
+    ToolTip,
+    CustomAutoComplete
   },
   data: function() {
     return {
@@ -91,45 +92,37 @@ export default {
       locAquifer: "",
       localAquifers: [],
       locAqNames: [],
-      locAquiferActive: ""
+      locAquiferActive: "",
+      stateSearchList: [],
+      aqCodeSearchList: [],
+      aqCodeRefreshIndicator: true
     };
   },
   methods: {
     populateStateList: function() {
-      let dropDown = document.getElementById("aqstates");
+      this.stateSearchList = [];
       Object.keys(stateList).forEach(element => {
-        let option = document.createElement("option");
-        option.text = element;
-        option.value = element;
-        dropDown.appendChild(option);
+        this.stateSearchList.push({ name: element, id: element });
       });
       Object.keys(aquiferAreas).forEach(element => {
-        let option = document.createElement("option");
-        option.text = element;
-        option.value = element;
-        dropDown.appendChild(option);
+        this.stateSearchList.push({ name: element, id: element });
       });
     },
     populateLocalAqList: function() {
-      let dropDown = document.getElementById("localAquifers");
-      Array.prototype.slice
-        .call(dropDown.getElementsByTagName("option"))
-        .forEach(function(item) {
-          dropDown.removeChild(item);
-        });
       let aquiferList = this.getLocAquifers(this.state);
+      this.aqCodeSearchList = [];
+      let stateAbbrev = stateList[this.state];
+      let stateCode = aquiferAreas[this.state];
 
       aquiferList.forEach(element => {
-        let stateAbbrev = stateList[this.state];
-        let stateCode = aquiferAreas[this.state];
-        let option = document.createElement("option");
+        let newEntry = {};
         if (stateCode !== undefined) {
-          option.value = `${element["state_cd"]}:${element["aqfr_cd"]}`;
+          newEntry["id"] = `${element["state_cd"]}:${element["aqfr_cd"]}`;
         } else {
-          option.value = `${stateAbbrev}:${element["aqfr_cd"]}`;
+          newEntry["id"] = `${stateAbbrev}:${element["aqfr_cd"]}`;
         }
-        option.text = element["aqfr_nm"];
-        dropDown.appendChild(option);
+        newEntry["name"] = element["aqfr_nm"];
+        this.aqCodeSearchList.push(newEntry);
       });
     },
     getLocAquifers: function(stateName) {
@@ -186,6 +179,10 @@ export default {
       return result;
     },
     addLocalAqToSelected: function() {
+      if (this.locAquifer == "") {
+        notify("no aquifer code selected");
+        return;
+      }
       if (!(this.getLocAqNameFromCode(this.locAquifer) == "Invalid.")) {
         if (!this.localAquifers.includes(this.locAquifer)) {
           if (this.localAquifers.length < 1000) {
@@ -214,6 +211,23 @@ export default {
     },
     commitLocAquiferActive: function(newValue) {
       this.$store.commit("changeLocAquiferActive", newValue);
+    },
+    updateStateInput: function(result) {
+      if (result !== null && typeof result !== "undefined") {
+        this.state = result;
+      } else {
+        this.state = "";
+      }
+    },
+    updateAqCode: function(result) {
+      if (result !== null && typeof result !== "undefined") {
+        this.locAquifer = result;
+      } else {
+        this.locAquifer = "";
+      }
+    },
+    triggerAqCodeRefreshIndicator: function() {
+      this.aqCodeRefreshIndicator = !this.aqCodeRefreshIndicator;
     }
   },
   mounted() {
@@ -223,6 +237,7 @@ export default {
     state: function() {
       this.populateLocalAqList();
       this.locAquifer = "";
+      this.triggerAqCodeRefreshIndicator();
     },
     localAquifers: function(newValue) {
       this.locAqNames = [];
