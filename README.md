@@ -1,9 +1,14 @@
-# nwisweb-tableau-data-connector
+# NWISWeb Tableau Data Connector
+
+This system is designed to be used with the Web Data Connector feature of Tableau Desktop. It allows for quickly parameterizing queries to the NWISWeb Instantaneous values services, and supplying the resulting data to Tableau in a user-friendly format. This project is in active development. 
 
 ## Project setup
 ```
 npm install
+npm run fetch  
 ```
+
+Note that npm run fetch gathers some of the data the interface uses from online sources. The interface will not function without this data.
 
 ### Compiles and hot-reloads for development
 ```
