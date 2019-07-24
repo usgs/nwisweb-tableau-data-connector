@@ -1,6 +1,6 @@
 # NWISWeb Tableau Data Connector
 
-This system is designed to be used with the Web Data Connector feature of Tableau Desktop. It allows for quickly parameterizing queries to the NWISWeb Instantaneous values servies, and supplying the resulting data to Tableau in a user-friendly format. This project is in active development. 
+This system is designed to be used with the Web Data Connector feature of Tableau Desktop. It allows for quickly parameterizing queries to the NWISWeb Instantaneous values services, and supplying the resulting data to Tableau in a user-friendly format. This project is in active development. 
 
 ## Project setup
 ```
