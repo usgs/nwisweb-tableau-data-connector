@@ -40,7 +40,7 @@
     <datalist id="localAquifers"></datalist>
     <button
       class="usa-button usa-button-custom"
-      v-on:click="addLocalAqToSelected"
+      v-on:click="addLocalAq"
     >
       Add Local Aquifer
     </button>
@@ -185,11 +185,17 @@ export default {
       });
       return result;
     },
-    addLocalAqToSelected: function() {
-      if (!(this.getLocAqNameFromCode(this.locAquifer) == "Invalid.")) {
-        if (!this.localAquifers.includes(this.locAquifer)) {
+    addLocalAq: function() {
+      let aquifers = this.locAquifer.split(",");
+      aquifers.forEach(element => {
+        this.addLocalAqToSelected(element.replace(/\s/g, ""));
+      });
+    },
+    addLocalAqToSelected: function(locAquifer) {
+      if (!(this.getLocAqNameFromCode(locAquifer) == "Invalid.")) {
+        if (!this.localAquifers.includes(locAquifer)) {
           if (this.localAquifers.length < 1000) {
-            this.localAquifers.push(this.locAquifer);
+            this.localAquifers.push(locAquifer);
           } else {
             notify("Maximum number of Local Aquifers already selected.");
           }
