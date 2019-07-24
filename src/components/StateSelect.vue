@@ -8,6 +8,7 @@
       ></ToolTip>
     </span>
     <CustomAutoComplete
+      v-bind:refresh="stateAutoCompleteRefreshIndicator"
       v-on:valueupdate="updateStateInput"
       v-on:clear="updateStateInput"
       :source="stateSearchList"
@@ -33,6 +34,7 @@ export default {
     return {
       state: "",
       stateSearchList: [],
+      stateAutoCompleteRefreshIndicator: true,
       activeLocationMode: locationMode.SITE
     };
   },
@@ -51,6 +53,10 @@ export default {
       } else {
         this.state = "";
       }
+    },
+    triggerStateAutoCompleteRefreshIndicator: function() {
+      this.stateAutoCompleteRefreshIndicator = !this
+        .stateAutoCompleteRefreshIndicator;
     }
   },
   mounted() {
@@ -59,6 +65,7 @@ export default {
   watch: {
     locationMode(newValue) {
       this.activeLocationMode = newValue;
+      this.triggerStateAutoCompleteRefreshIndicator();
       if (newValue != locationMode.STATE) {
         this.state = "";
       }

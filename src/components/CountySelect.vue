@@ -29,7 +29,6 @@
       :source="countySearchList"
       input-class="usa-input usa-input-custom"
     ></CustomAutoComplete>
-    <datalist id="cscounties"> </datalist>
     <button class="usa-button usa-button-custom" v-on:click="addCounties">
       Add County
     </button>
@@ -146,6 +145,10 @@ export default {
       });
     },
     addCountyToCounties: function(county) {
+      if (county == "") {
+        notify(`no county code is entered`);
+        return;
+      }
       if (!(this.getCountyNameFromCode(county) == "invalid")) {
         if (!this.counties.includes(county)) {
           if (this.counties.length < 10) {
@@ -192,11 +195,11 @@ export default {
   watch: {
     locationMode(newValue) {
       this.activeLocationMode = newValue;
+      this.triggerCountyAutoCompleteRefreshIndicator();
+      this.triggerStateAutoCompleteRefreshIndicator();
       if (newValue != locationMode.COUNTY) {
         this.state = "";
         this.county = "";
-        this.triggerCountyAutoCompleteRefreshIndicator();
-        this.triggerStateAutoCompleteRefreshIndicator();
         this.counties = [];
       }
     },

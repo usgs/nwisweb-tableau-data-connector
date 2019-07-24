@@ -26,6 +26,9 @@ const inObjList = (list, target, key) => {
     */
 const validateStateInputs = (input, instance, stateData) => {
   if (instance.$store.getters.locationMode != locationMode.STATE) return true;
+  if (input == "") {
+    return "no state is selected";
+  }
   if (!(input in stateData)) return "invalid state selected";
   return true;
 };
