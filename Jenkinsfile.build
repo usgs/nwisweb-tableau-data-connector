@@ -81,8 +81,8 @@ pipeline {
                         script {
                         if("${params.RELEASE_TYPE}" == "Release") {
                             sh """
-                                export ${GIT_USERNAME}
-                                export ${GIT_PASSWORD}
+                                export GIT_USERNAME
+                                export GIT_PASSWORD
                                 git add .
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
@@ -94,20 +94,7 @@ pipeline {
                     }
                  }
 
-                sshagent (credentials: ['wma-eto-eb-rsa']) {
-                    script {
-                        if("${params.RELEASE_TYPE}" == "Release") {
-                            sh """
-                                git add .
-                                git commit -m "automatic version number increment"
-                                git pull origin ${params.BRANCH}
-                                git tag `cat newVerNum.txt`
-                                git push -u origin HEAD:${params.BRANCH}
-                                git push origin --tag
-                            """
-                        }                    
-                    }
-                }
+
             }
         }
         
