@@ -320,27 +320,27 @@ const generateSchemaTablesFromData = data => {
     cols.push({
       id: "siteNum",
       alias: "siteNum",
-      datatype: tableau.dataTypeEnum.float
+      dataType: tableau.dataTypeEnum.float
     });
     cols.push({
       id: "paramCode",
       alias: "paramCode",
-      datatype: tableau.dataTypeEnum.float
+      dataType: tableau.dataTypeEnum.float
     });
     cols.push({
       id: "agencyCode",
       alias: "agencyCode",
-      datatype: tableau.dataTypeEnum.string
+      dataType: tableau.dataTypeEnum.string
     });
     cols.push({
       id: "statCode",
       alias: "statCode",
-      datatype: tableau.dataTypeEnum.float
+      dataType: tableau.dataTypeEnum.float
     });
     cols.push({
       id: "methodCode",
       alias: "methodCode",
-      datatype: tableau.dataTypeEnum.float
+      dataType: tableau.dataTypeEnum.float
     });
     let column = `${sanitizeVariableName(
       series.variable.variableDescription
