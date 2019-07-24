@@ -327,6 +327,22 @@ const validateAgencyInputs = (agency, instance, agencyData) => {
 };
 
 /*
+      Warns user if National Aquifer Code is not 10 characters long. 
+      Prevents users from exceeding 1000 aquifer codes.
+    */
+const validateNatAquiferInput = (natAquifer, instance) => {
+  let regex = /^(((\w){10}),)*((\w){10})$/;
+
+  if (instance.$store.getters.natAquiferActive) {
+    if (!natAquifer.replace(/\s/g, "").match(regex)) {
+      return "National Aquifer Code format is invalid. You may specify up to 1000 National Aquifer codes, separated by commas.";
+    }
+  }
+
+  return true;
+};
+
+/*
       Ensures that if both min and max values are present, the min value is less than the max value.
       Checks both hole and well depths.
     */
@@ -460,6 +476,15 @@ const validateFormInputs = instance => {
     return false;
   }
 
+  let natAquiferSiteStatus = validateNatAquiferInput(
+    instance.$store.getters.natAquifer,
+    instance
+  );
+  if (!(natAquiferSiteStatus === true)) {
+    notify(natAquiferSiteStatus);
+    return false;
+  }
+
   let groundWaterSiteStatus = validateGroundWaterSiteInputs(
     instance.$store.getters.GWSiteAttrDepths,
     instance
@@ -543,6 +568,7 @@ export {
   validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
+  validateNatAquiferInput,
   validateWatershedAreaBoundaries,
   validateAltitudeBoundaries,
   validateGroundWaterSiteInputs,

@@ -119,6 +119,8 @@ const generateURL = connectionData => {
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
   let GWSiteAttrQuery = "";
+  let natAquiferCodeQuery = "";
+  let locAquiferCodeQuery = "";
   let drainAreaUpperQuery = "";
   let drainAreaLowerQuery = "";
   let altitudeLowerQuery = "";
@@ -127,7 +129,6 @@ const generateURL = connectionData => {
   let modifiedSinceCodeQuery = "";
   let temporalRangeQuery = "";
   let historical = "";
-
   let siteStatusQuery = `&siteStatus=${connectionData.siteStatus}`;
 
   switch (connectionData.locationMode) {
@@ -172,6 +173,18 @@ const generateURL = connectionData => {
     agencyCodeQuery = `&agencyCd=${connectionData.agencyCode}`;
   }
 
+  if (connectionData.natAquiferActive) {
+    let natAquiferList = connectionData.natAquifer
+      .replace(/\s/g, "")
+      .split(",");
+    natAquiferCodeQuery = `&aquiferCd=${natAquiferList.join()}`;
+  }
+
+  if (connectionData.locAquiferActive) {
+    let locAquifer = connectionData.locAquifer.join(",");
+    locAquiferCodeQuery = `&localAquiferCd=${locAquifer.replace(/\s/g, "")}`;
+  }
+
   let depths = connectionData.GWSiteAttrDepths;
   if (connectionData.wellMinActive) {
     GWSiteAttrQuery += `&wellDepthMin=${depths.wellMin}`;
@@ -185,6 +198,7 @@ const generateURL = connectionData => {
   if (connectionData.holeMaxActive) {
     GWSiteAttrQuery += `&holeDepthMax=${depths.holeMax}`;
   }
+
   if (connectionData.watershedLowerAreaBoundsActive) {
     drainAreaLowerQuery = `&drainAreaMin=${connectionData.watershedAreaBounds.lowerAreaBound.replace(
       /\s/g,
@@ -261,7 +275,7 @@ const generateURL = connectionData => {
     modifiedSinceCodeQuery = `&modifiedSince=${connectionData.modifiedSinceCode}`;
   }
 
-  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}${drainAreaQuery}${altitudeQuery}${siteStatusQuery}${GWSiteAttrQuery}`;
+  return `https://${historical}waterservices.usgs.gov/nwis/iv/?format=json${locationQuery}${paramQuery}${siteTypeQuery}${agencyCodeQuery}${durationCodeQuery}${modifiedSinceCodeQuery}${temporalRangeQuery}${drainAreaQuery}${natAquiferCodeQuery}${locAquiferCodeQuery}${altitudeQuery}${siteStatusQuery}${GWSiteAttrQuery}`;
 };
 
 /*

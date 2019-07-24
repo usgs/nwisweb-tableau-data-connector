@@ -22,6 +22,8 @@
             <SiteTypeList></SiteTypeList>
             <AgencySelect></AgencySelect>
             <br />
+            <AquiferInputs></AquiferInputs>
+            <br />
             <GroundWaterSiteAttr></GroundWaterSiteAttr>
             <WatershedInput></WatershedInput>
             <AltitudeInput></AltitudeInput>
@@ -62,6 +64,7 @@ import SiteSelect from "../components/SiteSelect";
 import ParamSelect from "../components/ParamSelect";
 import SiteStatusSelect from "../components/SiteStatusSelect";
 import AgencySelect from "../components/AgencySelect";
+import AquiferInputs from "../components/AquiferInputs";
 import AltitudeInput from "../components/AltitudeInput";
 import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
@@ -85,6 +88,7 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
+    AquiferInputs,
     WatershedInput,
     AltitudeInput,
     SiteSelect,
@@ -148,6 +152,10 @@ export default {
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
         agencyCode: this.$store.getters.agencyCode,
+        natAquiferActive: this.$store.getters.natAquiferActive,
+        natAquifer: this.$store.getters.natAquifer,
+        locAquiferActive: this.$store.getters.locAquiferActive,
+        locAquifer: this.$store.getters.locAquifer,
         wellMinActive: this.$store.getters.wellMinActive,
         wellMaxActive: this.$store.getters.wellMaxActive,
         holeMinActive: this.$store.getters.holeMinActive,

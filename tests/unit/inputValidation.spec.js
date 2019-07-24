@@ -10,6 +10,7 @@ import {
   validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
+  validateNatAquiferInput,
   validateWatershedAreaBoundaries,
   validateAltitudeBoundaries,
   validateGroundWaterSiteInputs,
@@ -918,6 +919,42 @@ done in ParamSelect.vue
     expect(
       validateTimeCodes({ startDateTime: "", endDateTime: "" }, true)
     ).not.toBe(true);
+  });
+
+  test("validateNatAquiferInput successfully rejects invalid National Aquifer Codes", () => {
+    let store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        natAquiferActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let aquifer = "12345";
+    expect(validateNatAquiferInput(aquifer, wrapper.vm)).not.toBe(true);
+    aquifer = "111 1111111 111";
+    expect(validateNatAquiferInput(aquifer, wrapper.vm)).not.toBe(true);
+  });
+
+  test("validateNatAquiferInput successfully accepts valid National Aquifer Codes", () => {
+    let store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {
+        natAquiferActive: () => {
+          return true;
+        }
+      },
+      actions: {}
+    });
+    const wrapper = shallowMount(Main, { store, localVue });
+    let aquifer = "aaaaaaaaaa, bbbbbbbbbb, cccccccccc";
+    expect(validateNatAquiferInput(aquifer, wrapper.vm)).toBe(true);
+    aquifer = "aaaaaa aaaa, 8a8a8a8a8a ,  a1b2c3d4e5";
+    expect(validateNatAquiferInput(aquifer, wrapper.vm)).toBe(true);
   });
 
   test("validateGroundWaterSiteInputs successfully rejects non-numeric parameters", () => {
