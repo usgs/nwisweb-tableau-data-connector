@@ -15,20 +15,25 @@
             <CoordinatesInput></CoordinatesInput>
             <HUCInput></HUCInput>
             <CountySelect></CountySelect>
-            <div>
-              <ParamSelect></ParamSelect>
-              <br />
+            <div style="float:left;">
+              <fieldset class="optional">
+                <legend>Optional Parameters</legend>
+                <div>
+                  <ParamSelect></ParamSelect>
+                  <br />
+                </div>
+                <SiteTypeList></SiteTypeList>
+                <AgencySelect></AgencySelect>
+                <br />
+                <AquiferInputs></AquiferInputs>
+                <br />
+                <GroundWaterSiteAttr></GroundWaterSiteAttr>
+                <WatershedInput></WatershedInput>
+                <AltitudeInput></AltitudeInput>
+                <TemporalRange></TemporalRange>
+                <SiteStatusSelect></SiteStatusSelect>
+              </fieldset>
             </div>
-            <SiteTypeList></SiteTypeList>
-            <AgencySelect></AgencySelect>
-            <br />
-            <AquiferInputs></AquiferInputs>
-            <br />
-            <GroundWaterSiteAttr></GroundWaterSiteAttr>
-            <WatershedInput></WatershedInput>
-            <AltitudeInput></AltitudeInput>
-            <TemporalRange></TemporalRange>
-            <SiteStatusSelect></SiteStatusSelect>
           </div>
         </div>
         <div class="rightcolumn">
