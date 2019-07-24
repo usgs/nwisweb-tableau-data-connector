@@ -81,8 +81,8 @@ pipeline {
                         script {
                         if("${params.RELEASE_TYPE}" == "Release") {
                             sh """
-                                export GIT_USERNAME
-                                export GIT_PASSWORD
+                                export $GIT_USERNAME
+                                export $GIT_PASSWORD
                                 git add .
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
