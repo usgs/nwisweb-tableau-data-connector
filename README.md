@@ -5,8 +5,10 @@ This system is designed to be used with the Web Data Connector feature of Tablea
 ## Project setup
 ```
 npm install
-npm run fetch
+npm run fetch  
 ```
+
+Note that npm run fetch gathers some of the data the interface uses from online sources. The interface will not function without this data.
 
 ### Compiles and hot-reloads for development
 ```
