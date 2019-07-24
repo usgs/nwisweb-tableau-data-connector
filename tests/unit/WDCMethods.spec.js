@@ -13,6 +13,15 @@ let moment = require("moment");
 const validDataJSON = {
   value: {
     //barebones mockup of a data json with data series of uniform length
+    queryInfo: {
+      queryURL: "sampleurl",
+      note: [
+        {
+          "value" : "2019-07-24T21:03:13.618Z",
+          "title" : "requestDT"
+        }
+      ]
+    },
     timeSeries: [
       {
         name: "USGS:01646500:00060:00000",
@@ -118,6 +127,20 @@ test("converting a fully-populated data JSON to table", () => {
   ];
 
   expect(formatJSONAsTable(input, "flow_01646500")).toEqual(targetResult);
+});
+
+
+test("formatJSONasTable correctly constructs metadata table", () => {
+  const input = validDataJSON;
+  const targetResult = [
+    {
+      DOINumber: "123456",
+      queryTime:  "2019-07-24T21:03:13.618Z",
+      queryURL: "sampleurl"
+    }
+  ];
+
+  expect(formatJSONAsTable(input, "metadata")).toEqual(targetResult);
 });
 
 test("correctly generate a URL given a list of sites and parameters with various whitespace", () => {
