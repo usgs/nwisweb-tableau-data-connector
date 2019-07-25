@@ -88,16 +88,6 @@ let locAquiferJSONString = JSON.stringify(rdbToJSON(locAquiferString));
 */
 let IVParams = [
   {
-    "Group": "UNIVERSAL",
-    "id": "STATION_NM",
-    "name": "Station name"
-  },
-  {
-    "Group": "UNIVERSAL",
-    "id": "DATETIME",
-    "name": "Date and time"
-  },
-  {
     "Group": "Water Level/Flow",
     "id": "72019",
     "name": "Depth to water level, ft below land surface"
@@ -291,16 +281,6 @@ let IVParams = [
     "Group": "Water Level/Flow",
     "id": "72275",
     "name": "Lake or reservoir elevation above United States Bureau of Reclamation Klamath Basin (USBRKB) Datum, ft"
-  },
-  {
-    "Group": "Water Level/Flow",
-    "id": "MEAN",
-    "name": "Long-term mean daily streamflow, ft³/s"
-  },
-  {
-    "Group": "Water Level/Flow",
-    "id": "MEDIAN",
-    "name": "Long-term median daily streamflow, ft³/s"
   },
   {
     "Group": "Water Level/Flow",
