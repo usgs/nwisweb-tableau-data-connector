@@ -16,32 +16,28 @@
     <span class="input-desc">
       <label>Local Aquifer Code</label>
       <ToolTip
-        hint="Select a state to search a list of local aquifers. A complete list of local aquifer codes is linked here."
+        hint="Select a state to search a list of local aquifers or enter up to 1000 local aquifer codes seperated by commas. A complete list of local aquifer codes is linked here."
         url="https://help.waterdata.usgs.gov/code/aqfr_cd_query?fmt=html"
       ></ToolTip>
     </span>
     <span class="input-desc">
-      <label>Select State</label>
-      <input
-        v-model="state"
-        class="usa-input usa-input-custom"
-        list="aqstates"
-        type="text"
-      />
-      <datalist id="aqstates"></datalist>
+      <label>Select State or Territory</label>
+      <CustomAutoComplete
+        v-on:valueupdate="updateStateInput"
+        v-on:clear="updateStateInput"
+        :source="stateSearchList"
+        input-class="usa-input usa-input-custom"
+      ></CustomAutoComplete>
     </span>
     <label class="input-desc">Local Aquifer Codes</label>
-    <input
-      v-model="locAquifer"
-      class="usa-input usa-input-custom"
-      list="localAquifers"
-      type="text"
-    />
-    <datalist id="localAquifers"></datalist>
-    <button
-      class="usa-button usa-button-custom"
-      v-on:click="addLocalAqToSelected"
-    >
+    <CustomAutoComplete
+      v-bind:refresh="aqCodeRefreshIndicator"
+      v-on:valueupdate="updateAqCode"
+      v-on:clear="updateAqCode"
+      :source="aqCodeSearchList"
+      input-class="usa-input usa-input-custom"
+    ></CustomAutoComplete>
+    <button class="usa-button usa-button-custom" v-on:click="addLocalAq">
       Add Local Aquifer
     </button>
     <h6 class="selected-tags">Selected Local Aquifers</h6>
@@ -75,13 +71,15 @@ import aquiferAreas from "../fetchedValues/aquiferAreas.json";
 import Vue from "vue";
 import VueTags from "vue-tags";
 import { notify } from "../notifications.js";
+import CustomAutoComplete from "../components/CustomAutoComplete";
 
 Vue.component("input-tags", VueTags);
 
 export default {
   name: "AquiferInputs",
   components: {
-    ToolTip
+    ToolTip,
+    CustomAutoComplete
   },
   data: function() {
     return {
@@ -91,45 +89,37 @@ export default {
       locAquifer: "",
       localAquifers: [],
       locAqNames: [],
-      locAquiferActive: ""
+      locAquiferActive: "",
+      stateSearchList: [],
+      aqCodeSearchList: [],
+      aqCodeRefreshIndicator: true
     };
   },
   methods: {
     populateStateList: function() {
-      let dropDown = document.getElementById("aqstates");
+      this.stateSearchList = [];
       Object.keys(stateList).forEach(element => {
-        let option = document.createElement("option");
-        option.text = element;
-        option.value = element;
-        dropDown.appendChild(option);
+        this.stateSearchList.push({ name: element, id: element });
       });
       Object.keys(aquiferAreas).forEach(element => {
-        let option = document.createElement("option");
-        option.text = element;
-        option.value = element;
-        dropDown.appendChild(option);
+        this.stateSearchList.push({ name: element, id: element });
       });
     },
     populateLocalAqList: function() {
-      let dropDown = document.getElementById("localAquifers");
-      Array.prototype.slice
-        .call(dropDown.getElementsByTagName("option"))
-        .forEach(function(item) {
-          dropDown.removeChild(item);
-        });
       let aquiferList = this.getLocAquifers(this.state);
+      this.aqCodeSearchList = [];
+      let stateAbbrev = stateList[this.state];
+      let stateCode = aquiferAreas[this.state];
 
       aquiferList.forEach(element => {
-        let stateAbbrev = stateList[this.state];
-        let stateCode = aquiferAreas[this.state];
-        let option = document.createElement("option");
+        let newEntry = {};
         if (stateCode !== undefined) {
-          option.value = `${element["state_cd"]}:${element["aqfr_cd"]}`;
+          newEntry["id"] = `${element["state_cd"]}:${element["aqfr_cd"]}`;
         } else {
-          option.value = `${stateAbbrev}:${element["aqfr_cd"]}`;
+          newEntry["id"] = `${stateAbbrev}:${element["aqfr_cd"]}`;
         }
-        option.text = element["aqfr_nm"];
-        dropDown.appendChild(option);
+        newEntry["name"] = element["aqfr_nm"];
+        this.aqCodeSearchList.push(newEntry);
       });
     },
     getLocAquifers: function(stateName) {
@@ -185,11 +175,21 @@ export default {
       });
       return result;
     },
-    addLocalAqToSelected: function() {
-      if (!(this.getLocAqNameFromCode(this.locAquifer) == "Invalid.")) {
-        if (!this.localAquifers.includes(this.locAquifer)) {
+    addLocalAq: function() {
+      let aquifers = this.locAquifer.split(",");
+      aquifers.forEach(element => {
+        this.addLocalAqToSelected(element.replace(/\s/g, ""));
+      });
+    },
+    addLocalAqToSelected: function(locAquifer) {
+      if (locAquifer == "") {
+        notify("no aquifer code selected");
+        return;
+      }
+      if (!(this.getLocAqNameFromCode(locAquifer) == "Invalid.")) {
+        if (!this.localAquifers.includes(locAquifer)) {
           if (this.localAquifers.length < 1000) {
-            this.localAquifers.push(this.locAquifer);
+            this.localAquifers.push(locAquifer);
           } else {
             notify("Maximum number of Local Aquifers already selected.");
           }
@@ -214,6 +214,23 @@ export default {
     },
     commitLocAquiferActive: function(newValue) {
       this.$store.commit("changeLocAquiferActive", newValue);
+    },
+    updateStateInput: function(result) {
+      if (result !== null && typeof result !== "undefined") {
+        this.state = result;
+      } else {
+        this.state = "";
+      }
+    },
+    updateAqCode: function(result) {
+      if (result !== null && typeof result !== "undefined") {
+        this.locAquifer = result;
+      } else {
+        this.locAquifer = "";
+      }
+    },
+    triggerAqCodeRefreshIndicator: function() {
+      this.aqCodeRefreshIndicator = !this.aqCodeRefreshIndicator;
     }
   },
   mounted() {
@@ -223,6 +240,7 @@ export default {
     state: function() {
       this.populateLocalAqList();
       this.locAquifer = "";
+      this.triggerAqCodeRefreshIndicator();
     },
     localAquifers: function(newValue) {
       this.locAqNames = [];
