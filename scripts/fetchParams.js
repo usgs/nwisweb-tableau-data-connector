@@ -85,6 +85,7 @@ let locAquiferJSONString = JSON.stringify(rdbToJSON(locAquiferString));
 
 /* https://nwis.waterdata.usgs.gov/nwis/status/?form=realtime_pmcodes
     retrieved from the above url and converted to JSON. This may need to be updated at some point in the future.
+    All 4 parameters with non-numeric ids were manually removed. 
 */
 let IVParams = [
   {
