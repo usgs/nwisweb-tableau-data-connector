@@ -8,7 +8,7 @@
     <body>
       <div class="row">
         <div class="leftcolumn">
-          <div class="text-center col-md-4 col-md-offset-4">
+          <div class="text-center input-column col-md-4 col-md-offset-4">
             <br />
             <SiteSelect> </SiteSelect>
             <StateSelect></StateSelect>
