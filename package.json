@@ -14,6 +14,7 @@
     "core-js": "^2.6.5",
     "iso8601-duration": "^1.2.0",
     "moment": "^2.24.0",
+    "node-jq": "^1.9.1",
     "v-tooltip": "^2.0.2",
     "vue": "^2.6.10",
     "vue-ctk-date-time-picker": "^2.1.1",
