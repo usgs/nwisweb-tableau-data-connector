@@ -89,7 +89,7 @@ pipeline {
                                 git add .
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
-                                git tag `cat currVerNum.txt`
+                                git tag v`cat currVerNum.txt`
                                 git push -u origin HEAD:${params.BRANCH}
                                 git push origin --tag
                             """
