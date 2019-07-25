@@ -32,12 +32,16 @@ const validDataJSON = {
               longitude: "0.000000"
             }
           },
-          siteCode: [{ value: "01646500" }]
+          siteCode: [{ value: "01646500", agencyCode: "USGS" }]
         },
         variable: {
+          variableCode: [{ value: "00060" }],
           variableDescription: "flow",
           unit: {
             unitCode: "ft3/s"
+          },
+          options: {
+            option: [{ optionCode: "00000" }]
           }
         },
         values: [
@@ -63,6 +67,11 @@ const validDataJSON = {
                 qualifierCode: "A",
                 qualifierDescription: "Approved"
               }
+            ],
+            method: [
+              {
+                methodID: "69929"
+              }
             ]
           }
         ]
@@ -79,6 +88,7 @@ const validDataJSON = {
           siteCode: [{ value: "01646501" }]
         },
         variable: {
+          variableCode: [{ value: "00060" }],
           variableDescription: "height",
           unit: {
             unitCode: "ft"
@@ -97,6 +107,21 @@ const validDataJSON = {
                 qualifiers: ["P"],
                 dateTime: "2019-07-05T10:45:00.000-04:00"
               }
+            ],
+            qualifier: [
+              {
+                qualifierCode: "P",
+                qualifierDescription: "Provisional data subject to revision."
+              },
+              {
+                qualifierCode: "A",
+                qualifierDescription: "Approved"
+              }
+            ],
+            method: [
+              {
+                methodID: "69929"
+              }
             ]
           }
         ]
@@ -114,7 +139,12 @@ test("converting a fully-populated data JSON to table", () => {
       latitude: "0.000000",
       longitude: "0.000000",
       units: "ft3/s",
-      qualifier: "P:Provisional data subject to revision.,A:Approved"
+      qualifier: "P:Provisional data subject to revision.,A:Approved",
+      siteNum: "01646500",
+      paramCode: "00060",
+      agencyCode: "USGS",
+      statCode: "00000",
+      methodCode: "69929"
     },
     {
       flow_01646500: "10800",
@@ -122,7 +152,12 @@ test("converting a fully-populated data JSON to table", () => {
       latitude: "0.000000",
       longitude: "0.000000",
       units: "ft3/s",
-      qualifier: "P:Provisional data subject to revision."
+      qualifier: "P:Provisional data subject to revision.",
+      siteNum: "01646500",
+      paramCode: "00060",
+      agencyCode: "USGS",
+      statCode: "00000",
+      methodCode: "69929"
     }
   ];
 
@@ -477,6 +512,11 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "units", alias: "units", dataType: "__STRING" },
         { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
+        { id: "siteNum", alias: "siteNum", dataType: "__FLOAT" },
+        { id: "paramCode", alias: "paramCode", dataType: "__FLOAT" },
+        { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
+        { id: "statCode", alias: "statCode", dataType: "__FLOAT" },
+        { id: "methodCode", alias: "methodCode", dataType: "__FLOAT" },
         { id: "flow_01646500", alias: "flow_01646500", dataType: "__STRING" }
       ]
     },
@@ -489,6 +529,11 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "units", alias: "units", dataType: "__STRING" },
         { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
+        { id: "siteNum", alias: "siteNum", dataType: "__FLOAT" },
+        { id: "paramCode", alias: "paramCode", dataType: "__FLOAT" },
+        { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
+        { id: "statCode", alias: "statCode", dataType: "__FLOAT" },
+        { id: "methodCode", alias: "methodCode", dataType: "__FLOAT" },
         {
           id: "height_01646501",
           alias: "height_01646501",
