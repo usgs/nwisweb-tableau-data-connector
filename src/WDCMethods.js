@@ -72,7 +72,7 @@ Takes a JSON and returns a table formatted in accordance with the schema provide
 const formatJSONAsTable = (data, tableName) => {
   if (tableName == "metadata") {
     let tableData = [];
-    let DOI = "123456";
+    const DOI = "http://dx.doi.org/10.5066/F7P55KJN";
     let queryURL = data.value.queryInfo.queryURL;
     let queryTime = "query time not returned";
     data.value.queryInfo.note.some(element => {
