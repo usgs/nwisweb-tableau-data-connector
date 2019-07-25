@@ -17,8 +17,8 @@ const validDataJSON = {
       queryURL: "sampleurl",
       note: [
         {
-          "value" : "2019-07-24T21:03:13.618Z",
-          "title" : "requestDT"
+          value: "2019-07-24T21:03:13.618Z",
+          title: "requestDT"
         }
       ]
     },
@@ -129,13 +129,12 @@ test("converting a fully-populated data JSON to table", () => {
   expect(formatJSONAsTable(input, "flow_01646500")).toEqual(targetResult);
 });
 
-
 test("formatJSONasTable correctly constructs metadata table", () => {
   const input = validDataJSON;
   const targetResult = [
     {
       DOINumber: "http://dx.doi.org/10.5066/F7P55KJN",
-      queryTime:  "2019-07-24T21:03:13.618Z",
+      queryTime: "2019-07-24T21:03:13.618Z",
       queryURL: "sampleurl"
     }
   ];
@@ -460,15 +459,15 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
   let result = [];
   let targetResult = [
     {
-        id:"metadata",
-        alias:'metadata',
-        columns: [
-          {id: "queryURL",alias: "queryURL",dataType: "__STRING"},
-          {id: "DOINumber",alias: "DOINumber",dataType: "__STRING"},
-          {id: "queryTime",alias: "queryTime",dataType: "__STRING"}
-        ]
+      id: "metadata",
+      alias: "metadata",
+      columns: [
+        { id: "queryURL", alias: "queryURL", dataType: "__STRING" },
+        { id: "DOINumber", alias: "DOINumber", dataType: "__STRING" },
+        { id: "queryTime", alias: "queryTime", dataType: "__STRING" }
+      ]
     },
-    
+
     {
       id: "flow_01646500",
       alias: "flow_01646500",
