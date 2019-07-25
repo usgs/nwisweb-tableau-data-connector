@@ -1,6 +1,10 @@
 {
   "name": "nwisweb-tableau-data-connector",
+<<<<<<< HEAD
   "version": "0.1.0",
+=======
+  "version": "0.3.0",
+>>>>>>> 56b9fe33ce8ce9dae967d6b9f4a4ea6d76f19d8d
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
