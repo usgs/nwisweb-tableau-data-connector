@@ -1,6 +1,6 @@
 {
   "name": "nwisweb-tableau-data-connector",
-  "version": "0.2.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,13 +8,13 @@
     "lint": "vue-cli-service lint --ext .js,.vue",
     "fetch": "node scripts/fetchParams.js",
     "production-build": "node scripts/fetchParams.js && vue-cli-service test:unit && vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "vars": "./scripts/getCurrVersion.sh"
   },
   "dependencies": {
     "core-js": "^2.6.5",
     "iso8601-duration": "^1.2.0",
     "moment": "^2.24.0",
-    "node-jq": "^1.9.1",
     "v-tooltip": "^2.0.2",
     "vue": "^2.6.10",
     "vue-ctk-date-time-picker": "^2.1.1",
