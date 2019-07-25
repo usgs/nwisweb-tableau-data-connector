@@ -61,10 +61,9 @@ export default {
       loadedParamData: false,
       wideInput: false,
       param: "",
-      paramData: [{ name: "abc", id: "1" }, { name: "def", id: "2" }],
+      paramData: [],
       paramList: [],
-      selectedParams: [],
-      dummysource: [{ name: "abc", id: "1" }, { name: "def", id: "2" }]
+      selectedParams: []
     };
   },
   methods: {
