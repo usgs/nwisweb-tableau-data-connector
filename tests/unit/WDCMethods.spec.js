@@ -10,6 +10,9 @@ import {
 import { locationMode } from "../../src/enums.js";
 let moment = require("moment");
 
+let mockCurrentTime = moment();
+let mockCurrentTimeString = mockCurrentTime.format();
+
 const validDataJSON = {
   value: {
     //barebones mockup of a data json with data series of uniform length
@@ -161,7 +164,9 @@ test("converting a fully-populated data JSON to table", () => {
     }
   ];
 
-  expect(formatJSONAsTable(input, "flow_01646500")).toEqual(targetResult);
+  expect(formatJSONAsTable(mockCurrentTime, input, "flow_01646500")).toEqual(
+    targetResult
+  );
 });
 
 test("formatJSONasTable correctly constructs metadata table", () => {
@@ -174,7 +179,36 @@ test("formatJSONasTable correctly constructs metadata table", () => {
     }
   ];
 
-  expect(formatJSONAsTable(input, "metadata")).toEqual(targetResult);
+  expect(formatJSONAsTable(mockCurrentTime, input, "metadata")).toEqual(
+    targetResult
+  );
+});
+
+test("formatJSONasTable correctly constructs metadata table when time is not supplied", () => {
+  const input = {
+    value: {
+      queryInfo: {
+        queryURL: "sampleurl",
+        note: [
+          {
+            value: "not time",
+            title: "not time"
+          }
+        ]
+      }
+    }
+  };
+  const targetResult = [
+    {
+      DOINumber: "http://dx.doi.org/10.5066/F7P55KJN",
+      queryTime: mockCurrentTimeString,
+      queryURL: "sampleurl"
+    }
+  ];
+
+  expect(formatJSONAsTable(mockCurrentTime, input, "metadata")).toEqual(
+    targetResult
+  );
 });
 
 test("correctly generate a URL given a list of sites and parameters with various whitespace", () => {

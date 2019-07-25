@@ -69,12 +69,12 @@ const sanitizeVariableName = variableName => {
 /*
 Takes a JSON and returns a table formatted in accordance with the schema provided to Tableau.
 */
-const formatJSONAsTable = (data, tableName) => {
+const formatJSONAsTable = (currentDateTime, data, tableName) => {
   if (tableName == "metadata") {
     let tableData = [];
     const DOI = "http://dx.doi.org/10.5066/F7P55KJN";
     let queryURL = data.value.queryInfo.queryURL;
-    let queryTime = "query time not returned";
+    let queryTime = currentDateTime.format();
     data.value.queryInfo.note.forEach(element => {
       if (element["title"] === "requestDT") {
         queryTime = element["value"];
@@ -435,13 +435,21 @@ const getData = (table, doneCallback) => {
         tableau.connectionData = JSON.stringify(connectionData);
       }
       table.appendRows(
-        formatJSONAsTable(connectionData.cachedData, table.tableInfo.id)
+        formatJSONAsTable(
+          connectionData.currentDateTime,
+          connectionData.cachedData,
+          table.tableInfo.id
+        )
       );
       doneCallback();
     });
   } else {
     table.appendRows(
-      formatJSONAsTable(connectionData.cachedData, table.tableInfo.id)
+      formatJSONAsTable(
+        connectionData.currentDateTime,
+        connectionData.cachedData,
+        table.tableInfo.id
+      )
     );
     doneCallback();
   }
