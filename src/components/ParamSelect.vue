@@ -74,11 +74,12 @@ export default {
     */
     fetchparams: async function() {
       let localParamData = await import("../fetchedValues/paramTypes.json");
-      let paramList = [];
+      this.paramData = [];
       Object.keys(localParamData).forEach(key => {
-        paramList.push(localParamData[key]);
+        if (typeof localParamData[key]["id"] !== "undefined") {
+          this.paramData.push(localParamData[key]);
+        }
       });
-      this.paramData = paramList;
       this.paramData.forEach(element => {
         this.paramList.push(element["id"]);
       });
@@ -92,6 +93,15 @@ export default {
         option.text = element["name"];
         option.value = element["id"];
         option.title = element["name"];
+        if (
+          typeof element["name"] === "undefined" ||
+          typeof element["id"] === "undefined"
+        ) {
+          alert("element");
+          alert(JSON.stringify(element));
+          alert(element["name"]);
+          alert(element["id"]);
+        }
         dropDown.appendChild(option);
       });
     },
