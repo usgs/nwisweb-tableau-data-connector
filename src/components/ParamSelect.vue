@@ -74,16 +74,15 @@ export default {
     */
     fetchparams: async function() {
       let localParamData = await import("../fetchedValues/paramTypes.json");
-      let paramList = [];
+      this.paramData = [];
       Object.keys(localParamData).forEach(key => {
         if ("name" in localParamData[key] && "id" in localParamData[key]) {
-          paramList.push({
+          this.paramData.push({
             id: localParamData[key]["id"],
             name: localParamData[key]["name"]
           });
         }
       });
-      this.paramData = paramList;
       this.paramData.forEach(element => {
         this.paramList.push(element["id"]);
       });
