@@ -23,15 +23,15 @@
                   <br />
                 </div>
                 <SiteTypeList></SiteTypeList>
+                <TemporalRange></TemporalRange>
                 <AgencySelect></AgencySelect>
                 <br />
+                <siteStatusSelect></siteStatusSelect>
                 <AquiferInputs></AquiferInputs>
                 <br />
                 <GroundWaterSiteAttr></GroundWaterSiteAttr>
                 <WatershedInput></WatershedInput>
                 <AltitudeInput></AltitudeInput>
-                <TemporalRange></TemporalRange>
-                <SiteStatusSelect></SiteStatusSelect>
               </fieldset>
             </div>
           </div>
