@@ -19,12 +19,12 @@ pipeline {
     }
 
     stages {
-        stage('clean workspace'){
+        stage('clean workspace') {
             steps{
                 cleanWs()
             }
         }
-          stage('checkout'){
+          stage('checkout') {
             steps {
                 script {
                     buildSource = "refs/heads/${BRANCH}"
@@ -63,7 +63,7 @@ pipeline {
                 }
                 
                 sh """
-                    echo "${versionChange}" >versionType.txt
+                    echo "${versionChange}" > versionType.txt
                     pwd
                     ls -al
                     docker stop nwisweb_data_connector_docker || true && docker rm nwisweb_data_connector_docker || true
