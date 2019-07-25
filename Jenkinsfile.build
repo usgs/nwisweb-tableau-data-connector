@@ -73,7 +73,6 @@ pipeline {
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/package.json" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/currVerNum.txt" $WORKSPACE
-                    docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/newVerNum.txt" $WORKSPACE
                     docker rm "\${dockerinstanceid}"
                 """
 
@@ -85,7 +84,6 @@ pipeline {
                                 export GIT_USERNAME
                                 export GIT_PASSWORD
                                 cat currVerNum.txt
-                                cat newVerNum.txt
                                 git add .
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
