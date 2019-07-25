@@ -45,3 +45,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Jenkins builds will now check for an existing docker container and delete it if a previous build has failed to clean up
 - changed dropdown input suggestions to be compatible with the Tableau inline browser
 - added visual grouping of optional parameters
+- updated allowed parameters to only include those valid with the USGS Instantaneous Values Service.
