@@ -24,7 +24,7 @@ pipeline {
                 cleanWs()
             }
         }
-        stage('checkout') {
+          stage('checkout') {
             steps {
                 script {
                     buildSource = "refs/heads/${BRANCH}"
@@ -61,8 +61,11 @@ pipeline {
                         versionChange = "${params.RELEASE_VERSION}"
                     }
                 }
+                
                 sh """
-                    echo "${versionChange}" >versionNum.txt
+                    echo "${versionChange}" > versionType.txt
+                    pwd
+                    ls -al
                     docker stop nwisweb_data_connector_docker || true && docker rm nwisweb_data_connector_docker || true
                     docker build . --tag="dockerinstance"
                     docker run --name nwisweb_data_connector_docker dockerinstance
@@ -70,9 +73,11 @@ pipeline {
                     dockerinstanceid=\$( docker ps -aqf "name=nwisweb_data_connector_docker" )
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/package.json" $WORKSPACE
+                    docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/currVerNum.txt" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/newVerNum.txt" $WORKSPACE
                     docker rm "\${dockerinstanceid}"
                 """
+
                 withCredentials([usernamePassword(credentialsId: "NWISWEB-TABLEAU-READ-WRITE-TOKEN", usernameVariable: "GIT_USERNAME", passwordVariable: "GIT_PASSWORD")]) {
                     script {
                         if("${params.RELEASE_TYPE}" == "Release") {
@@ -83,7 +88,7 @@ pipeline {
                                 git add .
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
-                                git tag `cat newVerNum.txt`
+                                git tag `cat currVerNum.txt`
                                 git push -u origin HEAD:${params.BRANCH}
                                 git push origin --tag
                             """
@@ -92,6 +97,7 @@ pipeline {
                 }
             }
         }
+        
         stage('send to S3') {
             steps {
                 script {
