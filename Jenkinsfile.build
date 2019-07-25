@@ -19,12 +19,12 @@ pipeline {
     }
 
     stages {
-        stage('clean workspace'){
-         steps{
-            cleanWs()
-         }
+        stage('clean workspace') {
+            steps{
+                cleanWs()
+            }
         }
-          stage('checkout'){
+        stage('checkout') {
             steps {
                 script {
                     buildSource = "refs/heads/${BRANCH}"
@@ -61,7 +61,6 @@ pipeline {
                         versionChange = "${params.RELEASE_VERSION}"
                     }
                 }
-                
                 sh """
                     echo "${versionChange}" >versionType.txt
                     docker stop nwisweb_data_connector_docker || true && docker rm nwisweb_data_connector_docker || true
@@ -75,11 +74,13 @@ pipeline {
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/newVerNum.txt" $WORKSPACE
                     docker rm "\${dockerinstanceid}"
                 """
-
-                sshagent (credentials: ['wma-eto-eb-rsa']) {
+                withCredentials([usernamePassword(credentialsId: "NWISWEB-TABLEAU-READ-WRITE-TOKEN", usernameVariable: "GIT_USERNAME", passwordVariable: "GIT_PASSWORD")]) {
                     script {
                         if("${params.RELEASE_TYPE}" == "Release") {
                             sh """
+                                /usr/bin/git config credential.helper '/bin/echo -e "username=${GIT_USERNAME}\npassword=${GIT_PASSWORD}" | tee /dev/null'
+                                export GIT_USERNAME
+                                export GIT_PASSWORD
                                 git add .
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
@@ -92,20 +93,19 @@ pipeline {
                 }
             }
         }
-        
         stage('send to S3') {
             steps {
                 script {
                     if("${params.BUILD_DEST}" == "Beta") {
                         targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
                     }
-                    else if("${params.BUILD_DEST}" == "Production"){
+                    else if("${params.BUILD_DEST}" == "Production") {
                         targetDomain = "s3://nwisweb-tableau-wdc-prod-website"
                     }
-                    else if("${params.BUILD_DEST}" == "QA"){
+                    else if("${params.BUILD_DEST}" == "QA") {
                         targetDomain = "s3://nwisweb-tableau-wdc-qa-website"
                     }
-                    else if("${params.BUILD_DEST}" == "Test"){
+                    else if("${params.BUILD_DEST}" == "Test") {
                         targetDomain = "s3://nwisweb-tableau-wdc-test-website"
                     }
                 }
