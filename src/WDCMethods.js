@@ -75,11 +75,10 @@ const formatJSONAsTable = (data, tableName) => {
     const DOI = "http://dx.doi.org/10.5066/F7P55KJN";
     let queryURL = data.value.queryInfo.queryURL;
     let queryTime = "query time not returned";
-    data.value.queryInfo.note.some(element => {
+    data.value.queryInfo.note.forEach(element => {
       if (element["title"] === "requestDT") {
         queryTime = element["value"];
       }
-      return element["title"] === "requestDT";
     });
     tableData.push({
       DOINumber: DOI,

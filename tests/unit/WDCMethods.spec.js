@@ -134,7 +134,7 @@ test("formatJSONasTable correctly constructs metadata table", () => {
   const input = validDataJSON;
   const targetResult = [
     {
-      DOINumber: "123456",
+      DOINumber: "http://dx.doi.org/10.5066/F7P55KJN",
       queryTime:  "2019-07-24T21:03:13.618Z",
       queryURL: "sampleurl"
     }
