@@ -8,7 +8,7 @@
     <body>
       <div class="row">
         <div class="leftcolumn">
-          <div class="text-center col-md-4 col-md-offset-4">
+          <div class="text-center input-column">
             <br />
             <SiteSelect> </SiteSelect>
             <StateSelect></StateSelect>
@@ -76,6 +76,7 @@ import { mapState } from "vuex";
 import { notify } from "../notifications.js";
 import WatershedInput from "../components/WatershedInput";
 import TemporalRange from "../components/TemporalRange";
+const moment = require("moment");
 
 /*global  tableau:true*/
 
@@ -181,9 +182,10 @@ export default {
         modifiedSinceCode: this.$store.getters.modifiedSinceCode,
         temporalRangeActive: this.$store.getters.temporalRangeActive,
         temporalRangeData: this.$store.getters.temporalRangeData,
-        currentDateTime: new Date()
+        currentDateTime: moment()
       };
 
+      alert(connectionData.currentDateTime.format());
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {
