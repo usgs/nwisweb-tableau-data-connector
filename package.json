@@ -8,8 +8,7 @@
     "lint": "vue-cli-service lint --ext .js,.vue",
     "fetch": "node scripts/fetchParams.js",
     "production-build": "node scripts/fetchParams.js && vue-cli-service test:unit && vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "vars": "./scripts/getCurrVersion.sh"
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "core-js": "^2.6.5",
