@@ -60,6 +60,9 @@ pipeline {
                     if("${params.RELEASE_TYPE}" == "Release") {
                         versionChange = "${params.RELEASE_VERSION}"
                     }
+                    def commitHash = scmVars.GIT_COMMIT
+                    print commitID
+                    print commitHash
                 }
                 sh """
                     echo "${versionChange}" > versionType.txt
