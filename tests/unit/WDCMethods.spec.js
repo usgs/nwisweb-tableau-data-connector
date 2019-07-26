@@ -10,8 +10,7 @@ import {
 import { locationMode } from "../../src/enums.js";
 let moment = require("moment");
 
-let mockCurrentTime = moment();
-let mockCurrentTimeString = mockCurrentTime.format();
+let mockCurrentTime = moment().toISOString();
 
 const validDataJSON = {
   value: {
@@ -201,7 +200,7 @@ test("formatJSONasTable correctly constructs metadata table when time is not sup
   const targetResult = [
     {
       DOINumber: "http://dx.doi.org/10.5066/F7P55KJN",
-      queryTime: mockCurrentTimeString,
+      queryTime: mockCurrentTime,
       queryURL: "sampleurl"
     }
   ];
