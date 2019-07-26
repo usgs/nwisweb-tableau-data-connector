@@ -185,7 +185,6 @@ export default {
         currentDateTime: moment()
       };
 
-      alert(connectionData.currentDateTime.format());
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {

@@ -74,7 +74,7 @@ const formatJSONAsTable = (currentDateTime, data, tableName) => {
     let tableData = [];
     const DOI = "http://dx.doi.org/10.5066/F7P55KJN";
     let queryURL = data.value.queryInfo.queryURL;
-    let queryTime = currentDateTime.format();
+    let queryTime = currentDateTime;
     data.value.queryInfo.note.forEach(element => {
       if (element["title"] === "requestDT") {
         queryTime = element["value"];
