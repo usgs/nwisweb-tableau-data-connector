@@ -66,8 +66,8 @@ pipeline {
                     echo "${versionChange}" > versionType.txt
                     cat versionType.txt
                     docker stop nwisweb_data_connector_docker || true && docker rm nwisweb_data_connector_docker || true
-                    docker build . --tag="dockerinstance"
-                    docker run --name nwisweb_data_connector_docker dockerinstance
+                    docker build . --tag="nwisweb_tableau_dockerinstance"
+                    docker run --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
                     dockerinstanceid=\$( docker ps -aqf "name=nwisweb_data_connector_docker" )
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
