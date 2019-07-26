@@ -2390,9 +2390,7 @@ let IVParams = [
    "name": "Voltage ratio, voltage of transmitted electromagnetic pulse divided by the voltage of the returned pulse"
  }
 ]
-=======
-=======
->>>>>>> 6b796ecb0b02a32543189a57fe0c98c4f9b5fcec
+
 /* https://nwis.waterdata.usgs.gov/nwis/status/?form=realtime_pmcodes
     retrieved from the above url and converted to JSON. This may need to be updated at some point in the future.
     All 4 parameters with non-numeric ids were manually removed. 
