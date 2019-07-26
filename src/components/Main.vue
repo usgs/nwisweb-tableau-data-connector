@@ -182,7 +182,7 @@ export default {
         modifiedSinceCode: this.$store.getters.modifiedSinceCode,
         temporalRangeActive: this.$store.getters.temporalRangeActive,
         temporalRangeData: this.$store.getters.temporalRangeData,
-        currentDateTime: moment()
+        currentDateTime: moment().toISOString()
       };
 
       if (typeof tableau.connectionData === "string") {
