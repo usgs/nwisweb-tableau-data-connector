@@ -24,7 +24,7 @@ pipeline {
                 cleanWs()
             }
         }
-        stage('checkout') {
+          stage('checkout') {
             steps {
                 script {
                     buildSource = "refs/heads/${BRANCH}"
@@ -61,6 +61,7 @@ pipeline {
                         versionChange = "${params.RELEASE_VERSION}"
                     }
                 }
+                
                 sh """
                     echo "${versionChange}" > versionType.txt
                     cat versionType.txt
@@ -74,6 +75,7 @@ pipeline {
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/currVerNum.txt" $WORKSPACE
                     docker rm "\${dockerinstanceid}"
                 """
+
                 withCredentials([usernamePassword(credentialsId: "NWISWEB-TABLEAU-READ-WRITE-TOKEN", usernameVariable: "GIT_USERNAME", passwordVariable: "GIT_PASSWORD")]) {
                     script {
                         if("${params.RELEASE_TYPE}" == "Release") {
@@ -95,6 +97,7 @@ pipeline {
                 }
             }
         }
+        
         stage('send to S3') {
             steps {
                 script {
