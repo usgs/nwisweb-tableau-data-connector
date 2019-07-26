@@ -21,7 +21,15 @@ export default new Router({
         import(/* webpackChunkName: "about" */ "./views/About.vue")
     },
     {
-      path: "*",
+    {
+      path: '/404',
+      name: 'NotFound',
+      component: () => import('./views/NotFound.vue')
+    },
+    {
+      path: '*',
+      redirect: {name: 'NotFound'}
+    }
       name: "NotFound",
       component: () => import("./views/NotFound.vue")
     }
