@@ -24,7 +24,7 @@ pipeline {
                 cleanWs()
             }
         }
-          stage('checkout') {
+        stage('checkout') {
             steps {
                 script {
                     buildSource = "refs/heads/${BRANCH}"
