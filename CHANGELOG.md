@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added various temporal query parameters
 - Added metadata table to query schema
 - Added columns to display site number, parameter code, statistic code, agency code, and method code in every row of a table in Tableau
+- Added 404(lost bison) page
 ### Changed
 - Changed styling so all elements are left justified
 - separted sitelist from main.vue
