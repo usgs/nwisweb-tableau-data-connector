@@ -83,7 +83,7 @@ pipeline {
                                 export GIT_PASSWORD
                                 echo Tagging build as `cat currVerNum.txt`
                                 echo Incrementing version number to `cat newVerNum.txt`
-                                git tag v`cat currVerNum.txt`
+                                git tag v`cat currVerNum.txt` 
                                 git push origin --tag
                                 git add .
                                 git commit -m "automatic version number increment"
