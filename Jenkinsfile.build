@@ -60,8 +60,6 @@ pipeline {
                     if("${params.RELEASE_TYPE}" == "Release") {
                         versionChange = "${params.RELEASE_VERSION}"
                     }
-                    print commitID
-                    print commitHash
                 }
                 sh """
                     echo "${versionChange}" > versionType.txt
