@@ -22,7 +22,8 @@ describe("CountySelect", () => {
     const wrapper = shallowMount(CountySelect, {
       store,
       localVue,
-      propsData: {}
+      propsData: {},
+      stubs: ["input-tags"]
     });
     let counties = [
       {"country_cd": "US", "county_cd": "001", "county_nm": "Bristol County", "state_cd": "44"}, 
@@ -34,34 +35,53 @@ describe("CountySelect", () => {
     expect(wrapper.vm.getCounties("Rhode Island")).toEqual(counties);
   });
 
-//   test("test getCounties with invalid state name", () => {
-//     store = new Vuex.Store({
-//       state: {},
-//       modules: {},
-//       getters: {},
-//       actions: {}
-//     });
-//     const wrapper = shallowMount(CountySelect, {
-//       store,
-//       localVue,
-//       propsData: {}
-//     });
-//     expect(wrapper.vm.getCounties("Mayonnaise")).toEqual([]);
-//   });
+  test("test getCounties with invalid state name", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {},
+      actions: {}
+    });
+    const wrapper = shallowMount(CountySelect, {
+      store,
+      localVue,
+      propsData: {},
+      stubs: ["input-tags"]
+    });
+    expect(wrapper.vm.getCounties("Mayonnaise")).toEqual([]);
+  });
 
-//   test("test getCountyNameFromCode", () => {
-//     store = new Vuex.Store({
-//       state: {},
-//       modules: {},
-//       getters: {},
-//       actions: {}
-//     });
-//     const wrapper = shallowMount(CountySelect, {
-//       store,
-//       localVue,
-//       propsData: {}
-//     });
-//     let countyCode = "12003";
-//     expect(wrapper.vm.getCountyNameFromCode(countyCode)).toEqual("Baker County");
-//   });
+  test("test getCountyNameFromCode with valid county code", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {},
+      actions: {}
+    });
+    const wrapper = shallowMount(CountySelect, {
+      store,
+      localVue,
+      propsData: {},
+      stubs: ["input-tags"]
+    });
+    let countyCode = "12003";
+    expect(wrapper.vm.getCountyNameFromCode(countyCode)).toEqual("Baker County");
+  });
+
+  test("test getCountyNameFromCode with invalid county code", () => {
+    store = new Vuex.Store({
+      state: {},
+      modules: {},
+      getters: {},
+      actions: {}
+    });
+    const wrapper = shallowMount(CountySelect, {
+      store,
+      localVue,
+      propsData: {},
+      stubs: ["input-tags"]
+    });
+    let countyCode = "!!!!!";
+    expect(wrapper.vm.getCountyNameFromCode(countyCode)).toEqual("invalid");
+  });
 });
