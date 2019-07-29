@@ -25,13 +25,20 @@ describe("getLocAquifers", () => {
       stubs: ["input-tags"]
     });
     let locAquifers = [
-      {"country_cd": "US", "county_cd": "001", "county_nm": "Bristol County", "state_cd": "44"}, 
-      {"country_cd": "US", "county_cd": "003", "county_nm": "Kent County", "state_cd": "44"}, 
-      {"country_cd": "US", "county_cd": "005", "county_nm": "Newport County", "state_cd": "44"}, 
-      {"country_cd": "US", "county_cd": "007", "county_nm": "Providence County", "state_cd": "44"}, 
-      {"country_cd": "US", "county_cd": "009", "county_nm": "Washington County", "state_cd": "44"}
+      {
+        aqfr_cd: "112EVRS",
+        aqfr_nm: "Everson Interstade of Fraser Glaciation",
+        state_cd: "96"
+      },
+      { aqfr_cd: "112GLCV", aqfr_nm: "Glacio-Fluviatile", state_cd: "96" },
+      {
+        aqfr_cd: "112SUMS",
+        aqfr_nm: "Sumas Drift of Fraser Glaciation",
+        state_cd: "96"
+      },
+      { aqfr_cd: "BEDROCK", aqfr_nm: "Bedrock", state_cd: "96" }
     ];
-    expect(wrapper.vm.getLocAquifers("Rhode Island")).toEqual(locAquifers);
+    expect(wrapper.vm.getLocAquifers("Lake Erie")).toEqual(locAquifers);
   });
 
   test("test getLocAquifers with invalid state name", () => {
@@ -50,9 +57,9 @@ describe("getLocAquifers", () => {
     expect(wrapper.vm.getLocAquifers("Hamburger")).toEqual([]);
   });
 });
-describe("getLocAqNameFromCode", () => {
+describe("verifyLocAqName", () => {
   let store;
-  test("test getLocAqNameFromCode with valid local aquifer code", () => {
+  test("test verifyLocAqName with valid local aquifer code", () => {
     store = new Vuex.Store({
       state: {},
       modules: {},
@@ -65,11 +72,11 @@ describe("getLocAqNameFromCode", () => {
       propsData: {},
       stubs: ["input-tags"]
     });
-    let countyCode = "12003";
-    expect(wrapper.vm.getLocAqNameFromCode(countyCode)).toEqual("Baker County");
+    let locAqCode = "05:112TRRC";
+    expect(wrapper.vm.verifyLocAqName(locAqCode)).toEqual("05:112TRRC");
   });
 
-  test("test getLocAqNameFromCode with invalid local aquifer code", () => {
+  test("test verifyLocAqName with invalid local aquifer code", () => {
     store = new Vuex.Store({
       state: {},
       modules: {},
@@ -82,7 +89,6 @@ describe("getLocAqNameFromCode", () => {
       propsData: {},
       stubs: ["input-tags"]
     });
-    let countyCode = "!!!!!";
-    expect(wrapper.vm.getLocAqNameFromCode(countyCode)).toEqual("invalid");
+    expect(wrapper.vm.verifyLocAqName("99:BADCODE")).toEqual("Invalid.");
   });
 });

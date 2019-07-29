@@ -25,11 +25,36 @@ describe("getCounties", () => {
       stubs: ["input-tags"]
     });
     let counties = [
-      {"country_cd": "US", "county_cd": "001", "county_nm": "Bristol County", "state_cd": "44"}, 
-      {"country_cd": "US", "county_cd": "003", "county_nm": "Kent County", "state_cd": "44"}, 
-      {"country_cd": "US", "county_cd": "005", "county_nm": "Newport County", "state_cd": "44"}, 
-      {"country_cd": "US", "county_cd": "007", "county_nm": "Providence County", "state_cd": "44"}, 
-      {"country_cd": "US", "county_cd": "009", "county_nm": "Washington County", "state_cd": "44"}
+      {
+        country_cd: "US",
+        county_cd: "001",
+        county_nm: "Bristol County",
+        state_cd: "44"
+      },
+      {
+        country_cd: "US",
+        county_cd: "003",
+        county_nm: "Kent County",
+        state_cd: "44"
+      },
+      {
+        country_cd: "US",
+        county_cd: "005",
+        county_nm: "Newport County",
+        state_cd: "44"
+      },
+      {
+        country_cd: "US",
+        county_cd: "007",
+        county_nm: "Providence County",
+        state_cd: "44"
+      },
+      {
+        country_cd: "US",
+        county_cd: "009",
+        county_nm: "Washington County",
+        state_cd: "44"
+      }
     ];
     expect(wrapper.vm.getCounties("Rhode Island")).toEqual(counties);
   });
@@ -66,7 +91,9 @@ describe("getCountyNameFromCode", () => {
       stubs: ["input-tags"]
     });
     let countyCode = "12003";
-    expect(wrapper.vm.getCountyNameFromCode(countyCode)).toEqual("Baker County");
+    expect(wrapper.vm.getCountyNameFromCode(countyCode)).toEqual(
+      "Baker County"
+    );
   });
 
   test("test getCountyNameFromCode with invalid county code", () => {
