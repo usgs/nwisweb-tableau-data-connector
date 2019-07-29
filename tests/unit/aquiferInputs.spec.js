@@ -38,7 +38,18 @@ describe("getLocAquifers", () => {
       },
       { aqfr_cd: "BEDROCK", aqfr_nm: "Bedrock", state_cd: "96" }
     ];
-    expect(wrapper.vm.getLocAquifers("Lake Erie")).toEqual(locAquifers);
+    jest.mock(
+      "../../fetchedValues/locAquifer.json",
+      () => ({
+        locAquiferJSON: [
+          { state_cd: "01", aqfr_cd: "100CNZC", aqfr_nm: "Cenozoic Erathem" },
+          { state_cd: "01", aqfr_cd: "110QRNR", aqfr_nm: "Quaternary System" },
+          { state_cd: "01", aqfr_cd: "110QRRT", aqfr_nm: "Quaternary-Tertiary Systems" }
+        ]
+      }),
+      { virtual: true }
+    );
+    expect(wrapper.vm.getLocAquifers("United States of America")).toEqual(locAquifers);
   });
 
   test("test getLocAquifers with invalid state name", () => {
@@ -90,5 +101,6 @@ describe("verifyLocAqName", () => {
       stubs: ["input-tags"]
     });
     expect(wrapper.vm.verifyLocAqName("99:BADCODE")).toEqual("Invalid.");
+    expect(wrapper.vm.verifyLocAqName("05:ABCDEFGH")).toEqual("Invalid.");
   });
 });
