@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added various temporal query parameters
 - Added metadata table to query schema
 - Added columns to display site number, parameter code, statistic code, agency code, and method code in every row of a table in Tableau
+- Added 404(lost bison) page
 ### Changed
 - Changed styling so all elements are left justified
 - separted sitelist from main.vue
@@ -48,3 +49,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - reordered input fields to match expected use frequency
 - updated allowed parameters to only include those valid with the USGS Instantaneous Values Service.
 - Added parameter group selection
+- changed Jenkins automatic version incrementing to tag with current version number on release then commit new version number
