@@ -142,7 +142,8 @@ const formatJSONAsTable = (currentDateTime, data, tableName) => {
       paramCode: tableSeries.variable.variableCode[0].value,
       agencyCode: tableSeries.sourceInfo.siteCode[0].agencyCode,
       statCode: tableSeries.variable.options.option[0].optionCode,
-      methodCode: valueSeries.method[0].methodID
+      methodCode: valueSeries.method[0].methodID,
+      methodDescription: valueSeries.method[0].methodDescription
     };
     tableData.push(newEntry);
   });
@@ -421,6 +422,11 @@ const generateSchemaTablesFromData = data => {
         id: "methodCode",
         alias: "methodCode",
         dataType: tableau.dataTypeEnum.float
+      });
+      cols.push({
+        id: "methodDescription",
+        alias: "methodDescription",
+        dataType: tableau.dataTypeEnum.string
       });
       let column = `${sanitizeVariableName(
         series.variable.variableDescription

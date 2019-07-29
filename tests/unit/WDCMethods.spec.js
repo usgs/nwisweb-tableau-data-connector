@@ -72,7 +72,8 @@ const validDataJSON = {
             ],
             method: [
               {
-                methodID: "69929"
+                methodID: "69929",
+                methodDescription: "gate 1"
               }
             ]
           }
@@ -122,7 +123,8 @@ const validDataJSON = {
             ],
             method: [
               {
-                methodID: "69929"
+                methodID: "69929",
+                methodDescription: "gate 2"
               }
             ]
           },
@@ -151,7 +153,8 @@ const validDataJSON = {
             ],
             method: [
               {
-                methodID: "69929"
+                methodID: "69929",
+                methodDescription: "gate 3"
               }
             ]
           }
@@ -175,7 +178,8 @@ test("converting a fully-populated data JSON to table", () => {
       paramCode: "00060",
       agencyCode: "USGS",
       statCode: "00000",
-      methodCode: "69929"
+      methodCode: "69929",
+      methodDescription: "gate 1"
     },
     {
       flow_01646500_0: "10800",
@@ -188,7 +192,8 @@ test("converting a fully-populated data JSON to table", () => {
       paramCode: "00060",
       agencyCode: "USGS",
       statCode: "00000",
-      methodCode: "69929"
+      methodCode: "69929",
+      methodDescription: "gate 1"
     }
   ];
 
@@ -580,6 +585,11 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "statCode", alias: "statCode", dataType: "__FLOAT" },
         { id: "methodCode", alias: "methodCode", dataType: "__FLOAT" },
         {
+          id: "methodDescription",
+          alias: "methodDescription",
+          dataType: "__STRING"
+        },
+        {
           id: "flow_01646500_0",
           alias: "flow_01646500_0",
           dataType: "__STRING"
@@ -601,6 +611,11 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "statCode", alias: "statCode", dataType: "__FLOAT" },
         { id: "methodCode", alias: "methodCode", dataType: "__FLOAT" },
         {
+          id: "methodDescription",
+          alias: "methodDescription",
+          dataType: "__STRING"
+        },
+        {
           id: "height_01646501_0",
           alias: "height_01646501_0",
           dataType: "__STRING"
@@ -621,6 +636,11 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
         { id: "statCode", alias: "statCode", dataType: "__FLOAT" },
         { id: "methodCode", alias: "methodCode", dataType: "__FLOAT" },
+        {
+          id: "methodDescription",
+          alias: "methodDescription",
+          dataType: "__STRING"
+        },
         {
           id: "height_01646501_1",
           alias: "height_01646501_1",
