@@ -62,15 +62,16 @@ pipeline {
                     }
                 }
                 sh """
-                    echo "${versionChange}" >versionNum.txt
+                    echo "${versionChange}" > versionType.txt
+                    cat versionType.txt
                     docker stop nwisweb_data_connector_docker || true && docker rm nwisweb_data_connector_docker || true
-                    docker build . --tag="dockerinstance"
-                    docker run --name nwisweb_data_connector_docker dockerinstance
+                    docker build . --tag="nwisweb_tableau_dockerinstance"
+                    docker run --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
                     dockerinstanceid=\$( docker ps -aqf "name=nwisweb_data_connector_docker" )
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/package.json" $WORKSPACE
-                    docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/newVerNum.txt" $WORKSPACE
+                    docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/currVerNum.txt" $WORKSPACE
                     docker rm "\${dockerinstanceid}"
                 """
                 withCredentials([usernamePassword(credentialsId: "NWISWEB-TABLEAU-READ-WRITE-TOKEN", usernameVariable: "GIT_USERNAME", passwordVariable: "GIT_PASSWORD")]) {
@@ -80,12 +81,14 @@ pipeline {
                                 /usr/bin/git config credential.helper '/bin/echo -e "username=${GIT_USERNAME}\npassword=${GIT_PASSWORD}" | tee /dev/null'
                                 export GIT_USERNAME
                                 export GIT_PASSWORD
-                                git add .
+                                echo Tagging build as `cat currVerNum.txt`
+                                echo Incrementing version number to `cat newVerNum.txt`
+                                git tag v`cat currVerNum.txt` 
+                                git push origin --tag
+                                git add package.json
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
-                                git tag `cat newVerNum.txt`
                                 git push -u origin HEAD:${params.BRANCH}
-                                git push origin --tag
                             """
                         }                    
                     }

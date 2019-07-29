@@ -77,11 +77,11 @@ agencyString = value[2];
 locAquiferString = value[3];
  
 
-
 let siteTypesJSONString = JSON.stringify(rdbToJSON(siteString));
 let countyJSONString = JSON.stringify(rdbToJSON(countyString));
 let agencyJSONString = JSON.stringify(rdbToJSON(agencyString));
 let locAquiferJSONString = JSON.stringify(rdbToJSON(locAquiferString));
+
 
 /* https://nwis.waterdata.usgs.gov/nwis/status/?form=realtime_pmcodes
     retrieved from the above url and converted to JSON. This may need to be updated at some point in the future.
