@@ -8,7 +8,8 @@ const moment = require("moment");
 
 /*
 given the table.variable.variableDescription given as an argument to the getdata methods, this method
-extracts the appropriate time series. 
+extracts the appropriate time series. (note that a timeseries may contain
+  multiple value series)
 */
 const getTimeSeriesByID = (timeSeries, tableName) => {
   let resultSeries = {};
@@ -32,6 +33,10 @@ const getTimeSeriesByID = (timeSeries, tableName) => {
   }
 };
 
+/*
+This function gets a specific value series by its ID (note that a timeseries may contain
+  multiple value series)
+*/
 const getValueSeriesByID = (timeSeries, tableName) => {
   let resultValues = [];
   let found = false;
