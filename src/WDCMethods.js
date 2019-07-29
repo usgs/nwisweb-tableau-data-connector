@@ -133,11 +133,17 @@ const generateDateTime = (timeZone, dateTime, queryMode) => {
 /*
 generates a URL for query parameters contained in the connectionData object accepted as an argument
 */
-const generateURL = connectionData => {
+const generateURL = (connectionData, specifyParams, params) => {
   let paramQuery = "";
-  if (connectionData.paramNums.length != 0) {
-    paramQuery = `&parameterCd=${connectionData.paramNums.join()}`;
+
+  if (!specifyParams) {
+    if (connectionData.paramNums.length != 0) {
+      paramQuery = `&parameterCd=${connectionData.paramNums.join(",")}`;
+    }
+  } else {
+    paramQuery = `&parameterCd=${params.join(",")}`;
   }
+
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
@@ -302,6 +308,28 @@ const generateURL = connectionData => {
 };
 
 /*
+given more than 100 parameters, generates as many urls as necesarry to satisfy the constraint that queries each contain no more than 100 parameters 
+*/
+const generateMultiURL = connectionData => {
+  let lowerBound = 0;
+  let paramGroupList = [];
+  let URLList = [];
+  while (lowerBound + 100 <= connectionData.paramNums.length) {
+    paramGroupList.push(
+      connectionData.paramNums.slice(lowerBound, lowerBound + 100)
+    );
+    lowerBound += 100;
+  }
+  if (lowerBound < connectionData.paramNums.length) {
+    paramGroupList.push(connectionData.paramNums.slice(lowerBound));
+  }
+  paramGroupList.forEach(paramGroup => {
+    URLList.push(generateURL(connectionData, true, paramGroup));
+  });
+  return URLList;
+};
+
+/*
 takes query url to be sent to the NWISweb instantaneous values service and 
 generates an appropriate tableau schema.
 */
@@ -421,7 +449,7 @@ const getData = (table, doneCallback) => {
     connectionData = tableau.connectionData;
   }
   if (!connectionData.cached) {
-    let url = generateURL(connectionData);
+    let url = generateURL(connectionData, false);
 
     get(url, "json").then(function(value) {
       if (typeof value === "string") {
@@ -466,16 +494,21 @@ const getSchema = schemaCallback => {
     // this check may be unnecesarry, and was added to provide compatibility with the tableau web data connector simulator which may or may not require it
     connectionData = tableau.connectionData;
   }
-  let url = generateURL(connectionData);
-  get(url, "json")
-    .then(function(value) {
-      if (typeof value === "string") {
-        schemaCallback(generateSchemaTablesFromData(JSON.parse(value)));
-      } else {
-        schemaCallback(generateSchemaTablesFromData(value));
-      }
-    })
-    .catch(err => notify(err));
+
+  if (connectionData.paramNums.length <= 100) {
+    //if we are given 100 or less parameters, we make a single query to nwisweb water services
+    let url = generateURL(connectionData, false);
+    get(url, "json")
+      .then(function(value) {
+        if (typeof value === "string") {
+          schemaCallback(generateSchemaTablesFromData(JSON.parse(value)));
+        } else {
+          schemaCallback(generateSchemaTablesFromData(value));
+        }
+      })
+      .catch(err => notify(err));
+  } else {
+  }
 };
 
 export {
@@ -487,5 +520,6 @@ export {
   getTimeSeriesByID,
   reformatTimeString,
   sanitizeVariableName,
-  generateDateTime
+  generateDateTime,
+  generateMultiURL
 };

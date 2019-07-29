@@ -398,21 +398,6 @@ done in CountySelect.vue
     expect(validateCountyInputs(countyCode, wrapper.vm)).toBe(true);
   });
 
-  /*
-We're only testing the lower bound because other form validation is
-done in ParamSelect.vue
-*/
-  test("validateParamInputs successfully rejects invalid params", () => {
-    store = new Vuex.Store({
-      state: {},
-      modules: {},
-      getters: {},
-      actions: {}
-    });
-    const wrapper = shallowMount(Main, { store, localVue });
-    let paramCode = new Array(150);
-    expect(validateParamInputs(paramCode, wrapper.vm)).not.toBe(true);
-  });
   test("validateParamInputs successfully accepts valid params", () => {
     const store = new Vuex.Store({
       state: {},
