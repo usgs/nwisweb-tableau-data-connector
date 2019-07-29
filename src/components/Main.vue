@@ -8,33 +8,32 @@
     <body>
       <div class="row">
         <div class="leftcolumn">
-          <div class="text-center col-md-4 col-md-offset-4">
+          <div class="text-center input-column">
             <br />
-            <div v-show="!disabled">
-              <span class="input-desc">
-                <label>Site or Sites</label>
-                <ToolTip
-                  hint="This field takes comma-separated 8-15 digit site codes. Open this link in a new tab to use the NWISWeb location finder, remember to limit your search to time-series sites."
-                  url="http://maps.waterdata.usgs.gov/mapper/"
-                ></ToolTip>
-              </span>
-              <input
-                class="usa-input usa-input-custom"
-                v-model="sites"
-                :disabled="disabled"
-              />
-            </div>
-
+            <SiteSelect> </SiteSelect>
             <StateSelect></StateSelect>
             <CoordinatesInput></CoordinatesInput>
             <HUCInput></HUCInput>
             <CountySelect></CountySelect>
-            <div>
-              <ParamSelect></ParamSelect>
-              <br />
+            <div style="float:left;">
+              <fieldset class="optional">
+                <legend>Optional Parameters</legend>
+                <div>
+                  <ParamSelect></ParamSelect>
+                  <br />
+                </div>
+                <SiteTypeList></SiteTypeList>
+                <TemporalRange></TemporalRange>
+                <AgencySelect></AgencySelect>
+                <br />
+                <siteStatusSelect></siteStatusSelect>
+                <AquiferInputs></AquiferInputs>
+                <br />
+                <GroundWaterSiteAttr></GroundWaterSiteAttr>
+                <WatershedInput></WatershedInput>
+                <AltitudeInput></AltitudeInput>
+              </fieldset>
             </div>
-            <SiteTypeList></SiteTypeList>
-            <AgencySelect></AgencySelect>
           </div>
         </div>
         <div class="rightcolumn">
@@ -57,7 +56,7 @@
 </template>
 
 <script>
-import { getData, getSchema, generateColList } from "../WDCMethods.js";
+import { getData, getSchema } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
@@ -66,11 +65,18 @@ import { locationMode } from "../enums.js";
 import SiteTypeList from "../components/SiteTypeList";
 import CoordinatesInput from "../components/CoordinatesInput";
 import HUCInput from "../components/HUCInput";
+import SiteSelect from "../components/SiteSelect";
 import ParamSelect from "../components/ParamSelect";
+import SiteStatusSelect from "../components/SiteStatusSelect";
 import AgencySelect from "../components/AgencySelect";
+import AquiferInputs from "../components/AquiferInputs";
+import AltitudeInput from "../components/AltitudeInput";
+import GroundWaterSiteAttr from "../components/GroundWaterSiteAttr";
 import { mapState } from "vuex";
 import { notify } from "../notifications.js";
-import ToolTip from "../components/ToolTip";
+import WatershedInput from "../components/WatershedInput";
+import TemporalRange from "../components/TemporalRange";
+const moment = require("moment");
 
 /*global  tableau:true*/
 
@@ -88,7 +94,13 @@ export default {
     ParamSelect,
     CountySelect,
     AgencySelect,
-    ToolTip
+    AquiferInputs,
+    WatershedInput,
+    AltitudeInput,
+    SiteSelect,
+    GroundWaterSiteAttr,
+    TemporalRange,
+    SiteStatusSelect
   },
   data: function() {
     return {
@@ -132,13 +144,9 @@ export default {
         return;
       }
 
-      this.columnList = generateColList(
-        this.sites,
-        this.$store.getters.paramCodes
-      );
       let connectionData = {
         columnList: this.columnList,
-        siteNums: this.sites,
+        siteNums: this.$store.getters.sites,
         paramNums: this.$store.getters.paramCodes,
         state: this.stateData[this.$store.getters.USStateName],
         locationMode: this.activeLocationMode,
@@ -149,8 +157,34 @@ export default {
         siteTypeListActive: this.$store.getters.siteTypeListActive,
         siteTypeList: this.$store.getters.siteType,
         agencyCodeActive: this.$store.getters.agencyActive,
-        agencyCode: this.$store.getters.agencyCode
+        agencyCode: this.$store.getters.agencyCode,
+        natAquiferActive: this.$store.getters.natAquiferActive,
+        natAquifer: this.$store.getters.natAquifer,
+        locAquiferActive: this.$store.getters.locAquiferActive,
+        locAquifer: this.$store.getters.locAquifer,
+        wellMinActive: this.$store.getters.wellMinActive,
+        wellMaxActive: this.$store.getters.wellMaxActive,
+        holeMinActive: this.$store.getters.holeMinActive,
+        holeMaxActive: this.$store.getters.holeMaxActive,
+        GWSiteAttrDepths: this.$store.getters.GWSiteAttrDepths,
+        siteStatus: this.$store.getters.siteStatus,
+        watershedAreaBounds: this.$store.getters.watershedAreaBounds,
+        watershedUpperAreaBoundsActive: this.$store.getters
+          .watershedUpperAreaBoundsActive,
+        watershedLowerAreaBoundsActive: this.$store.getters
+          .watershedLowerAreaBoundsActive,
+        altitudeBounds: this.$store.getters.altitudeBounds,
+        upperAltitudeBoundActive: this.$store.getters.upperAltitudeBoundActive,
+        lowerAltitudeBoundActive: this.$store.getters.lowerAltitudeBoundActive,
+        durationCodeActive: this.$store.getters.durationCodeActive,
+        durationCode: this.$store.getters.durationCode,
+        modifiedSinceCodeActive: this.$store.getters.modifiedSinceCodeActive,
+        modifiedSinceCode: this.$store.getters.modifiedSinceCode,
+        temporalRangeActive: this.$store.getters.temporalRangeActive,
+        temporalRangeData: this.$store.getters.temporalRangeData,
+        currentDateTime: moment().toISOString()
       };
+
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
       } else {

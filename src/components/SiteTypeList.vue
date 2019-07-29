@@ -8,17 +8,14 @@
         url="https://help.waterdata.usgs.gov/code/site_tp_query?fmt=html?display=inline"
       ></ToolTip>
     </span>
-    <input
-      v-model="siteType"
-      class="usa-input usa-input-custom"
-      list="siteTypeDL"
-      type="text"
-    />
-    <datalist id="siteTypeDL"> </datalist>
-    <button
-      class="usa-button usa-button-custom"
-      v-on:click="addSiteTypeToSiteTypeList"
-    >
+
+    <CustomAutoComplete
+      v-on:valueupdate="updateSiteTypeInput"
+      v-on:clear="updateSiteTypeInput"
+      :source="siteTypeSearchList"
+      input-class="usa-input usa-input-custom"
+    ></CustomAutoComplete>
+    <button class="usa-button usa-button-custom" v-on:click="addSiteTypes">
       Add Site Type
     </button>
 
@@ -51,18 +48,21 @@ import VueTags from "vue-tags";
 import Vue from "vue";
 import { notify } from "../notifications.js";
 import ToolTip from "../components/ToolTip";
+import CustomAutoComplete from "../components/CustomAutoComplete";
 
 Vue.component("input-tags", VueTags);
 
 export default {
   name: "SiteTypeList",
   components: {
-    ToolTip
+    ToolTip,
+    CustomAutoComplete
   },
   data: function() {
     return {
       tags: [],
       siteType: "",
+      siteTypeSearchList: [],
       siteTypeList: [], //holds selected siteTypes
       siteTypeNames: []
     };
@@ -74,23 +74,30 @@ export default {
       this.$store.commit("changeSiteType", this.siteTypeList);
     },
     populateSiteType: function() {
-      let siteSelect = document.getElementById("siteTypeDL");
-      siteTypes.forEach(element => {
-        let option = document.createElement("option");
-        option.text = element["site_tp_ln"];
-        option.value = element["site_tp_cd"];
-        siteSelect.appendChild(option);
+      this.siteTypeSearchList = siteTypes.map(element => {
+        return { name: element["site_tp_ln"], id: element["site_tp_cd"] };
       });
     },
-    addSiteTypeToSiteTypeList: function() {
-      if (!(this.getSiteTypeNameFromCode(this.siteType) == "invalid")) {
-        if (!this.siteTypeList.includes(this.siteType)) {
-          this.siteTypeList.push(this.siteType);
+    addSiteTypes: function() {
+      let siteTypes = this.siteType.split(",");
+      siteTypes.forEach(siteType => {
+        this.addSiteTypeToSiteTypeList(siteType.replace(/\s/g, ""));
+      });
+    },
+    addSiteTypeToSiteTypeList: function(siteType) {
+      if (this.siteType == "") {
+        notify(`no site type entered`);
+        return;
+      }
+
+      if (!(this.getSiteTypeNameFromCode(siteType) == "invalid")) {
+        if (!this.siteTypeList.includes(siteType)) {
+          this.siteTypeList.push(siteType);
         } else {
-          notify("Site Type selected already in selection");
+          notify(`${siteType}: site type selected already in selection`);
         }
       } else {
-        notify("invalid site type entered");
+        notify(`${siteType}: invalid site type entered`);
       }
     },
     removeElement: function(index) {
@@ -104,6 +111,13 @@ export default {
         }
       });
       return result;
+    },
+    updateSiteTypeInput: function(result) {
+      if (result !== null && typeof result !== "undefined") {
+        this.siteType = result;
+      } else {
+        this.siteType = "";
+      }
     }
   },
   mounted() {

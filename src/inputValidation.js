@@ -3,6 +3,8 @@ import agencyData from "./fetchedValues/agency.json";
 import stateData from "./fetchedValues/states.json";
 import siteTypeData from "./fetchedValues/siteTypes.json";
 import { notify } from "./notifications.js";
+import { generateDateTime } from "./WDCMethods.js";
+const moment = require("moment");
 
 /*
 useful helper function to allow searching lists of dictionaries for a value at a specific key.
@@ -24,6 +26,9 @@ const inObjList = (list, target, key) => {
     */
 const validateStateInputs = (input, instance, stateData) => {
   if (instance.$store.getters.locationMode != locationMode.STATE) return true;
+  if (input == "") {
+    return "no state is selected";
+  }
   if (!(input in stateData)) return "invalid state selected";
   return true;
 };
@@ -59,7 +64,8 @@ const validateCoordinateInputs = (coordinates, instance) => {
 };
 
 const isNumeric = value => {
-  return !isNaN(value) && value != "";
+  let regex = /^(-)?((\d)+\.)?(\d)+$/;
+  return value.match(regex);
 };
 
 const isWithinLatitudeBounds = latitude => {
@@ -74,10 +80,18 @@ const isWithinLongitudeBounds = longitude => {
       rounds coordinate inputs to 6 decimal places. Called in validateFormInputs()
     */
 const roundCoordinateInputs = coordinates => {
-  coordinates.north = parseFloat(coordinates.north).toFixed(6);
-  coordinates.south = parseFloat(coordinates.south).toFixed(6);
-  coordinates.east = parseFloat(coordinates.east).toFixed(6);
-  coordinates.west = parseFloat(coordinates.west).toFixed(6);
+  coordinates.north = parseFloat(coordinates.north)
+    .toFixed(6)
+    .toString();
+  coordinates.south = parseFloat(coordinates.south)
+    .toFixed(6)
+    .toString();
+  coordinates.east = parseFloat(coordinates.east)
+    .toFixed(6)
+    .toString();
+  coordinates.west = parseFloat(coordinates.west)
+    .toFixed(6)
+    .toString();
   return coordinates;
 };
 /*
@@ -85,9 +99,11 @@ const roundCoordinateInputs = coordinates => {
   */
 const validateSiteInputs = (sites, instance) => {
   if (instance.$store.getters.locationMode != locationMode.SITE) return true;
-  let regex = /^((\d+),)*(\d+)$/; // 1 or more comma-separated 8 digit numbers
+
+  let regex = /^(((\d){8}(\d?){4}),)*((\d){8}(\d?){4})$/;
+
   if (!sites.replace(/\s/g, "").match(regex)) {
-    return "site list in invalid format";
+    return "site list in invalid format"; // 1 or more 8-12 digit site codes
   }
   return true;
 };
@@ -103,6 +119,47 @@ const validateHydroCodeInputs = (hydroCode, instance) => {
   if (!hydroCode.replace(/\s/g, "").match(regex)) {
     return "hydrologic unit code format is invalid. You may specify up to 1 major hydrologic unit code followed by up to 10 minor hydrologic unit codes, separated by commas.";
   }
+  return true;
+};
+
+/*
+ warns the user if they have specified a duration in a format non-compliant with the ISO 8601 duration specification. Takes message
+ as an argument because this is used for more than one form and different messages are needed 
+*/
+
+const validateISO_8601Duration = (duration, message, active) => {
+  if (!active) {
+    return true;
+  }
+  let regex = /^P((\d)+W)?((\d)+D)?((T(\d)+H((\d)+M)?((\d)+S)?|T(\d)+M((\d)+S)?|T(\d)+S))?$/;
+  let antiregex = /^P$/;
+  if (
+    !duration.replace(/\s/g, "").match(regex) ||
+    duration.replace(/\s/g, "").match(antiregex)
+  ) {
+    return message;
+  }
+
+  return true;
+};
+
+/*
+warns the user if they have entered incorrectly formatted time codes
+*/
+const validateTimeCodes = (temporalRangeData, active) => {
+  if (!active) {
+    return true;
+  }
+
+  let regex = /^(\d){4}-(\d){2}-(\d){2}T(\d){2}:(\d){2}$/;
+
+  if (!temporalRangeData.startDateTime.substring(0, 16).match(regex)) {
+    return "start date time in invalid format";
+  }
+  if (!temporalRangeData.endDateTime.substring(0, 16).match(regex)) {
+    return "end date time in invalid format";
+  }
+
   return true;
 };
 
@@ -123,11 +180,58 @@ warns the user if they have no query parameters selected. This is the only patho
  against from within the  ParamSelect component, because it is a valid interactive session state.
 */
 const validateParamInputs = paramList => {
-  if (paramList.length != 0) {
+  if (paramList.length <= 100) {
     return true;
   } else {
-    return "parameter query requires between 1 and 100 parameters";
+    return "parameter query cannot exceed 100 parameters";
   }
+};
+
+/*
+in the event that the temporal range query functionality is active, warns the user if the temporal boundaries or incomplete
+or inconsistent. 
+*/
+
+const validateTemporalRange = (temporalRangeData, instance) => {
+  if (!instance.$store.getters.temporalRangeActive) {
+    return true;
+  }
+  if (
+    instance.$store.getters.temporalRangeActive &&
+    instance.$store.getters.durationCodeActive
+  ) {
+    return "Explicit temporal range parameters are mutually exclusive with duration code specified timeperiod parameters.";
+  }
+  if (
+    temporalRangeData.startDateTime == "" ||
+    temporalRangeData.endDateTime == "" ||
+    temporalRangeData.timeZone == ""
+  ) {
+    return "One or more required fields for temporal range has not been specified. Please specify all fields or remove the temporal range from your query by clicking the checkbox again.";
+  }
+
+  let startDate = moment(
+    generateDateTime(
+      temporalRangeData.timeZone,
+      temporalRangeData.startDateTime,
+      false
+    )
+  );
+  let endDate = moment(
+    generateDateTime(
+      temporalRangeData.timeZone,
+      temporalRangeData.endDateTime,
+      false
+    )
+  );
+  let offset = endDate.diff(startDate);
+  if (offset < 0) {
+    return "end date before start date.";
+  } else if (offset == 0) {
+    return "end date equal to start date; temporal range has zero length";
+  }
+
+  return true;
 };
 
 /*
@@ -144,6 +248,77 @@ const validateCountyInputs = (countyList, instance) => {
 };
 
 /*
+Warns the user if they have input invalid watershed area boundaries
+*/
+
+const validateWatershedAreaBoundaries = (boundaries, instance) => {
+  let upperActive = instance.$store.getters.watershedUpperAreaBoundsActive;
+  let lowerActive = instance.$store.getters.watershedLowerAreaBoundsActive;
+
+  if (!upperActive && !lowerActive) {
+    return true;
+  }
+  let regex = /^\d(\d)*$/;
+
+  if (upperActive) {
+    if (!boundaries.upperAreaBound.replace(/\s/g, "").match(regex)) {
+      return "upper area bound is not a positive integer";
+    }
+  }
+  if (lowerActive) {
+    if (!boundaries.lowerAreaBound.replace(/\s/g, "").match(regex)) {
+      return "lower area bound is not a positive integer";
+    }
+  }
+
+  if (
+    parseInt(boundaries.upperAreaBound) < parseInt(boundaries.lowerAreaBound) &&
+    lowerActive &&
+    upperActive
+  ) {
+    return "invalid boundaries: lower watershed area bound exceeds upper watershed area bound.";
+  }
+
+  return true;
+};
+
+/*
+Warns the user if they have input invalid altitude area boundaries
+*/
+
+const validateAltitudeBoundaries = (boundaries, instance) => {
+  let upperActive = instance.$store.getters.upperAltitudeBoundActive;
+  let lowerActive = instance.$store.getters.lowerAltitudeBoundActive;
+
+  if (!upperActive && !lowerActive) {
+    return true;
+  }
+  let regex = /^(-)?(\d)+(\.\d)?(\d)*$/;
+
+  if (upperActive) {
+    if (!boundaries.upperAltitudeBound.replace(/\s/g, "").match(regex)) {
+      return "upper altitude bound is not a valid float. format: #.# ";
+    }
+  }
+  if (lowerActive) {
+    if (!boundaries.lowerAltitudeBound.replace(/\s/g, "").match(regex)) {
+      return "lower altitude bound is not a valid float. format: #.# ";
+    }
+  }
+
+  if (
+    parseFloat(boundaries.upperAltitudeBound) <
+      parseFloat(boundaries.lowerAltitudeBound) &&
+    lowerActive &&
+    upperActive
+  ) {
+    return "invalid boundaries: lower altitude bound exceeds upper altitude bound.";
+  }
+
+  return true;
+};
+
+/*
   Warns the user if they have selected an invalid agency code.
 */
 const validateAgencyInputs = (agency, instance, agencyData) => {
@@ -152,6 +327,80 @@ const validateAgencyInputs = (agency, instance, agencyData) => {
   }
   let found = inObjList(agencyData, agency, "agency_cd");
   return found ? found : "invalid agency code";
+};
+
+/*
+      Warns user if National Aquifer Code is not 10 characters long. 
+      Prevents users from exceeding 1000 aquifer codes.
+    */
+const validateNatAquiferInput = (natAquifer, instance) => {
+  let regex = /^(((\w){10}),)*((\w){10})$/;
+
+  if (instance.$store.getters.natAquiferActive) {
+    if (!natAquifer.replace(/\s/g, "").match(regex)) {
+      return "National Aquifer Code format is invalid. You may specify up to 1000 National Aquifer codes, separated by commas.";
+    }
+  }
+
+  return true;
+};
+
+/*
+      Ensures that if both min and max values are present, the min value is less than the max value.
+      Checks both hole and well depths.
+    */
+const validateGroundWaterSiteInputs = (GWSiteAttrDepths, instance) => {
+  let wellMinActive = instance.$store.getters.wellMinActive;
+  let wellMaxActive = instance.$store.getters.wellMaxActive;
+  let holeMinActive = instance.$store.getters.holeMinActive;
+  let holeMaxActive = instance.$store.getters.holeMaxActive;
+
+  if (!wellMinActive && !wellMaxActive && !holeMinActive && !holeMaxActive) {
+    return true;
+  }
+
+  let regex = /^(-)?(\d)+(\.\d)?(\d)*$/;
+
+  if (wellMinActive) {
+    if (!GWSiteAttrDepths.wellMin.replace(/\s/g, "").match(regex)) {
+      return "non-numeric well minimum depth";
+    }
+  }
+
+  if (wellMaxActive) {
+    if (!GWSiteAttrDepths.wellMax.replace(/\s/g, "").match(regex)) {
+      return "non-numeric well maximum depth";
+    }
+  }
+
+  if (holeMinActive) {
+    if (!GWSiteAttrDepths.holeMin.replace(/\s/g, "").match(regex)) {
+      return "non-numeric hole minimum depth";
+    }
+  }
+
+  if (holeMaxActive) {
+    if (!GWSiteAttrDepths.holeMax.replace(/\s/g, "").match(regex)) {
+      return "non-numeric hole maximum depth";
+    }
+  }
+
+  if (
+    wellMinActive &&
+    wellMaxActive &&
+    parseFloat(GWSiteAttrDepths.wellMin) > parseFloat(GWSiteAttrDepths.wellMax)
+  ) {
+    return "well minimum depth is greater than well maximum depth";
+  }
+
+  if (
+    holeMinActive &&
+    holeMaxActive &&
+    parseFloat(GWSiteAttrDepths.holeMin) > parseFloat(GWSiteAttrDepths.holeMax)
+  ) {
+    return "hole minimum depth is greater than hole maximum depth";
+  }
+  return true;
 };
 
 /*
@@ -178,7 +427,10 @@ const validateFormInputs = instance => {
     return false;
   }
 
-  let siteListStatus = validateSiteInputs(instance.sites, instance);
+  let siteListStatus = validateSiteInputs(
+    instance.$store.getters.sites,
+    instance
+  );
   if (!(siteListStatus === true)) {
     notify(siteListStatus);
     return false;
@@ -227,6 +479,80 @@ const validateFormInputs = instance => {
     return false;
   }
 
+  let natAquiferSiteStatus = validateNatAquiferInput(
+    instance.$store.getters.natAquifer,
+    instance
+  );
+  if (!(natAquiferSiteStatus === true)) {
+    notify(natAquiferSiteStatus);
+    return false;
+  }
+
+  let groundWaterSiteStatus = validateGroundWaterSiteInputs(
+    instance.$store.getters.GWSiteAttrDepths,
+    instance
+  );
+  if (!(groundWaterSiteStatus === true)) {
+    notify(groundWaterSiteStatus);
+    return false;
+  }
+
+  let watershedStatus = validateWatershedAreaBoundaries(
+    instance.$store.getters.watershedAreaBounds,
+    instance
+  );
+  if (!(watershedStatus === true)) {
+    notify(watershedStatus);
+    return false;
+  }
+
+  let altitudeStatus = validateAltitudeBoundaries(
+    instance.$store.getters.altitudeBounds,
+    instance
+  );
+  if (!(altitudeStatus === true)) {
+    notify(altitudeStatus);
+
+    return false;
+  }
+
+  let durationCodeStatus = validateISO_8601Duration(
+    instance.$store.getters.durationCode,
+    "duration code formatting invalid; please refer to link provided in the tooltip",
+    instance.$store.getters.durationCodeActive
+  );
+
+  if (!(durationCodeStatus === true)) {
+    notify(durationCodeStatus);
+    return false;
+  }
+
+  let modifiedSinceStatus = validateISO_8601Duration(
+    instance.$store.getters.modifiedSinceCode,
+    "modified since duration code formatting invalid; please refer to link provided in the tooltip",
+    instance.$store.getters.modifiedSinceCodeActive
+  );
+  if (!(modifiedSinceStatus === true)) {
+    notify(modifiedSinceStatus);
+    return false;
+  }
+
+  let timeCodeStatus = validateTimeCodes(
+    instance.$store.getters.temporalRangeData,
+    instance.$store.getters.temporalRangeActive
+  );
+  if (!(timeCodeStatus === true)) {
+    notify(timeCodeStatus);
+    return false;
+  }
+
+  let temporalRangeStatus = validateTemporalRange(
+    instance.$store.getters.temporalRangeData,
+    instance
+  );
+  if (!(temporalRangeStatus === true)) {
+    notify(temporalRangeStatus);
+  }
   instance.$store.commit(
     "changeCoordinates",
     roundCoordinateInputs(instance.$store.getters.coordinates)
@@ -244,5 +570,12 @@ export {
   validateCountyInputs,
   validateParamInputs,
   validateSiteTypeInputs,
-  validateAgencyInputs
+  validateAgencyInputs,
+  validateNatAquiferInput,
+  validateWatershedAreaBoundaries,
+  validateAltitudeBoundaries,
+  validateGroundWaterSiteInputs,
+  validateISO_8601Duration,
+  validateTemporalRange,
+  validateTimeCodes
 };

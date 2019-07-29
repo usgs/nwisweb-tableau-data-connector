@@ -9,6 +9,10 @@
 .request-data {
     margin: 10px 0px 30px 0px; 
 }
+
+.input-column{
+    max-width: 300px;
+}
 .input-tags-element {
     display: block;
     max-width: 300px;
@@ -33,4 +37,29 @@
 .input-desc {
     text-align: left;
     display: block;
+}
+
+.timezone-select{
+    display: block;
+    max-width: 120px;
+}
+
+.left-aligned-span{
+    max-width: 600px;
+    text-align: left;
+}
+.date-time-span{
+    min-width: max-width=500px;
+    display:inline-block;
+}
+.usa-input-custom-inline {
+    max-width: 300px; 
+    display: inline-block;
+    clear: both;
+}
+
+.optional{
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 0px;
 }

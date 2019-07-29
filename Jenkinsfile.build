@@ -6,11 +6,12 @@ pipeline {
     }
 
     parameters {
-        choice(choices: ['QA', 'prod'], description: 's3 bucket that the build will target', name: 'BUILD_DEST')
+        choice(choices: ['Test', 'QA', 'Beta', 'Production'], description: 's3 bucket that the build will target', name: 'BUILD_DEST')
         choice(choices: ['Snapshot', 'Release'], description: 'type of release', name: 'RELEASE_TYPE')
         choice(choices: ['minor', 'major', 'patch'], description: 'release version', name: 'RELEASE_VERSION')
         string(defaultValue: "", description: 'Specific Commit to build', name: 'COMMIT')
         string(defaultValue: "", description: 'Specific Tag to Build', name: 'TAG')
+        string(defaultValue: "master", description: 'Source Branch', name: 'BRANCH')
     }
 
     triggers {
@@ -18,15 +19,15 @@ pipeline {
     }
 
     stages {
-        stage('clean workspace'){
-         steps{
-            cleanWs()
-         }
+        stage('clean workspace') {
+            steps{
+                cleanWs()
+            }
         }
-          stage('checkout'){
+        stage('checkout') {
             steps {
                 script {
-                    buildSource = "refs/heads/master"
+                    buildSource = "refs/heads/${BRANCH}"
                     if ("${TAG}" != "") {
                         buildSource = "refs/tags/${TAG}"
                     }
@@ -60,44 +61,54 @@ pipeline {
                         versionChange = "${params.RELEASE_VERSION}"
                     }
                 }
-                
                 sh """
-                    echo "${versionChange}" >versionNum.txt
-                    docker build . --tag="dockerinstance"
-                    docker run --name nwisweb_data_connector_docker dockerinstance
+                    echo "${versionChange}" > versionType.txt
+                    cat versionType.txt
+                    docker stop nwisweb_data_connector_docker || true && docker rm nwisweb_data_connector_docker || true
+                    docker build . --tag="nwisweb_tableau_dockerinstance"
+                    docker run --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
                     pathtemplate=":usr/local/bin/nwisweb-tableau-data-connector/dist"
                     dockerinstanceid=\$( docker ps -aqf "name=nwisweb_data_connector_docker" )
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/package.json" $WORKSPACE
-                    docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/newVerNum.txt" $WORKSPACE
+                    docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/currVerNum.txt" $WORKSPACE
                     docker rm "\${dockerinstanceid}"
                 """
-
-                sshagent (credentials: ['wma-eto-eb-rsa']) {
+                withCredentials([usernamePassword(credentialsId: "NWISWEB-TABLEAU-READ-WRITE-TOKEN", usernameVariable: "GIT_USERNAME", passwordVariable: "GIT_PASSWORD")]) {
                     script {
                         if("${params.RELEASE_TYPE}" == "Release") {
                             sh """
-                                git add .
-                                git commit -m "automatic version number increment"
-                                git pull origin autoversion-test
-                                git tag `cat newVerNum.txt`
-                                git push -u origin HEAD:autoversion-test
+                                /usr/bin/git config credential.helper '/bin/echo -e "username=${GIT_USERNAME}\npassword=${GIT_PASSWORD}" | tee /dev/null'
+                                export GIT_USERNAME
+                                export GIT_PASSWORD
+                                echo Tagging build as `cat currVerNum.txt`
+                                echo Incrementing version number to `cat newVerNum.txt`
+                                git tag v`cat currVerNum.txt` 
                                 git push origin --tag
+                                git add package.json
+                                git commit -m "automatic version number increment"
+                                git pull origin ${params.BRANCH}
+                                git push -u origin HEAD:${params.BRANCH}
                             """
                         }                    
                     }
                 }
             }
         }
-        
         stage('send to S3') {
             steps {
                 script {
-                    if("${params.BUILD_DEST}" == "QA") {
+                    if("${params.BUILD_DEST}" == "Beta") {
                         targetDomain = "s3://nwisweb-tableau-wdc-beta-website"
                     }
-                    else {
-                        targetDomain = "this would be the production site"
+                    else if("${params.BUILD_DEST}" == "Production") {
+                        targetDomain = "s3://nwisweb-tableau-wdc-prod-website"
+                    }
+                    else if("${params.BUILD_DEST}" == "QA") {
+                        targetDomain = "s3://nwisweb-tableau-wdc-qa-website"
+                    }
+                    else if("${params.BUILD_DEST}" == "Test") {
+                        targetDomain = "s3://nwisweb-tableau-wdc-test-website"
                     }
                 }
                 sh """

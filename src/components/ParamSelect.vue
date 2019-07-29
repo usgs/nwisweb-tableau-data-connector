@@ -9,17 +9,15 @@
       ></ToolTip>
     </span>
     <span>
-      <input
-        id="paraminput"
-        v-model="param"
-        class="usa-input usa-input-custom"
-        list="csparams"
-        type="text"
-      />
-      <datalist id="csparams"> </datalist>
+      <CustomAutoComplete
+        v-on:valueupdate="updateParamInput"
+        v-on:clear="updateParamInput"
+        :source="paramData"
+        input-class="usa-input usa-input-custom"
+      ></CustomAutoComplete>
     </span>
     <br />
-    <button class="usa-button usa-button-custom" v-on:click="addParam">
+    <button class="usa-button usa-button-custom" v-on:click="addParams">
       Add Parameter
     </button>
     <h6 class="selected-tags">Selected parameters</h6>
@@ -49,12 +47,14 @@ import Vue from "vue";
 import VueTags from "vue-tags";
 import ToolTip from "./ToolTip";
 import { notify } from "../notifications.js";
+import CustomAutoComplete from "../components/CustomAutoComplete";
 Vue.component("input-tags", VueTags);
 
 export default {
   name: "ParamSelect",
   components: {
-    ToolTip
+    ToolTip,
+    CustomAutoComplete
   },
   data: function() {
     return {
@@ -67,53 +67,74 @@ export default {
     };
   },
   methods: {
+    /*
+      an async function to fetch paramData after the page has loaded so the
+       long loading time for the params json doesn't slow dont UI loading
+
+    */
     fetchparams: async function() {
       let localParamData = await import("../fetchedValues/paramTypes.json");
-      let paramList = [];
+      this.paramData = [];
       Object.keys(localParamData).forEach(key => {
-        paramList.push(localParamData[key]);
+        if ("name" in localParamData[key] && "id" in localParamData[key]) {
+          this.paramData.push({
+            id: localParamData[key]["id"],
+            name: localParamData[key]["name"]
+          });
+        }
       });
-      this.paramData = paramList;
       this.paramData.forEach(element => {
         this.paramList.push(element["id"]);
       });
-      this.populateParamList();
       this.loadedParamData = true;
-    },
-    populateParamList: function() {
-      let dropDown = document.getElementById("csparams");
-      this.paramData.forEach(element => {
-        let option = document.createElement("option");
-        option.text = element["name"];
-        option.value = element["id"];
-        option.title = element["name"];
-        dropDown.appendChild(option);
-      });
     },
     commitParamList: function(value) {
       this.$store.commit("changeParamCodes", value);
     },
-    addParam: function() {
+    /*
+      Iterates over the comma separated input parameters and adds each
+       parameter to the list of selected parameters if it's a valid selection
+
+    */
+    addParams: function() {
+      if (this.param == "") {
+        notify(`no param code entered`);
+        return;
+      }
+
+      let params = this.param.split(",");
+      params.forEach(param => {
+        this.addParam(param.replace(/\s/g, ""));
+      });
+    },
+    addParam: function(param) {
       if (!this.loadedParamData) {
         notify("Please wait for param data to load");
         return;
       }
-      if (this.paramList.includes(this.param)) {
-        if (!this.selectedParams.includes(this.param)) {
+      if (this.paramList.includes(param)) {
+        if (!this.selectedParams.includes(param)) {
           if (this.selectedParams.length < 100) {
-            this.selectedParams.push(this.param);
+            this.selectedParams.push(param);
           } else {
-            notify("Maximum number of parameters already selected.");
+            notify(`${param}: Maximum number of parameters already selected.`);
           }
         } else {
-          notify("parameter selected already in selection.");
+          notify(`${param}: parameter selected already in selection.`);
         }
       } else {
-        notify("invalid param code entered");
+        notify(`${param}: invalid param code entered`);
       }
     },
     removeElement: function(index) {
       Vue.delete(this.selectedParams, index);
+    },
+    updateParamInput: function(newParamInput) {
+      if (newParamInput !== null && typeof newParamInput !== "undefined") {
+        this.param = newParamInput;
+      } else {
+        this.param = "";
+      }
     }
   },
   mounted() {
