@@ -617,7 +617,7 @@ test("generateDate time correctly generates datetimes with timezones when given 
 
 test("generateMultiURL correctly generates multiple URLS with at most 100 parameters per URL", () => {
   const connectionData = {
-    paramNums: Array.from({ length: 250 }, (x, i) => i), // 1, 2, 3, ... 249
+    paramNums: Array.from({ length: 250 }, (element, index) => index), // 1, 2, 3, ... 249
     hydroCode: "02070010",
     agencyCodeActive: false,
     siteTypeListActive: false,

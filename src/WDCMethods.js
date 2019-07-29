@@ -1,4 +1,4 @@
-import { get } from "./utils.js";
+import { get, multiGet } from "./utils.js";
 import { locationMode } from "./enums.js";
 import { notify } from "./notifications.js";
 import { parse, toSeconds } from "iso8601-duration";
@@ -508,7 +508,40 @@ const getSchema = schemaCallback => {
       })
       .catch(err => notify(err));
   } else {
+    let urlList = generateMultiURL(connectionData);
+    multiGet(urlList)
+      .then(value => {
+        alert(value.length);
+
+        let JSONValue = value.map(element => {
+          if (typeof element === "string") {
+            return JSON.parse(element);
+          } else {
+            return element;
+          }
+        });
+
+        schemaCallback(
+          generateSchemaTablesFromData(combineJSONList(JSONValue))
+        );
+      })
+      .catch(err => notify(err));
   }
+};
+
+/*
+This function amalgmates any number of input data JSON into single JSON, Modifies the first JSON in the list to become the result, and returns a reference to this JSON. Global
+metadata on all JSON except for the first is assumed to be the same as the first and is not preserved, as this function is only intended to be used with batch queries specifically for the 
+purpose of bypassing the limit of 100 parameters on the instantaneous values services. This function must be called with a list of data JSON of length 2 or greater. 
+*/
+const combineJSONList = JSONList => {
+  let result = JSONList[0];
+  JSONList.slice(1).forEach(element => {
+    element.value.timeSeries.forEach(series => {
+      JSONList[0].value.timeSeries.push(series);
+    });
+  });
+  return result;
 };
 
 export {
