@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { getData, getSchema } from "../WDCMethods.js";
+import { getData, getSchema, generateURL } from "../WDCMethods.js";
 import { validateFormInputs } from "../inputValidation.js";
 import StateSelect from "../components/StateSelect";
 import CountySelect from "../components/CountySelect";
@@ -184,6 +184,8 @@ export default {
         temporalRangeData: this.$store.getters.temporalRangeData,
         currentDateTime: moment().toISOString()
       };
+
+      alert(generateURL(connectionData));
 
       if (typeof tableau.connectionData === "string") {
         tableau.connectionData = JSON.stringify(connectionData);
