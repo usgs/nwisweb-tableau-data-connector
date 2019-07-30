@@ -11,7 +11,12 @@ localVue.component("input-tags", VueTags);
 
 jest.mock("../../src/fetchedValues/counties.json", () => {
   return [
-    {"country_cd":"US","state_cd":"12","county_cd":"003","county_nm":"Baker County"},
+    {
+      country_cd: "US",
+      state_cd: "12",
+      county_cd: "003",
+      county_nm: "Baker County"
+    },
     {
       country_cd: "US",
       state_cd: "44",
