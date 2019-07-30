@@ -1,5 +1,7 @@
 To improve test coverage of Vue components
 
+Change tests to use mocks of all fetched data
+
 Proposed Tests:
 
     CountySelect.vue
@@ -7,11 +9,8 @@ Proposed Tests:
         Test getCountyNameFromCode() by providing county code and checking if county name is retrieved
 
     AquiferInputs.vue
-	
-
-    Main.vue
-        fetchData() loads data into state data and param data
-        initializeWebDataConnector() check that myConnector is initialized properly
+        Test getLocAquifers() by supplying state name and checking that local aquifers are retrieved
+        Test verifyLocAquifers() by providing local aquifer code and checking if local aquifer name is retrieved
 
     SiteTypeList
-	getSiteTypeNameFromCode() check same as local aquifer
+	    Test getSiteTypeNameFromCode() by providing site type code and checking if site type name is retrieved
