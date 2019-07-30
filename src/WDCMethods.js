@@ -72,8 +72,14 @@ Takes a JSON and returns a table formatted in accordance with the schema provide
 const formatJSONAsTable = (currentDateTime, data, tableName) => {
   if (tableName == "metadata") {
     let tableData = [];
+    let queryURL = "";
     const DOI = "http://dx.doi.org/10.5066/F7P55KJN";
-    let queryURL = data.value.queryInfo.queryURL;
+
+    if (!(data.value.queryInfo.multi === true)) {
+      queryURL = data.value.queryInfo.queryURL;
+    } else {
+      queryURL = data.value.queryInfo.queryURL.join(";");
+    }
     let queryTime = currentDateTime;
     data.value.queryInfo.note.forEach(element => {
       if (element["title"] === "requestDT") {
@@ -449,28 +455,52 @@ const getData = (table, doneCallback) => {
     connectionData = tableau.connectionData;
   }
   if (!connectionData.cached) {
-    let url = generateURL(connectionData, false);
+    if (connectionData.paramNums.length <= 100) {
+      let url = generateURL(connectionData, false);
 
-    get(url, "json").then(function(value) {
-      if (typeof value === "string") {
-        connectionData.cachedData = JSON.parse(value);
-      } else {
-        connectionData.cachedData = value;
-      }
-      connectionData.cached = true;
-      if (typeof tableau.connectionData === "string") {
-        // this update is only necesarry if we're dealing with connection data as a string
-        tableau.connectionData = JSON.stringify(connectionData);
-      }
-      table.appendRows(
-        formatJSONAsTable(
-          connectionData.currentDateTime,
-          connectionData.cachedData,
-          table.tableInfo.id
-        )
-      );
-      doneCallback();
-    });
+      get(url, "json").then(function(value) {
+        if (typeof value === "string") {
+          connectionData.cachedData = JSON.parse(value);
+        } else {
+          connectionData.cachedData = value;
+        }
+        connectionData.cached = true;
+        if (typeof tableau.connectionData === "string") {
+          // this update is only necessary if we're dealing with connection data as a string
+          tableau.connectionData = JSON.stringify(connectionData);
+        }
+        table.appendRows(
+          formatJSONAsTable(
+            connectionData.currentDateTime,
+            connectionData.cachedData,
+            table.tableInfo.id
+          )
+        );
+        doneCallback();
+      });
+    } else {
+      let urlList = generateMultiURL(connectionData);
+      multiGet(urlList)
+        .then(value => {
+          let JSONValue = value.map(element => {
+            if (typeof element === "string") {
+              return JSON.parse(element);
+            } else {
+              return element;
+            }
+          });
+          connectionData.cachedData = combineJSONList(JSONValue);
+          table.appendRows(
+            formatJSONAsTable(
+              connectionData.currentDateTime,
+              connectionData.cachedData,
+              table.tableInfo.id
+            )
+          );
+          doneCallback();
+        })
+        .catch(err => notify(err));
+    }
   } else {
     table.appendRows(
       formatJSONAsTable(
@@ -531,14 +561,17 @@ const getSchema = schemaCallback => {
 
 /*
 This function amalgmates any number of input data JSON into single JSON, Modifies the first JSON in the list to become the result, and returns a reference to this JSON. Global
-metadata on all JSON except for the first is assumed to be the same as the first and is not preserved, as this function is only intended to be used with batch queries specifically for the 
+metadata on all JSON except for the first JSON (with the exception of query URL) is assumed to be the same as the first and is not preserved, as this function is only intended to be used with batch queries specifically for the 
 purpose of bypassing the limit of 100 parameters on the instantaneous values services. This function must be called with a list of data JSON of length 2 or greater. 
 */
 const combineJSONList = JSONList => {
   let result = JSONList[0];
+  result.value.queryInfo.multi = true;
+  result.value.queryInfo.queryURL = [result.value.queryInfo.queryURL];
   JSONList.slice(1).forEach(element => {
     element.value.timeSeries.forEach(series => {
       JSONList[0].value.timeSeries.push(series);
+      result.value.queryInfo.queryURL.push(element.value.queryInfo.queryURL);
     });
   });
   return result;
