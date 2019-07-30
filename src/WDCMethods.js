@@ -401,12 +401,12 @@ const generateSchemaTablesFromData = data => {
       cols.push({
         id: "siteNum",
         alias: "siteNum",
-        dataType: tableau.dataTypeEnum.float
+        dataType: tableau.dataTypeEnum.string
       });
       cols.push({
         id: "paramCode",
         alias: "paramCode",
-        dataType: tableau.dataTypeEnum.float
+        dataType: tableau.dataTypeEnum.string
       });
       cols.push({
         id: "agencyCode",
@@ -416,12 +416,12 @@ const generateSchemaTablesFromData = data => {
       cols.push({
         id: "statCode",
         alias: "statCode",
-        dataType: tableau.dataTypeEnum.float
+        dataType: tableau.dataTypeEnum.string
       });
       cols.push({
         id: "methodCode",
         alias: "methodCode",
-        dataType: tableau.dataTypeEnum.float
+        dataType: tableau.dataTypeEnum.string
       });
       cols.push({
         id: "methodDescription",
