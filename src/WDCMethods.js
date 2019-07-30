@@ -455,6 +455,7 @@ const getData = (table, doneCallback) => {
     connectionData = tableau.connectionData;
   }
   if (!connectionData.cached) {
+    // if we are given 100 or less parameter codes, generate a single query
     if (connectionData.paramNums.length <= 100) {
       let url = generateURL(connectionData, false);
 
@@ -479,6 +480,7 @@ const getData = (table, doneCallback) => {
         doneCallback();
       });
     } else {
+      // otherwise, we generate as many queries as necessary.
       let urlList = generateMultiURL(connectionData);
       multiGet(urlList)
         .then(value => {
@@ -541,8 +543,6 @@ const getSchema = schemaCallback => {
     let urlList = generateMultiURL(connectionData);
     multiGet(urlList)
       .then(value => {
-        alert(value.length);
-
         let JSONValue = value.map(element => {
           if (typeof element === "string") {
             return JSON.parse(element);
