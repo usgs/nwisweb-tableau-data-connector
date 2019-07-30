@@ -2,8 +2,18 @@
 
 cd usr/local/bin/nwisweb-tableau-data-connector
 versionType=`cat versionType.txt`
+destination=`cat destination.txt`
 npm install
 npm ls --depth 0 --json | jq '.version' | sed -e 's/^"//' -e 's/"$//' > currVerNum.txt
-echo destination.txt
+if [ "$destination" = "Test" ] || [ "$destination" = "Test" ]
+then
+npm run injectAnalytics
+else
+echo "Development Build: Not Injecting Analytics"
+fi
+
+
+
+
 npm run production-build
 npm --no-git-tag-version version $versionType --force > newVerNum.txt
