@@ -43,7 +43,13 @@
         v-model="endDateTime"
         ><input class="usa-input usa-input-custom"
       /></VueCtkDateTimePicker>
-      <label>Time Zone</label>
+      <span class="input-desc">
+        <label>Time Zone</label>
+        <ToolTip
+          hint="This field specifies UTC offset. Timezone offset information is available here."
+          url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
+        ></ToolTip>
+      </span>
 
       <select
         v-model="timeZone"
@@ -55,7 +61,7 @@
     <span class="input-desc">
       <label>Modified Since</label>
       <ToolTip
-        hint="This parameterizes the query to return data only from sites which updated their values within a specified duration in the past. A link to a detailed explanation of the ISO 8601 duration format specification is available here. The format should look like P&ltdate&gtT&lttime&gt with the caveat that P must always be present and T must only be present if it is not the last character"
+        hint="This field parameterizes the query to return data only from sites which updated their values within a specified duration in the past. A link to a detailed explanation of the ISO 8601 duration format specification is available here. The format should look like P&ltdate&gtT&lttime&gt with the caveat that P must always be present and T must only be present if it is not the last character"
         url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
       ></ToolTip>
     </span>
@@ -83,7 +89,7 @@ export default {
   name: "TemporalRange",
   data: function() {
     return {
-      durationCode: "",
+      durationCode: "P1D",
       startDateTime: "",
       timeZone: "",
       endDateTime: "",
