@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/69b4de1c8467444ab8e956083f904a72)](https://www.codacy.com/app/rsreenivasam-usgs/nwisweb-tableau-data-connector?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=usgs/nwisweb-tableau-data-connector&amp;utm_campaign=Badge_Grade)
+
 # NWISWeb Tableau Data Connector
 
 This system is designed to be used with the Web Data Connector feature of Tableau Desktop. It allows for quickly parameterizing queries to the NWISWeb Instantaneous values services, and supplying the resulting data to Tableau in a user-friendly format. This project is in active development. 

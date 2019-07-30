@@ -8,9 +8,11 @@
     "lint": "vue-cli-service lint --ext .js,.vue",
     "fetch": "node scripts/fetchParams.js",
     "production-build": "node scripts/fetchParams.js && vue-cli-service test:unit && vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "test-with-coverage": "jest --coverage && cat ./coverage/lcov.info | codacy-coverage"
   },
   "dependencies": {
+    "codacy-coverage": "^3.4.0",
     "core-js": "^2.6.5",
     "iso8601-duration": "^1.2.0",
     "moment": "^2.24.0",
