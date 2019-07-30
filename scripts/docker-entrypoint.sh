@@ -7,7 +7,7 @@ npm install
 npm ls --depth 0 --json | jq '.version' | sed -e 's/^"//' -e 's/"$//' > currVerNum.txt
 if [ "$destination" = "Test" ] || [ "$destination" = "Test" ]
 then
-npm run injectAnalytics
+npm run productionAnalytics
 echo "Production Build: Injecting Analytics"
 else
 echo "Development Build: Not Injecting Analytics"
