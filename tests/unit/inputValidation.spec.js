@@ -25,17 +25,63 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(Notifications);
 
-jest.mock("../../src/fetchedValues/states.json", () => {
-  return { Montana: "MT", Michigan: "MI", "Rhode Island": "RI" };
+jest.mock("../../src/fetchedValues/states.json", () => ({ Montana: "MT" }), {
+  virtual: true
 });
 
-jest.mock("../../src/fetchedValues/agency.json", () => {
-  return [{ agency_cd: "agencyA" }];
+jest.mock(
+  "../../src/fetchedValues/agency.json",
+  () => {
+    return [{ agency_cd: "agencyA" }];
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  "../../src/fetchedValues/siteTypes.json",
+  () => {
+    return [{ site_tp_cd: "validSiteType" }];
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  "../../src/fetchedValues/counties.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  "../../src/fetchedValues/locAquifer.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
+
+jest.mock("../../src/fetchedValues/fips.json", () => ({}), { virtual: true });
+
+jest.mock("../../src/fetchedValues/aquiferAreas.json", () => ({}), {
+  virtual: true
 });
 
-jest.mock("../../src/fetchedValues/siteTypes.json", () => {
-  return [{ site_tp_cd: "validSiteType" }];
-});
+jest.mock(
+  "../../src/fetchedValues/timezones.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  "../../src/fetchedValues/paramTypes.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
 
 describe("Main", () => {
   let store;

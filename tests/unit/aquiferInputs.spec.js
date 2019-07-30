@@ -9,31 +9,36 @@ localVue.use(Vuex);
 localVue.use(Notifications);
 localVue.component("input-tags", VueTags);
 
-jest.mock("../../src/fetchedValues/locAquifer.json", () => {
-  return [
-    { state_cd: "01", aqfr_cd: "100CNZC", aqfr_nm: "Cenozoic Erathem" },
-    {
-      state_cd: "01",
-      aqfr_cd: "110QRNR",
-      aqfr_nm: "Quaternary System"
-    },
-    {
-      state_cd: "01",
-      aqfr_cd: "110QRRT",
-      aqfr_nm: "Quaternary-Tertiary Systems"
-    },
-    { state_cd: "26", aqfr_cd: "337BERE", aqfr_nm: "Berea Sandstone" },
-    { state_cd: "26", aqfr_cd: "337CLDR", aqfr_nm: "Coldwater Shale" },
-    { state_cd: "26", aqfr_cd: "337ELSR", aqfr_nm: "Ellsworth Shale" }
-  ];
+jest.mock(
+  "../../src/fetchedValues/locAquifer.json",
+  () => {
+    return [
+      { state_cd: "01", aqfr_cd: "100CNZC", aqfr_nm: "Cenozoic Erathem" },
+      {
+        state_cd: "01",
+        aqfr_cd: "110QRNR",
+        aqfr_nm: "Quaternary System"
+      },
+      {
+        state_cd: "01",
+        aqfr_cd: "110QRRT",
+        aqfr_nm: "Quaternary-Tertiary Systems"
+      }
+    ];
+  },
+  { virtual: true }
+);
+
+jest.mock("../../src/fetchedValues/states.json", () => ({ Alabama: "AL" }), {
+  virtual: true
 });
 
-jest.mock("../../src/fetchedValues/states.json", () => {
-  return { Alabama: "AL", Michigan: "MI" };
+jest.mock("../../src/fetchedValues/fips.json", () => ({ Alabama: "01" }), {
+  virtual: true
 });
 
-jest.mock("../../src/fetchedValues/fips.json", () => {
-  return { Alabama: "01", Michigan: "26" };
+jest.mock("../../src/fetchedValues/aquiferAreas.json", () => ({}), {
+  virtual: true
 });
 
 describe("getLocAquifers", () => {
