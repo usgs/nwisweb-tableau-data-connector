@@ -9,6 +9,33 @@ localVue.use(Vuex);
 localVue.use(Notifications);
 localVue.component("input-tags", VueTags);
 
+jest.mock("../../src/fetchedValues/locAquifer.json", () => {
+  return [
+    { state_cd: "01", aqfr_cd: "100CNZC", aqfr_nm: "Cenozoic Erathem" },
+    {
+      state_cd: "01",
+      aqfr_cd: "110QRNR",
+      aqfr_nm: "Quaternary System"
+    },
+    {
+      state_cd: "01",
+      aqfr_cd: "110QRRT",
+      aqfr_nm: "Quaternary-Tertiary Systems"
+    },
+    { state_cd: "26", aqfr_cd: "337BERE", aqfr_nm: "Berea Sandstone" },
+    { state_cd: "26", aqfr_cd: "337CLDR", aqfr_nm: "Coldwater Shale" },
+    { state_cd: "26", aqfr_cd: "337ELSR", aqfr_nm: "Ellsworth Shale" }
+  ];
+});
+
+jest.mock("../../src/fetchedValues/states.json", () => {
+  return { Alabama: "AL", Michigan: "MI" };
+});
+
+jest.mock("../../src/fetchedValues/fips.json", () => {
+  return { Alabama: "01", Michigan: "26" };
+});
+
 describe("getLocAquifers", () => {
   let store;
   test("test getLocAquifers with valid state name", () => {
@@ -24,32 +51,21 @@ describe("getLocAquifers", () => {
       propsData: {},
       stubs: ["input-tags"]
     });
+
     let locAquifers = [
+      { state_cd: "01", aqfr_cd: "100CNZC", aqfr_nm: "Cenozoic Erathem" },
       {
-        aqfr_cd: "112EVRS",
-        aqfr_nm: "Everson Interstade of Fraser Glaciation",
-        state_cd: "96"
+        state_cd: "01",
+        aqfr_cd: "110QRNR",
+        aqfr_nm: "Quaternary System"
       },
-      { aqfr_cd: "112GLCV", aqfr_nm: "Glacio-Fluviatile", state_cd: "96" },
       {
-        aqfr_cd: "112SUMS",
-        aqfr_nm: "Sumas Drift of Fraser Glaciation",
-        state_cd: "96"
-      },
-      { aqfr_cd: "BEDROCK", aqfr_nm: "Bedrock", state_cd: "96" }
+        state_cd: "01",
+        aqfr_cd: "110QRRT",
+        aqfr_nm: "Quaternary-Tertiary Systems"
+      }
     ];
-    jest.mock(
-      "../../fetchedValues/locAquifer.json",
-      () => ({
-        locAquiferJSON: [
-          { state_cd: "01", aqfr_cd: "100CNZC", aqfr_nm: "Cenozoic Erathem" },
-          { state_cd: "01", aqfr_cd: "110QRNR", aqfr_nm: "Quaternary System" },
-          { state_cd: "01", aqfr_cd: "110QRRT", aqfr_nm: "Quaternary-Tertiary Systems" }
-        ]
-      }),
-      { virtual: true }
-    );
-    expect(wrapper.vm.getLocAquifers("United States of America")).toEqual(locAquifers);
+    expect(wrapper.vm.getLocAquifers("Alabama")).toEqual(locAquifers);
   });
 
   test("test getLocAquifers with invalid state name", () => {
@@ -83,8 +99,8 @@ describe("verifyLocAqName", () => {
       propsData: {},
       stubs: ["input-tags"]
     });
-    let locAqCode = "05:112TRRC";
-    expect(wrapper.vm.verifyLocAqName(locAqCode)).toEqual("05:112TRRC");
+    let locAqCode = "01:110QRRT";
+    expect(wrapper.vm.verifyLocAqName(locAqCode)).toEqual(locAqCode);
   });
 
   test("test verifyLocAqName with invalid local aquifer code", () => {
@@ -101,6 +117,6 @@ describe("verifyLocAqName", () => {
       stubs: ["input-tags"]
     });
     expect(wrapper.vm.verifyLocAqName("99:BADCODE")).toEqual("Invalid.");
-    expect(wrapper.vm.verifyLocAqName("05:ABCDEFGH")).toEqual("Invalid.");
+    expect(wrapper.vm.verifyLocAqName("26:ABCDEFGH")).toEqual("Invalid.");
   });
 });

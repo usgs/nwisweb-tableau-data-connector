@@ -9,6 +9,49 @@ localVue.use(Vuex);
 localVue.use(Notifications);
 localVue.component("input-tags", VueTags);
 
+jest.mock("../../src/fetchedValues/counties.json", () => {
+  return [
+    {
+      country_cd: "US",
+      state_cd: "44",
+      county_cd: "001",
+      county_nm: "Bristol County"
+    },
+    {
+      country_cd: "US",
+      state_cd: "44",
+      county_cd: "003",
+      county_nm: "Kent County"
+    },
+    {
+      country_cd: "US",
+      state_cd: "44",
+      county_cd: "005",
+      county_nm: "Newport County"
+    },
+    {
+      country_cd: "US",
+      state_cd: "44",
+      county_cd: "007",
+      county_nm: "Providence County"
+    },
+    {
+      country_cd: "US",
+      state_cd: "44",
+      county_cd: "009",
+      county_nm: "Washington County"
+    }
+  ];
+});
+
+jest.mock("../../src/fetchedValues/states.json", () => {
+  return { Alabama: "AL", Michigan: "MI", "Rhode Island": "RI" };
+});
+
+jest.mock("../../src/fetchedValues/fips.json", () => {
+  return { Alabama: "01", Michigan: "26", "Rhode Island": "09" };
+});
+
 describe("getCounties", () => {
   let store;
   test("test getCounties with valid state name", () => {

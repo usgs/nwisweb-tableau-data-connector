@@ -6,10 +6,12 @@ Proposed Tests:
         Test getCounties() by supplying state name and checking that counties are retrieved
         Test getCountyNameFromCode() by providing county code and checking if county name is retrieved
 
+    AquiferInputs.vue
+	
+
     Main.vue
-        browserWarning() sets off alert
         fetchData() loads data into state data and param data
         initializeWebDataConnector() check that myConnector is initialized properly
-    
-    ParamSelect.vue
-        fetchParams() loads data into paramList
+
+    SiteTypeList
+	getSiteTypeNameFromCode() check same as local aquifer
