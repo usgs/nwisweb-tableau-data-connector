@@ -90,7 +90,7 @@ export default {
         return;
       }
 
-      if (!(this.getSiteTypeNameFromCode(siteType) == "invalid")) {
+      if (!(this.getSiteTypeNameFromCode(siteType) == "Invalid.")) {
         if (!this.siteTypeList.includes(siteType)) {
           this.siteTypeList.push(siteType);
         } else {
@@ -104,7 +104,7 @@ export default {
       Vue.delete(this.siteTypeList, index);
     },
     getSiteTypeNameFromCode: function(siteTypeCode) {
-      let result = "invalid";
+      let result = "Invalid.";
       siteTypes.forEach(element => {
         if (element["site_tp_cd"] == siteTypeCode) {
           result = element["site_tp_ln"];
