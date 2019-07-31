@@ -1,18 +1,12 @@
-
-
-
-
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const parse = require('csv-parse/lib/sync');
 const fs = require('fs');
 
-
-
 const rdbToJSON = (rdb) => {
-  let lines = rdb.split('\n');
+  let lines = rdb.split("\n");
   lines.splice(0,7);
   lines.splice(1,1); // quick way to remove unnecesarry lines to make the rdb readable as rdb
-  rdb =  lines.join('\n');
+  rdb =  lines.join("\n");
     let data =    parse(rdb, {
         columns: true,
         skip_empty_lines: true,
@@ -66,7 +60,7 @@ let locAquiferString = "";
 
 
 Promise.all(
-  [get("https://help.waterdata.usgs.gov/code/site_tp_query?fmt=rdb"),          
+  get("https://help.waterdata.usgs.gov/code/site_tp_query?fmt=rdb"),
   get("https://help.waterdata.usgs.gov/code/county_query?fmt=rdb"),
 get("https://help.waterdata.usgs.gov/code/agency_cd_query?fmt=rdb"),
 get("https://help.waterdata.usgs.gov/code/aqfr_cd_query?fmt=rdb")]
