@@ -549,6 +549,7 @@ const validateFormInputs = instance => {
   );
   if (!(temporalRangeStatus === true)) {
     notify(temporalRangeStatus);
+    return false;
   }
   instance.$store.commit(
     "changeCoordinates",
