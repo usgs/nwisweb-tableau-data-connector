@@ -86,6 +86,7 @@ pipeline {
                                 git tag v`cat currVerNum.txt` 
                                 git push origin --tag
                                 git add package.json
+                                git add code.json
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
                                 git push -u origin HEAD:${params.BRANCH}
