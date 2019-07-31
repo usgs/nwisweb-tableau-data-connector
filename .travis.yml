@@ -2,7 +2,5 @@ language: node_js
 
 install:
   npm install
-
-build:
-  script:
-    npm run build
+  npm run fetch
+  npm run test:unit
