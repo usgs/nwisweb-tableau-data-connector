@@ -60,11 +60,13 @@ let locAquiferString = "";
 
 
 Promise.all(
-  get("https://help.waterdata.usgs.gov/code/site_tp_query?fmt=rdb"),
-  get("https://help.waterdata.usgs.gov/code/county_query?fmt=rdb"),
-get("https://help.waterdata.usgs.gov/code/agency_cd_query?fmt=rdb"),
-get("https://help.waterdata.usgs.gov/code/aqfr_cd_query?fmt=rdb")]
-  ).then((value)=>{
+  [
+    get("https://help.waterdata.usgs.gov/code/site_tp_query?fmt=rdb"),
+    get("https://help.waterdata.usgs.gov/code/county_query?fmt=rdb"),
+    get("https://help.waterdata.usgs.gov/code/agency_cd_query?fmt=rdb"),
+    get("https://help.waterdata.usgs.gov/code/aqfr_cd_query?fmt=rdb")
+  ]
+).then((value)=>{
 siteString = value[0];
 countyString = value[1];
 agencyString = value[2];
