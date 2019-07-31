@@ -1,8 +1,8 @@
 language: node_js
 
 install:
-  node -v
-  npm -v
-  npm install
-  npm run fetch
-  npm run test:unit
+  - node -v
+  - npm -v
+  - npm install
+  - npm run fetch
+  - npm run test:unit
