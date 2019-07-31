@@ -8,17 +8,19 @@ const moment = require("moment");
 
 /*
 given the table.variable.variableDescription given as an argument to the getdata methods, this method
-extracts the appropriate time series. 
+extracts the appropriate time series. (note that a timeseries may contain
+  multiple value series)
 */
 const getTimeSeriesByID = (timeSeries, tableName) => {
   let resultSeries = {};
   let found = false;
   timeSeries.forEach(series => {
     if (
-      tableName ==
-      `${sanitizeVariableName(series.variable.variableDescription)}_${
-        series.sourceInfo.siteCode[0].value
-      }`
+      tableName.startsWith(
+        `${sanitizeVariableName(series.variable.variableDescription)}_${
+          series.sourceInfo.siteCode[0].value
+        }`
+      )
     ) {
       found = true;
       resultSeries = series;
@@ -26,6 +28,35 @@ const getTimeSeriesByID = (timeSeries, tableName) => {
   });
   if (found) {
     return resultSeries;
+  } else {
+    throw new Error("Schema Mismatch Error: Missing Table");
+  }
+};
+
+/*
+This function gets a specific value series by its ID (note that a timeseries may contain
+  multiple value series)
+*/
+const getValueSeriesByID = (timeSeries, tableName) => {
+  let resultValues = [];
+  let found = false;
+
+  timeSeries.forEach(series => {
+    series.values.forEach((valueSeries, index) => {
+      if (
+        tableName ==
+        `${sanitizeVariableName(series.variable.variableDescription)}_${
+          series.sourceInfo.siteCode[0].value
+        }_${index}`
+      ) {
+        found = true;
+        resultValues = valueSeries;
+      }
+    });
+  });
+
+  if (found) {
+    return resultValues;
   } else {
     throw new Error("Schema Mismatch Error: Missing Table");
   }
@@ -97,26 +128,28 @@ const formatJSONAsTable = (currentDateTime, data, tableName) => {
   let tableData = [];
   let timeSeries = data.value.timeSeries;
   let tableSeries = getTimeSeriesByID(timeSeries, tableName);
+  let valueSeries = getValueSeriesByID(timeSeries, tableName);
   let paramIndices = Array.from(tableSeries.values[0].value.keys());
   let qualDescriptionLookup = constructQualTable(tableSeries);
 
   paramIndices.forEach(i => {
     let qualList = [];
-    tableSeries.values[0].value[i].qualifiers.forEach(qualifier => {
+    valueSeries.value[i].qualifiers.forEach(qualifier => {
       qualList.push(generateQualDescription(qualDescriptionLookup, qualifier));
     });
     let newEntry = {
-      dateTime: reformatTimeString(tableSeries.values[0].value[i].dateTime),
+      dateTime: reformatTimeString(valueSeries.value[i].dateTime),
       latitude: tableSeries.sourceInfo.geoLocation.geogLocation.latitude,
       longitude: tableSeries.sourceInfo.geoLocation.geogLocation.longitude,
       units: tableSeries.variable.unit.unitCode,
       qualifier: qualList.join(","),
-      [tableName]: tableSeries.values[0].value[i].value,
+      [tableName]: valueSeries.value[i].value,
       siteNum: tableSeries.sourceInfo.siteCode[0].value,
       paramCode: tableSeries.variable.variableCode[0].value,
       agencyCode: tableSeries.sourceInfo.siteCode[0].agencyCode,
       statCode: tableSeries.variable.options.option[0].optionCode,
-      methodCode: tableSeries.values[0].method[0].methodID
+      methodCode: valueSeries.method[0].methodID,
+      methodDescription: valueSeries.method[0].methodDescription
     };
     tableData.push(newEntry);
   });
@@ -372,72 +405,79 @@ const generateSchemaTablesFromData = data => {
   //here the various tables returned by the query are added to the schema
   let timeSeries = data.value.timeSeries;
   timeSeries.forEach(series => {
-    let cols = [];
-    cols.push({
-      id: "dateTime",
-      alias: "dateTime",
-      dataType: tableau.dataTypeEnum.datetime
-    });
-    cols.push({
-      id: "latitude",
-      alias: "latitude",
-      dataType: tableau.dataTypeEnum.float
-    });
-    cols.push({
-      id: "longitude",
-      alias: "longitude",
-      dataType: tableau.dataTypeEnum.float
-    });
-    cols.push({
-      id: "units",
-      alias: "units",
-      dataType: tableau.dataTypeEnum.string
-    });
-    cols.push({
-      id: "qualifier",
-      alias: "qualifier",
-      dataType: tableau.dataTypeEnum.string
-    });
-    cols.push({
-      id: "siteNum",
-      alias: "siteNum",
-      dataType: tableau.dataTypeEnum.float
-    });
-    cols.push({
-      id: "paramCode",
-      alias: "paramCode",
-      dataType: tableau.dataTypeEnum.float
-    });
-    cols.push({
-      id: "agencyCode",
-      alias: "agencyCode",
-      dataType: tableau.dataTypeEnum.string
-    });
-    cols.push({
-      id: "statCode",
-      alias: "statCode",
-      dataType: tableau.dataTypeEnum.float
-    });
-    cols.push({
-      id: "methodCode",
-      alias: "methodCode",
-      dataType: tableau.dataTypeEnum.float
-    });
-    let column = `${sanitizeVariableName(
-      series.variable.variableDescription
-    )}_${series.sourceInfo.siteCode[0].value}`; // this assumes there is only 1 sitecode
+    series.values.forEach((value, index) => {
+      let cols = [];
+      cols.push({
+        id: "dateTime",
+        alias: "dateTime",
+        dataType: tableau.dataTypeEnum.datetime
+      });
+      cols.push({
+        id: "latitude",
+        alias: "latitude",
+        dataType: tableau.dataTypeEnum.float
+      });
+      cols.push({
+        id: "longitude",
+        alias: "longitude",
+        dataType: tableau.dataTypeEnum.float
+      });
+      cols.push({
+        id: "units",
+        alias: "units",
+        dataType: tableau.dataTypeEnum.string
+      });
+      cols.push({
+        id: "qualifier",
+        alias: "qualifier",
+        dataType: tableau.dataTypeEnum.string
+      });
+      cols.push({
+        id: "siteNum",
+        alias: "siteNum",
+        dataType: tableau.dataTypeEnum.string
+      });
+      cols.push({
+        id: "paramCode",
+        alias: "paramCode",
+        dataType: tableau.dataTypeEnum.string
+      });
+      cols.push({
+        id: "agencyCode",
+        alias: "agencyCode",
+        dataType: tableau.dataTypeEnum.string
+      });
+      cols.push({
+        id: "statCode",
+        alias: "statCode",
+        dataType: tableau.dataTypeEnum.string
+      });
+      cols.push({
+        id: "methodCode",
+        alias: "methodCode",
+        dataType: tableau.dataTypeEnum.string
+      });
+      cols.push({
+        id: "methodDescription",
+        alias: "methodDescription",
+        dataType: tableau.dataTypeEnum.string
+      });
+      let column = `${sanitizeVariableName(
+        series.variable.variableDescription
+      )}_${series.sourceInfo.siteCode[0].value}_${index}`; // this assumes there is only 1 sitecode
 
-    cols.push({
-      id: column,
-      alias: column,
-      dataType: tableau.dataTypeEnum.string
+      cols.push({
+        id: column,
+        alias: column,
+        dataType: tableau.dataTypeEnum.string
+      });
+      let newSchema = {
+        id: column,
+        alias: column,
+        columns: cols
+      };
+      tableList.push(newSchema);
     });
-    let newSchema = {
-      id: column,
-      alias: column,
-      columns: cols
-    };
-    tableList.push(newSchema);
   });
   return tableList;
 };

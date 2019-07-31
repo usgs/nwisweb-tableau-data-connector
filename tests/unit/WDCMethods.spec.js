@@ -73,7 +73,8 @@ const validDataJSON = {
             ],
             method: [
               {
-                methodID: "69929"
+                methodID: "69929",
+                methodDescription: "gate 1"
               }
             ]
           }
@@ -123,7 +124,38 @@ const validDataJSON = {
             ],
             method: [
               {
-                methodID: "69929"
+                methodID: "69929",
+                methodDescription: "gate 2"
+              }
+            ]
+          },
+          {
+            value: [
+              {
+                value: "56456",
+                qualifiers: ["P"],
+                dateTime: "2019-07-05T10:45:00.000-04:00"
+              },
+              {
+                value: "5465",
+                qualifiers: ["P"],
+                dateTime: "2019-07-05T10:45:00.000-04:00"
+              }
+            ],
+            qualifier: [
+              {
+                qualifierCode: "P",
+                qualifierDescription: "Provisional data subject to revision."
+              },
+              {
+                qualifierCode: "A",
+                qualifierDescription: "Approved"
+              }
+            ],
+            method: [
+              {
+                methodID: "69929",
+                methodDescription: "gate 3"
               }
             ]
           }
@@ -137,7 +169,7 @@ test("converting a fully-populated data JSON to table", () => {
   const input = validDataJSON;
   const targetResult = [
     {
-      flow_01646500: "10800",
+      flow_01646500_0: "10800",
       dateTime: "2019-07-05 10:45:00.000",
       latitude: "0.000000",
       longitude: "0.000000",
@@ -147,10 +179,11 @@ test("converting a fully-populated data JSON to table", () => {
       paramCode: "00060",
       agencyCode: "USGS",
       statCode: "00000",
-      methodCode: "69929"
+      methodCode: "69929",
+      methodDescription: "gate 1"
     },
     {
-      flow_01646500: "10800",
+      flow_01646500_0: "10800",
       dateTime: "2019-07-05 10:45:00.000",
       latitude: "0.000000",
       longitude: "0.000000",
@@ -160,11 +193,12 @@ test("converting a fully-populated data JSON to table", () => {
       paramCode: "00060",
       agencyCode: "USGS",
       statCode: "00000",
-      methodCode: "69929"
+      methodCode: "69929",
+      methodDescription: "gate 1"
     }
   ];
 
-  expect(formatJSONAsTable(mockCurrentTime, input, "flow_01646500")).toEqual(
+  expect(formatJSONAsTable(mockCurrentTime, input, "flow_01646500_0")).toEqual(
     targetResult
   );
 });
@@ -538,39 +572,79 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
     },
 
     {
-      id: "flow_01646500",
-      alias: "flow_01646500",
+      id: "flow_01646500_0",
+      alias: "flow_01646500_0",
       columns: [
         { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "units", alias: "units", dataType: "__STRING" },
         { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
-        { id: "siteNum", alias: "siteNum", dataType: "__FLOAT" },
-        { id: "paramCode", alias: "paramCode", dataType: "__FLOAT" },
+        { id: "siteNum", alias: "siteNum", dataType: "__STRING" },
+        { id: "paramCode", alias: "paramCode", dataType: "__STRING" },
         { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
-        { id: "statCode", alias: "statCode", dataType: "__FLOAT" },
-        { id: "methodCode", alias: "methodCode", dataType: "__FLOAT" },
-        { id: "flow_01646500", alias: "flow_01646500", dataType: "__STRING" }
+        { id: "statCode", alias: "statCode", dataType: "__STRING" },
+        { id: "methodCode", alias: "methodCode", dataType: "__STRING" },
+        {
+          id: "methodDescription",
+          alias: "methodDescription",
+          dataType: "__STRING"
+        },
+        {
+          id: "flow_01646500_0",
+          alias: "flow_01646500_0",
+          dataType: "__STRING"
+        }
       ]
     },
     {
-      id: "height_01646501",
-      alias: "height_01646501",
+      id: "height_01646501_0",
+      alias: "height_01646501_0",
       columns: [
         { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "units", alias: "units", dataType: "__STRING" },
         { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
-        { id: "siteNum", alias: "siteNum", dataType: "__FLOAT" },
-        { id: "paramCode", alias: "paramCode", dataType: "__FLOAT" },
+        { id: "siteNum", alias: "siteNum", dataType: "__STRING" },
+        { id: "paramCode", alias: "paramCode", dataType: "__STRING" },
         { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
-        { id: "statCode", alias: "statCode", dataType: "__FLOAT" },
-        { id: "methodCode", alias: "methodCode", dataType: "__FLOAT" },
+        { id: "statCode", alias: "statCode", dataType: "__STRING" },
+        { id: "methodCode", alias: "methodCode", dataType: "__STRING" },
         {
-          id: "height_01646501",
-          alias: "height_01646501",
+          id: "methodDescription",
+          alias: "methodDescription",
+          dataType: "__STRING"
+        },
+        {
+          id: "height_01646501_0",
+          alias: "height_01646501_0",
+          dataType: "__STRING"
+        }
+      ]
+    },
+    {
+      id: "height_01646501_1",
+      alias: "height_01646501_1",
+      columns: [
+        { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
+        { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
+        { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
+        { id: "units", alias: "units", dataType: "__STRING" },
+        { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
+        { id: "siteNum", alias: "siteNum", dataType: "__STRING" },
+        { id: "paramCode", alias: "paramCode", dataType: "__STRING" },
+        { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
+        { id: "statCode", alias: "statCode", dataType: "__STRING" },
+        { id: "methodCode", alias: "methodCode", dataType: "__STRING" },
+        {
+          id: "methodDescription",
+          alias: "methodDescription",
+          dataType: "__STRING"
+        },
+        {
+          id: "height_01646501_1",
+          alias: "height_01646501_1",
           dataType: "__STRING"
         }
       ]

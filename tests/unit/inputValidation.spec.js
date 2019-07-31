@@ -24,6 +24,64 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(Notifications);
 
+jest.mock("../../src/fetchedValues/states.json", () => ({ Montana: "MT" }), {
+  virtual: true
+});
+
+jest.mock(
+  "../../src/fetchedValues/agency.json",
+  () => {
+    return [{ agency_cd: "agencyA" }];
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  "../../src/fetchedValues/siteTypes.json",
+  () => {
+    return [{ site_tp_cd: "validSiteType" }];
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  "../../src/fetchedValues/counties.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  "../../src/fetchedValues/locAquifer.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
+
+jest.mock("../../src/fetchedValues/fips.json", () => ({}), { virtual: true });
+
+jest.mock("../../src/fetchedValues/aquiferAreas.json", () => ({}), {
+  virtual: true
+});
+
+jest.mock(
+  "../../src/fetchedValues/timezones.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  "../../src/fetchedValues/paramTypes.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
+
 describe("Main", () => {
   let store;
 
@@ -40,9 +98,7 @@ describe("Main", () => {
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let state = "not a state";
-    expect(validateStateInputs(state, wrapper.vm, { Montana: "MT" })).not.toBe(
-      true
-    );
+    expect(validateStateInputs(state, wrapper.vm)).not.toBe(true);
   });
 
   test("validateStateInputs accepts a valid state query", () => {
@@ -58,9 +114,7 @@ describe("Main", () => {
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let state = "Montana";
-    expect(validateStateInputs(state, wrapper.vm, { Montana: "MT" })).toBe(
-      true
-    );
+    expect(validateStateInputs(state, wrapper.vm)).toBe(true);
   });
 
   test("validateStateInputs ignores an invalid state query when locationmode is not STATE", () => {
@@ -410,11 +464,7 @@ done in CountySelect.vue
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let siteType = "not a site type";
-    expect(
-      validateSiteTypeInputs(siteType, wrapper.vm, [
-        { site_tp_cd: "validSiteType" }
-      ])
-    ).not.toBe(true);
+    expect(validateSiteTypeInputs(siteType, wrapper.vm)).not.toBe(true);
   });
 
   test("validateSiteTypeInputs accepts a valid site type", () => {
@@ -430,11 +480,7 @@ done in CountySelect.vue
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let siteType = "validSiteType";
-    expect(
-      validateSiteTypeInputs(siteType, wrapper.vm, [
-        { site_tp_cd: "validSiteType" }
-      ])
-    ).toBe(true);
+    expect(validateSiteTypeInputs(siteType, wrapper.vm)).toBe(true);
   });
 
   test("validateAgencyInputs rejects an invalid agency", () => {
@@ -450,9 +496,7 @@ done in CountySelect.vue
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let agency = "not an an agency";
-    expect(
-      validateAgencyInputs(agency, wrapper.vm, [{ agency_cd: "agencyA" }])
-    ).not.toBe(true);
+    expect(validateAgencyInputs(agency, wrapper.vm)).not.toBe(true);
   });
 
   test("validateAgencyInputs accepts a valid agency", () => {
@@ -468,9 +512,7 @@ done in CountySelect.vue
     });
     const wrapper = shallowMount(Main, { store, localVue });
     let agency = "agencyA";
-    expect(
-      validateAgencyInputs(agency, wrapper.vm, [{ agency_cd: "agencyA" }])
-    ).toBe(true);
+    expect(validateAgencyInputs(agency, wrapper.vm)).toBe(true);
   });
 
   test("validateISO_8601Duration accepts compliant codes and non-compliant codes when field is inactive", () => {

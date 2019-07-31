@@ -15,7 +15,7 @@ export default new Vuex.Store({
     altitudeBounds: {},
     upperAltitudeBoundActive: false,
     lowerAltitudeBoundActive: false,
-    durationCodeActive: false,
+    durationCodeActive: true,
     modifiedSinceCodeActive: false,
     temporalRangeActive: false,
     modifiedSinceCode: "",
@@ -29,7 +29,7 @@ export default new Vuex.Store({
       endDateTime: "",
       timeZone: ""
     },
-    durationCode: "",
+    durationCode: "P1D",
     locationMode: locationMode.SITE,
     coordinates: {},
     natAquiferActive: false,
@@ -126,7 +126,6 @@ export default new Vuex.Store({
     changeLowerAltitudeBoundActive: (state, newLowerAltitudeBoundsActive) => {
       state.lowerAltitudeBoundActive = newLowerAltitudeBoundsActive;
     },
-
     changeDurationCodeActive: (state, newDurationCodeActivationState) => {
       state.durationCodeActive = newDurationCodeActivationState;
     },

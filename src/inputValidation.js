@@ -24,7 +24,7 @@ const inObjList = (list, target, key) => {
       returns true if the current vuex locationMode setting is not STATE.
 
     */
-const validateStateInputs = (input, instance, stateData) => {
+const validateStateInputs = (input, instance) => {
   if (instance.$store.getters.locationMode != locationMode.STATE) return true;
   if (input == "") {
     return "no state is selected";
@@ -167,7 +167,7 @@ const validateTimeCodes = (temporalRangeData, active) => {
 warns the user if they entered an invalid site-type code
 
 */
-const validateSiteTypeInputs = (input, instance, siteTypeData) => {
+const validateSiteTypeInputs = (input, instance) => {
   if (!instance.$store.getters.siteTypeListActive) {
     return true;
   }
@@ -309,7 +309,7 @@ const validateAltitudeBoundaries = (boundaries, instance) => {
 /*
   Warns the user if they have selected an invalid agency code.
 */
-const validateAgencyInputs = (agency, instance, agencyData) => {
+const validateAgencyInputs = (agency, instance) => {
   if (!instance.$store.getters.agencyActive) {
     return true;
   }
@@ -399,8 +399,7 @@ const validateGroundWaterSiteInputs = (GWSiteAttrDepths, instance) => {
 const validateFormInputs = instance => {
   let stateStatus = validateStateInputs(
     instance.$store.getters.USStateName,
-    instance,
-    stateData
+    instance
   );
   if (!(stateStatus === true)) {
     notify(stateStatus);
@@ -444,8 +443,7 @@ const validateFormInputs = instance => {
 
   let siteTypeListStatus = validateSiteTypeInputs(
     instance.$store.getters.siteType,
-    instance,
-    siteTypeData
+    instance
   );
   if (!(siteTypeListStatus === true)) {
     notify(siteTypeListStatus);
@@ -454,8 +452,7 @@ const validateFormInputs = instance => {
 
   let agencyStatus = validateAgencyInputs(
     instance.$store.getters.agencyCode,
-    instance,
-    agencyData
+    instance
   );
   if (!(agencyStatus === true)) {
     notify(agencyStatus);
@@ -535,6 +532,7 @@ const validateFormInputs = instance => {
   );
   if (!(temporalRangeStatus === true)) {
     notify(temporalRangeStatus);
+    return false;
   }
   instance.$store.commit(
     "changeCoordinates",
