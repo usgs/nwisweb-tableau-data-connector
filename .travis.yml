@@ -1,6 +1,7 @@
 language: minimal
 
 install:
+  npm -v
   npm install
 
 script:
