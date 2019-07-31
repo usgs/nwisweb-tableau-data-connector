@@ -48,5 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added visual grouping of optional parameters
 - reordered input fields to match expected use frequency
 - updated allowed parameters to only include those valid with the USGS Instantaneous Values Service.
-- Added parameter group selection
+-   Added parameter group selection
 - changed Jenkins automatic version incrementing to tag with current version number on release then commit new version number
+- Added support for queries containing more than 100 parameter codes
