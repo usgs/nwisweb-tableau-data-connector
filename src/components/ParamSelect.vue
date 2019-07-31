@@ -70,7 +70,6 @@ export default {
     /*
       an async function to fetch paramData after the page has loaded so the
        long loading time for the params json doesn't slow dont UI loading
-
     */
     fetchparams: async function() {
       let localParamData = await import("../fetchedValues/paramTypes.json");

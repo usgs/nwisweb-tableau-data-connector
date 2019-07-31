@@ -4,11 +4,11 @@
       <label>Site Status</label>
       <ToolTip
         hint="The site status indicates whether the site is active or inactive. A site is considered active if:
-it has collected time-series (automated) data within the last 183 days (6 months),
-it has collected discrete (manually collected) data within 397 days (13 months).
-If it does not meet these criteria, it is considered inactive. Some exceptions apply. If a site is flagged by a USGS water science center as discontinued, it will show as inactive. A USGS science center can also flag a new site as active even if it has not collected any data.
-
-"
+          it has collected time-series (automated) data within the last 183 days (6 months),
+          it has collected discrete (manually collected) data within 397 days (13 months).
+          If it does not meet these criteria, it is considered inactive. Some exceptions apply. 
+          If a site is flagged by a USGS water science center as discontinued, it will show as inactive. 
+          A USGS science center can also flag a new site as active even if it has not collected any data."
       ></ToolTip>
     </span>
     <form :key="selected" class="usa-form">
