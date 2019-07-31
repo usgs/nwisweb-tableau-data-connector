@@ -1,6 +1,6 @@
 {
   "name": "nwisweb-tableau-data-connector",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint --ext .js,.vue",
     "fetch": "node scripts/fetchParams.js",
     "production-build": "node scripts/fetchParams.js && vue-cli-service test:unit && vue-cli-service build",
-    "update-code-json":"node scripts/updateCodeJSON.js",
+    "update-code-json": "node scripts/updateCodeJSON.js",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
