@@ -7,8 +7,5 @@ npm ls --depth 0 --json | jq '.version' | sed -e 's/^"//' -e 's/"$//' > currVerN
 npm run production-build
 npm --no-git-tag-version version $versionType --force > newVerNum.txt
 
-echo "reached"
 newVersion=`cat newVerNum.txt`
-echo $newVersion
 npm run update-code-json -- $newVersion
-echo "reached2"
