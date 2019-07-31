@@ -176,18 +176,6 @@ const validateSiteTypeInputs = (input, instance) => {
 };
 
 /*
-warns the user if they have no query parameters selected. This is the only pathological state not protected
- against from within the  ParamSelect component, because it is a valid interactive session state.
-*/
-const validateParamInputs = paramList => {
-  if (paramList.length <= 100) {
-    return true;
-  } else {
-    return "parameter query cannot exceed 100 parameters";
-  }
-};
-
-/*
 in the event that the temporal range query functionality is active, warns the user if the temporal boundaries or incomplete
 or inconsistent. 
 */
@@ -443,11 +431,6 @@ const validateFormInputs = instance => {
     notify(HydroCodeStatus);
     return false;
   }
-  let paramStatus = validateParamInputs(instance.$store.getters.paramCodes);
-  if (!(paramStatus === true)) {
-    notify(paramStatus);
-    return false;
-  }
 
   let countyStatus = validateCountyInputs(
     instance.$store.getters.countyCode,
@@ -566,7 +549,6 @@ export {
   validateSiteInputs,
   validateHydroCodeInputs,
   validateCountyInputs,
-  validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
   validateNatAquiferInput,
