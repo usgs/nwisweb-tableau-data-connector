@@ -455,21 +455,17 @@ const getData = (table, doneCallback) => {
     connectionData = tableau.connectionData;
   }
   if (!connectionData.cached) {
-    // if we are given 100 or less parameter codes, generate a single query
-    if (connectionData.paramNums.length <= 100) {
-      let url = generateURL(connectionData, false);
-
-      get(url, "json").then(function(value) {
-        if (typeof value === "string") {
-          connectionData.cachedData = JSON.parse(value);
-        } else {
-          connectionData.cachedData = value;
-        }
-        connectionData.cached = true;
-        if (typeof tableau.connectionData === "string") {
-          // this update is only necessary if we're dealing with connection data as a string
-          tableau.connectionData = JSON.stringify(connectionData);
-        }
+    let urlList = generateMultiURL(connectionData);
+    multiGet(urlList, "json", get)
+      .then(value => {
+        let JSONValue = value.map(element => {
+          if (typeof element === "string") {
+            return JSON.parse(element);
+          } else {
+            return element;
+          }
+        });
+        connectionData.cachedData = combineJSONList(JSONValue);
         table.appendRows(
           formatJSONAsTable(
             connectionData.currentDateTime,
@@ -478,31 +474,8 @@ const getData = (table, doneCallback) => {
           )
         );
         doneCallback();
-      });
-    } else {
-      // otherwise, we generate as many queries as necessary.
-      let urlList = generateMultiURL(connectionData);
-      multiGet(urlList)
-        .then(value => {
-          let JSONValue = value.map(element => {
-            if (typeof element === "string") {
-              return JSON.parse(element);
-            } else {
-              return element;
-            }
-          });
-          connectionData.cachedData = combineJSONList(JSONValue);
-          table.appendRows(
-            formatJSONAsTable(
-              connectionData.currentDateTime,
-              connectionData.cachedData,
-              table.tableInfo.id
-            )
-          );
-          doneCallback();
-        })
-        .catch(err => notify(err));
-    }
+      })
+      .catch(err => notify(err));
   } else {
     table.appendRows(
       formatJSONAsTable(
@@ -527,36 +500,20 @@ const getSchema = schemaCallback => {
     connectionData = tableau.connectionData;
   }
 
-  if (connectionData.paramNums.length <= 100) {
-    //if we are given 100 or less parameters, we make a single query to nwisweb water services
-    let url = generateURL(connectionData, false);
-    get(url, "json")
-      .then(function(value) {
-        if (typeof value === "string") {
-          schemaCallback(generateSchemaTablesFromData(JSON.parse(value)));
+  let urlList = generateMultiURL(connectionData);
+  multiGet(urlList, "json", get)
+    .then(value => {
+      let JSONValue = value.map(element => {
+        if (typeof element === "string") {
+          return JSON.parse(element);
         } else {
-          schemaCallback(generateSchemaTablesFromData(value));
+          return element;
         }
-      })
-      .catch(err => notify(err));
-  } else {
-    let urlList = generateMultiURL(connectionData);
-    multiGet(urlList)
-      .then(value => {
-        let JSONValue = value.map(element => {
-          if (typeof element === "string") {
-            return JSON.parse(element);
-          } else {
-            return element;
-          }
-        });
+      });
 
-        schemaCallback(
-          generateSchemaTablesFromData(combineJSONList(JSONValue))
-        );
-      })
-      .catch(err => notify(err));
-  }
+      schemaCallback(generateSchemaTablesFromData(combineJSONList(JSONValue)));
+    })
+    .catch(err => notify(err));
 };
 
 export {

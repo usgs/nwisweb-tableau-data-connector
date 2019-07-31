@@ -647,3 +647,26 @@ test("generateMultiURL correctly generates multiple URLS with at most 100 parame
 
   expect(generateMultiURL(connectionData)).toEqual(targetResult);
 });
+
+test("generateMultiURL correctly generates a single URL when appropriate", () => {
+  const connectionData = {
+    paramNums: Array.from({ length: 23 }, (element, index) => index), // 1, 2, 3, ... 249
+    hydroCode: "02070010",
+    agencyCodeActive: false,
+    siteTypeListActive: false,
+    siteStatus: "all",
+    durationCodeActive: false,
+    modifiedSinceCodeActive: false,
+    temporalRangeActive: false,
+    locationMode: locationMode.HYDRO,
+    currentDateTime: moment("2019-08-04T14:59:00.000Z")
+  };
+
+  let targetResult = [
+    `https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=${connectionData.paramNums.join(
+      ","
+    )}&siteStatus=all`
+  ];
+
+  expect(generateMultiURL(connectionData)).toEqual(targetResult);
+});
