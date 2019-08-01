@@ -71,6 +71,7 @@ pipeline {
                     dockerinstanceid=\$( docker ps -aqf "name=nwisweb_data_connector_docker" )
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/package.json" $WORKSPACE
+                    docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/code.json" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/currVerNum.txt" $WORKSPACE
                     docker rm "\${dockerinstanceid}"
                 """
@@ -85,7 +86,7 @@ pipeline {
                                 echo Incrementing version number to `cat newVerNum.txt`
                                 git tag v`cat currVerNum.txt` 
                                 git push origin --tag
-                                git add package.json
+                                git add package.json code.json
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
                                 git push -u origin HEAD:${params.BRANCH}
