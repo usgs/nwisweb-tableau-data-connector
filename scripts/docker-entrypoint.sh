@@ -18,3 +18,6 @@ fi
 
 
 npm --no-git-tag-version version $versionType --force > newVerNum.txt
+
+newVersion=`cat newVerNum.txt`
+npm run update-code-json -- $newVersion

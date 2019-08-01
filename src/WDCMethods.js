@@ -1,4 +1,4 @@
-import { get } from "./utils.js";
+import { get, multiGet, combineJSONList } from "./utils.js";
 import { locationMode } from "./enums.js";
 import { notify } from "./notifications.js";
 import { parse, toSeconds } from "iso8601-duration";
@@ -103,8 +103,14 @@ Takes a JSON and returns a table formatted in accordance with the schema provide
 const formatJSONAsTable = (currentDateTime, data, tableName) => {
   if (tableName == "metadata") {
     let tableData = [];
+    let queryURL = "";
     const DOI = "http://dx.doi.org/10.5066/F7P55KJN";
-    let queryURL = data.value.queryInfo.queryURL;
+
+    if (!(data.value.queryInfo.multi === true)) {
+      queryURL = data.value.queryInfo.queryURL;
+    } else {
+      queryURL = data.value.queryInfo.queryURL.join(";");
+    }
     let queryTime = currentDateTime;
     data.value.queryInfo.note.forEach(element => {
       if (element["title"] === "requestDT") {
@@ -166,11 +172,17 @@ const generateDateTime = (timeZone, dateTime, queryMode) => {
 /*
 generates a URL for query parameters contained in the connectionData object accepted as an argument
 */
-const generateURL = connectionData => {
+const generateURL = (connectionData, specifyParams, params) => {
   let paramQuery = "";
-  if (connectionData.paramNums.length != 0) {
-    paramQuery = `&parameterCd=${connectionData.paramNums.join()}`;
+
+  if (!specifyParams) {
+    if (connectionData.paramNums.length != 0) {
+      paramQuery = `&parameterCd=${connectionData.paramNums.join(",")}`;
+    }
+  } else {
+    paramQuery = `&parameterCd=${params.join(",")}`;
   }
+
   let locationQuery = "";
   let siteTypeQuery = "";
   let agencyCodeQuery = "";
@@ -335,6 +347,28 @@ const generateURL = connectionData => {
 };
 
 /*
+given more than 100 parameters, generates as many urls as necesarry to satisfy the constraint that queries each contain no more than 100 parameters 
+*/
+const generateMultiURL = connectionData => {
+  let lowerBound = 0;
+  let paramGroupList = [];
+  let URLList = [];
+  while (lowerBound + 100 <= connectionData.paramNums.length) {
+    paramGroupList.push(
+      connectionData.paramNums.slice(lowerBound, lowerBound + 100)
+    );
+    lowerBound += 100;
+  }
+  if (lowerBound < connectionData.paramNums.length) {
+    paramGroupList.push(connectionData.paramNums.slice(lowerBound));
+  }
+  paramGroupList.forEach(paramGroup => {
+    URLList.push(generateURL(connectionData, true, paramGroup));
+  });
+  return URLList;
+};
+
+/*
 takes query url to be sent to the NWISweb instantaneous values service and 
 generates an appropriate tableau schema.
 */
@@ -401,12 +435,12 @@ const generateSchemaTablesFromData = data => {
       cols.push({
         id: "siteNum",
         alias: "siteNum",
-        dataType: tableau.dataTypeEnum.float
+        dataType: tableau.dataTypeEnum.string
       });
       cols.push({
         id: "paramCode",
         alias: "paramCode",
-        dataType: tableau.dataTypeEnum.float
+        dataType: tableau.dataTypeEnum.string
       });
       cols.push({
         id: "agencyCode",
@@ -416,12 +450,12 @@ const generateSchemaTablesFromData = data => {
       cols.push({
         id: "statCode",
         alias: "statCode",
-        dataType: tableau.dataTypeEnum.float
+        dataType: tableau.dataTypeEnum.string
       });
       cols.push({
         id: "methodCode",
         alias: "methodCode",
-        dataType: tableau.dataTypeEnum.float
+        dataType: tableau.dataTypeEnum.string
       });
       cols.push({
         id: "methodDescription",
@@ -461,28 +495,27 @@ const getData = (table, doneCallback) => {
     connectionData = tableau.connectionData;
   }
   if (!connectionData.cached) {
-    let url = generateURL(connectionData);
-
-    get(url, "json").then(function(value) {
-      if (typeof value === "string") {
-        connectionData.cachedData = JSON.parse(value);
-      } else {
-        connectionData.cachedData = value;
-      }
-      connectionData.cached = true;
-      if (typeof tableau.connectionData === "string") {
-        // this update is only necesarry if we're dealing with connection data as a string
-        tableau.connectionData = JSON.stringify(connectionData);
-      }
-      table.appendRows(
-        formatJSONAsTable(
-          connectionData.currentDateTime,
-          connectionData.cachedData,
-          table.tableInfo.id
-        )
-      );
-      doneCallback();
-    });
+    let urlList = generateMultiURL(connectionData);
+    multiGet(urlList, "json", get)
+      .then(value => {
+        let JSONValue = value.map(element => {
+          if (typeof element === "string") {
+            return JSON.parse(element);
+          } else {
+            return element;
+          }
+        });
+        connectionData.cachedData = combineJSONList(JSONValue);
+        table.appendRows(
+          formatJSONAsTable(
+            connectionData.currentDateTime,
+            connectionData.cachedData,
+            table.tableInfo.id
+          )
+        );
+        doneCallback();
+      })
+      .catch(err => notify(err));
   } else {
     table.appendRows(
       formatJSONAsTable(
@@ -506,14 +539,19 @@ const getSchema = schemaCallback => {
     // this check may be unnecesarry, and was added to provide compatibility with the tableau web data connector simulator which may or may not require it
     connectionData = tableau.connectionData;
   }
-  let url = generateURL(connectionData);
-  get(url, "json")
-    .then(function(value) {
-      if (typeof value === "string") {
-        schemaCallback(generateSchemaTablesFromData(JSON.parse(value)));
-      } else {
-        schemaCallback(generateSchemaTablesFromData(value));
-      }
+
+  let urlList = generateMultiURL(connectionData);
+  multiGet(urlList, "json", get)
+    .then(value => {
+      let JSONValue = value.map(element => {
+        if (typeof element === "string") {
+          return JSON.parse(element);
+        } else {
+          return element;
+        }
+      });
+
+      schemaCallback(generateSchemaTablesFromData(combineJSONList(JSONValue)));
     })
     .catch(err => notify(err));
 };
@@ -527,5 +565,6 @@ export {
   getTimeSeriesByID,
   reformatTimeString,
   sanitizeVariableName,
-  generateDateTime
+  generateDateTime,
+  generateMultiURL
 };

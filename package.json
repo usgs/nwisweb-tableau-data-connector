@@ -9,6 +9,7 @@
     "fetch": "node scripts/fetchParams.js",
     "production-build": "node scripts/fetchParams.js && vue-cli-service test:unit && vue-cli-service build --mode production",
     "development-build": "node scripts/fetchParams.js && vue-cli-service test:unit && vue-cli-service build --mode development",
+    "update-code-json": "node scripts/updateCodeJSON.js",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {

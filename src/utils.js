@@ -41,4 +41,37 @@ const get = (url, responseType) => {
   });
 };
 
-export { get };
+/*
+  returns multiple json in the event that we are dealing with a multi-url query
+*/
+const multiGet = (urlList, responseType, getFunction) => {
+  let promises = [];
+  urlList.forEach(url => {
+    promises.push(getFunction(url, responseType));
+  });
+  return Promise.all(promises);
+};
+
+/*
+This function amalgmates one or more input data JSON into single JSON, Modifies the first JSON in the list to become the result, and returns a reference to this JSON. Global
+metadata on all JSON except for the first JSON (with the exception of query URL) is assumed to be the same as the first and is not preserved, as this function is only intended to be used with batch queries specifically for the 
+purpose of bypassing the limit of 100 parameters on the instantaneous values services. This function must be called with a list of data JSON of length 2 or greater. 
+*/
+const combineJSONList = JSONList => {
+  let result = JSONList[0];
+  if (JSONList.length == 1) {
+    return result;
+  }
+  // in the event that we have more than one JSON, here we begin the process of combining them
+  result.value.queryInfo.multi = true; // specifies to generateURL that we are going to have a list of URL rather than a singular URL in the form of a string
+  result.value.queryInfo.queryURL = [result.value.queryInfo.queryURL];
+  JSONList.slice(1).forEach(element => {
+    result.value.queryInfo.queryURL.push(element.value.queryInfo.queryURL);
+    element.value.timeSeries.forEach(series => {
+      JSONList[0].value.timeSeries.push(series);
+    });
+  });
+  return result;
+};
+
+export { get, multiGet, combineJSONList };

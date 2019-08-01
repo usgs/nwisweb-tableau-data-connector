@@ -5,7 +5,8 @@ import {
   getTimeSeriesByID,
   reformatTimeString,
   sanitizeVariableName,
-  generateDateTime
+  generateDateTime,
+  generateMultiURL
 } from "../../src/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
 let moment = require("moment");
@@ -261,7 +262,7 @@ test("correctly generate a URL given a list of sites and parameters with various
     state: "Rhode Island",
     locationMode: locationMode.SITE
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&sites=01646500,05437641&siteStatus=all"
   );
 });
@@ -286,7 +287,7 @@ test("correctly generate a URL given a state", () => {
       lowerAltitudeBound: "-0.000045345     "
     }
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&stateCd=ri&parameterCd=00060,00065&altMin=-0.000045345&siteStatus=all"
   );
 });
@@ -316,7 +317,7 @@ test("correctly generate a URL given a coordinate bounding box", () => {
     },
     locationMode: locationMode.COORDS
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&bBox=1.000000,1.000000,2.000000,2.000000&parameterCd=00060,00065&altMax=23432.4234324&siteStatus=inactive"
   );
 });
@@ -342,7 +343,7 @@ test("correctly generate a URL given a hydrological Unit Code", () => {
     durationCode: "P117D",
     locationMode: locationMode.HYDRO
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&period=P117D&altMin=-867867867.834532453452345&altMax=56456456456.4564564564564&siteStatus=all"
   );
 });
@@ -367,7 +368,7 @@ test("correctly generate a URL given a list of counties and drainage area params
     modifiedSinceCodeActive: false,
     locationMode: locationMode.COUNTY
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&parameterCd=00060,00065&drainAreaMin=0&drainAreaMax=1000&siteStatus=active"
   );
 });
@@ -390,7 +391,7 @@ test("correctly generate a URL given a hydrological Unit Code , using  siteType,
     siteTypeList: ["siteA", "siteB"],
     locationMode: locationMode.HYDRO
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://nwis.waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&siteType=siteA,siteB&agencyCd=agencyA&period=P121DT96M5S&modifiedSince=P999W3435345DT435453453453453454M4S&siteStatus=all"
   );
 });
@@ -404,7 +405,7 @@ test("correctly generate a URL given a national aquifer code", () => {
     natAquiferActive: true,
     natAquifer: "N600NECRSN"
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&aquiferCd=N600NECRSN&siteStatus=all"
   );
 });
@@ -418,7 +419,7 @@ test("correctly generate a URL given multiple poorly formatted national aquifer 
     natAquiferActive: true,
     natAquifer: "N600NECRSN, S100C NRLVL ,  S100PGTSND"
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&aquiferCd=N600NECRSN,S100CNRLVL,S100PGTSND&siteStatus=all"
   );
 });
@@ -432,7 +433,7 @@ test("correctly generate a URL given a local aquifer code", () => {
     locAquiferActive: true,
     locAquifer: ["AL:124MDBC"]
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&localAquiferCd=AL:124MDBC&siteStatus=all"
   );
 });
@@ -446,7 +447,7 @@ test("correctly generate a URL given multiple poorly formatted local aquifer cod
     locAquiferActive: true,
     locAquifer: ["01:124MDBC, WI:10 0SDGV , AL:120UTRTR, 96:112EVRS"]
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&localAquiferCd=01:124MDBC,WI:100SDGV,AL:120UTRTR,96:112EVRS&siteStatus=all"
   );
 });
@@ -470,7 +471,7 @@ test("correctly generate a URL given a hydrological Unit Code, with modifiedSinc
     },
     currentDateTime: moment("2019-08-08T14:59:00.000Z")
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&modifiedSince=P999W3435345DT435453453453453454M4S&startDT=2019-07-08T14:59-0430&endDT=2019-07-08T14:59-0430&siteStatus=all"
   );
 });
@@ -494,7 +495,7 @@ test("correctly generate a URL given a hydrological Unit Code, with modifiedSinc
     },
     currentDateTime: moment("2019-08-04T14:59:00.000Z")
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://nwis.waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=00060,00065&modifiedSince=P999W3435345DT435453453453453454M4S&startDT=2018-07-08T14:59-0430&endDT=2018-07-09T14:59-0430&siteStatus=all"
   );
 });
@@ -516,7 +517,7 @@ test("correctly generate a URL given Ground Water Site Attribute Depths", () => 
     },
     locationMode: locationMode.COUNTY
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&parameterCd=00060,00065&siteStatus=all&wellDepthMin=10&wellDepthMax=100&holeDepthMin=10&holeDepthMax=100"
   );
   connectionData = {
@@ -533,7 +534,7 @@ test("correctly generate a URL given Ground Water Site Attribute Depths", () => 
     },
     locationMode: locationMode.COUNTY
   };
-  expect(generateURL(connectionData)).toEqual(
+  expect(generateURL(connectionData, false)).toEqual(
     "https://waterservices.usgs.gov/nwis/iv/?format=json&countyCd=11111,22222&parameterCd=00060,00065&siteStatus=all&wellDepthMin=10&holeDepthMax=100"
   );
 });
@@ -579,11 +580,11 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "units", alias: "units", dataType: "__STRING" },
         { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
-        { id: "siteNum", alias: "siteNum", dataType: "__FLOAT" },
-        { id: "paramCode", alias: "paramCode", dataType: "__FLOAT" },
+        { id: "siteNum", alias: "siteNum", dataType: "__STRING" },
+        { id: "paramCode", alias: "paramCode", dataType: "__STRING" },
         { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
-        { id: "statCode", alias: "statCode", dataType: "__FLOAT" },
-        { id: "methodCode", alias: "methodCode", dataType: "__FLOAT" },
+        { id: "statCode", alias: "statCode", dataType: "__STRING" },
+        { id: "methodCode", alias: "methodCode", dataType: "__STRING" },
         {
           id: "methodDescription",
           alias: "methodDescription",
@@ -605,11 +606,11 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "units", alias: "units", dataType: "__STRING" },
         { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
-        { id: "siteNum", alias: "siteNum", dataType: "__FLOAT" },
-        { id: "paramCode", alias: "paramCode", dataType: "__FLOAT" },
+        { id: "siteNum", alias: "siteNum", dataType: "__STRING" },
+        { id: "paramCode", alias: "paramCode", dataType: "__STRING" },
         { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
-        { id: "statCode", alias: "statCode", dataType: "__FLOAT" },
-        { id: "methodCode", alias: "methodCode", dataType: "__FLOAT" },
+        { id: "statCode", alias: "statCode", dataType: "__STRING" },
+        { id: "methodCode", alias: "methodCode", dataType: "__STRING" },
         {
           id: "methodDescription",
           alias: "methodDescription",
@@ -631,11 +632,11 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
         { id: "units", alias: "units", dataType: "__STRING" },
         { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
-        { id: "siteNum", alias: "siteNum", dataType: "__FLOAT" },
-        { id: "paramCode", alias: "paramCode", dataType: "__FLOAT" },
+        { id: "siteNum", alias: "siteNum", dataType: "__STRING" },
+        { id: "paramCode", alias: "paramCode", dataType: "__STRING" },
         { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
-        { id: "statCode", alias: "statCode", dataType: "__FLOAT" },
-        { id: "methodCode", alias: "methodCode", dataType: "__FLOAT" },
+        { id: "statCode", alias: "statCode", dataType: "__STRING" },
+        { id: "methodCode", alias: "methodCode", dataType: "__STRING" },
         {
           id: "methodDescription",
           alias: "methodDescription",
@@ -686,4 +687,60 @@ test("generateDate time correctly generates datetimes with timezones when given 
   expect(generateDateTime("-0300", "2019-07-09T14:42:00.000Z", true)).toEqual(
     "2019-07-09T14:42-0300"
   );
+});
+
+test("generateMultiURL correctly generates multiple URLS with at most 100 parameters per URL", () => {
+  const connectionData = {
+    paramNums: Array.from({ length: 250 }, (element, index) => index), // 1, 2, 3, ... 249
+    hydroCode: "02070010",
+    agencyCodeActive: false,
+    siteTypeListActive: false,
+    siteStatus: "all",
+    durationCodeActive: false,
+    modifiedSinceCodeActive: false,
+    temporalRangeActive: false,
+    locationMode: locationMode.HYDRO,
+    currentDateTime: moment("2019-08-04T14:59:00.000Z")
+  };
+
+  let partition1 = connectionData.paramNums.slice(0, 100);
+  let partition2 = connectionData.paramNums.slice(100, 200);
+  let partition3 = connectionData.paramNums.slice(200, 250);
+
+  let targetResult = [
+    `https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=${partition1.join(
+      ","
+    )}&siteStatus=all`,
+    `https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=${partition2.join(
+      ","
+    )}&siteStatus=all`,
+    `https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=${partition3.join(
+      ","
+    )}&siteStatus=all`
+  ];
+
+  expect(generateMultiURL(connectionData)).toEqual(targetResult);
+});
+
+test("generateMultiURL correctly generates a single URL when appropriate", () => {
+  const connectionData = {
+    paramNums: Array.from({ length: 23 }, (element, index) => index), // 1, 2, 3, ... 249
+    hydroCode: "02070010",
+    agencyCodeActive: false,
+    siteTypeListActive: false,
+    siteStatus: "all",
+    durationCodeActive: false,
+    modifiedSinceCodeActive: false,
+    temporalRangeActive: false,
+    locationMode: locationMode.HYDRO,
+    currentDateTime: moment("2019-08-04T14:59:00.000Z")
+  };
+
+  let targetResult = [
+    `https://waterservices.usgs.gov/nwis/iv/?format=json&huc=02070010&parameterCd=${connectionData.paramNums.join(
+      ","
+    )}&siteStatus=all`
+  ];
+
+  expect(generateMultiURL(connectionData)).toEqual(targetResult);
 });
