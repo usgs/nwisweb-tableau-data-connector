@@ -350,6 +350,9 @@ const generateURL = (connectionData, specifyParams, params) => {
 given more than 100 parameters, generates as many urls as necesarry to satisfy the constraint that queries each contain no more than 100 parameters 
 */
 const generateMultiURL = connectionData => {
+  if (connectionData.paramNums.length === 0) {
+    return [generateURL(connectionData, false)];
+  }
   let lowerBound = 0;
   let paramGroupList = [];
   let URLList = [];
