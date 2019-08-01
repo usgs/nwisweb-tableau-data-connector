@@ -1,7 +1,6 @@
 FROM node:12.4.0-stretch
 
-#
-RUN apt-get update && apt-get install -y --no-install-recommends jq=1.5 \
+RUN apt-get update && apt-get install -y --no-install-recommends jq \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
