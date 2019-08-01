@@ -215,7 +215,7 @@ const validateTemporalRange = (temporalRangeData, instance) => {
   let offset = endDate.diff(startDate);
   if (offset < 0) {
     return "end date before start date.";
-  } else if (offset == 0) {
+  } else if (offset === 0) {
     return "end date equal to start date; temporal range has zero length";
   }
 
@@ -228,7 +228,7 @@ warns the user if they have no counties selected. This is the only pathological 
 */
 const validateCountyInputs = (countyList, instance) => {
   if (instance.$store.getters.locationMode != locationMode.COUNTY) return true;
-  if (countyList.length != 0) {
+  if (countyList.length !== 0) {
     return true;
   } else {
     return "county query requires between 1 and 10 counties";
@@ -260,7 +260,7 @@ const validateWatershedAreaBoundaries = (boundaries, instance) => {
   }
 
   if (
-    parseInt(boundaries.upperAreaBound) < parseInt(boundaries.lowerAreaBound) &&
+    parseInt(boundaries.upperAreaBound) < parseInt(boundaries.lowerAreaBound, "10") &&
     lowerActive &&
     upperActive
   ) {
