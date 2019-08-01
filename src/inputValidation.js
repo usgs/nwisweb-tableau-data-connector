@@ -260,7 +260,8 @@ const validateWatershedAreaBoundaries = (boundaries, instance) => {
   }
 
   if (
-    parseInt(boundaries.upperAreaBound) < parseInt(boundaries.lowerAreaBound, "10") &&
+    parseInt(boundaries.upperAreaBound) <
+      parseInt(boundaries.lowerAreaBound, "10") &&
     lowerActive &&
     upperActive
   ) {
