@@ -11,3 +11,4 @@ install:
 
 script:
   - npm run test:unit && npm run serve
+  - sleep 2 && kill $PID
