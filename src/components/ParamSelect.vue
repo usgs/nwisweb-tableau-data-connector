@@ -4,7 +4,7 @@
     <span class="input-desc">
       <label>Parameters</label>
       <ToolTip
-        hint="The complete list of parameter codes is available here."
+        hint="The complete list of parameter codes is available here. A maximum of 100 parameters are allowed per query."
         url="https://help.waterdata.usgs.gov/codes-and-parameters/parameters"
       ></ToolTip>
     </span>
@@ -13,6 +13,22 @@
         v-on:valueupdate="updateParamInput"
         v-on:clear="updateParamInput"
         :source="paramData"
+        input-class="usa-input usa-input-custom"
+      ></CustomAutoComplete>
+    </span>
+    <br />
+    <span class="input-desc">
+      <label>Parameter Groups</label>
+      <ToolTip
+        hint="Parameter group information can be found in the 'group' column of the parameter code table. A maximum of 100 parameters are allowed per query. Some groups contain more than 100 parameters codes, in these cases it is most efficient to manually remove unnecesarry parameters."
+        url="https://help.waterdata.usgs.gov/codes-and-parameters/parameters"
+      ></ToolTip>
+    </span>
+    <span>
+      <CustomAutoComplete
+        v-on:valueupdate="updateParamGroupInput"
+        v-on:clear="updateParamGroupInput"
+        :source="paramGroupList"
         input-class="usa-input usa-input-custom"
       ></CustomAutoComplete>
     </span>
@@ -61,8 +77,11 @@ export default {
       loadedParamData: false,
       wideInput: false,
       param: "",
+      paramGroup: "",
       paramData: [],
       paramList: [],
+      paramGroupData: {},
+      paramGroupList: [],
       selectedParams: []
     };
   },
@@ -80,8 +99,25 @@ export default {
             id: localParamData[key]["id"],
             name: localParamData[key]["name"]
           });
+          if ("Group" in localParamData[key]) {
+            if (!(localParamData[key]["Group"] in this.paramGroupData)) {
+              this.paramGroupData[localParamData[key]["Group"]] = [
+                localParamData[key]["id"]
+              ];
+            } else {
+              this.paramGroupData[localParamData[key]["Group"]].push(
+                localParamData[key]["id"]
+              );
+            }
+          }
         }
       });
+
+      let groupList = Object.keys(this.paramGroupData);
+      groupList.forEach(element => {
+        this.paramGroupList.push({ name: element, id: element });
+      });
+
       this.paramData.forEach(element => {
         this.paramList.push(element["id"]);
       });
@@ -96,15 +132,28 @@ export default {
 
     */
     addParams: function() {
-      if (this.param == "") {
-        notify(`no param code entered`);
+      if (this.param == "" && this.paramGroup == "") {
+        notify(`no param code or group entered`);
         return;
       }
 
-      let params = this.param.split(",");
-      params.forEach(param => {
-        this.addParam(param.replace(/\s/g, ""));
-      });
+      if (this.param != "") {
+        let params = this.param.split(",");
+        params.forEach(param => {
+          this.addParam(param.replace(/\s/g, ""));
+        });
+      }
+
+      if (this.paramGroup != "") {
+        if (this.paramGroup in this.paramGroupData) {
+          let self = this;
+          this.paramGroupData[this.paramGroup].forEach(element => {
+            self.addParam(element);
+          });
+        } else {
+          notify(`${this.paramGroup}: invalid parameter group entered`);
+        }
+      }
     },
     addParam: function(param) {
       if (!this.loadedParamData) {
@@ -113,11 +162,7 @@ export default {
       }
       if (this.paramList.includes(param)) {
         if (!this.selectedParams.includes(param)) {
-          if (this.selectedParams.length < 100) {
-            this.selectedParams.push(param);
-          } else {
-            notify(`${param}: Maximum number of parameters already selected.`);
-          }
+          this.selectedParams.push(param);
         } else {
           notify(`${param}: parameter selected already in selection.`);
         }
@@ -133,6 +178,16 @@ export default {
         this.param = newParamInput;
       } else {
         this.param = "";
+      }
+    },
+    updateParamGroupInput: function(newParamGroupInput) {
+      if (
+        newParamGroupInput !== null &&
+        typeof newParamGroupInput !== "undefined"
+      ) {
+        this.paramGroup = newParamGroupInput;
+      } else {
+        this.paramGroup = "";
       }
     }
   },
