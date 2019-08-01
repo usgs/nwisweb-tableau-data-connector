@@ -97,6 +97,13 @@ const sanitizeVariableName = variableName => {
   return variableName.replace(/\s/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
 };
 
+const checkForNull = data => {
+  if (data == "-999999") {
+    return "null";
+  }
+  return data;
+};
+
 /*
 Takes a JSON and returns a table formatted in accordance with the schema provided to Tableau.
 */
@@ -143,7 +150,7 @@ const formatJSONAsTable = (currentDateTime, data, tableName) => {
       longitude: tableSeries.sourceInfo.geoLocation.geogLocation.longitude,
       units: tableSeries.variable.unit.unitCode,
       qualifier: qualList.join(","),
-      [tableName]: valueSeries.value[i].value,
+      [tableName]: checkForNull(valueSeries.value[i].value),
       siteNum: tableSeries.sourceInfo.siteCode[0].value,
       paramCode: tableSeries.variable.variableCode[0].value,
       agencyCode: tableSeries.sourceInfo.siteCode[0].agencyCode,
