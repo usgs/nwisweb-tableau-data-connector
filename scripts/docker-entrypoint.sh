@@ -15,8 +15,6 @@ echo "Development Build: Not Injecting Analytics"
 fi
 
 
-
-
 npm --no-git-tag-version version $versionType --force > newVerNum.txt
 
 newVersion=`cat newVerNum.txt`
