@@ -5,7 +5,7 @@ versionType=`cat versionType.txt`
 destination=`cat destination.txt`
 npm install
 npm ls --depth 0 --json | jq '.version' | sed -e 's/^"//' -e 's/"$//' > currVerNum.txt
-if [ "$destination" = "Production" ] || [ "$destination" = "Beta" ]
+if [ "$destination" = "Test" ] || [ "$destination" = "QA" ]
 then
 npm run production-build
 echo "Production Build: Injecting Analytics"
