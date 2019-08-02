@@ -593,7 +593,7 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         {
           id: "flow_01646500_0",
           alias: "flow_01646500_0",
-          dataType: "__STRING"
+          dataType: "__FLOAT"
         }
       ]
     },
@@ -619,7 +619,7 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         {
           id: "height_01646501_0",
           alias: "height_01646501_0",
-          dataType: "__STRING"
+          dataType: "__FLOAT"
         }
       ]
     },
@@ -645,7 +645,7 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         {
           id: "height_01646501_1",
           alias: "height_01646501_1",
-          dataType: "__STRING"
+          dataType: "__FLOAT"
         }
       ]
     }

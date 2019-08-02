@@ -97,6 +97,9 @@ const sanitizeVariableName = variableName => {
   return variableName.replace(/\s/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
 };
 
+/*
+check if data matches -999999 and return null instead
+*/
 const checkForNull = data => {
   if (data == "-999999") {
     return null;
