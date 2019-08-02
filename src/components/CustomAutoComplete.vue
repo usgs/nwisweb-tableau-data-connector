@@ -72,7 +72,7 @@ export default {
       this.setEventListener();
 
       if (!this.display || this.display === null) {
-        this.results = this.source; //.slice(0, 10);
+        this.results = this.source;
         this.$emit("results", { results: this.results });
         this.loading = false;
         return true;
