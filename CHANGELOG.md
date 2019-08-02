@@ -37,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added metadata table to query schema
 - Added columns to display site number, parameter code, statistic code, agency code, and method code in every row of a table in Tableau
 - Added 404(lost bison) page
+- Added badge to Readme to show if Travis testing succeeds
+- Added badge to Readme to show code quality from Codacy
 ### Changed
 - Changed styling so all elements are left justified
 - separted sitelist from main.vue
@@ -48,5 +50,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added visual grouping of optional parameters
 - reordered input fields to match expected use frequency
 - updated allowed parameters to only include those valid with the USGS Instantaneous Values Service.
+-   Added parameter group selection
 - changed Jenkins automatic version incrementing to tag with current version number on release then commit new version number
+- Added support for queries containing more than 100 parameter codes
 - Patched schema construction to allow repeated parameters from same site
+- Changed tests to use mocked files instead of fetched values
+- Changed Vue build process to generate relative file paths
+- Jenkins will now copy files into /connector directory in S3 buckets
+- code.json version number is now automatically updated
+- changed schema so a table is returned for each parameter code

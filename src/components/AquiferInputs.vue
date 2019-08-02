@@ -153,7 +153,12 @@ export default {
         }
       }
     },
-    getLocAqNameFromCode: function(fullLocAqCode) {
+    /*
+     * The fetched list of aquifers uses fips codes for the first 2 digits of the local
+     * aquifer code. This method checks for fips code or 2 letter state abbreviations.
+     * In the case of non-state areas, only the fips code is used.
+     */
+    verifyLocAqName: function(fullLocAqCode) {
       if (fullLocAqCode.length > 11) {
         return "Invalid.";
       }
@@ -186,7 +191,7 @@ export default {
         notify("no aquifer code selected");
         return;
       }
-      if (!(this.getLocAqNameFromCode(locAquifer) == "Invalid.")) {
+      if (!(this.verifyLocAqName(locAquifer) == "Invalid.")) {
         if (!this.localAquifers.includes(locAquifer)) {
           if (this.localAquifers.length < 1000) {
             this.localAquifers.push(locAquifer);
@@ -245,7 +250,7 @@ export default {
     localAquifers: function(newValue) {
       this.locAqNames = [];
       newValue.forEach(element => {
-        this.locAqNames.push(this.getLocAqNameFromCode(element));
+        this.locAqNames.push(this.verifyLocAqName(element));
       });
       this.commitLocAquifer();
     },

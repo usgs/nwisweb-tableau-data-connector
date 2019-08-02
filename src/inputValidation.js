@@ -24,7 +24,7 @@ const inObjList = (list, target, key) => {
       returns true if the current vuex locationMode setting is not STATE.
 
     */
-const validateStateInputs = (input, instance, stateData) => {
+const validateStateInputs = (input, instance) => {
   if (instance.$store.getters.locationMode != locationMode.STATE) return true;
   if (input == "") {
     return "no state is selected";
@@ -167,24 +167,12 @@ const validateTimeCodes = (temporalRangeData, active) => {
 warns the user if they entered an invalid site-type code
 
 */
-const validateSiteTypeInputs = (input, instance, siteTypeData) => {
+const validateSiteTypeInputs = (input, instance) => {
   if (!instance.$store.getters.siteTypeListActive) {
     return true;
   }
   let found = inObjList(siteTypeData, input, "site_tp_cd");
   return found ? found : "invalid site type selected";
-};
-
-/*
-warns the user if they have no query parameters selected. This is the only pathological state not protected
- against from within the  ParamSelect component, because it is a valid interactive session state.
-*/
-const validateParamInputs = paramList => {
-  if (paramList.length <= 100) {
-    return true;
-  } else {
-    return "parameter query cannot exceed 100 parameters";
-  }
 };
 
 /*
@@ -227,7 +215,7 @@ const validateTemporalRange = (temporalRangeData, instance) => {
   let offset = endDate.diff(startDate);
   if (offset < 0) {
     return "end date before start date.";
-  } else if (offset == 0) {
+  } else if (offset === 0) {
     return "end date equal to start date; temporal range has zero length";
   }
 
@@ -240,7 +228,7 @@ warns the user if they have no counties selected. This is the only pathological 
 */
 const validateCountyInputs = (countyList, instance) => {
   if (instance.$store.getters.locationMode != locationMode.COUNTY) return true;
-  if (countyList.length != 0) {
+  if (countyList.length !== 0) {
     return true;
   } else {
     return "county query requires between 1 and 10 counties";
@@ -272,7 +260,8 @@ const validateWatershedAreaBoundaries = (boundaries, instance) => {
   }
 
   if (
-    parseInt(boundaries.upperAreaBound) < parseInt(boundaries.lowerAreaBound) &&
+    parseInt(boundaries.upperAreaBound, "10") <
+      parseInt(boundaries.lowerAreaBound, "10") &&
     lowerActive &&
     upperActive
   ) {
@@ -321,7 +310,7 @@ const validateAltitudeBoundaries = (boundaries, instance) => {
 /*
   Warns the user if they have selected an invalid agency code.
 */
-const validateAgencyInputs = (agency, instance, agencyData) => {
+const validateAgencyInputs = (agency, instance) => {
   if (!instance.$store.getters.agencyActive) {
     return true;
   }
@@ -411,8 +400,7 @@ const validateGroundWaterSiteInputs = (GWSiteAttrDepths, instance) => {
 const validateFormInputs = instance => {
   let stateStatus = validateStateInputs(
     instance.$store.getters.USStateName,
-    instance,
-    stateData
+    instance
   );
   if (!(stateStatus === true)) {
     notify(stateStatus);
@@ -444,11 +432,6 @@ const validateFormInputs = instance => {
     notify(HydroCodeStatus);
     return false;
   }
-  let paramStatus = validateParamInputs(instance.$store.getters.paramCodes);
-  if (!(paramStatus === true)) {
-    notify(paramStatus);
-    return false;
-  }
 
   let countyStatus = validateCountyInputs(
     instance.$store.getters.countyCode,
@@ -461,8 +444,7 @@ const validateFormInputs = instance => {
 
   let siteTypeListStatus = validateSiteTypeInputs(
     instance.$store.getters.siteType,
-    instance,
-    siteTypeData
+    instance
   );
   if (!(siteTypeListStatus === true)) {
     notify(siteTypeListStatus);
@@ -471,8 +453,7 @@ const validateFormInputs = instance => {
 
   let agencyStatus = validateAgencyInputs(
     instance.$store.getters.agencyCode,
-    instance,
-    agencyData
+    instance
   );
   if (!(agencyStatus === true)) {
     notify(agencyStatus);
@@ -552,6 +533,7 @@ const validateFormInputs = instance => {
   );
   if (!(temporalRangeStatus === true)) {
     notify(temporalRangeStatus);
+    return false;
   }
   instance.$store.commit(
     "changeCoordinates",
@@ -568,7 +550,6 @@ export {
   validateSiteInputs,
   validateHydroCodeInputs,
   validateCountyInputs,
-  validateParamInputs,
   validateSiteTypeInputs,
   validateAgencyInputs,
   validateNatAquiferInput,

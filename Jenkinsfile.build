@@ -63,7 +63,9 @@ pipeline {
                 }
                 sh """
                     echo "${versionChange}" > versionType.txt
+                    echo "${params.BUILD_DEST}" > destination.txt
                     cat versionType.txt
+                    cat destination.txt
                     docker stop nwisweb_data_connector_docker || true && docker rm nwisweb_data_connector_docker || true
                     docker build . --tag="nwisweb_tableau_dockerinstance"
                     docker run --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
@@ -71,6 +73,7 @@ pipeline {
                     dockerinstanceid=\$( docker ps -aqf "name=nwisweb_data_connector_docker" )
                     docker cp  "\${dockerinstanceid}\${pathtemplate}" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/package.json" $WORKSPACE
+                    docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/code.json" $WORKSPACE
                     docker cp  "\${dockerinstanceid}:usr/local/bin/nwisweb-tableau-data-connector/currVerNum.txt" $WORKSPACE
                     docker rm "\${dockerinstanceid}"
                 """
@@ -85,7 +88,7 @@ pipeline {
                                 echo Incrementing version number to `cat newVerNum.txt`
                                 git tag v`cat currVerNum.txt` 
                                 git push origin --tag
-                                git add package.json
+                                git add package.json code.json
                                 git commit -m "automatic version number increment"
                                 git pull origin ${params.BRANCH}
                                 git push -u origin HEAD:${params.BRANCH}
@@ -113,7 +116,7 @@ pipeline {
                 }
                 sh """
                     aws s3 rm "${targetDomain}" --recursive
-                    aws s3 cp $WORKSPACE/dist "${targetDomain}" --recursive
+                    aws s3 cp $WORKSPACE/dist "${targetDomain}"/connector --recursive
                 """
             }
         }
