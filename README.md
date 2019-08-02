@@ -20,8 +20,15 @@ npm run serve
 
 ### Compiles and minifies for production
 ```
-npm run build
+npm run production-build
 ```
+
+### Compiles and minifies for development
+```
+npm run development-build
+```
+
+The production build contains analytics, and the devlopment bulid does not. Builds sent to public facing buckets use production-build, and other builds use development-build. 
 
 ### Run your tests
 ```
