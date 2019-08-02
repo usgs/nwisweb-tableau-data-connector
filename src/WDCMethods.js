@@ -578,6 +578,7 @@ export {
   getTimeSeriesByID,
   reformatTimeString,
   sanitizeVariableName,
+  checkForNull,
   generateDateTime,
   generateMultiURL
 };
