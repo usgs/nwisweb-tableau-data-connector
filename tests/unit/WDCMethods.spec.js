@@ -2,11 +2,11 @@ import {
   formatJSONAsTable,
   generateURL,
   generateSchemaTablesFromData,
-  getTimeSeriesByID,
   reformatTimeString,
   sanitizeVariableName,
   generateDateTime,
-  generateMultiURL
+  generateMultiURL,
+  getDataListByID
 } from "../../src/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
 let moment = require("moment");
@@ -169,7 +169,7 @@ test("converting a fully-populated data JSON to table", () => {
   const input = validDataJSON;
   const targetResult = [
     {
-      flow_01646500_0: "10800",
+      flow: "10800",
       dateTime: "2019-07-05 10:45:00.000",
       latitude: "0.000000",
       longitude: "0.000000",
@@ -183,7 +183,7 @@ test("converting a fully-populated data JSON to table", () => {
       methodDescription: "gate 1"
     },
     {
-      flow_01646500_0: "10800",
+      flow: "10800",
       dateTime: "2019-07-05 10:45:00.000",
       latitude: "0.000000",
       longitude: "0.000000",
@@ -198,7 +198,7 @@ test("converting a fully-populated data JSON to table", () => {
     }
   ];
 
-  expect(formatJSONAsTable(mockCurrentTime, input, "flow_01646500_0")).toEqual(
+  expect(formatJSONAsTable(mockCurrentTime, input, "flow")).toEqual(
     targetResult
   );
 });
@@ -547,13 +547,18 @@ test("error on call to formatJSONAsTable with non-existent table name", () => {
   }).toThrow();
 });
 
-test("getTimeSeriesByID  correctly gets a time series by ID", () => {
+test("getDataListByID  correctly gets a time series by ID", () => {
   let timeSeries = validDataJSON.value.timeSeries;
 
-  let tableName = "flow_01646500";
-  let targetResult = validDataJSON.value.timeSeries[0];
+  let tableName = "flow";
+  let targetResult = [
+    {
+      timeSeries: validDataJSON.value.timeSeries[0],
+      valueSeries: validDataJSON.value.timeSeries[0].values[0]
+    }
+  ];
 
-  expect(getTimeSeriesByID(timeSeries, tableName)).toEqual(targetResult);
+  expect(getDataListByID(timeSeries, tableName)).toEqual(targetResult);
 });
 
 test("generateSchemaTablesFromData generate the correct schema tables given a data json", () => {
@@ -572,8 +577,8 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
     },
 
     {
-      id: "flow_01646500_0",
-      alias: "flow_01646500_0",
+      id: "flow",
+      alias: "flow",
       columns: [
         { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
@@ -591,15 +596,15 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
           dataType: "__STRING"
         },
         {
-          id: "flow_01646500_0",
-          alias: "flow_01646500_0",
+          id: "flow",
+          alias: "flow",
           dataType: "__STRING"
         }
       ]
     },
     {
-      id: "height_01646501_0",
-      alias: "height_01646501_0",
+      id: "height",
+      alias: "height",
       columns: [
         { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
         { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
@@ -617,34 +622,8 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
           dataType: "__STRING"
         },
         {
-          id: "height_01646501_0",
-          alias: "height_01646501_0",
-          dataType: "__STRING"
-        }
-      ]
-    },
-    {
-      id: "height_01646501_1",
-      alias: "height_01646501_1",
-      columns: [
-        { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
-        { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
-        { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
-        { id: "units", alias: "units", dataType: "__STRING" },
-        { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
-        { id: "siteNum", alias: "siteNum", dataType: "__STRING" },
-        { id: "paramCode", alias: "paramCode", dataType: "__STRING" },
-        { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
-        { id: "statCode", alias: "statCode", dataType: "__STRING" },
-        { id: "methodCode", alias: "methodCode", dataType: "__STRING" },
-        {
-          id: "methodDescription",
-          alias: "methodDescription",
-          dataType: "__STRING"
-        },
-        {
-          id: "height_01646501_1",
-          alias: "height_01646501_1",
+          id: "height",
+          alias: "height",
           dataType: "__STRING"
         }
       ]
