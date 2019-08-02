@@ -99,7 +99,7 @@ const sanitizeVariableName = variableName => {
 
 const checkForNull = data => {
   if (data == "-999999") {
-    return "null";
+    return null;
   }
   return data;
 };
