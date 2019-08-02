@@ -4,6 +4,7 @@ import {
   generateSchemaTablesFromData,
   reformatTimeString,
   sanitizeVariableName,
+  checkForNull,
   generateDateTime,
   generateMultiURL,
   getDataListByID
@@ -598,7 +599,7 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         {
           id: "flow",
           alias: "flow",
-          dataType: "__STRING"
+          dataType: "__FLOAT"
         }
       ]
     },
@@ -624,7 +625,7 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         {
           id: "height",
           alias: "height",
-          dataType: "__STRING"
+          dataType: "__FLOAT"
         }
       ]
     }
@@ -657,6 +658,15 @@ test("sanitizeVariableName correctly santitizes variable name", () => {
     "埨ᳫ聘퐮ꄎ㮥鉺綯᜽⬝\n븵䦜鲹㳰竊뱒沓畀ꥍ墡ᝋຨ኿淭⠜㙗৅�填즪皝�땬쩾嵥̮䂌闂榿ᕰ浻죙쓖ꦴ묇⤞꟤ᕌ⤺暞䴟㕡�ᇥ⨕䙴ᣔ拟旃寨获⢋饞뺽幹킎턊㢀㉁⏎藮꓾둵य▎�蕻줗요뱠‮Ꮉ鏨靨蘇㕦聃歚鋉㛤졔慰䠣뿽鏧楫餤飅杖�果곛⻱ﾐ᭵烪敍ⶼ曺�㴫ꎡ䌘ᨙ烽獨湬㹦輂헕㴼Ტ咨ﰂ꤂趇韙ט턐蚈惯ा毴诧叔ꖞ滶翉��枷䄘葆묃䳫뀙鑏᳃Ოᝪ位᎙ﯾ㤉凂民牯洌�빟釉쬜ᰉ苞䦱䳏䮍릭셦䶸灬瑞ꂌ᫪뷑쇆ゆ㌛챚䞫࣠뷒渤䚗䦧⒢᪂꒓䀣㐘ꮍ냘綔ꡖꙉ΃偡뽑뭖뿵ᅋ紥㽠倢貐ጹ⺲暺푚艠੨䄊覑甎垒Ⳏ㛧㟬蔹ৠ牿鄆裋麽鮶궄䉠嘿ꍔ߄鯅巤ꛜ졲�⸸䶰쭵ḵ灵볖뷚⟤ඔ丁墜뷟缫믆禙婪�灠ྮ㐦痻ዼ娈붇鱰햒퀞充뜧蓮㒁곶蟰⽕혺종ꓮ玀ꥌ資槞ॐৄ徒�慢ჴ縀砃ห뼸줆喢밼硏⺎罦玘凊揮寉�츁鈣⚃唅냛⚼�ᗀ濗侴퓭渱먯晘鋡⼪〉︅嵜₂맛揽⟳辩햠�镞ൿᔅబ೾鉚䋆儗쁽⾤誗抇奁렎厇Ȁ㾉尋�ࣞ↊춵瑗髃䛦駙䩥鶌䧸䔶橵㲯㱂易誉鴉樂ձ﷧噄య핍笍녜ᓼ잊ዏ뱊殏鲨�韊呿睘鐽㖕ꓬ崿虞禲댫硱齂䵙烣뷎᭙扩앯⛻흱涹�治팕鯩ီ殿卨⾋弳⓫恗㉷㠎뼄旟脔⟽Ｙ瑝饜㰛죛띑羅나w뢽蠇땞哃ᘏᛤᄔ捻�츅髋�⯆唢἟뤺愲᤹媻熙༆ꕁꅁ";
   expected = "_w";
   expect(sanitizeVariableName(input)).toEqual(expected);
+});
+
+test("checkForNull correctly checks if a value is null", () => {
+  let input = "-999999";
+  expect(checkForNull(input)).toBeNull();
+  input = "111.11";
+  expect(checkForNull(input)).toEqual(input);
+  input = "null";
+  expect(checkForNull(input)).not.toBeNull();
 });
 
 test("generateDate time correctly generates datetimes with timezones when given datetime and timezone", () => {

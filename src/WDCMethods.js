@@ -62,6 +62,16 @@ const sanitizeVariableName = variableName => {
 };
 
 /*
+check if data matches -999999 and return null instead
+*/
+const checkForNull = data => {
+  if (data == "-999999") {
+    return null;
+  }
+  return data;
+};
+
+/*
 Takes a JSON and returns a table formatted in accordance with the schema provided to Tableau.
 */
 const formatJSONAsTable = (currentDateTime, data, tableName) => {
@@ -114,7 +124,7 @@ const formatJSONAsTable = (currentDateTime, data, tableName) => {
         longitude: tableSeries.sourceInfo.geoLocation.geogLocation.longitude,
         units: tableSeries.variable.unit.unitCode,
         qualifier: qualList.join(","),
-        [tableName]: valueSeries.value[k].value,
+        [tableName]: checkForNull(valueSeries.value[k].value),
         siteNum: tableSeries.sourceInfo.siteCode[0].value,
         paramCode: tableSeries.variable.variableCode[0].value,
         agencyCode: tableSeries.sourceInfo.siteCode[0].agencyCode,
@@ -447,7 +457,7 @@ const generateSchemaTablesFromData = data => {
         cols.push({
           id: column,
           alias: column,
-          dataType: tableau.dataTypeEnum.string
+          dataType: tableau.dataTypeEnum.float
         });
         let newSchema = {
           id: column,
@@ -543,6 +553,7 @@ export {
   generateSchemaTablesFromData,
   reformatTimeString,
   sanitizeVariableName,
+  checkForNull,
   generateDateTime,
   generateMultiURL,
   getDataListByID
