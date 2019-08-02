@@ -56,3 +56,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed Vue build process to generate relative file paths
 - Jenkins will now copy files into /connector directory in S3 buckets
 - code.json version number is now automatically updated
+- changed schema so a table is returned for each parameter code

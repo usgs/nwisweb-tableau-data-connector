@@ -12,9 +12,7 @@ const getDataListByID = (timeSeries, tableName) => {
   timeSeries.forEach(series => {
     series.values.forEach(value => {
       if (
-        tableName.equals(
-          sanitizeVariableName(series.variable.variableDescription)
-        )
+        tableName === sanitizeVariableName(series.variable.variableDescription)
       ) {
         results.push({ timeSeries: series, valueSeries: value });
         found = true;
@@ -29,84 +27,12 @@ const getDataListByID = (timeSeries, tableName) => {
 };
 
 /*
-given the table.variable.variableDescription given as an argument to the getdata methods, this method
-extracts the appropriate time series. (note that a timeseries may contain
-  multiple value series)
-*/
-const getTimeSeriesListByID = (timeSeries, tableName) => {
-  // alert("Reached");
-  let resultSeries = [];
-  let found = false;
-  timeSeries.forEach(series => {
-    /* alert( tableName.startsWith(
-      `${sanitizeVariableName(series.variable.variableDescription)}`))
-    alert("foreach working")
-    alert("desc")
-    alert(series.variable.variableDescription)
-    alert("tablename")
-    alert(tableName);
-    alert("sanitizeddesc")
-    alert(sanitizeVariableName(series.variable.variableDescription))
-    alert("close")*/
-    if (
-      tableName.startsWith(
-        `${sanitizeVariableName(series.variable.variableDescription)}`
-      )
-    ) {
-      found = true;
-      resultSeries.push(series);
-    }
-    //alert("past if")
-  });
-  //alert("past for");
-  if (found) {
-    //  alert("returning")
-    return resultSeries;
-  } else {
-    // alert("ERROR")
-
-    throw new Error("Schema Mismatch Error: Missing Table");
-  }
-};
-
-/*
-This function gets a specific value series by its ID (note that a timeseries may contain
-  multiple value series)
-*/
-const getValueSeriesListByID = (timeSeries, tableName) => {
-  let resultValues = [];
-  let found = false;
-
-  timeSeries.forEach(series => {
-    series.values.forEach(valueSeries => {
-      if (
-        tableName ==
-        `${sanitizeVariableName(series.variable.variableDescription)}`
-      ) {
-        found = true;
-        resultValues.push(valueSeries);
-      }
-    });
-  });
-
-  if (found) {
-    //alert("returning")
-
-    return resultValues;
-  } else {
-    //alert("ERROR")
-
-    throw new Error("Schema Mismatch Error: Missing Table");
-  }
-};
-
-/*
 constructs a lookup table for qualifiers to their descriptions
 */
 
-const constructQualTable = tableSeries => {
+const constructQualTable = valueSeries => {
   let qualTable = {};
-  tableSeries.values[0].qualifier.forEach(qualifier => {
+  valueSeries.qualifier.forEach(qualifier => {
     qualTable[qualifier.qualifierCode] = qualifier.qualifierDescription;
   });
   return qualTable;
@@ -163,22 +89,18 @@ const formatJSONAsTable = (currentDateTime, data, tableName) => {
     return tableData;
   }
 
-  //  alert("reached beginning")
-
   let tableData = [];
   let timeSeries = data.value.timeSeries;
 
   let dataSeries = getDataListByID(timeSeries, tableName);
-  alert(JSON.stringify(dataSeries))
   let seriesIndices = Array.from(dataSeries.keys());
 
   seriesIndices.forEach(i => {
-    let tableSeries = dataSeries[i]["tableSeries"];
+    let tableSeries = dataSeries[i]["timeSeries"];
     let valueSeries = dataSeries[i]["valueSeries"];
 
     let paramIndices = Array.from(valueSeries.value.keys());
-    let qualDescriptionLookup = constructQualTable(tableSeries);
-
+    let qualDescriptionLookup = constructQualTable(valueSeries);
     paramIndices.forEach(k => {
       let qualList = [];
       valueSeries.value[k].qualifiers.forEach(qualifier => {
@@ -203,7 +125,6 @@ const formatJSONAsTable = (currentDateTime, data, tableName) => {
       tableData.push(newEntry);
     });
   });
-  //  alert("reached end")
   return tableData;
 };
 
@@ -620,9 +541,9 @@ export {
   formatJSONAsTable,
   generateURL,
   generateSchemaTablesFromData,
-  getTimeSeriesListByID,
   reformatTimeString,
   sanitizeVariableName,
   generateDateTime,
-  generateMultiURL
+  generateMultiURL,
+  getDataListByID
 };
