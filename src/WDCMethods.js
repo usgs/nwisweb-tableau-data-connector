@@ -479,7 +479,7 @@ const generateSchemaTablesFromData = data => {
       cols.push({
         id: column,
         alias: column,
-        dataType: tableau.dataTypeEnum.string
+        dataType: tableau.dataTypeEnum.float
       });
       let newSchema = {
         id: column,
