@@ -17,7 +17,7 @@ const get = (url, responseType) => {
     req.onload = function() {
       // This is called even on 404 etc
       // so check the status
-      if (req.status == 200) {
+      if (req.status === 200) {
         // Resolve the promise with the response text
         resolve(req.response);
       } else {
@@ -59,7 +59,7 @@ purpose of bypassing the limit of 100 parameters on the instantaneous values ser
 */
 const combineJSONList = JSONList => {
   let result = JSONList[0];
-  if (JSONList.length == 1) {
+  if (JSONList.length === 1) {
     return result;
   }
   // in the event that we have more than one JSON, here we begin the process of combining them
