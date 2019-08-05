@@ -28,6 +28,60 @@ const validDataJSON = {
     },
     timeSeries: [
       {
+        name: "USGS:01646543:00062:00000",
+        sourceInfo: {
+          geoLocation: {
+            geogLocation: {
+              latitude: "0.000000",
+              longitude: "0.000000"
+            }
+          },
+          siteCode: [{ value: "01646543", agencyCode: "USGS" }]
+        },
+        variable: {
+          variableCode: [{ value: "00062" }],
+          variableDescription: "height",
+          unit: {
+            unitCode: "ft"
+          },
+          options: {
+            option: [{ optionCode: "00000" }]
+          }
+        },
+        values: [
+          {
+            value: [
+              {
+                value: "54",
+                qualifiers: ["P", "A"],
+                dateTime: "2019-07-05T10:45:00.000-04:00"
+              },
+              {
+                value: "53",
+                qualifiers: ["P"],
+                dateTime: "2019-07-05T10:45:00.000-04:00"
+              }
+            ],
+            qualifier: [
+              {
+                qualifierCode: "P",
+                qualifierDescription: "Provisional data subject to revision."
+              },
+              {
+                qualifierCode: "A",
+                qualifierDescription: "Approved"
+              }
+            ],
+            method: [
+              {
+                methodID: "54354",
+                methodDescription: ""
+              }
+            ]
+          }
+        ]
+      },
+      {
         name: "USGS:01646500:00060:00000",
         sourceInfo: {
           geoLocation: {
@@ -90,13 +144,16 @@ const validDataJSON = {
               longitude: "0.00000"
             }
           },
-          siteCode: [{ value: "01646501" }]
+          siteCode: [{ value: "01646501", agencyCode: "USGS" }]
         },
         variable: {
           variableCode: [{ value: "00060" }],
           variableDescription: "height",
           unit: {
             unitCode: "ft"
+          },
+          options: {
+            option: [{ optionCode: "00000" }]
           }
         },
         values: [
@@ -200,6 +257,100 @@ test("converting a fully-populated data JSON to table", () => {
   ];
 
   expect(formatJSONAsTable(mockCurrentTime, input, "flow")).toEqual(
+    targetResult
+  );
+});
+
+test("converting a fully-populated data JSON to table", () => {
+  const input = validDataJSON;
+  const targetResult = [
+    {
+      height: "54",
+      dateTime: "2019-07-05 10:45:00.000",
+      latitude: "0.000000",
+      longitude: "0.000000",
+      units: "ft",
+      qualifier: "P:Provisional data subject to revision.,A:Approved",
+      siteNum: "01646543",
+      paramCode: "00062",
+      agencyCode: "USGS",
+      statCode: "00000",
+      methodCode: "54354",
+      methodDescription: ""
+    },
+    {
+      height: "53",
+      dateTime: "2019-07-05 10:45:00.000",
+      latitude: "0.000000",
+      longitude: "0.000000",
+      units: "ft",
+      qualifier: "P:Provisional data subject to revision.",
+      siteNum: "01646543",
+      paramCode: "00062",
+      agencyCode: "USGS",
+      statCode: "00000",
+      methodCode: "54354",
+      methodDescription: ""
+    },
+    {
+      agencyCode: "USGS",
+      dateTime: "2019-07-05 10:45:00.000",
+      height: "343",
+      latitude: "0.00000",
+      longitude: "0.00000",
+      methodCode: "69929",
+      methodDescription: "gate 2",
+      paramCode: "00060",
+      qualifier: "P:Provisional data subject to revision.",
+      siteNum: "01646501",
+      statCode: "00000",
+      units: "ft"
+    },
+    {
+      agencyCode: "USGS",
+      dateTime: "2019-07-05 10:45:00.000",
+      height: "5465",
+      latitude: "0.00000",
+      longitude: "0.00000",
+      methodCode: "69929",
+      methodDescription: "gate 2",
+      paramCode: "00060",
+      qualifier: "P:Provisional data subject to revision.",
+      siteNum: "01646501",
+      statCode: "00000",
+      units: "ft"
+    },
+    {
+      agencyCode: "USGS",
+      dateTime: "2019-07-05 10:45:00.000",
+      height: "56456",
+      latitude: "0.00000",
+      longitude: "0.00000",
+      methodCode: "69929",
+      methodDescription: "gate 3",
+      paramCode: "00060",
+      qualifier: "P:Provisional data subject to revision.",
+      siteNum: "01646501",
+      statCode: "00000",
+      units: "ft"
+    },
+    {
+      agencyCode: "USGS",
+      dateTime: "2019-07-05 10:45:00.000",
+      height: "5465",
+      latitude: "0.00000",
+      longitude: "0.00000",
+      methodCode: "69929",
+      methodDescription: "gate 3",
+      paramCode: "00060",
+      qualifier: "P:Provisional data subject to revision.",
+      siteNum: "01646501",
+      statCode: "00000",
+      units: "ft"
+    }
+  ];
+
+  expect(formatJSONAsTable(mockCurrentTime, input, "height")).toEqual(
     targetResult
   );
 });
@@ -554,8 +705,8 @@ test("getDataListByID  correctly gets a time series by ID", () => {
   let tableName = "flow";
   let targetResult = [
     {
-      timeSeries: validDataJSON.value.timeSeries[0],
-      valueSeries: validDataJSON.value.timeSeries[0].values[0]
+      timeSeries: validDataJSON.value.timeSeries[1],
+      valueSeries: validDataJSON.value.timeSeries[1].values[0]
     }
   ];
 
@@ -574,6 +725,33 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         { id: "queryURL", alias: "queryURL", dataType: "__STRING" },
         { id: "DOINumber", alias: "DOINumber", dataType: "__STRING" },
         { id: "queryTime", alias: "queryTime", dataType: "__STRING" }
+      ]
+    },
+
+    {
+      id: "height",
+      alias: "height",
+      columns: [
+        { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
+        { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
+        { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
+        { id: "units", alias: "units", dataType: "__STRING" },
+        { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
+        { id: "siteNum", alias: "siteNum", dataType: "__STRING" },
+        { id: "paramCode", alias: "paramCode", dataType: "__STRING" },
+        { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
+        { id: "statCode", alias: "statCode", dataType: "__STRING" },
+        { id: "methodCode", alias: "methodCode", dataType: "__STRING" },
+        {
+          id: "methodDescription",
+          alias: "methodDescription",
+          dataType: "__STRING"
+        },
+        {
+          id: "height",
+          alias: "height",
+          dataType: "__FLOAT"
+        }
       ]
     },
 
@@ -599,32 +777,6 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
         {
           id: "flow",
           alias: "flow",
-          dataType: "__FLOAT"
-        }
-      ]
-    },
-    {
-      id: "height",
-      alias: "height",
-      columns: [
-        { id: "dateTime", alias: "dateTime", dataType: "__TIME" },
-        { id: "latitude", alias: "latitude", dataType: "__FLOAT" },
-        { id: "longitude", alias: "longitude", dataType: "__FLOAT" },
-        { id: "units", alias: "units", dataType: "__STRING" },
-        { id: "qualifier", alias: "qualifier", dataType: "__STRING" },
-        { id: "siteNum", alias: "siteNum", dataType: "__STRING" },
-        { id: "paramCode", alias: "paramCode", dataType: "__STRING" },
-        { id: "agencyCode", alias: "agencyCode", dataType: "__STRING" },
-        { id: "statCode", alias: "statCode", dataType: "__STRING" },
-        { id: "methodCode", alias: "methodCode", dataType: "__STRING" },
-        {
-          id: "methodDescription",
-          alias: "methodDescription",
-          dataType: "__STRING"
-        },
-        {
-          id: "height",
-          alias: "height",
           dataType: "__FLOAT"
         }
       ]
