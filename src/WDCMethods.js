@@ -6,6 +6,13 @@ const moment = require("moment");
 
 /*global  tableau:true*/
 
+/*
+Returns an array of reference pairs. Valueseries is a reference to
+a single set of time series values and timeseries is a reference to the parent timeseries
+object. Both of these references are needed because there are instances where a timeseries
+will contain multiple valueseries. 
+
+*/
 const getDataListByID = (timeSeries, tableName) => {
   let results = [];
   let found = false;
