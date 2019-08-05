@@ -28,3 +28,4 @@ yarn-error.log*
 #generated files
 
 src/fetchedValues/*.json
+coverage
