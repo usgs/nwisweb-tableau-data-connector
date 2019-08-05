@@ -7,7 +7,9 @@ import {
   checkForNull,
   generateDateTime,
   generateMultiURL,
-  getDataListByID
+  getDataListByID,
+  constructQualTable,
+  generateQualDescription
 } from "../../src/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
 let moment = require("moment");
@@ -884,4 +886,21 @@ test("generateMultiURL correctly generates a single URL when appropriate", () =>
   ];
 
   expect(generateMultiURL(connectionData)).toEqual(targetResult);
+});
+
+test("constructQualTable correctly constructs a qualitifer table", () => {
+  let expectedResult = {
+    P: "Provisional data subject to revision.",
+    A: "Approved"
+  };
+  expect(
+    constructQualTable(validDataJSON.value.timeSeries[0].values[0])
+  ).toEqual(expectedResult);
+});
+
+test("generateQualDescription correctly generates a qualifier description", () => {
+  let qualTable = { P: "Provisional data subject to revision", A: "Approved" };
+
+  let expectedResult = "P:Provisional data subject to revision";
+  expect(generateQualDescription(qualTable, "P")).toEqual(expectedResult);
 });

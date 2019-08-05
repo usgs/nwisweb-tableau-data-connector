@@ -556,5 +556,7 @@ export {
   checkForNull,
   generateDateTime,
   generateMultiURL,
-  getDataListByID
+  getDataListByID,
+  constructQualTable,
+  generateQualDescription
 };
