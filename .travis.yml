@@ -3,7 +3,13 @@ language: node_js
 node_js:
   - 12.4.0
 
-before_install:
+services:
+  - docker
+
+before_install: 
+  - docker build . --tag="nwisweb_tableau_dockerinstance"
+  - docker run --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
+  - dockerinstanceid=\$( docker ps -aqf "name=nwisweb_data_connector_docker" )
   - npm i -g npm@6.9.0
 
 install:
@@ -14,3 +20,5 @@ script:
 
 after_script:
   - cat ./coverage/lcov.info | coveralls
+  - docker rm "\${dockerinstanceid}"
+
