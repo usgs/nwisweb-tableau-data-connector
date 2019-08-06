@@ -13,7 +13,7 @@
 
     <br />
     <br />
-    <b style="margin: 20px"> Who is this system designed for ?</b>
+    <b style="margin-left: 20px"> Who is this system designed for ?</b>
     <p>
       This system is designed for users of the Tableau software who want to
       seamlessly integrate USGS Water data into their analytics operations. This
@@ -22,7 +22,7 @@
 
     <br />
     <br />
-    <b> What does this system provide ?</b>
+    <b style="margin-left: 20px"> What does this system provide ?</b>
     <p>
       This system provides USGS Water data and an accompanying Tableau schema
       for each parameter for each site, including geographic coordinates and
