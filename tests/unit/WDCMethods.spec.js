@@ -527,7 +527,7 @@ test("correctly generate a URL given a list of counties and drainage area params
   );
 });
 
-test("correctly generate a URL given a hydro-logical Unit Code , using  siteType, duration, modifiedSince, and Agency parameters", () => {
+test("correctly generate a URL given a hydrologic Unit Code , using  siteType, duration, modifiedSince, and Agency parameters", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010  ",
