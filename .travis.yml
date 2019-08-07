@@ -7,9 +7,10 @@ services:
   - docker
 
 before_install: 
+  - echo minor > versionType.txt
+  - echo Test > destination.txt
   - docker build . --tag="nwisweb_tableau_dockerinstance"
-  - docker run --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
-  - dockerinstanceid=\$( docker ps -aqf "name=nwisweb_data_connector_docker" )
+  - docker run --rm --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
   - npm i -g npm@6.9.0
 
 install:
@@ -20,5 +21,3 @@ script:
 
 after_script:
   - cat ./coverage/lcov.info | coveralls
-  - docker rm "\${dockerinstanceid}"
-
