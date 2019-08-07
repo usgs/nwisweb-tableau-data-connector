@@ -1,59 +1,62 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
-import AgencySelect from "../../src/components/AgencySelect.vue";
+import StateSelect from "../../src/components/StateSelect.vue";
 import Vuex from "vuex";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
 jest.mock(
-  "../../src/fetchedValues/agency.json",
+  "../../src/fetchedValues/states.json",
   () => {
-    return [
-      { party_nm: "agency 1", agency_cd: "A1" },
-      { party_nm: "agency 2", agency_cd: "A2" }
-    ];
+    return { state1: "S1", state2: "S2" };
   },
   { virtual: true }
 );
 
 let store;
-test("updateAgencyInput Behaves Correctly depending on input", () => {
+test("populateStateList behaves correctly", () => {
   store = new Vuex.Store({
     state: {},
     modules: {},
     getters: {},
     actions: {}
   });
-  const wrapper = shallowMount(AgencySelect, {
+  const wrapper = shallowMount(StateSelect, {
     store,
     localVue
   });
 
-  wrapper.setData({ agency: "" });
+  let expectedResult = [
+    { name: "state1", id: "state1" },
+    { name: "state2", id: "state2" }
+  ];
 
-  wrapper.vm.updateAgencyInput("USGS");
+  wrapper.setData({ stateSearchList: [] });
 
-  expect(wrapper.vm.agency).toEqual("USGS");
-  wrapper.vm.updateAgencyInput(null);
-  expect(wrapper.vm.agency).toEqual("");
-  wrapper.vm.updateAgencyInput(undefined);
-  expect(wrapper.vm.agency).toEqual("");
+  wrapper.vm.populateStateList();
+
+  expect(wrapper.vm.stateSearchList).toEqual(expectedResult);
 });
 
-test("populateAgencyList Correctly Populates an agency list", () => {
+test("updateStateInput Behaves Correctly depending on input", () => {
   store = new Vuex.Store({
     state: {},
     modules: {},
     getters: {},
     actions: {}
   });
-  const wrapper = shallowMount(AgencySelect, {
+  const wrapper = shallowMount(StateSelect, {
     store,
     localVue
   });
-  let expectedOutput = [
-    { name: "agency 1", id: "A1" },
-    { name: "agency 2", id: "A2" }
-  ];
-  expect(wrapper.vm.agencyList).toEqual(expectedOutput);
+  wrapper.vm.commitStateSelection = () => {};
+
+  wrapper.setData({ state: "" });
+
+  wrapper.vm.updateStateInput("Michigan");
+  expect(wrapper.vm.state).toEqual("Michigan");
+  wrapper.vm.updateStateInput(null);
+  expect(wrapper.vm.state).toEqual("");
+  wrapper.vm.updateStateInput(undefined);
+  expect(wrapper.vm.state).toEqual("");
 });
