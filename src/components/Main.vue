@@ -33,23 +33,23 @@
                 <WatershedInput></WatershedInput>
                 <AltitudeInput></AltitudeInput>
               </fieldset>
+              <div>
+                <br />
+                <button
+                  type="button"
+                  v-on:click="requestData"
+                  id="submitButton"
+                  class="usa-button request-data"
+                >
+                  Request Data
+                </button>
+              </div>
             </div>
           </div>
         </div>
         <div class="rightcolumn">
           <LocationQueryType></LocationQueryType>
         </div>
-      </div>
-      <div>
-        <br />
-        <button
-          type="button"
-          v-on:click="requestData"
-          id="submitButton"
-          class="usa-button request-data"
-        >
-          Request Data
-        </button>
       </div>
     </body>
   </div>
