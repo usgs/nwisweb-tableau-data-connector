@@ -7,7 +7,7 @@ install:
   - echo minor > versionType.txt
   - echo Test > destination.txt
   - docker build . --tag="nwisweb_tableau_dockerinstance"
-  - docker run --rm --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
+  - docker run --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
 
 after_install:
   - cat ./coverage/lcov.info | coveralls
