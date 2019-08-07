@@ -10,5 +10,4 @@ install:
   - docker run --rm --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
 
 after_install:
-  - cat ./coverage/lcov.info
   - cat ./coverage/lcov.info | coveralls
