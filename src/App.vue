@@ -3,7 +3,8 @@
     <HeaderUSWDSBanner></HeaderUSWDSBanner>
     <HeaderUSGS></HeaderUSGS>
     <HeaderUSWDSSelections
-      titleForSelectionHeader="NWISWeb Tableau Web Data Connector"
+      style="white-space: nowrap;"
+      titleForSelectionHeader="Water Data For the Nation Tableau Web Data Connector"
     ></HeaderUSWDSSelections>
     <router-view style="min-height: 500px;"> </router-view>
     <FooterUSGS></FooterUSGS>
@@ -36,7 +37,7 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: left;
   color: #2c3e50;
   margin-top: 0px;
   min-height: 500px;

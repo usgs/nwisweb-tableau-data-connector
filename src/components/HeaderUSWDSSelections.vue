@@ -6,9 +6,9 @@
         <div class="usa-navbar">
           <div class="usa-logo" id="basic-logo">
             <em class="usa-logo__text"
-              ><a href="/" title="Home" aria-label="Home">{{
-                titleForSelectionHeader
-              }}</a></em
+              ><h1 href="/" title="Home" aria-label="Home">
+                {{ titleForSelectionHeader }}
+              </h1></em
             >
           </div>
           <button class="usa-menu-btn">Menu</button>
