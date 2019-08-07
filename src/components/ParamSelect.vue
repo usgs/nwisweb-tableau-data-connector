@@ -91,11 +91,7 @@ export default {
        long loading time for the params json doesn't slow dont UI loading
     */
     fetchparams: async function() {
-      let localParamData = await import("../fetchedValues/paramTypes.json")
-        .then(value => {
-          return value;
-        })
-        .catch();
+      let localParamData = await import("../fetchedValues/paramTypes.json");
       this.paramData = [];
       Object.keys(localParamData).forEach(key => {
         if ("name" in localParamData[key] && "id" in localParamData[key]) {

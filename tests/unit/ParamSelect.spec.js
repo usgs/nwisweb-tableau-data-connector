@@ -97,3 +97,103 @@ test("addParam fails to add a parameter correctly when loadedparamData is true b
   expect(spy).toHaveBeenCalled();
   expect(resultVal).toEqual("00060: parameter selected already in selection.");
 });
+
+test("addParams correctly adds a new Parameter when Appropriate", () => {
+  store = new Vuex.Store({
+    state: {},
+    modules: {},
+    getters: {},
+    actions: {}
+  });
+  const wrapper = shallowMount(ParamSelect, {
+    store,
+    localVue
+  });
+  wrapper.vm.commitParamList = () => {};
+  wrapper.vm.fetchParams = () => {};
+
+  wrapper.setData({ loadedParamData: true });
+  wrapper.setData({ paramList: ["00065", "00060"] });
+  wrapper.setData({ selectedParams: ["00060"] });
+
+  let input = "00065";
+  let expectedOutput = ["00060", "00065"];
+
+  const spy = jest.spyOn(exports, "notify");
+  wrapper.vm.addParam(input);
+  expect(spy).toHaveBeenCalled();
+  expect(wrapper.vm.selectedParams).toEqual(expectedOutput);
+});
+
+test("removeElement correctly removes an element", () => {
+  store = new Vuex.Store({
+    state: {},
+    modules: {},
+    getters: {},
+    actions: {}
+  });
+  const wrapper = shallowMount(ParamSelect, {
+    store,
+    localVue
+  });
+  wrapper.vm.commitParamList = () => {};
+  wrapper.vm.fetchParams = () => {};
+
+  wrapper.setData({ selectedParams: ["00060", "00065"] });
+
+  let input = 1;
+  let expectedOutput = ["00060"];
+
+  wrapper.vm.removeElement(input);
+  expect(wrapper.vm.selectedParams).toEqual(expectedOutput);
+});
+
+test("updateParamInput Behaves Appropriately", () => {
+  store = new Vuex.Store({
+    state: {},
+    modules: {},
+    getters: {},
+    actions: {}
+  });
+  const wrapper = shallowMount(ParamSelect, {
+    store,
+    localVue
+  });
+  wrapper.vm.commitParamList = () => {};
+  wrapper.vm.fetchParams = () => {};
+
+  let input = "not null";
+  wrapper.vm.updateParamInput(input);
+  expect(wrapper.vm.param).toEqual(input);
+  input = null;
+  wrapper.vm.updateParamInput(input);
+  expect(wrapper.vm.param).toEqual("");
+  input = undefined;
+  wrapper.vm.updateParamInput(input);
+  expect(wrapper.vm.param).toEqual("");
+});
+
+test("updateParamGroupInput Behaves Appropriately", () => {
+  store = new Vuex.Store({
+    state: {},
+    modules: {},
+    getters: {},
+    actions: {}
+  });
+  const wrapper = shallowMount(ParamSelect, {
+    store,
+    localVue
+  });
+  wrapper.vm.commitParamList = () => {};
+  wrapper.vm.fetchParams = () => {};
+
+  let input = "not null";
+  wrapper.vm.updateParamGroupInput(input);
+  expect(wrapper.vm.paramGroup).toEqual(input);
+  input = null;
+  wrapper.vm.updateParamGroupInput(input);
+  expect(wrapper.vm.paramGroup).toEqual("");
+  input = undefined;
+  wrapper.vm.updateParamGroupInput(input);
+  expect(wrapper.vm.paramGroup).toEqual("");
+});
