@@ -37,7 +37,7 @@
       Add Parameter
     </button>
     <h6 class="selected-tags">Selected parameters</h6>
-    <input-tags v-model="selectedParams" class="input-tags-element">
+    <input-tags :tags="selectedParams" class="input-tags-element">
       <div class="tags-input">
         <span
           v-for="(tag, key) in selectedParams"
@@ -91,7 +91,11 @@ export default {
        long loading time for the params json doesn't slow dont UI loading
     */
     fetchparams: async function() {
-      let localParamData = await import("../fetchedValues/paramTypes.json");
+      let localParamData = await import("../fetchedValues/paramTypes.json")
+        .then(value => {
+          return value;
+        })
+        .catch();
       this.paramData = [];
       Object.keys(localParamData).forEach(key => {
         if ("name" in localParamData[key] && "id" in localParamData[key]) {
