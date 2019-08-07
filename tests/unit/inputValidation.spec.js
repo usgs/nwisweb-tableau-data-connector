@@ -18,11 +18,9 @@ import {
   validateTimeCodes
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
-import Notifications from "vue-notification";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-localVue.use(Notifications);
 
 jest.mock("../../src/fetchedValues/states.json", () => ({ Montana: "MT" }), {
   virtual: true
