@@ -1,7 +1,47 @@
+jest.mock("../../src/fetchedValues/agency.json", () => ({}), { virtual: true });
+jest.mock("../../src/fetchedValues/states.json", () => ({}), { virtual: true });
+jest.mock("../../src/fetchedValues/siteTypes.json", () => ({}), {
+  virtual: true
+});
+jest.mock("../../src/fetchedValues/counties.json", () => ({}), {
+  virtual: true
+});
+
+jest.mock(
+  "../../src/fetchedValues/locAquifer.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
+
+jest.mock("../../src/fetchedValues/fips.json", () => ({}), { virtual: true });
+
+jest.mock("../../src/fetchedValues/aquiferAreas.json", () => ({}), {
+  virtual: true
+});
+
+jest.mock(
+  "../../src/fetchedValues/timezones.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  "../../src/fetchedValues/paramTypes.json",
+  () => {
+    return [];
+  },
+  { virtual: true }
+);
+
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Main from "../../src/components/Main.vue";
 import Vuex from "vuex";
 import * as exports from "../../src/notifications.js";
+
 const localVue = createLocalVue();
 let store;
 
