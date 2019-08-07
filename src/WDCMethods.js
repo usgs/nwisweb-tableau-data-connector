@@ -6,6 +6,13 @@ const moment = require("moment");
 
 /*global  tableau:true*/
 
+/*
+Returns an array of reference pairs. Valueseries is a reference to
+a single set of time series values and timeseries is a reference to the parent timeseries
+object. Both of these references are needed because there are instances where a timeseries
+will contain multiple valueseries. 
+
+*/
 const getDataListByID = (timeSeries, tableName) => {
   let results = [];
   let found = false;
@@ -40,21 +47,21 @@ const constructQualTable = valueSeries => {
 
 /*
 given a qualifier-description lookup table and a qualifier code, 
-returns a formatted concatednation of teh qualifier code and its description
+returns a formatted concatenation of the qualifier code and its description
 */
 const generateQualDescription = (qualTable, qualCode) => {
   return `${qualCode}:${qualTable[qualCode]}`;
 };
 
 /*
-  reformats time string from site-provided datetime to tableau compliant format. Time zone is removed, as it can be calculated from the geo-coords if they are provided.
+  re-formats time string from site-provided date-time to tableau compliant format. Time zone is removed, as it can be calculated from the geo-coords if they are provided.
 */
 const reformatTimeString = timeString => {
   return timeString.replace("T", " ").substring(0, 23);
 };
 
 /*
-sanitizes a variable name to name it suitable for concatenation into a talbeau column header
+sanitizes a variable name to name it suitable for concatenation into a tableau column header
 */
 
 const sanitizeVariableName = variableName => {
@@ -328,7 +335,7 @@ const generateURL = (connectionData, specifyParams, params) => {
 };
 
 /*
-given more than 100 parameters, generates as many urls as necesarry to satisfy the constraint that queries each contain no more than 100 parameters 
+given more than 100 parameters, generates as many urls as necessary to satisfy the constraint that queries each contain no more than 100 parameters 
 */
 const generateMultiURL = connectionData => {
   if (connectionData.paramNums.length === 0) {
@@ -353,7 +360,7 @@ const generateMultiURL = connectionData => {
 };
 
 /*
-takes query url to be sent to the NWISweb instantaneous values service and 
+takes query URL to be sent to the NWISweb instantaneous values service and 
 generates an appropriate tableau schema.
 */
 const generateSchemaTablesFromData = data => {
@@ -525,7 +532,7 @@ const getSchema = schemaCallback => {
   if (typeof tableau.connectionData === "string") {
     connectionData = JSON.parse(tableau.connectionData);
   } else {
-    // this check may be unnecesarry, and was added to provide compatibility with the tableau web data connector simulator which may or may not require it
+    // this check may be unnecessary, and was added to provide compatibility with the tableau web data connector simulator which may or may not require it
     connectionData = tableau.connectionData;
   }
 
@@ -556,5 +563,7 @@ export {
   checkForNull,
   generateDateTime,
   generateMultiURL,
-  getDataListByID
+  getDataListByID,
+  constructQualTable,
+  generateQualDescription
 };

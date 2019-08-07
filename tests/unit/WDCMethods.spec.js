@@ -7,7 +7,9 @@ import {
   checkForNull,
   generateDateTime,
   generateMultiURL,
-  getDataListByID
+  getDataListByID,
+  constructQualTable,
+  generateQualDescription
 } from "../../src/WDCMethods.js";
 import { locationMode } from "../../src/enums.js";
 let moment = require("moment");
@@ -16,7 +18,7 @@ let mockCurrentTime = moment().toISOString();
 
 const validDataJSON = {
   value: {
-    //barebones mockup of a data json with data series of uniform length
+    //bare-bones mock-up of a data JSON with data series of uniform length
     queryInfo: {
       queryURL: "sampleurl",
       note: [
@@ -397,7 +399,7 @@ test("formatJSONasTable correctly constructs metadata table when time is not sup
   );
 });
 
-test("correctly generate a URL given a list of sites and parameters with various whitespace", () => {
+test("correctly generate a URL given a list of sites and parameters with various white space", () => {
   const connectionData = {
     agencyCodeActive: false,
     durationCodeActive: false,
@@ -474,7 +476,7 @@ test("correctly generate a URL given a coordinate bounding box", () => {
   );
 });
 
-test("correctly generate a URL given a hydrological Unit Code", () => {
+test("correctly generate a URL given a Hydrologic Unit Code", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     hydroCode: "   02070010",
@@ -525,7 +527,7 @@ test("correctly generate a URL given a list of counties and drainage area params
   );
 });
 
-test("correctly generate a URL given a hydrological Unit Code , using  siteType, duration, modifiedSince, and Agency parameters", () => {
+test("correctly generate a URL given a hydrologic Unit Code , using  siteType, duration, modifiedSince, and Agency parameters", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010  ",
@@ -604,7 +606,7 @@ test("correctly generate a URL given multiple poorly formatted local aquifer cod
   );
 });
 
-test("correctly generate a URL given a hydrological Unit Code, with modifiedSince, and temporal range parameters", () => {
+test("correctly generate a URL given a Hydrologic Unit Code, with modifiedSince, and temporal range parameters", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010",
@@ -628,7 +630,7 @@ test("correctly generate a URL given a hydrological Unit Code, with modifiedSinc
   );
 });
 
-test("correctly generate a URL given a hydrological Unit Code, with modifiedSince, and temporal range parameters and a time period of over 120 days", () => {
+test("correctly generate a URL given a Hydrologic Unit Code, with modifiedSince, and temporal range parameters and a time period of over 120 days", () => {
   const connectionData = {
     paramNums: ["00060", "00065"],
     hydroCode: "02070010",
@@ -713,7 +715,7 @@ test("getDataListByID  correctly gets a time series by ID", () => {
   expect(getDataListByID(timeSeries, tableName)).toEqual(targetResult);
 });
 
-test("generateSchemaTablesFromData generate the correct schema tables given a data json", () => {
+test("generateSchemaTablesFromData generate the correct schema tables given a data JSON", () => {
   // todo this will need to be updated as we develop the schema more
 
   let result = [];
@@ -787,13 +789,13 @@ test("generateSchemaTablesFromData generate the correct schema tables given a da
   expect(result).toEqual(targetResult);
 });
 
-test("reformatTimeString correctly reformats timestring recieved from query into tableau compliant format", () => {
+test("reformatTimeString correctly re-formats timestring recieved from query into tableau compliant format", () => {
   let input = "2019-07-05T10:45:00.000-04:00";
   let expected = "2019-07-05 10:45:00.000";
   expect(reformatTimeString(input)).toEqual(expected);
 });
 
-test("sanitizeVariableName correctly santitizes variable name", () => {
+test("sanitizeVariableName correctly sanitizes variable name", () => {
   let input = "a b";
   let expected = "a_b";
   expect(sanitizeVariableName(input)).toEqual(expected);
@@ -884,4 +886,21 @@ test("generateMultiURL correctly generates a single URL when appropriate", () =>
   ];
 
   expect(generateMultiURL(connectionData)).toEqual(targetResult);
+});
+
+test("constructQualTable correctly constructs a qualifier table", () => {
+  let expectedResult = {
+    P: "Provisional data subject to revision.",
+    A: "Approved"
+  };
+  expect(
+    constructQualTable(validDataJSON.value.timeSeries[0].values[0])
+  ).toEqual(expectedResult);
+});
+
+test("generateQualDescription correctly generates a qualifier description", () => {
+  let qualTable = { P: "Provisional data subject to revision", A: "Approved" };
+
+  let expectedResult = "P:Provisional data subject to revision";
+  expect(generateQualDescription(qualTable, "P")).toEqual(expectedResult);
 });

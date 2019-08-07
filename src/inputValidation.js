@@ -188,7 +188,7 @@ const validateTemporalRange = (temporalRangeData, instance) => {
     instance.$store.getters.temporalRangeActive &&
     instance.$store.getters.durationCodeActive
   ) {
-    return "Explicit temporal range parameters are mutually exclusive with duration code specified timeperiod parameters.";
+    return "Explicit temporal range parameters are mutually exclusive with duration code specified time-period parameters.";
   }
   if (
     temporalRangeData.startDateTime == "" ||
@@ -499,7 +499,7 @@ const validateFormInputs = instance => {
 
   let durationCodeStatus = validateISO_8601Duration(
     instance.$store.getters.durationCode,
-    "duration code formatting invalid; please refer to link provided in the tooltip",
+    "duration code formatting invalid; please refer to link provided in the tool tip",
     instance.$store.getters.durationCodeActive
   );
 
