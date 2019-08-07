@@ -3,6 +3,7 @@
     <HeaderUSWDSBanner></HeaderUSWDSBanner>
     <HeaderUSGS></HeaderUSGS>
     <HeaderUSWDSSelections
+      style="white-space: nowrap;"
       titleForSelectionHeader="Water Data For the Nation Tableau Web Data Connector"
     ></HeaderUSWDSSelections>
     <router-view style="min-height: 500px;"> </router-view>
