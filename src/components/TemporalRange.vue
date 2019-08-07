@@ -47,7 +47,7 @@
         <label>Time Zone</label>
         <ToolTip
           hint="This field specifies UTC offset. Timezone offset information is available here."
-          url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
+          url="https://en.wikipedia.org/wiki/List_of_UTC_time_offsets"
         ></ToolTip>
       </span>
 
@@ -61,7 +61,7 @@
     <span class="input-desc">
       <label>Modified Since</label>
       <ToolTip
-        hint="This field parameterizes the query to return data only from sites which updated their values within a specified duration in the past. A link to a detailed explanation of the ISO 8601 duration format specification is available here. The format should look like P&ltdate&gtT&lttime&gt with the caveat that P must always be present and T must only be present if it is not the last character"
+        hint="This field parameterizes the query to return data only from sites which updated their values within a specified duration in the past. A link to a detailed explanation of the ISO 8601 duration format specification is available here. The format should look like P&ltdate&gtT&lttime&gt with the caveat that P must always be present and T must only be present if it is not the last character. In addition, this is a restricted ISO 8601 duration format, and does not allow months or years to be entered."
         url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
       ></ToolTip>
     </span>
@@ -70,7 +70,7 @@
     <span class="input-desc">
       <label>Duration Code</label>
       <ToolTip
-        hint="This parameterizes the query to return data from up to a specified duration in the past. A link to a detailed explanation of the ISO 8601 duration format specification is available here. The format should look like P&ltdate&gtT&lttime&gt with the caveat that P must always be present and T must only be present if it is not the last character"
+        hint="This parameterizes the query to return data from up to a specified duration in the past. A link to a detailed explanation of the ISO 8601 duration format specification is available here. The format should look like P&ltdate&gtT&lttime&gt with the caveat that P must always be present and T must only be present if it is not the last character. In addition, this is a restricted ISO 8601 duration format, and does not allow months or years to be entered."
         url="https://en.wikipedia.org/wiki/ISO_8601#Durations"
       ></ToolTip>
     </span>
