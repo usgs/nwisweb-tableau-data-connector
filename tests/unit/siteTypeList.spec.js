@@ -162,3 +162,31 @@ describe("addSiteTypeToSiteTypeList", () => {
     expect(wrapper.vm.siteTypeList).toEqual(expectedResult);
   });
 });
+
+test("updateSiteTypeInput correctly updates siteType", () => {
+  let store = new Vuex.Store({
+    state: {},
+    modules: {},
+    getters: {},
+    actions: {}
+  });
+  const wrapper = shallowMount(SiteTypeList, {
+    store,
+    localVue,
+    propsData: {},
+    stubs: ["input-tags"]
+  });
+
+  wrapper.setData({ siteType: "default" });
+  wrapper.vm.updateSiteTypeInput(undefined);
+  expect(wrapper.vm.siteType).toEqual("");
+
+  wrapper.setData({ siteType: "default" });
+  wrapper.vm.updateSiteTypeInput(null);
+  expect(wrapper.vm.siteType).toEqual("");
+
+  let input = "validstring";
+  wrapper.setData({ siteType: "default" });
+  wrapper.vm.updateSiteTypeInput(input);
+  expect(wrapper.vm.siteType).toEqual(input);
+});
