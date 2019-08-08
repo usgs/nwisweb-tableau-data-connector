@@ -4,7 +4,7 @@
     <span class="input-desc">
       <label>Parameters</label>
       <ToolTip
-        hint="The complete list of parameter codes is available here. Any number of parameters can be accomodated."
+        hint="The complete list of parameter codes is available here. Any number of parameters can be selected."
         url="https://help.waterdata.usgs.gov/codes-and-parameters/parameters"
       ></ToolTip>
     </span>
@@ -20,7 +20,7 @@
     <span class="input-desc">
       <label>Parameter Groups</label>
       <ToolTip
-        hint="Parameter group information can be found in the 'group' column of the parameter code table. A maximum of 100 parameters are allowed per query. Some groups contain more than 100 parameters codes, in these cases it is most efficient to manually remove unnecesarry parameters."
+        hint="Parameter group information can be found in the 'group' column of the parameter code table. Any number of parameters can be selected."
         url="https://help.waterdata.usgs.gov/codes-and-parameters/parameters"
       ></ToolTip>
     </span>
