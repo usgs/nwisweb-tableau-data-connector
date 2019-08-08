@@ -4,7 +4,7 @@
     <span class="input-desc">
       <label>Parameters</label>
       <ToolTip
-        hint="The complete list of parameter codes is available here. A maximum of 100 parameters are allowed per query."
+        hint="The complete list of parameter codes is available here. Any number of parameters can be accomodated."
         url="https://help.waterdata.usgs.gov/codes-and-parameters/parameters"
       ></ToolTip>
     </span>

@@ -4,7 +4,7 @@
     <span class="input-desc">
       <label>Watershed Drainage Area Upper Boundary</label>
       <ToolTip
-        hint="Use these fields to specify upper and lower bounds for desired watershed draiage areas of included results. Each number must be a positive integer. If nothing is entered in this field, it will be ignored."
+        hint="Use these fields to specify upper and lower bounds for desired watershed drainage areas of included results. Each number must be a positive integer. If nothing is entered in this field, it will be ignored."
       ></ToolTip>
     </span>
     <input

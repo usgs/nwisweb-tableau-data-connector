@@ -4,7 +4,7 @@
     <span class="input-desc">
       <label>Upper Altitude Boundary</label>
       <ToolTip
-        hint="Use these fields to specify upper and lower bounds for site altitude. If these fields are left empty, sites will not be filtered by altitude. negative values for altitude are allowed."
+        hint="Use these fields to specify upper and lower bounds for site altitude. If these fields are left empty, sites will not be filtered by altitude. Negative values for altitude are allowed."
       ></ToolTip>
     </span>
     <input

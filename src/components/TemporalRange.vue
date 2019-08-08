@@ -23,7 +23,7 @@
       <span class="input-desc">
         <label style="display: inline-block;">Start Time</label>
         <ToolTip
-          hint="Use this field to specify temporal boundaries for the timestamps of returned data. If this field is active, both timezone fields and both datetime fields must be filled out. The end datetime cannot come before the start datetime. "
+          hint="Use this field to specify temporal boundaries for the timestamps of returned data. If this field is active, the timezone field and both datetime fields must be filled out. The end datetime cannot come before the start datetime. "
         ></ToolTip>
       </span>
       <VueCtkDateTimePicker
