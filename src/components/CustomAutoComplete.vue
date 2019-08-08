@@ -26,7 +26,7 @@ SOFTWARE.
 /*
 Due to the style of override used here, some small fragments from 
 the npm package vuejs-auto-complete had to be included to fully specify behavior of
-overriden functions. As such, the original MIT License for this code is included. 
+overriden functions. As such, the original MIT License for this code is included in this file. 
 */
 import AutoComplete from "vuejs-auto-complete";
 
@@ -61,13 +61,7 @@ export default {
       this.removeEventListener();
       this.$emit("close");
     },
-    /*
-      This turns out to be pretty imporant; this override is in place to limit the number of results
-      returned by any search to 10. This allows the system to handle very large searches which would
-      otherwise slow it down beyond an acceptable amount. It also proved necessary to replace array.filter with a custom search function
-      as the Tableau browser did not offer good performance with the filter function as implemented by default.
 
-    */
     arrayLikeSearch() {
       this.setEventListener();
 
@@ -79,6 +73,9 @@ export default {
       }
 
       // this is so the search function stays out of the user's way when they are inputting codes
+      // with the current list sizes, this measure is not necesarry but  in the event a very long
+      //suggestion list is necesarry to support, this measure, in conjunction with a display limit of
+      //10 results, will allow the autocomplete functionality to remain performant.
       let regex = /^(\d){5},.*$/;
       if (this.display.replace(/\s/g, "").match(regex)) {
         this.results = [];
@@ -88,13 +85,12 @@ export default {
       }
 
       let results = [];
-      this.source.some(element => {
+      this.source.forEach(element => {
         if (
           element["name"].toLowerCase().includes(this.display.toLowerCase())
         ) {
           results.push(element);
         }
-        return results.length === 10;
       });
       this.results = results;
       this.$emit("results", { results: this.results });

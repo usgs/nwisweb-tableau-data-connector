@@ -15,7 +15,8 @@ import {
   validateGroundWaterSiteInputs,
   validateISO_8601Duration,
   validateTemporalRange,
-  validateTimeCodes
+  validateTimeCodes,
+  roundCoordinateInputs
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
 
@@ -1342,4 +1343,21 @@ done in CountySelect.vue
     };
     expect(validateAltitudeBoundaries(bounds, wrapper.vm)).toBe(true);
   });
+});
+
+test("roundCoordinateInputs performs rounding correctly", () => {
+  let input = {
+    north: "1.9999999999999999999999999",
+    south: "1.32234324344324",
+    east: "-1.3",
+    west: "1"
+  };
+  let expectedOutput = {
+    north: "2.000000",
+    west: "1.000000",
+    south: "1.322343",
+    east: "-1.300000"
+  };
+
+  expect(roundCoordinateInputs(input)).toEqual(expectedOutput);
 });

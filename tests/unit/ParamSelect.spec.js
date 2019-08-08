@@ -197,3 +197,52 @@ test("updateParamGroupInput Behaves Appropriately", () => {
   wrapper.vm.updateParamGroupInput(input);
   expect(wrapper.vm.paramGroup).toEqual("");
 });
+
+test("addParams correctly adds comma separated parameters", () => {
+  store = new Vuex.Store({
+    state: {},
+    modules: {},
+    getters: {},
+    actions: {}
+  });
+  const wrapper = shallowMount(ParamSelect, {
+    store,
+    localVue
+  });
+  wrapper.vm.commitParamList = () => {};
+  wrapper.vm.fetchParams = () => {};
+  let resultList = [];
+  wrapper.vm.addParam = input => {
+    resultList.push(input);
+  };
+  let input = "0006    5, 00 060";
+  let expectedOutput = ["00065", "00060"];
+  wrapper.setData({ param: input });
+  wrapper.setData({ selectedParams: ["00032"] });
+  wrapper.vm.addParams();
+  expect(resultList).toEqual(expectedOutput);
+});
+
+test("addParams correctly warns user if no input is given", () => {
+  store = new Vuex.Store({
+    state: {},
+    modules: {},
+    getters: {},
+    actions: {}
+  });
+  const wrapper = shallowMount(ParamSelect, {
+    store,
+    localVue
+  });
+  wrapper.vm.commitParamList = () => {};
+  wrapper.vm.fetchParams = () => {};
+  wrapper.setData({ param: "" });
+  wrapper.setData({ paramGroup: "" });
+
+  const spy = jest.spyOn(exports, "notify");
+
+  wrapper.vm.addParams();
+
+  expect(spy).toHaveBeenCalled();
+  expect(resultVal).toEqual("no param code or group entered");
+});
