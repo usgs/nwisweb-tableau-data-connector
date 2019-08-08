@@ -41,12 +41,10 @@ test("Arraylike Search correctly responds to empty user input", () => {
     }
   });
 
-  wrapper.setData({ display: false });
-  wrapper.setData({ results: [] });
+  wrapper.setData({ display: false, results: [] });
   wrapper.vm.arrayLikeSearch();
   expect(wrapper.vm.results).toEqual(wrapper.vm.source);
-  wrapper.setData({ display: null });
-  wrapper.setData({ results: [] });
+  wrapper.setData({ display: null, results: [] });
   wrapper.vm.arrayLikeSearch();
   expect(wrapper.vm.results).toEqual(wrapper.vm.source);
 });
@@ -67,18 +65,15 @@ test("Arraylike Search correctly responds to valid user input", () => {
   });
 
   let expectedResults = wrapper.vm.source;
-  wrapper.setData({ display: "item" });
-  wrapper.setData({ results: [] });
+  wrapper.setData({ display: "item", results: [] });
   wrapper.vm.arrayLikeSearch();
   expect(wrapper.vm.results).toEqual(expectedResults);
   expectedResults = [{ name: "item2", id: "002" }];
-  wrapper.setData({ display: "em2" });
-  wrapper.setData({ results: [] });
+  wrapper.setData({ display: "em2", results: [] });
   wrapper.vm.arrayLikeSearch();
   expect(wrapper.vm.results).toEqual(expectedResults);
   expectedResults = [];
-  wrapper.setData({ display: "adfsdfasdfasfdf" });
-  wrapper.setData({ results: [] });
+  wrapper.setData({ display: "adfsdfasdfasfdf", results: [] });
   wrapper.vm.arrayLikeSearch();
   expect(wrapper.vm.results).toEqual(expectedResults);
 });

@@ -85,7 +85,7 @@ export default {
       });
     },
     addSiteTypeToSiteTypeList: function(siteType) {
-      if (this.siteType == "") {
+      if (siteType == "") {
         notify(`no site type entered`);
         return;
       }
