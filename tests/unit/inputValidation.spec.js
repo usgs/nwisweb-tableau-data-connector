@@ -16,8 +16,7 @@ import {
   validateISO_8601Duration,
   validateTemporalRange,
   validateTimeCodes,
-  roundCoordinateInputs,
-  validateFormInputs
+  roundCoordinateInputs
 } from "../../src/inputValidation.js";
 import Vuex from "vuex";
 
