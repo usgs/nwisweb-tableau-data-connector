@@ -713,6 +713,10 @@ test("getDataListByID  correctly gets a time series by ID", () => {
   ];
 
   expect(getDataListByID(timeSeries, tableName)).toEqual(targetResult);
+  tableName = "not present";
+  expect(() => {
+    getDataListByID(timeSeries, tableName);
+  }).toThrow();
 });
 
 test("generateSchemaTablesFromData generate the correct schema tables given a data JSON", () => {
