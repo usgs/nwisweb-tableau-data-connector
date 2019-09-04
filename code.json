@@ -3,7 +3,7 @@
     "name": "NWISWeb Tableau Data Connector",
     "organization": "U.S. Geological Survey",
     "description": "Web Data Connector for retrieving NWIS data in Tableau",
-    "version": "v0.1.0",
+    "version": "v0.2.0",
     "status": "Development",
     "permissions": {
       "usageType": "openSource",
