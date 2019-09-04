@@ -1,7 +1,7 @@
 <template>
   <div>
     <head>
-      <title>USGS NWIS Tableau Data Connector</title>
+      <title>USGS WDFN Tableau Data Connector</title>
       <meta http-equiv="Cache-Control" content="no-store" />
     </head>
 
