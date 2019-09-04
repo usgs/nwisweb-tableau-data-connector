@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <b style="margin-left: 20px">
-      How to use the NWISWeb Tableau Web Data Connector</b
+      How to use the WDFN Tableau Web Data Connector</b
     >
     <p>
       This system requires a desktop Tableau client. To use this system, first
