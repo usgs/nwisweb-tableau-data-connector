@@ -13,7 +13,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "core-js": "^2.6.5",
+    "core-js": "^3.5.0",
     "iso8601-duration": "^1.2.0",
     "moment": "^2.24.0",
     "v-tooltip": "^2.0.2",
