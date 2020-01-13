@@ -78,7 +78,7 @@ test("Arraylike Search correctly responds to valid user input", () => {
   expect(wrapper.vm.results).toEqual(expectedResults);
 });
 
-test("refresh toggle correctly clears display value", () => {
+test("refresh watch method correctly clears display value", () => {
   store = new Vuex.Store({
     state: {},
     modules: {},
@@ -92,8 +92,11 @@ test("refresh toggle correctly clears display value", () => {
       source: sourceData
     }
   });
-  wrapper.setData({ display: "item" });
-  wrapper.setProps({ refresh: !wrapper.vm.refresh });
+
+  // Use https://vuejs.org/v2/api/#vm-options to get the watchers in the current Vue instances
+  // then manually call the watcher with the new value and verify the new value of the "display" property.
+  // Using https://vuedose.tips/tips/testing-logic-inside-a-vue-js-watcher/ as a reference
+  wrapper.vm.$options.watch.refresh.call(wrapper.vm, !wrapper.vm.refresh);
   expect(wrapper.vm.display).toEqual("");
 });
 
