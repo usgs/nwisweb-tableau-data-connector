@@ -45,7 +45,7 @@
     "node-sass": "^4.9.0",
     "prettier": "1.19.1",
     "sass-loader": "^7.1.0",
-    "uswds": "^2.0.3",
+    "uswds": "^2.4.0",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
