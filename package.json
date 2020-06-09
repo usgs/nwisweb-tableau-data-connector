@@ -33,7 +33,7 @@
     "@vue/cli-service": "^4.3.1",
     "@vue/test-utils": "1.0.3",
     "@babel/core": "^7.9.0",
-    "babel-eslint": "^10.0.3",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
     "coveralls": "^3.1.0",
     "csv-parse": "^4.9.0",
