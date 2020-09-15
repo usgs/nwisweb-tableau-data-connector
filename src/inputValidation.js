@@ -103,7 +103,7 @@ const validateSiteInputs = (sites, instance) => {
   let regex = /^(((\d){8}(\d?){7}),)*((\d){8}(\d?){7})$/;
 
   if (!sites.replace(/\s/g, "").match(regex)) {
-    return "site list in invalid format"; // 1 or more 8-12 digit site codes
+    return "site list in invalid format"; // 1 or more 8-15 digit site codes
   }
   return true;
 };
