@@ -13,7 +13,7 @@
     "update-code-json": "node scripts/updateCodeJSON.js"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
+    "core-js": "^3.10.0",
     "iso8601-duration": "^1.2.0",
     "moment": "^2.29.1",
     "v-tooltip": "^2.0.3",
