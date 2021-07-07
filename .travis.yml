@@ -1,16 +1,11 @@
-language: node_js
+language: minimal
 
-node_js:
-  - 12.4.0
+services:
+  - docker
 
-before_install:
-  - npm i -g npm@6.9.0
-
-install:
-  - npm install 
-
-script:
-  - npm run test:unit
-
-after_script:
+install: 
+  - echo minor > versionType.txt
+  - echo Test > destination.txt
+  - docker build . --tag="nwisweb_tableau_dockerinstance"
+  - docker run --name nwisweb_data_connector_docker nwisweb_tableau_dockerinstance
   - cat ./coverage/lcov.info | coveralls
